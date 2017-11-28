@@ -1,0 +1,280 @@
+/*
+Uploadify
+Copyright (c) 2012 Reactive Apps, Ronnie Garcia
+Released under the MIT License <http://www.opensource.org/licenses/mit-license.php> 
+*/
+.uploadify {
+	position: relative;
+	margin-bottom: 1em;
+}
+/*
+.uploadify-button {
+	background-color: #505050;
+	background-image: linear-gradient(bottom, #505050 0%, #707070 100%);
+	background-image: -o-linear-gradient(bottom, #505050 0%, #707070 100%);
+	background-image: -moz-linear-gradient(bottom, #505050 0%, #707070 100%);
+	background-image: -webkit-linear-gradient(bottom, #505050 0%, #707070 100%);
+	background-image: -ms-linear-gradient(bottom, #505050 0%, #707070 100%);
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #505050), color-stop(1, #707070) );
+	background-position: center top;
+	background-repeat: no-repeat;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	border: 2px solid #808080;
+	color: #FFF;
+	font: bold 12px Arial, Helvetica, sans-serif;
+	text-align: center;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	width: 100%;
+}
+
+.uploadify:hover .uploadify-button {
+	background-color: #606060;
+	background-image: linear-gradient(top, #606060 0%, #808080 100%);
+	background-image: -o-linear-gradient(top, #606060 0%, #808080 100%);
+	background-image: -moz-linear-gradient(top, #606060 0%, #808080 100%);
+	background-image: -webkit-linear-gradient(top, #606060 0%, #808080 100%);
+	background-image: -ms-linear-gradient(top, #606060 0%, #808080 100%);
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #606060), color-stop(1, #808080) );
+	background-position: center bottom;
+}
+
+.uploadify-button.disabled {
+	background-color: #D0D0D0;
+	color: #808080;
+}
+*/
+.uploadify-queue {
+	margin-bottom: 1em;
+}
+
+.uploadify-queue-item {
+	background-color: #F5F5F5;
+	/*-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font: 11px Verdana, Geneva, sans-serif;
+	margin-top: 5px;
+	margin-right: 5px;
+	max-width: 150px;
+	padding: 10px;
+	margin-top: 5px;*/
+	float: left;
+	width: 100%;
+}
+ 
+.uploadify-error {
+	background-color: #FDE5DD !important;
+}
+
+.uploadify-queue-item .cancel a {
+	background: url('../uploadify-cancel.png') 0 0 no-repeat;
+	float: right;
+	height: 16px;
+	text-indent: -9999px;
+	width: 16px;
+	padding-right: 5px;
+}
+
+.uploadify-queue-item.completed {
+	background-color: #E5E5E5;
+}
+
+.uploadify-progress {
+	background-color: #E5E5E5;
+	margin-top: 10px;
+	width: 100%;
+}
+
+.uploadify-progress-bar {
+	background-color: #0099FF;
+	height: 3px;
+	width: 1px;
+}
+
+.v-uploadify-button {
+	background: none;
+	border: none;
+	text-shadow: none;
+	border-radius: 0;
+}
+
+.uploadify:hover .v-uploadify-button {
+	background: none;
+	border: none;
+}
+
+.uploadify-queue-item  b.file-ico {
+	height: 32px;
+	width: 32px;
+	background: url("fileico_v2.png") no-repeat scroll 0px 0px transparent;
+	background-repeat: no-repeat;
+	font-weight: normal;
+	line-height: normal;
+	overflow: hidden;
+	text-align: center;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+/*office03 图标*/
+.uploadify-queue-item  b.file-ico-xls{
+   background: url("fileico_v2.png") no-repeat scroll -32px 0px transparent;
+}
+.uploadify-queue-item  b.file-ico-doc{
+   background: url("fileico_v2.png") no-repeat scroll -64px 0px transparent;
+}
+.uploadify-queue-item  b.file-ico-ppt{
+   background: url("fileico_v2.png") no-repeat scroll -96px 0px transparent;
+}
+/*压缩文件*/
+.uploadify-queue-item  b.file-ico-7z{
+   background: url("fileico_v2.png") no-repeat scroll -128px 0px transparent;
+}
+.uploadify-queue-item  b.file-ico-rar{
+   background: url("fileico_v2.png") no-repeat scroll -160px 0px transparent;
+}
+.uploadify-queue-item  b.file-ico-zip{
+   background: url("fileico_v2.png") no-repeat scroll -192px 0px transparent;
+}
+/*镜像文件*/
+.uploadify-queue-item  b.file-ico-iso{
+   background: url("fileico_v2.png") no-repeat scroll -224px 0px transparent;
+}
+/*
+.uploadify-queue-item  b.file-ico-duanxin{
+   background: url("fileico_v2.png") no-repeat scroll -256px 0px transparent;
+}*/
+.uploadify-queue-item  b.file-ico-html{
+   background: url("fileico_v2.png") no-repeat scroll -288px 0px transparent;
+}
+/*-----------------------------------------------------------------------*/
+.uploadify-queue-item  b.file-ico-js{
+   background: url("fileico_v2.png") no-repeat scroll -320px 0px transparent;
+}
+.uploadify-queue-item  b.file-ico-css{
+   background: url("fileico_v2.png") no-repeat scroll -352px 0px transparent;
+}
+/*--
+.uploadify-queue-item  b.file-ico-hlp{
+   background: url("fileico_v2.png") no-repeat scroll -384px 0px transparent;
+}
+.uploadify-queue-item  b.file-ico-piChuLi1{
+   background: url("fileico_v2.png") no-repeat scroll -416px 0px transparent;
+}
+.uploadify-queue-item  b.file-ico-piChuLi2{
+   background: url("fileico_v2.png") no-repeat scroll -448px 0px transparent;
+}*/
+/*图片*/
+.uploadify-queue-item  b.file-ico-jpg{
+   background: url("fileico_v2.png") no-repeat scroll 0px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-gif{
+   background: url("fileico_v2.png") no-repeat scroll -32px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-png{
+	background: url("fileico_v2.png") no-repeat scroll -64px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-bmp{
+	background: url("fileico_v2.png") no-repeat scroll -96px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-tif{
+	background: url("fileico_v2.png") no-repeat scroll -128px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-emf{
+	background: url("fileico_v2.png") no-repeat scroll -160px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-wmf{
+	background: url("fileico_v2.png") no-repeat scroll -192px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-ico{
+	background: url("fileico_v2.png") no-repeat scroll -224px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-raw{
+	background: url("fileico_v2.png") no-repeat scroll -256px -32px transparent;
+}
+/*-----------------------------------------------------------------------
+.uploadify-queue-item  b.file-ico-colourWater{
+   background: url("fileico_v2.png") no-repeat scroll -288px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-chm{
+   background: url("fileico_v2.png") no-repeat scroll -320px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-viewPic{
+   background: url("fileico_v2.png") no-repeat scroll -352px -32px transparent;
+}*/
+/*office 07图标-----------------------------------------------------------------------*/
+.uploadify-queue-item  b.file-ico-docx{
+   background: url("fileico_v2.png") no-repeat scroll -384px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-pptx{
+   background: url("fileico_v2.png") no-repeat scroll -416px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-xlsx{
+   background: url("fileico_v2.png") no-repeat scroll -448px -32px transparent;
+}
+/*
+.uploadify-queue-item  b.file-ico-readPan{
+   background: url("fileico_v2.png") no-repeat scroll -480px -32px transparent;
+}
+.uploadify-queue-item  b.file-ico-aboutPic{
+   background: url("fileico_v2.png") no-repeat scroll 0px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-index{
+   background: url("fileico_v2.png") no-repeat scroll -32px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-realOne{
+	background: url("fileico_v2.png") no-repeat scroll -64px -64px transparent;
+}*/
+.uploadify-queue-item  b.file-ico-mid{
+	background: url("fileico_v2.png") no-repeat scroll -96px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-qt{
+	background: url("fileico_v2.png") no-repeat scroll -128px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-rmvb{
+	background: url("fileico_v2.png") no-repeat scroll -160px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-mp3{
+	background: url("fileico_v2.png") no-repeat scroll -192px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-bfc{
+	background: url("fileico_v2.png") no-repeat scroll -224px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-fon{
+	background: url("fileico_v2.png") no-repeat scroll -256px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-pdf{
+   background: url("fileico_v2.png") no-repeat scroll -288px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-ps{
+   background: url("fileico_v2.png") no-repeat scroll -320px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-ai{
+   background: url("fileico_v2.png") no-repeat scroll -352px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-fl{
+   background: url("fileico_v2.png") no-repeat scroll -384px -64px transparent;
+}
+.uploadify-queue-item  b.file-ico-swf{
+   background: url("fileico_v2.png") no-repeat scroll -416px -64px transparent;
+}
+.uploadify-queue-item div.fileShow{
+	width: 150px;
+}
+.uploadify-queue-item div.fileShow img{
+	height: 100%;
+    width: 100%;
+}
+
+.uploadify-queue-item div.fileImage { 
+    padding-bottom: 15px; 
+}
+   
+.uploadify-queue-item span.fileName {
+	display: inline-block;
+	min-width: 90px; 
+	word-wrap: break-word;
+	padding-left: 5px;
+}

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BGKSReport" language="groovy" pageWidth="1160" pageHeight="595" columnWidth="1160" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="vsc_messages" isIgnorePagination="true">
+	<property name="ireport.zoom" value="0.7513148009015781"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="REPORT_TITLE" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select * from t_user]]>
+	</queryString>
+	<field name="isOver" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[isOver]]></fieldDescription>
+	</field>
+	<field name="overTime" class="java.util.Date">
+		<fieldDescription><![CDATA[overTime]]></fieldDescription>
+	</field>
+	<field name="createUser" class="com.vsc.business.core.entity.security.User">
+		<fieldDescription><![CDATA[createUser]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="radioQuestions" class="java.util.List">
+		<fieldDescription><![CDATA[radioQuestions]]></fieldDescription>
+	</field>
+	<field name="completeTime" class="java.util.Date">
+		<fieldDescription><![CDATA[completeTime]]></fieldDescription>
+	</field>
+	<field name="pullTime" class="java.util.Date">
+		<fieldDescription><![CDATA[pullTime]]></fieldDescription>
+	</field>
+	<field name="user" class="com.vsc.business.core.entity.security.User">
+		<fieldDescription><![CDATA[user]]></fieldDescription>
+	</field>
+	<field name="paperPlan" class="com.vsc.business.ks.entity.work.PaperPlan">
+		<fieldDescription><![CDATA[paperPlan]]></fieldDescription>
+	</field>
+	<field name="questions" class="java.util.List">
+		<fieldDescription><![CDATA[questions]]></fieldDescription>
+	</field>
+	<field name="totalScore" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalScore]]></fieldDescription>
+	</field>
+	<field name="spendTime" class="java.lang.Long">
+		<fieldDescription><![CDATA[spendTime]]></fieldDescription>
+	</field>
+	<field name="paperProcess" class="com.vsc.business.ks.vform.work.PaperProcess">
+		<fieldDescription><![CDATA[paperProcess]]></fieldDescription>
+	</field>
+	<field name="answerQuestions" class="java.util.List">
+		<fieldDescription><![CDATA[answerQuestions]]></fieldDescription>
+	</field>
+	<field name="checkboxQuestions" class="java.util.List">
+		<fieldDescription><![CDATA[checkboxQuestions]]></fieldDescription>
+	</field>
+	<field name="spendTimeMinutes" class="java.lang.Long">
+		<fieldDescription><![CDATA[spendTimeMinutes]]></fieldDescription>
+	</field>
+	<field name="answerErrors" class="java.util.List">
+		<fieldDescription><![CDATA[answerErrors]]></fieldDescription>
+	</field>
+	<field name="isPull" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[isPull]]></fieldDescription>
+	</field>
+	<field name="createTime" class="java.util.Date">
+		<fieldDescription><![CDATA[createTime]]></fieldDescription>
+	</field>
+	<field name="isComplete" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[isComplete]]></fieldDescription>
+	</field>
+	<field name="answerErrorsNum" class="java.lang.String"/>
+	<variable name="totalScoreSum" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new java.math.BigDecimal($V{totalScoreSum}.add($F{totalScore}>0?$F{totalScore}:0))
+ ]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<variable name="spendTimeMinutesSum" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new java.math.BigDecimal($V{spendTimeMinutesSum}.add($F{spendTimeMinutes}))]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<columnHeader>
+		<band height="60">
+			<staticText>
+				<reportElement x="253" y="40" width="186" height="20" backcolor="#FFFF00"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniCNS-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[测试成绩]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="40" width="144" height="20" backcolor="#FFFF00"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniCNS-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[测试耗时(分)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="1160" height="40" isRemoveLineWhenBlank="true"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_TITLE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="583" y="40" width="144" height="20" backcolor="#FFFF00"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniCNS-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[答错的题号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="727" y="40" width="200" height="20" backcolor="#FFFF00"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniCNS-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[入职时间]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="927" y="40" width="233" height="20" backcolor="#FFFF00"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniCNS-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[上次测试成绩]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="134" height="20" backcolor="#FFFF00"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniCNS-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[转诊专员]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="134" y="40" width="119" height="20" backcolor="#FFFF00"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniCNS-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[转诊护士]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="###0;(-###0)" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="439" y="0" width="144" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{spendTimeMinutes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="583" y="0" width="144" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{answerErrorsNum}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="727" y="0" width="200" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{user}.getDateOfEntry()]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0;-###0" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="927" y="0" width="233" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="134" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{user}.getBankName()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="134" y="0" width="119" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{user}.getName()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0;-###0" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="253" y="0" width="186" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{totalScore}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="30">
+			<staticText>
+				<reportElement x="0" y="0" width="253" height="30" backcolor="#FFFF00"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniCNS-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[平均]]></text>
+			</staticText>
+			<textField pattern="###0;(-###0)" isBlankWhenNull="true">
+				<reportElement x="253" y="0" width="186" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalScoreSum}/$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0;(###0)" isBlankWhenNull="true">
+				<reportElement x="439" y="0" width="144" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{spendTimeMinutesSum}/$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0;(###0)" isBlankWhenNull="true">
+				<reportElement x="583" y="0" width="577" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

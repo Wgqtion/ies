@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="护士考试成绩汇总表" language="groovy" pageWidth="230" pageHeight="84" columnWidth="230" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="spendTimeMinutes" class="java.lang.Long">
+		<fieldDescription><![CDATA[spendTimeMinutes]]></fieldDescription>
+	</field>
+	<field name="pullTime" class="java.util.Date">
+		<fieldDescription><![CDATA[pullTime]]></fieldDescription>
+	</field>
+	<field name="answerErrors" class="java.util.List">
+		<fieldDescription><![CDATA[answerErrors]]></fieldDescription>
+	</field>
+	<field name="paperProcess" class="com.vsc.business.ks.vform.work.PaperProcess">
+		<fieldDescription><![CDATA[paperProcess]]></fieldDescription>
+	</field>
+	<field name="overTime" class="java.util.Date">
+		<fieldDescription><![CDATA[overTime]]></fieldDescription>
+	</field>
+	<field name="isOver" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[isOver]]></fieldDescription>
+	</field>
+	<field name="user" class="com.vsc.business.core.entity.security.User">
+		<fieldDescription><![CDATA[user]]></fieldDescription>
+	</field>
+	<field name="checkboxQuestions" class="java.util.List">
+		<fieldDescription><![CDATA[checkboxQuestions]]></fieldDescription>
+	</field>
+	<field name="completeTime" class="java.util.Date">
+		<fieldDescription><![CDATA[completeTime]]></fieldDescription>
+	</field>
+	<field name="isComplete" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[isComplete]]></fieldDescription>
+	</field>
+	<field name="questions" class="java.util.List">
+		<fieldDescription><![CDATA[questions]]></fieldDescription>
+	</field>
+	<field name="answerErrorsNum" class="java.lang.String">
+		<fieldDescription><![CDATA[answerErrorsNum]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="createUser" class="com.vsc.business.core.entity.security.User">
+		<fieldDescription><![CDATA[createUser]]></fieldDescription>
+	</field>
+	<field name="isPull" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[isPull]]></fieldDescription>
+	</field>
+	<field name="radioQuestions" class="java.util.List">
+		<fieldDescription><![CDATA[radioQuestions]]></fieldDescription>
+	</field>
+	<field name="createTime" class="java.util.Date">
+		<fieldDescription><![CDATA[createTime]]></fieldDescription>
+	</field>
+	<field name="totalScore" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalScore]]></fieldDescription>
+	</field>
+	<field name="isOpenOver" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[isOpenOver]]></fieldDescription>
+	</field>
+	<field name="spendTime" class="java.lang.Long">
+		<fieldDescription><![CDATA[spendTime]]></fieldDescription>
+	</field>
+	<field name="paperPlan" class="com.vsc.business.ks.entity.work.PaperPlan">
+		<fieldDescription><![CDATA[paperPlan]]></fieldDescription>
+	</field>
+	<field name="answerQuestions" class="java.util.List">
+		<fieldDescription><![CDATA[answerQuestions]]></fieldDescription>
+	</field>
+	<summary>
+		<band height="60" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="900" height="60" isRemoveLineWhenBlank="true"/>
+				<rowGroup name="userName" width="80">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{user}.getName()]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<textField isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="80" height="30"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement>
+									<font size="14"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{userName}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="templatName" height="30">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{paperPlan}.getPaperTemplate().getTitle()]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="150" height="30"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement>
+									<font size="14"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{templatName}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="totalScoreMeasure" class="java.lang.Integer" calculation="Highest">
+					<measureExpression><![CDATA[$F{totalScore}]]></measureExpression>
+				</measure>
+				<crosstabCell width="150" height="30">
+					<cellContents>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="150" height="30"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement>
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Integer"><![CDATA[$V{totalScoreMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="30" rowTotalGroup="userName">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.Integer"><![CDATA[$V{totalScoreMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="templatName">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.Integer"><![CDATA[$V{totalScoreMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="userName" columnTotalGroup="templatName">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.Integer"><![CDATA[$V{totalScoreMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

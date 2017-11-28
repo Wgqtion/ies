@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <!-- 资源授权查询 -->
+    <select id="listshiro.resource_authority" resultClass="mapBean">
+    	select r.val url,a.name permission
+    	from t_resource_authority ra,t_resource r,t_authority a
+    	where ra.resource_id=r.id and ra.authority_id=a.id and r.resource_type='url'
+    	and r.val is not null and a.name is not null
+    	order by r.position,r.val
+    </select>
+</sqlMap>
+

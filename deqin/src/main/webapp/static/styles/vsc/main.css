@@ -1,0 +1,186 @@
+.index-portal-body {
+	min-width: 600px;
+}
+
+.index-portal-body .index-portal-left {
+	width: 24%;
+	min-height: 400px;
+	margin: 5px;
+	float: left;
+}
+
+.index-portal-body .index-portal-center {
+	min-height: 400px;
+	width: 55%;
+	float: left;
+	margin: 5px;
+}
+ 
+
+.index-portal-body .index-portal-right {
+	min-height: 400px;
+	width: 18%;
+	float: left;
+	margin: 5px;
+}
+
+.index-portal-body .sortDragVar {
+	min-height: 100px;
+}
+
+.index-portal-body .sortDragVar .panel {
+	margin: 5px 0px;
+}
+
+#cygn_logo_list li {
+	float: left;
+	text-align: center;
+	margin-top: 10px;
+	width: 20%;
+}
+
+#cygn_logo_list li img {
+	width: 100px;
+	height: 133px;
+}
+
+table.viewTable th,table.viewTable td {
+	line-height: 30px;
+	font-size: 14px;
+	padding-left: 10px;
+}
+
+table.viewTable td.fieldName {
+	 text-align: right; 
+	 width: 120px;	 
+}
+
+table.viewTable td.fieldView {
+	 text-align: left; 
+}
+
+table.formTable th,table.formTable td {
+	line-height: 30px;
+	font-size: 14px;
+	padding-left: 10px;
+	min-height: 30px;
+}
+
+table.formTable td.fieldName{
+	 text-align: right;
+	 width: 128px;	 
+}
+
+input.cachebox {
+	display: none;
+}
+
+.panel .panelHeaderContent h1 a.more {
+	float: right;
+	color: #15428B;
+	padding-top: 8px;
+}
+
+.index-portal-body .index_news_list li {
+	line-height: 24px;
+	float: left;
+	margin-top: 5px;
+	width: 95%
+}
+
+.index-portal-body .index_news_list div.links {
+	padding-left: 5px;
+	padding-top: 3px;
+	float: left;
+}
+
+.index-portal-body .index_news_list div.time {
+	float: right;
+	padding-right: 5px;
+	padding-top: 3px;
+}
+
+#index_system_notice_mine a {
+	
+}
+
+#index_system_notice_mine .index_news_list li {
+	width: 95%;
+}
+
+#index_system_notice_mine div.links {
+	width: 320px;
+}
+
+#index_system_notice_mine div.time {
+	width: 115px;
+}
+
+#index_ann_send_mine div.links {
+	width: 160px;
+}
+
+/*进度条*/
+.grid .gridTbody td div.process-bar{
+	 
+	line-height: 16px; 
+	 
+}
+.grid .gridTbody td div.process-bar div{
+	 
+	line-height: 16px; 
+	overflow: visible;
+}
+
+.process-bar {
+	position: relative;
+	width: 150px; /* 宽度 */
+	border: 1px solid #B1D632;
+	padding: 1px;
+}
+
+.process-bar div {
+	display: block;
+	position: relative;
+	background: #97FD53; /* 进度条背景颜色 */
+	color: #333333;
+	height: 16px; /* 高度 */
+	line-height: 16px; /* 必须和高度一致，文本才能垂直居中 */
+}
+ 
+.process-bar div span {
+	position: absolute;
+	width: 150px; /* 宽度 */
+	text-align: center;
+	font-weight: bold;
+}
+
+ul.wel_notice {
+	
+}
+
+ul.wel_notice li{ 
+   background:url("images/点.png") 0 50% no-repeat;   
+   padding:8px;
+   padding-left:25px;
+   color: #664489;
+   font-size: 23.2px;
+   font-weight: bold;
+   line-height:50px;
+}
+
+ul.wel_notice li a{  
+   padding:8px; 
+   color: red;
+   font-size: 23.2px;
+   font-weight: bold;
+}
+.formBar ul.quickNavigation { float:left;}
+.formBar ul.quickNavigation li { 
+	border:1px solid #CDCDCD;
+	height: 25px;
+    line-height: 25px;
+    margin: 0 10px 0 0;
+    text-align: center;
+    width: 70px; 
+}

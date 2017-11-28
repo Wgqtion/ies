@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"  encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+	
+	<!-- 日志切面配置 -->
+	<bean id="systemOperationLog" class="com.vsc.modules.aspect.SystemOperationLog"/>
+	<aop:config proxy-target-class="true">
+		<!-- <aop:pointcut id="test" expression="execution(* com.vsc.demo.web.sys.*.*(..))"/>
+			<aop:pointcut id="businessService" expression="target(com.vsc.demo.service.BaseService)"/> -->
+		<aop:pointcut id="businessController" expression="target(com.vsc.business.core.web.BaseController)"/>
+		<aop:aspect ref="systemOperationLog">
+			<aop:before method="beforeDo" pointcut-ref="businessController"/>
+			<aop:after method="afterDo" pointcut-ref="businessController"/>
+			<aop:after-throwing method="throwDo" throwing="e" pointcut-ref="businessController"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<!-- 系统日志 -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" depends-on="sysLogDao">
+		<property name="staticMethod" value="com.vsc.util.SysLogUtils.setSysLogService"/>
+		<property name="arguments" ref="sysLogService"/>
+	</bean>
+</beans>

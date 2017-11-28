@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd"
+	default-lazy-init="true">
+
+	<description>Shiro安全配置</description>
+	<!-- Shiro's main business-tier object for web-enabled applications -->
+	<!-- 加入登录\登出的监听 -->
+	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+		<property name="authenticationListeners">
+			<list>
+				<bean id="authenticationListener" class="com.vsc.modules.shiro.AuthenticationListener" depends-on="loginLogDao"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="authenticator" ref="authenticator"/>
+		<property name="realm" ref="shiroDbRealm" />
+		<property name="cacheManager" ref="shiroEhcacheManager" />
+	</bean>
+
+	<!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
+	<bean id="shiroDbRealm" class="com.vsc.business.core.service.security.ShiroDbRealm" depends-on="userDao">
+		<property name="accountService" ref="accountService"/>
+	</bean>
+	
+	<!-- Shiro Filter -->
+	<!-- 定制过滤器 -->
+	<bean id="permsany" class="com.vsc.modules.shiro.CustomPermissionsAuthorizationFilter" lazy-init="false"/>
+	<!-- 加入定制的过滤配置 -->
+	<bean id="dbDefinitionsService" class="com.vsc.modules.shiro.DBDefinitionsService">
+		<property name="filterName" value="permsany"/>
+		<property name="prefix"><value>				</value></property>
+		<property name="ibatisQueryDao" ref="ibatisQueryDao"></property>
+		<property name="sqlId" value="listshiro.resource_authority"></property>
+		<property name="urls">
+			<value>
+				/login = anon
+				/login/dialog = anon
+				/login/unauthorized = anon
+				/login/ajax = anon				
+				/logout = logout
+				/static/** = anon 
+				/index=user
+				/sys/**=user 
+				/attach/up=user 
+			</value>
+		</property>
+	</bean>
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login" />
+		<property name="successUrl" value="/" />
+		<property name="unauthorizedUrl" value="/login/unauthorized"></property>
+		<property name="filterChainDefinitions" value="#{dbDefinitionsService.definitions}"/>
+	</bean>
+	
+	<!-- 用户授权信息Cache, 采用EhCache value="#{ numberGuess.randomNumber }"-->
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:ehcache/ehcache-shiro.xml"/>
+	</bean>
+	
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+</beans>

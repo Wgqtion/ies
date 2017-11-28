@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap> 
+	<!-- 查询余车-->
+	<select id="t_parking_garage.num" resultClass="mapBean" parameterClass="map" >
+		select count(*) as "num" from T_PARKING_GARAGE where PARKING_LOT_AREA_ID in (
+			select id from t_parking_lot_area
+　　			start with id=#id#
+　　			connect by prior id=pid)
+			and T_PARKING_GARAGE.IS_ONLINE=0
+                        and T_PARKING_GARAGE.IS_YUDING=0
+			
+	</select> 
+	
+	<!-- 查询地锁余位数条件-->
+	<sql id="surplusNumWhere">
+		WHERE
+			ga.IS_YUDING = 0
+		AND (
+			 (pLoc.SURPLUS_DETECTION='1' AND pLoc.IS_CAR_ON=0) 
+			 OR (pLoc.SURPLUS_DETECTION='2' AND pLoc.IS_OPEN=0) 
+			 OR (pLoc.SURPLUS_DETECTION='1,2' AND pLoc.IS_CAR_ON=0 AND pLoc.IS_OPEN=0))
+		AND pLoc.IS_ENABLED=1
+		AND pLoc.IS_OK=1
+		AND pLoc.IS_ONLINE=1
+		AND AR."ID" = #id#
+	</sql>
+	<!-- 查询地锁余位数-->
+	<select id="t_parking_garage.surplusNum" resultClass="mapBean" parameterClass="map" >
+		SELECT
+			COUNT(*) AS "num"
+		FROM
+			T_PARKING_GARAGE ga
+		LEFT JOIN T_PARKING_LOT_AREA AR ON GA.PARKING_LOT_AREA_ID=AR."ID"
+		LEFT JOIN T_PARKING_LOCK pLoc ON pLoc.PARKING_GARAGE_ID=ga."ID"
+		
+		<include refid="surplusNumWhere"/>
+	</select>
+	
+	<!-- 查询地锁操作日志状态 -->
+	<select id="t_parking_operation_event.getStatus" resultClass="mapBean" parameterClass="map" >
+		SELECT
+			EVENT_STATUS AS status
+		FROM
+			T_PARKING_LOCK_OPERATION_EVENT
+		WHERE
+			ID = #id#
+	</select> 
+	
+	<!-- 查询地锁状态 -->
+	<select id="t_parking_lock.get" resultClass="mapBean" parameterClass="map" >
+		select 
+			* 
+		FROM 
+			T_PARKING_LOCK
+		WHERE 
+			id=#id# 
+	</select> 
+	
+	<!-- 查询地锁余位车位信息-->
+	<select id="t_parking_garage.surplusGarages" resultClass="mapBean" parameterClass="map" >
+		SELECT
+			ga.*
+		FROM
+			T_PARKING_GARAGE ga
+		LEFT JOIN T_PARKING_LOT_AREA AR ON GA.PARKING_LOT_AREA_ID=AR."ID"
+		LEFT JOIN T_PARKING_LOCK pLoc ON pLoc.PARKING_GARAGE_ID=ga."ID"
+		
+		<include refid="surplusNumWhere"/>
+	</select> 
+	
+	<!-- 根据车位编号修改停车位状态 -->
+	<update id="updateParkingGarageByName.update" parameterClass="map">
+		update t_parking_garage set is_online = #isOnline#,car_no=#carNo#,intime=#intime#
+			where name=#name#
+	</update>
+	
+	<!-- 更新校区管理停车位数量 -->
+	<update id="updateParkinglotCarNumber.update" parameterClass="map">
+		UPDATE T_PARKING_LOT TPL SET TPL.CAR_NUMBER = 
+		(
+		SELECT
+			SUM (
+				T_PARKING_LOT_AREA.CAR_NUMBER
+			)
+		FROM
+			T_PARKING_LOT_AREA
+		WHERE T_PARKING_LOT_AREA.PARKING_LOT_ID = TPL.ID AND T_PARKING_LOT_AREA.IS_ENABLED = 1
+		GROUP BY
+			T_PARKING_LOT_AREA.PARKING_LOT_ID
+		)
+	</update>
+	
+	<!-- 更新校区片区管理停车位数量 -->
+	<update id="updateParkinglotAreaCarNumber.update" parameterClass="map">
+		UPDATE T_PARKING_LOT_AREA TPLA SET TPLA.CAR_NUMBER = 
+		(
+		SELECT
+			COUNT (
+				T_PARKING_GARAGE.PARKING_LOT_AREA_ID
+			)
+		FROM
+			T_PARKING_GARAGE
+		WHERE T_PARKING_GARAGE.PARKING_LOT_AREA_ID = TPLA.ID AND T_PARKING_GARAGE.IS_ENABLED =1 AND T_PARKING_GARAGE.IS_ONLINE=0
+		GROUP BY
+			T_PARKING_GARAGE.PARKING_LOT_AREA_ID
+		)
+	</update>
+	<!-- 预定成功后修改是否预定为1-->
+	<update id="updateParkingGarageYuding.update" parameterClass="map">
+		update t_parking_garage set IS_YUDING = #isYuDing#,YUDING_CARNO=#yudingCarNo# where id=#id#
+	</update>
+	
+	<!-- 查询某一个区域下所有的可以预约的车位 -->
+	<select id="queryParkingGarage.select" resultClass="mapBean" parameterClass="map" >
+	
+SELECT
+			T_PARKING_GARAGE.*
+		FROM
+			T_PARKING_GARAGE,T_PARKING_LOT_AREA
+		WHERE
+			(
+				T_PARKING_GARAGE.CAR_NO IS NULL
+				OR T_PARKING_GARAGE.CAR_NO = 'empty'
+			)
+		AND T_PARKING_GARAGE.IS_ONLINE = 0
+		AND (T_PARKING_GARAGE.is_yuding IS null or T_PARKING_GARAGE.is_yuding = 0)
+		AND T_PARKING_GARAGE.yuding_carno is null
+    and T_PARKING_GARAGE.PARKING_LOT_AREA_ID=T_PARKING_LOT_AREA.ID
+    and T_PARKING_LOT_AREA.FULL_INDEX_NAME like ''||#fullIndexName# || '%'
+		 
+	</select>
+	
+	<!-- 获取最近一个为完成的定单id -->
+	<select id="maxParkingOrderPay.select" parameterClass="map" resultClass="mapBean" >
+		select max(id) as "id" from t_parking_order  
+		where in_Plate_No = #inPlateNo# and IS_ENABLED = 1		 
+	</select>
+	
+	<!-- 出校 -->
+	<update id="updateParkingOrderOutSchool.update" parameterClass="map">
+		<![CDATA[ update t_parking_order set out_Pic_Name = #outPicName#, out_Door = #outDoorId#,out_time=#outTime#,IS_ENABLED=1 
+		where in_Plate_No = #inPlateNo#  and IS_ENABLED = 1 and IN_TIME<#outTime#		
+		]]>  <isNotEmpty  property="id" prepend="and">  
+                    id=#id#  
+                </isNotEmpty >  
+	</update>
+</sqlMap>
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap> 
+	<!-- 关闭路径服务,根据出入申请ID/车辆ID/车牌号码更新路径日志字段内容 -->
+	<update id="updateAccessApply.update" parameterClass="map">
+		update t_parking_garage set is_online = #isOnline#,car_no=#carNo#,intime=#intime#
+			where name=#name#
+	</update>
+</sqlMap>
+

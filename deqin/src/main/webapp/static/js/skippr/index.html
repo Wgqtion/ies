@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8"> 
+        <title>Skippr. A jQuery plugin for creating tasteful slideshows.</title>
+        <meta name="description" content=""> 
+        <link rel="stylesheet" href="css/jquery.skippr.css"/> 
+    </head>
+    <body> 111
+        <div class="hero" style="width: 500px;height: 300px;min-height: 300px;position: relative;"> 
+            <div id="random"> 
+                <div style="background-image: url(img/test1.jpg)"><a href="http://www.baidu.com">111</a></div>
+                <div style="background-image: url(img/test5.jpg)"></div> 
+                <div style="background-image: url(img/test3.jpg)"></div>                   
+                <div style="background-image: url(img/test4.jpg)"></div>
+            </div>
+
+          
+           
+        </div>
+        <div class="content" style="width: 500px;height: 300px;min-height: 300px;position: relative;">
+             <div id="random3">
+                <a href="http://www.baidu.com"><img src="img/test3.jpg"></a>
+                <a href="http://www.baidu.com"><img src="img/test4.jpg"></a>
+                <a href="http://www.baidu.com"><img src="img/test1.jpg"></a>
+                <a href="http://www.baidu.com"><img src="img/test5.jpg"></a>
+            </div> 
+
+            
+        </div>
+        <div class="hero" style="width: 500px;height: 300px;min-height: 300px;position: relative;">
+            <div id="random2">
+                <div style="background-image: url(img/test2.jpg)"></div>
+                <div style="background-image: url(img/test5.jpg)"></div> 
+                <div style="background-image: url(img/test3.jpg)"></div>                   
+                <div style="background-image: url(img/test4.jpg)"></div>
+            </div>
+        </div>
+ 
+
+
+
+          
+        
+
+
+
+
+        <script src="../jquery/1.7.2/jquery.js"></script>
+        <script src="jquery.skippr.js"></script>
+        <script>
+            $(document).ready(function() {
+
+                $("#random").skippr();
+                $("#random2").skippr({
+                    navType: 'bubble',
+                    autoPlay: true,
+                    autoPlayDuration: 2000
+                });
+                $("#random3").skippr();
+
+
+            });
+
+        </script>
+       
+
+     
+    </body>
+</html>

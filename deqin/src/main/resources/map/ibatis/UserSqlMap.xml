@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<!-- 下一篇 --> 
+	<select id="hospital.area" resultClass="mapBean" parameterClass="map">
+		 select distinct area as 'area' 
+         from t_hospital where picked_flag=1
+         order by area asc
+	</select>
+	
+	<select id="user.hospital" resultClass="mapBean" parameterClass="map">
+		select distinct bank_name as 'hospital' from t_user where admin_user_id=#createUser#
+		and bank_name is not null
+		order by bank_name asc
+	</select>
+	
+    <!--10天随访提醒-->
+	<select id="patient.visit.remind" resultClass="mapBean" parameterClass="map">
+		 SELECT  t_patient.*,temp.total
+		 FROM  t_patient left outer join (  
+			select COUNT(*) as total,t_patient_visit.patient_id from t_patient_visit  
+			group by patient_id) temp
+		  	on t_patient.id=temp.patient_id
+		 where CONVERT(varchar(100), t_patient.create_time, 23) = CONVERT(varchar(100),  getdate() -10, 23)  
+		 and temp.total is null 
+	</select>
+	
+	 <!--15天随访提醒-->
+	<select id="patient.review.remind" resultClass="mapBean" parameterClass="map">
+		SELECT  t_patient.*,temp.total
+		 FROM  t_patient left outer join (  
+			select COUNT(*) as total,t_patient_review.patient_id from t_patient_review  
+			group by patient_id) temp
+		  	on t_patient.id=temp.patient_id
+		 where CONVERT(varchar(100), t_patient.create_time, 23) = CONVERT(varchar(100),  getdate() -15, 23)  
+		 and temp.total is null 		  
+	</select>
+	
+    <!--2天活动患教会提醒-->
+	<select id="sports.remind" resultClass="mapBean" parameterClass="map">
+		select t_sports.* from t_sports
+		where CONVERT(varchar(100), t_sports.create_time, 23) = CONVERT(varchar(100),  getdate() -2, 23) 	  
+	</select>
+	
+	 <!--nerd患者提醒 days为多久之前的登记记录-->
+	<select id="patient.nerd.remind" resultClass="mapBean" parameterClass="map">
+		select t_patient.id,t_patient.mobile from t_endoscopy
+		left outer join t_patient on t_endoscopy.patient_id=t_patient.id
+		where t_endoscopy.is_nerd=1
+		and t_patient.check_in_date=CONVERT(varchar(100),  GETDATE()-#days#, 23)
+	</select>
+	
+	<!--ee,be患者提醒 days为多久之前的登记记录-->
+	<select id="patient.ee.remind" resultClass="mapBean" parameterClass="map">
+		select t_patient.id,t_patient.mobile from t_endoscopy
+		left outer join t_patient on t_endoscopy.patient_id=t_patient.id
+		where t_endoscopy.is_nerd=0
+		and (t_endoscopy.is_ee=1 or t_endoscopy.is_be=1)
+		and t_patient.check_in_date=CONVERT(varchar(100),  GETDATE()-#days#, 23)
+	</select>
+	
+	<!--其它患者提醒 days为多久之前的登记记录-->
+	<select id="patient.is_other.remind" resultClass="mapBean" parameterClass="map">
+		select t_patient.id,t_patient.mobile from t_endoscopy
+		left outer join t_patient on t_endoscopy.patient_id=t_patient.id
+		where t_endoscopy.is_nerd=0
+		and t_endoscopy.is_ee=0 and t_endoscopy.is_be=0
+		and t_endoscopy.is_other=1
+		and t_patient.check_in_date=CONVERT(varchar(100),  GETDATE()-#days#, 23)
+	</select>
+	
+	
+	<!-- 会员同步sql脚本      ###开始 -->
+	<select id="find.t_user.new" resultClass="mapBean" parameterClass="map">
+		SELECT 
+T1.USER_NO,
+T1.NAME,
+T1.DEPT,
+TD.DWBZMC DEPT_NAME,
+T1.USER_TYPE N_USER_TYPE,
+T1.ID_CARD,
+T1.MOBILE,
+T1.IS_ENABLE N_IS_ENABLE,
+T1.EVENT_TIME,
+T1.CARD_TPYE_CODE CARD_TYPE_CODE,
+TCI.CARD_TPYE CARD_TYPE_NAME
+FROM T_USER@TJ_SCHEMA0011_DBLINK T1
+LEFT JOIN T_USER T2 ON T2.LOGIN_NAME = T1.USER_NO
+LEFT JOIN T_DEPT@TJ_SCHEMA0011_DBLINK TD ON TD.DWDM = T1.DEPT
+LEFT JOIN T_STATUS@TJ_SCHEMA0011_DBLINK TS ON TS.IS_ENABLE = T1.IS_ENABLE
+LEFT JOIN T_CARD_TPYE@TJ_SCHEMA0011_DBLINK TCI ON TCI.CARD_TPYE_CODE = T1.CARD_TPYE_CODE
+WHERE T2.LOGIN_NAME IS NULL AND T1.USER_TYPE = '教职工' AND TS.USER_TYPE ='教职工' <![CDATA[ AND ROWNUM <= 200]]>
+
+	 
+	</select>
+	<!-- 会员同步sql脚本      ###结束 -->
+
+</sqlMap>
+
