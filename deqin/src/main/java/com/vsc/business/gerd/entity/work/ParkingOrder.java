@@ -54,7 +54,93 @@ public class ParkingOrder extends IdEntity {
 	private java.lang.String paymentOrderNumber;
 	private ParkingGarage parkingGarage;
 	
+	
+	private java.lang.String outCameraIp;
+	private java.util.Date outTimeLast;
+	private java.lang.String preferentialWay;
+	private java.lang.String preferentialNum;
+	private java.lang.String memberName;
+	private Double onlinePaymentAmount;
+	private Double amountOfConcessions;
+	private Double busCardPaymentAmount;
+	
+	
+	
+	@Column(name = "ONLINE_PAYMENT_AMOUNT")
+	public Double getOnlinePaymentAmount() {
+		return onlinePaymentAmount;
+	}
 
+	public void setOnlinePaymentAmount(Double onlinePaymentAmount) {
+		this.onlinePaymentAmount = onlinePaymentAmount;
+	}
+	@Column(name = "AMOUNT_OF_CONCESSIONS")
+	public Double getAmountOfConcessions() {
+		return amountOfConcessions;
+	}
+
+	public void setAmountOfConcessions(Double amountOfConcessions) {
+		this.amountOfConcessions = amountOfConcessions;
+	}
+	@Column(name = "BUS_CARD_PAYMENT_AMOUNT")
+	public Double getBusCardPaymentAmount() {
+		return busCardPaymentAmount;
+	}
+
+	public void setBusCardPaymentAmount(Double busCardPaymentAmount) {
+		this.busCardPaymentAmount = busCardPaymentAmount;
+	}
+	@Column(name = "MEMBER_NAME")
+	public java.lang.String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(java.lang.String memberName) {
+		this.memberName = memberName;
+	}
+	@Column(name = "PREFERENTIAL_NUM")
+	public java.lang.String getPreferentialNum() {
+		return preferentialNum;
+	}
+
+	public void setPreferentialNum(java.lang.String preferentialNum) {
+		this.preferentialNum = preferentialNum;
+	}
+	/**
+	 * @return
+	 */
+	@Column(name = "PREFERENTIAL_WAY")
+	public java.lang.String getPreferentialWay() {
+		return preferentialWay;
+	}
+
+	public void setPreferentialWay(java.lang.String preferentialWay) {
+		this.preferentialWay = preferentialWay;
+	}
+	
+	/**
+	 * @return
+	 */
+	@Column(name = "OUT_TIME_LAST")
+	public java.util.Date getOutTimeLast() {
+		return this.outTimeLast;
+	}
+
+	public void setOutTimeLast(java.util.Date outTimeLast) {
+		this.outTimeLast = outTimeLast;
+	}
+	
+	/**
+	 * @return
+	 */
+	@Column(name = "OUT_CAMERA_IP")
+	public java.lang.String getOutCameraIp() {
+		return this.outCameraIp;
+	}
+
+	public void setOutCameraIp(java.lang.String value) {
+		this.outCameraIp = value;
+	}
 	/**
 	 * @return
 	 */
@@ -78,7 +164,7 @@ public class ParkingOrder extends IdEntity {
 	public void setInPlateNo(java.lang.String value) {
 		this.inPlateNo = value;
 	}
-
+	
 	/**
 	 * @return
 	 */

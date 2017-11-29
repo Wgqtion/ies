@@ -68,16 +68,16 @@ public class ClientController extends HttpServiceBaseController {
 	}
 
 	/**
-	 * 车辆进校接口 *
+	 * 车辆进接口 *
 	 * 
-	 * @return 进校停车单编号
+	 * @return 进停车单编号
 	 */
 	@RequestMapping(value = "order/inschool")
-	public ModelAndView service1(@Valid ParkingOrder parkingOrder, @RequestParam(required = true) Long inDoorId, HttpServletRequest request) {
+	public ModelAndView service1(@Valid ParkingOrder parkingOrder, @RequestParam(required = true) Long inSchoolDoorName, HttpServletRequest request) {
 		parkingOrder.setCreateTime(new Date());
 		parkingOrder.setOrderNumber(UUID.randomUUID().toString());
 
-		Passages passages = passagesService.getObjectById(inDoorId);
+		Passages passages = passagesService.getObjectById(inSchoolDoorName);
 
 		parkingOrder.setInDoor(passages);
 		parkingOrder.setIsEnabled(Boolean.TRUE);
@@ -87,7 +87,54 @@ public class ClientController extends HttpServiceBaseController {
 		String jsonstr = "\"" + parkingOrder.getOrderNumber() + "\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
+	/**
+	 * 车辆出接口 *
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "order/outschool")
+	public ModelAndView outSchool(@Valid ParkingOrder parkingOrder, @RequestParam(required = true) Long outSchoolDoorName,
 
+	HttpServletRequest request) {
+
+		Passages passages = passagesService.getObjectById(outSchoolDoorName);
+
+		parkingOrder.setOutDoor(passages);
+		int resultInt = this.parkingOrderService.outSchool(parkingOrder);
+
+		String jsonstr = "\"" + resultInt + "\"";
+		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
+	}
+	
+	/**
+	 * 支付接口 *
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "order/pay")
+	public ModelAndView orderPay(@Valid ParkingOrder parkingOrder, 
+			@RequestParam(required = true) String payPlateNo,
+			@RequestParam(required = true) Date payTime, 
+			@RequestParam(required = true) boolean isPayOk, 
+			@RequestParam(required = true) double ssPayAmount, 
+			@RequestParam(required = true) double ysPayAmount,
+			HttpServletRequest request) {
+
+		// 考虑是否需要实现一个根据车牌获取最后一次停车单的方法
+		// ParkingOrder
+		// parkingOrder=this.parkingOrderService.getLastParikngOrder(payPlateNo);
+		parkingOrder.setInPlateNo(payPlateNo);
+		parkingOrder.setAmountTime(payTime);
+		parkingOrder.setAmountOnlineOk(isPayOk);
+		parkingOrder.setAmountsReceivable(ssPayAmount);
+		parkingOrder.setAmountsPaid(ysPayAmount);
+
+		int resultInt = this.parkingOrderService.orderPay(parkingOrder);
+
+		String jsonstr = "\"" + resultInt + "\"";
+		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
+	}
+	
 	/**
 	 * 单个上报车位有车状态 *
 	 * 
@@ -369,26 +416,6 @@ public class ClientController extends HttpServiceBaseController {
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 
-	/**
-	 * 车辆出校接口 *
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "order/outschool")
-	public ModelAndView outSchool(@Valid ParkingOrder parkingOrder, @RequestParam(required = true) String outCameraIp, @RequestParam(required = true) String outPlateNo, @RequestParam(required = true) String outTime, @RequestParam(required = true) String outPicName, @RequestParam(required = true) Long outDoorId,
-
-	HttpServletRequest request) {
-
-		parkingOrder.setInCameraIp(outCameraIp);
-		parkingOrder.setInPlateNo(outPlateNo);
-
-		Passages passages = passagesService.getObjectById(outDoorId);
-
-		parkingOrder.setOutDoor(passages);
-		int resultInt = this.parkingOrderService.outSchool(parkingOrder);
-
-		String jsonstr = "\"" + resultInt + "\"";
-		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
-	}
+	
 
 }

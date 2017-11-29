@@ -146,5 +146,18 @@ SELECT
                     id=#id#  
                 </isNotEmpty >  
 	</update>
+	
+	<!-- 支付 -->
+	<update id="updateParkingOrderPay.update" parameterClass="map">
+		update t_parking_order set AMOUNT_TIME = #payTime#, OUT_TIME_LAST = #outTimeLast#,AMOUNT_ONLINE_OK=#isPayOk#,AMOUNTS_RECEIVABLE=#ssPayAmount#,
+		AMOUNTS_PAID=#ysPayAmount#,PREFERENTIAL_WAY = #preferentialWay# ,
+		MEMBER_NAME=#memberName#,PREFERENTIAL_NUM= #preferentialNum# ,
+		ONLINE_PAYMENT_AMOUNT= #onlinePaymentAmount# ,
+		AMOUNT_OF_CONCESSIONS=#amountOfConcessions#,BUS_CARD_PAYMENT_AMOUNT= #busCardPaymentAmount# 
+		where in_Plate_No = #inPlateNo# and IS_ENABLED = 1
+		  <isNotEmpty  property="id" prepend="and">  
+                    id=#id#  
+                </isNotEmpty >  
+	</update>
 </sqlMap>
 

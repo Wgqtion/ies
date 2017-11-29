@@ -8,7 +8,7 @@
 <meta HTTP-EQUIV="pragma" CONTENT="no-cache" />
 <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate" />
 <meta HTTP-EQUIV="expires" CONTENT="0">
-	<title>上海宜事智能地锁管理平台</title>
+	<title>上海德勤智能停车管理平台</title>
 	<link rel="shortcut icon" href="${ctx}/static/images/favicon.ico?222" />
 	<link href="${ctx}/static/styles/themes/silver/style.css" rel="stylesheet" type="text/css" media="screen" />
 	<link href="${ctx}/static/styles/themes/css/core.css" rel="stylesheet" type="text/css" media="screen" />
@@ -163,6 +163,17 @@
 
 						</ul>
 					</div>
+					<div class="accordionHeader">
+						<h2>
+							<span>Folder</span>报表管理
+						</h2>
+					</div>
+					<div class="accordionContent">
+						<ul class="tree treeFolder">
+							<li><a title="车辆进出次数统计" href="${ctx}/work/report/reportmanager/inOutCarTotal" target="navTab" rel="work_report_reportmanager_inOutCarTotal">车辆进出次数统计</a></li>
+							 
+						</ul>
+					</div> 
 					<div class="accordionHeader">
 						<h2>
 							<span>Folder</span>系统管理
