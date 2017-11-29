@@ -39,7 +39,6 @@ import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.entity.work.ParkingLotArea;
-import com.vsc.business.gerd.entity.work.Shoufei;
 import com.vsc.business.gerd.entity.work.UserOrder;
 import com.vsc.business.gerd.entity.work.WeixinAttest;
 import com.vsc.business.gerd.entity.work.Yuding;
@@ -50,7 +49,6 @@ import com.vsc.business.gerd.service.work.ParkingGarageService;
 import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.business.gerd.service.work.ParkingLotAreaService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
-import com.vsc.business.gerd.service.work.ShoufeiService;
 import com.vsc.business.gerd.service.work.UserOrderService;
 import com.vsc.business.gerd.service.work.YudingService;
 import com.vsc.business.gerd.service.work.YudingSettingService;
@@ -109,9 +107,6 @@ public class WeixinController extends HttpServiceBaseController {
     //用户订单
     @Autowired
     UserOrderService userOrderService;
-
-    @Autowired
-    ShoufeiService shoufeiService;
 
     private String[] featureNames = new String[]{JSONUtil._Feature_WriteMapNullValue,
         JSONUtil._Feature_WriteNullListAsEmpty, JSONUtil._Feature_WriteNullStringAsEmpty,
@@ -236,16 +231,8 @@ public class WeixinController extends HttpServiceBaseController {
                 yuyue.setYudingSetting(vl.get(0));
             }
             searchParams.put("EQ_parkingLot", yuding.getParkingLotArea().getParkingLot().getId());
-            if (yuding.getUser().getCardType() != null) {
-                searchParams.put("EQ_cardType", yuding.getUser().getCardType().getId());
-            }
 
-            List<Shoufei> shoufeis = shoufeiService.findList(searchParams);
-            if (shoufeis != null && !shoufeis.isEmpty()) {
-                yuyue.setShoufei(shoufeis.get(0).getDayHourMoney());
-            } else {
-                yuyue.setShoufei(new Double(0));
-            }
+            yuyue.setShoufei(new Double(0));
             //查询地锁状态
             ParkingLock parkingLock=this.parkingLockService.findUniqueBy("parkingGarage", yuding.getParkingGarage().getId());
             yuyue.getParkingGarage().setParkingLock(parkingLock);

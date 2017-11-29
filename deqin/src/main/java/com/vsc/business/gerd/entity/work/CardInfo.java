@@ -1,19 +1,13 @@
 package com.vsc.business.gerd.entity.work;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.google.common.collect.Lists;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
 
@@ -27,7 +21,6 @@ public class CardInfo extends IdEntity {
 
 	private java.lang.String cardNo;
 	private Integer cardType;// 1.进校证 2.临时进校证 3.evcard 4.vip自建
-	private CardType cardTypeEntity;// '卡类型'
 	private Integer status;
 	private java.lang.String owner;
 	private java.lang.String carNo;
@@ -56,8 +49,6 @@ public class CardInfo extends IdEntity {
 	private Long oldCardInfoId;
 	private java.util.Date createTime = new Date();
 
-	private List<Campus> campusList = Lists.newArrayList();
-
 	/**
 	 * @return
 	 */
@@ -81,20 +72,6 @@ public class CardInfo extends IdEntity {
 	public void setCardType(Integer value) {
 		this.cardType = value;
 	}
-
-	/**
-	 * @return
-	 */
-	@ManyToOne
-	@JoinColumn(name = "CARD_TYPE_ID")
-	public CardType getCardTypeEntity() {
-		return this.cardTypeEntity;
-	}
-
-	public void setCardTypeEntity(CardType value) {
-		this.cardTypeEntity = value;
-	}
-
 	/**
 	 * @return
 	 */
@@ -417,16 +394,6 @@ public class CardInfo extends IdEntity {
 
 	public void setCreateTime(java.util.Date value) {
 		this.createTime = value;
-	}
-
-	@ManyToMany
-	@JoinTable(name = Constants.TABLE_PREFIX + "relation_cardinfo_campus", joinColumns = { @JoinColumn(name = "cardinfo_id") }, inverseJoinColumns = { @JoinColumn(name = "campus_id") })
-	public List<Campus> getCampusList() {
-		return campusList;
-	}
-
-	public void setCampusList(List<Campus> campusList) {
-		this.campusList = campusList;
 	}
 
 	@Override

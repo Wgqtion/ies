@@ -19,7 +19,6 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.vsc.business.core.entity.sys.upload.Attach;
-import com.vsc.business.gerd.entity.work.CardType;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
 
@@ -70,7 +69,6 @@ public class User extends IdEntity {
     private java.lang.String deptName;
     private java.lang.String NIsEnable;
 
-    private CardType cardType;
 
     /**
      * 微信ID
@@ -447,15 +445,6 @@ public class User extends IdEntity {
         this.sourceType = value;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "CARD_TYPE_ID")
-    public CardType getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
-    }
 
     @Column(name = "CAR_NUMBER")
     public String getCarNumber() {

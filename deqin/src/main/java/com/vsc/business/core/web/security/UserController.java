@@ -24,7 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.service.security.UserService;
 import com.vsc.business.core.web.BaseController;
-import com.vsc.business.gerd.service.work.SyncLogService;
 import com.vsc.constants.Constants;
 import com.vsc.util.CoreUtils;
 
@@ -45,9 +44,6 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private SyncLogService syncLogService;
 
 	@RequestMapping(value = "")
 	public String list(Model model, HttpServletRequest request) {
@@ -163,13 +159,6 @@ public class UserController extends BaseController {
 			return userService.getObjectById(id);
 		}
 		return null;
-	}
-	
-	@RequestMapping(value = "sync")
-	public ModelAndView sync(Model model, ServletRequest request) {
-		this.userService.synchronizationUser();
-		this.syncLogService.addSyncLog("sys", "同步会员", "sys");
-		return this.ajaxDoneSuccess("同步会员数据成功");
 	}
 
 }

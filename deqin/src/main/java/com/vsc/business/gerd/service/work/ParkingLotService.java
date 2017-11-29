@@ -1,9 +1,5 @@
 package com.vsc.business.gerd.service.work;
 
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vsc.business.core.repository.sys.upload.AttachDao;
 import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.repository.work.ParkingLotDao;
-import com.vsc.modules.entity.MapBean;
 import com.vsc.modules.ibatis.IbatisQueryDao;
 import com.vsc.modules.service.BaseService;
-import com.vsc.util.CoreUtils;
 
 /**
  * 
@@ -58,40 +52,5 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 		return this.parkingLotDao.save(entity);
 	}
 	
-	public void synchronizationParkingLot(){
-	 
-		List<MapBean<String, Object>> newvl = this.ibatisQueryDao.findAll("find.c_campus.new");
-		Date now=CoreUtils.nowtime();
-		for (MapBean<String, Object> mapBean : newvl) {
-			ParkingLot entity=new ParkingLot();			
-			entity.setName(MapUtils.getString(mapBean, "c_name"));
-			entity.setCreateTime(now);
-			entity.setLasttime(MapUtils.getInteger(mapBean, "lasttime"));
-			entity.setCanGetCard(MapUtils.getBoolean(mapBean, "can_get_card"));	
-			entity.setCampusId(MapUtils.getInteger(mapBean, "id"));
-			this.parkingLotDao.save(entity);
-		}
-		List<MapBean<String, Object>> updatevl = this.ibatisQueryDao.findAll("find.c_campus.update");
-		for (MapBean<String, Object> mapBean : updatevl) {
-			ParkingLot entity=this.parkingLotDao.findOne(MapUtils.getLong(mapBean, "PARKING_LOT_ID"))	;		
-			entity.setName(MapUtils.getString(mapBean, "c_name"));		 
-			entity.setLasttime(MapUtils.getInteger(mapBean, "lasttime"));
-			entity.setCanGetCard(MapUtils.getBoolean(mapBean, "can_get_card"));	
-			this.parkingLotDao.save(entity);
-		}
-	}
 	
-	/**
-	 * 更新校区可用车位数量
-	 */
-	public void syncParkingLotCarNumber(){
-		this.ibatisQueryDao.update("updateParkinglotCarNumber.update", null);
-	}
-	
-	/**
-	 * 更新校区片区可用车位数量
-	 */
-	public void syncParkingLotAreaCarNumber(){
-		this.ibatisQueryDao.update("updateParkinglotAreaCarNumber.update", null);
-	}
 }

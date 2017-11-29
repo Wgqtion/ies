@@ -1,6 +1,5 @@
 package com.vsc.business.gerd.web.work;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.CardInfo;
 import com.vsc.business.gerd.service.work.CardInfoService;
-import com.vsc.business.gerd.service.work.CardTypeService;
-import com.vsc.business.gerd.service.work.JinXiaoZhengService;
-import com.vsc.business.gerd.service.work.SyncLogService;
 import com.vsc.constants.Constants;
 
 /**
@@ -40,12 +35,6 @@ public class CardInfoController extends BaseController {
 
 	@Autowired
 	private CardInfoService cardInfoService;
-	@Autowired
-	private CardTypeService cardTypeService;
-	@Autowired
-	private JinXiaoZhengService jinXiaoZhengService;
-	@Autowired
-	private SyncLogService syncLogService;
 
 	public static final String PATH = "work/cardinfo";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
@@ -124,16 +113,6 @@ public class CardInfoController extends BaseController {
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
-	@RequestMapping(value = "sync")
-	public ModelAndView sync(Model model, ServletRequest request)
-			throws ParseException {
-		this.jinXiaoZhengService.synchronizationCardInfo();
-		this.jinXiaoZhengService.synchronizationCardTemp();
-		this.cardInfoService.synchronizationCardInfo();
-		this.syncLogService.addSyncLog("sys", "同步进校证", "sys");
-		return this.ajaxDoneSuccess("同步进校证数据成功");
-	}
-	
 	
 	/**
 	 * 高级查询界面

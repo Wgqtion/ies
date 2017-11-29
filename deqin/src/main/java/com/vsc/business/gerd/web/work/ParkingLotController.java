@@ -21,10 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.ParkingLot;
-import com.vsc.business.gerd.service.work.CampusService;
-import com.vsc.business.gerd.service.work.JinXiaoZhengService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
-import com.vsc.business.gerd.service.work.SyncLogService;
 import com.vsc.constants.Constants;
 import com.vsc.util.CoreUtils;
 
@@ -39,13 +36,6 @@ public class ParkingLotController extends BaseController {
 
 	@Autowired
 	private ParkingLotService parkingLotService;
-	
-	@Autowired
-	private JinXiaoZhengService jinXiaoZhengService;
-	@Autowired
-	private CampusService campusService;
-	@Autowired
-	private SyncLogService syncLogService;
 	
 	public static final String PATH = "work/parkinglot";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
@@ -136,16 +126,6 @@ public class ParkingLotController extends BaseController {
 		model.addAttribute("page", page);
 		return PATH_SELECT;
 	}
-	
-	@RequestMapping(value = "sync")
-	public ModelAndView sync(Model model, ServletRequest request) {
-		jinXiaoZhengService.synchronizationCampus();
-	    parkingLotService.synchronizationParkingLot();
-	    campusService.synchronizationCampus();
-		this.syncLogService.addSyncLog("sys", "同步校区", "sys");
-		return this.ajaxDoneSuccess("同步校区及校门数据成功");
-	}
-
 	/**
 	 *  高级查询界面
 	 * @param id
