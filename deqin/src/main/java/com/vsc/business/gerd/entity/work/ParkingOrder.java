@@ -116,9 +116,13 @@ public class ParkingOrder extends IdEntity {
 	 */
 	private java.util.Date createTime;
 	/**
-	 * 更新时间
+	 * 更新出去时间
 	 */
-	private java.util.Date updateTime;
+	private Date updateOutTime;
+	/**
+	 * 更新支付时间
+	 */
+	private java.util.Date updatePayTime;
 
 	/**
 	 * @return 车牌号
@@ -330,16 +334,22 @@ public class ParkingOrder extends IdEntity {
 		this.createTime = value;
 	}
 
-	/**
-	 * @return
-	 */
-	@Column(name = "UPDATE_TIME")
-	public java.util.Date getUpdateTime() {
-		return this.updateTime;
+	
+	@Column(name = "UPDATE_OUT_TIME")
+	public Date getUpdateOutTime() {
+		return updateOutTime;
 	}
 
-	public void setUpdateTime(java.util.Date value) {
-		this.updateTime = value;
+	public void setUpdateOutTime(Date updateOutTime) {
+		this.updateOutTime = updateOutTime;
+	}
+	@Column(name = "UPDATE_PAY_TIME")
+	public java.util.Date getUpdatePayTime() {
+		return updatePayTime;
+	}
+
+	public void setUpdatePayTime(java.util.Date updatePayTime) {
+		this.updatePayTime = updatePayTime;
 	}
 
 	/**

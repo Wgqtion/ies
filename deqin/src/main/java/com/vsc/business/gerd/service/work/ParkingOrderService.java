@@ -72,7 +72,6 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 
 		Date now = new Date();
 		parkingOrder.setCreateTime(now);
-		parkingOrder.setUpdateTime(now);
 		parkingOrder.setPayNumber(UUID.randomUUID().toString());
 		this.save(parkingOrder);
 	}
@@ -86,21 +85,21 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 		if (!StringUtils.isBlank(parkingOrder.getPlateNo())) {
 			// 车牌不为空 ，查找之前状态0的停车单
 			ParkingOrder upParkingOrder = getParkingOrderByPlateAndStatus(parkingOrder, Integer.valueOf(0));
-			if (upParkingOrder != null&&upParkingOrder.getCreateTime()==upParkingOrder.getUpdateTime()) {
+			if (upParkingOrder != null&&upParkingOrder.getUpdateOutTime()==null) {
 				flag = false;
 				upParkingOrder.setOutTime(parkingOrder.getOutTime());
 				upParkingOrder.setOutCameraIp(parkingOrder.getOutCameraIp());
 				upParkingOrder.setOutPicName(parkingOrder.getOutPicName());
 				upParkingOrder.setOutSchoolDoorName(parkingOrder.getOutSchoolDoorName());
 				
-				upParkingOrder.setUpdateTime(new Date());
+				upParkingOrder.setUpdateOutTime(new Date());
 				this.save(upParkingOrder);
 			}
 		}
 		if (flag) {
 			Date now = new Date();
 			parkingOrder.setCreateTime(now);
-			parkingOrder.setUpdateTime(now);
+			parkingOrder.setUpdateOutTime(now);
 			parkingOrder.setPayNumber(UUID.randomUUID().toString());
 			parkingOrder.setOrderStatus(Integer.valueOf(1));
 			this.save(parkingOrder);
@@ -116,7 +115,7 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 		if (!StringUtils.isBlank(parkingOrder.getPlateNo())) {
 			// 车牌不为空 ，查找之前状态0的停车单
 			ParkingOrder upParkingOrder = getParkingOrderByPlateAndStatus(parkingOrder, Integer.valueOf(0));
-			if (upParkingOrder != null) {
+			if (upParkingOrder != null&&upParkingOrder.getUpdatePayTime()==null) {
 				flag = false;
 				upParkingOrder.setAmountOfConcessions(parkingOrder.getAmountOfConcessions());
 				upParkingOrder.setBusCardPaymentAmount(parkingOrder.getBusCardPaymentAmount());
@@ -131,14 +130,14 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 				upParkingOrder.setOutTimeLast(parkingOrder.getOutTimeLast());
 				
 				upParkingOrder.setOrderStatus(Integer.valueOf(1));
-				upParkingOrder.setUpdateTime(new Date());
+				upParkingOrder.setUpdatePayTime(new Date());
 				this.save(upParkingOrder);
 			}
 		}
 		if (flag) {
 			Date now = new Date();
 			parkingOrder.setCreateTime(now);
-			parkingOrder.setUpdateTime(now);
+			parkingOrder.setUpdatePayTime(now);
 			parkingOrder.setPayNumber(UUID.randomUUID().toString());
 			parkingOrder.setOrderStatus(Integer.valueOf(1));
 			this.save(parkingOrder);

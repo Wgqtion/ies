@@ -59,7 +59,7 @@ public class ClientController extends HttpServiceBaseController {
 	}
 
 	/**
-	 * 进入接口 *
+	 * 车辆进入接口 *
 	 * 
 	 */
 	@RequestMapping(value = "order/inschool")
@@ -72,7 +72,7 @@ public class ClientController extends HttpServiceBaseController {
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 	/**
-	 * 出去接口 *
+	 * 车辆出去接口 *
 	 * 
 	 * @return
 	 */
@@ -93,7 +93,7 @@ public class ClientController extends HttpServiceBaseController {
 	}
 	
 	/**
-	 * 支付接口 *
+	 * 车辆支付接口 *
 	 * 
 	 * @return
 	 */
