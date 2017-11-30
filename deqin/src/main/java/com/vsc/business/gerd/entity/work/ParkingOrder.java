@@ -114,7 +114,7 @@ public class ParkingOrder extends IdEntity {
 	/**
 	 * 创建时间
 	 */
-	private java.util.Date createTime = new Date();
+	private java.util.Date createTime;
 	/**
 	 * 更新时间
 	 */

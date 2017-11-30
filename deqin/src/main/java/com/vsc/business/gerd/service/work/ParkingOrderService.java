@@ -46,8 +46,8 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 	 */
 	private ParkingOrder getParkingOrderByPlateAndStatus(ParkingOrder parkingOrder, Integer orderStatus) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("plateNo", parkingOrder.getPlateNo());
-		params.put("orderStatus", orderStatus);
+		params.put("EQ_plateNo", parkingOrder.getPlateNo());
+		params.put("EQ_orderStatus", orderStatus);
 		return this.find(params);
 	}
 
@@ -86,7 +86,7 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 		if (!StringUtils.isBlank(parkingOrder.getPlateNo())) {
 			// 车牌不为空 ，查找之前状态0的停车单
 			ParkingOrder upParkingOrder = getParkingOrderByPlateAndStatus(parkingOrder, Integer.valueOf(0));
-			if (upParkingOrder != null) {
+			if (upParkingOrder != null&&upParkingOrder.getCreateTime()==upParkingOrder.getUpdateTime()) {
 				flag = false;
 				upParkingOrder.setOutTime(parkingOrder.getOutTime());
 				upParkingOrder.setOutCameraIp(parkingOrder.getOutCameraIp());
@@ -128,7 +128,8 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 				upParkingOrder.setPreferentialWay(parkingOrder.getPreferentialWay());
 				upParkingOrder.setSsPayAmount(parkingOrder.getSsPayAmount());
 				upParkingOrder.setYsPayAmount(parkingOrder.getYsPayAmount());
-
+				upParkingOrder.setOutTimeLast(parkingOrder.getOutTimeLast());
+				
 				upParkingOrder.setOrderStatus(Integer.valueOf(1));
 				upParkingOrder.setUpdateTime(new Date());
 				this.save(upParkingOrder);

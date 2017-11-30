@@ -85,9 +85,9 @@
 
 					<label>相机IP</label> <input type="text" name="inCameraIp" value="127.0.0.1"	placeholder="请输入相机ip" /><br /> 
 					<label>车牌号</label> <input	type="text" name="inPlateNo"  value="沪A12345" placeholder="请输入车牌号" /><br />
-					<label>进场时间</label><input  type="text" name="inTime" value="2016-04-10 12:10:20"/> <br/>
+					<label>进场时间</label><input  type="text" name="inTime" value="2017-04-10 12:10:20"/> <br/>
 					<label>图片URL</label><input  type="text" name="inPicName" value="https://www.baidu.com/img/bd_logo1.png"/> <br/>
-					<label>进场入口ID</label><input  type="text" name="inDoorId" value=""/><br/>
+					<label>进场入口ID</label><input  type="text" name="inSchoolDoorName" value="451070"/><br/>
 						
 							
 						<button type="submit" class="btn">提交</button>
@@ -159,9 +159,9 @@
 
 					<label>相机IP</label> <input type="text" name="outCameraIp" value="127.0.0.1"	placeholder="请输入相机ip" /><br /> 
 					<label>车牌号</label> <input	type="text" name="outPlateNo"  value="沪A12345" placeholder="请输入车牌号" /><br />
-					<label>出场时间</label><input  type="text" name="outTime" value="2016-04-10 12:10:20"/> <br/>
+					<label>出场时间</label><input  type="text" name="outTime" value="2017-04-10 16:10:20"/> <br/>
 					<label>图片URL</label><input  type="text" name="outPicName" value="https://www.baidu.com/img/bd_logo1.png"/> <br/>
-					<label>出场出口</label><input  type="text" name="outDoorId" value="1970"/><br/>
+					<label>出场出口</label><input  type="text" name="outSchoolDoorName" value="450850"/><br/>
 						
 							
 						<button type="submit" class="btn">提交</button>
@@ -215,6 +215,122 @@
 					</p>
 
 				</section>
+				
+				
+				<section id="支付接口">
+					<div class="page-header">
+						<h2>
+							3. 支付接口
+							</h1>
+					</div>
+					<h4>
+						<a href="javascript:return false;">接口地址</a>
+					</h4>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/order/pay</pre></p>
+					<h4>
+						<a href="javascript:return false;">示例</a>
+					</h4>
+					<form class="bs-docs-example" action="<%=url%>/order/pay" method="post">
+					<label>车牌号</label> <input	type="text" name="payPlateNo"  value="沪A12345" placeholder="请输入车牌号" /><br />
+					<label>收费时间</label><input  type="text" name="payTime" value="2017-04-10 16:11:20"/> <br/>
+					<label>限制出校时间</label><input  type="text" name="outTimeLast" value="2017-04-10 18:25:20"/> <br/>
+					<label>收费完成</label><input  type="text" name="isPayOk" value="1"/><br/>
+					<label>实收金额</label><input  type="text" name="ssPayAmount" value="10"/><br/>	
+					<label>应收金额</label><input  type="text" name="ysPayAmount" value="10"/><br/>			
+					<label>优惠方式</label><input  type="text" name="preferentialWay" value="3"/><br/>		
+					<label>优惠劵编号</label><input  type="text" name="preferentialNum" value="12345"/><br/>	
+					<label>收费员</label><input  type="text" name="memberName" value="小明"/><br/>	
+					<label>在线支付金额</label><input  type="text" name="onlinePaymentAmount" value="2"/><br/>
+					<label>优惠金额</label><input  type="text" name="amountOfConcessions" value="2"/><br/>
+					<label>公交卡支付金额</label><input  type="text" name="busCardPaymentAmount" value="6"/><br/>	
+						<button type="submit" class="btn">提交</button>
+					</form>
+					<h4>
+						<a href="javascript:return false;">参数说明</a>
+					</h4>
+					<div class="bs-docs-example">
+						<table border="1" cellspacing="0" cellpadding="4" align="center" width="95%">
+							<tbody>
+								<tr>
+									<th style="width: 120px">参数</th>
+									<th style="width: 120px">是否必须</th>
+									<th >说明</th>
+								</tr>
+								 
+								<tr>
+									<td>payPlateNo</td>
+									<td>是</td>
+									<td>车牌号</td>
+								</tr>
+									<tr>
+									<td>payTime</td>
+									<td>是</td>
+									<td>收费时间</td>
+								</tr>
+								<tr>
+									<td>outTimeLast</td>
+									<td>是</td>
+									<td>最迟离开时间</td>
+								</tr>
+								 <tr>
+									<td>isPayOk</td>
+									<td>是</td>
+									<td>完成收费(0.否  1.是)</td>
+								</tr>
+								 <tr>
+									<td>ssPayAmount</td>
+									<td>是</td>
+									<td>实收金额</td>
+								</tr>
+								 <tr>
+									<td>ysPayAmount</td>
+									<td>是</td>
+									<td>应收金额</td>
+								</tr>
+								<tr>
+									<td>preferentialWay</td>
+									<td>否</td>
+									<td>优惠方式 (0.无 1.人工优惠 2.二维码优惠 3.优惠券优惠 4.evcard优惠)</td>
+								</tr>
+								<tr>
+									<td>preferentialNum</td>
+									<td>否</td>
+									<td>优惠劵编号</td>
+								</tr>
+								<tr>
+									<td>memberName </td>
+									<td>是</td>
+									<td>收费员</td>
+								</tr>
+								<tr>
+									<td>onlinePaymentAmount </td>
+									<td>是</td>
+									<td>在线支付金额</td>
+								</tr>
+								<tr>
+									<td>amountOfConcessions </td>
+									<td>是</td>
+									<td>优惠金额</td>
+								</tr>
+								<tr>
+									<td>busCardPaymentAmount </td>
+									<td>是</td>
+									<td>公交卡支付金额</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<h4>
+						<a href="javascript:return false;">返回说明</a>
+					</h4>
+				 			
+					<p>正常情况下返回的JSON数据包：<pre>{ "statusCode":"200", "callbackData":"abcdefg", "message":"接口调用成功" }</pre>
+					</p>
+                    <p>callbackData内容为唯一支付编号</p>
+				</section>
+				
+				
 				
 				<!-- //////////////////////////车位上锁/////////////////////////// START -->
 				<section id="车位上锁">

@@ -6,14 +6,25 @@
 <!-- 车辆进出次数统计-->
 <select id="report.inOutCarTotal.total" resultClass="mapBean" parameterClass="map" >
 	SELECT 
-		PL."NAME" AS name,INCAR.innum,OUTCAR.outnum
+		PT.PLNAME AS name,INCAR.innum,OUTCAR.outnum
 	FROM
-		T_PARKING_LOT PL
-	LEFT JOIN T_PASSAGES PAS ON PL."ID"=PAS.PARKINGLOT_ID  
+	(
+		SELECT 
+			PL."NAME" AS PLNAME,PAS."NAME" AS PASNAME
+		FROM
+			T_PARKING_LOT PL
+		LEFT JOIN T_PASSAGES PAS ON PL."ID"=PAS.PARKINGLOT_ID
+		UNION
+		SELECT 
+			'空','空'
+		FROM
+			DUAL
+	)  PT 
+	
 	LEFT JOIN (
 		SELECT 
 			COUNT(*) innum,
-			PL."NAME" 
+			NVL(PL."NAME",'空') AS "NAME"
 		FROM 
 			T_PARKING_ORDER PO
 		LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS."ID"
@@ -28,11 +39,11 @@
 			</isNotEmpty>
 		GROUP BY 
 			PL."NAME"
-	)	INCAR ON INCAR."NAME"=PL."NAME"
+	)	INCAR ON INCAR."NAME"=PT.PLNAME
 	LEFT JOIN (
 		SELECT 
 			COUNT(*) outnum,
-			PL."NAME" 
+			NVL(PL."NAME",'空') AS "NAME"
 		FROM 
 			T_PARKING_ORDER PO
 		LEFT JOIN T_PASSAGES PAS ON PO.OUT_SCHOOL_DOOR_NAME=PAS."ID"
@@ -47,9 +58,10 @@
 			</isNotEmpty>
 		GROUP BY 
 			PL."NAME"
-	)	OUTCAR ON OUTCAR."NAME"=PL."NAME"
+	)	OUTCAR ON OUTCAR."NAME"=PT.PLNAME
 	GROUP BY 
-			PL."NAME",INCAR.innum,OUTCAR.outnum
+			PT.PLNAME,INCAR.innum,OUTCAR.outnum
+	ORDER BY PT.PLNAME
 </select>
 	
 	
