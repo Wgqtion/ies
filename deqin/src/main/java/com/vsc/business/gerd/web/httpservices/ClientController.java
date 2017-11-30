@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -22,22 +21,18 @@ import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockEventLog;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.entity.work.ParkingOrder;
-import com.vsc.business.gerd.entity.work.Passages;
 import com.vsc.business.gerd.service.work.ParkingGarageCarnoLogService;
 import com.vsc.business.gerd.service.work.ParkingGarageService;
 import com.vsc.business.gerd.service.work.ParkingLockEventLogService;
 import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.business.gerd.service.work.ParkingOrderService;
-import com.vsc.business.gerd.service.work.PassagesService;
 import com.vsc.business.gerd.vform.work.GarageIncarForm;
 import com.vsc.constants.Constants;
-import com.vsc.util.JSONUtil;
 
 /**
- * 提供给客户端调用的接口控制类
- * 
- * @author Administrator
- * 
+ * 客户端调用的接口控制类
+ * @author XiangXiaoLin
+ *
  */
 @Controller
 @RequestMapping(value = Constants.SPT + ClientController.PATH)
@@ -57,10 +52,6 @@ public class ClientController extends HttpServiceBaseController {
 	private ParkingLockEventLogService parkingLockEventLogService;
 	@Autowired
 	private ParkingGarageCarnoLogService parkingGarageCarnoLogService;
-	@Autowired
-	private PassagesService passagesService;
-
-	private String[] featureNames = new String[] { JSONUtil._Feature_WriteMapNullValue, JSONUtil._Feature_WriteNullListAsEmpty, JSONUtil._Feature_WriteNullStringAsEmpty, JSONUtil._Feature_WriteNullNumberAsZero, JSONUtil._Feature_WriteNullBooleanAsFalse };
 
 	@RequestMapping(value = "")
 	public String index(Model model) {
@@ -68,41 +59,36 @@ public class ClientController extends HttpServiceBaseController {
 	}
 
 	/**
-	 * 车辆进接口 *
+	 * 进入接口 *
 	 * 
-	 * @return 进停车单编号
 	 */
 	@RequestMapping(value = "order/inschool")
-	public ModelAndView service1(@Valid ParkingOrder parkingOrder, @RequestParam(required = true) Long inSchoolDoorName, HttpServletRequest request) {
-		parkingOrder.setCreateTime(new Date());
-		parkingOrder.setOrderNumber(UUID.randomUUID().toString());
-
-		Passages passages = passagesService.getObjectById(inSchoolDoorName);
-
-		parkingOrder.setInDoor(passages);
-		parkingOrder.setIsEnabled(Boolean.TRUE);
-
-		parkingOrderService.save(parkingOrder);
-
-		String jsonstr = "\"" + parkingOrder.getOrderNumber() + "\"";
+	public ModelAndView service1(@Valid ParkingOrder parkingOrder,
+			String inPlateNo,
+			HttpServletRequest request) {
+		parkingOrder.setPlateNo(inPlateNo);
+		this.parkingOrderService.inParkingOrder(parkingOrder);
+		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 	/**
-	 * 车辆出接口 *
+	 * 出去接口 *
 	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "order/outschool")
-	public ModelAndView outSchool(@Valid ParkingOrder parkingOrder, @RequestParam(required = true) Long outSchoolDoorName,
-
-	HttpServletRequest request) {
-
-		Passages passages = passagesService.getObjectById(outSchoolDoorName);
-
-		parkingOrder.setOutDoor(passages);
-		int resultInt = this.parkingOrderService.outSchool(parkingOrder);
-
-		String jsonstr = "\"" + resultInt + "\"";
+	public ModelAndView outSchool(@Valid ParkingOrder parkingOrder,
+			String outPlateNo,
+			HttpServletRequest request) {
+		boolean flag=false;
+		try {
+			parkingOrder.setPlateNo(outPlateNo);
+			this.parkingOrderService.outParkingOrder(parkingOrder);
+			flag=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String jsonstr = "\"" + flag + "\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 	
@@ -113,25 +99,12 @@ public class ClientController extends HttpServiceBaseController {
 	 */
 	@RequestMapping(value = "order/pay")
 	public ModelAndView orderPay(@Valid ParkingOrder parkingOrder, 
-			@RequestParam(required = true) String payPlateNo,
-			@RequestParam(required = true) Date payTime, 
-			@RequestParam(required = true) boolean isPayOk, 
-			@RequestParam(required = true) double ssPayAmount, 
-			@RequestParam(required = true) double ysPayAmount,
+			String payPlateNo,
 			HttpServletRequest request) {
+		parkingOrder.setPlateNo(payPlateNo);
+		this.parkingOrderService.payParkingOrder(parkingOrder);
 
-		// 考虑是否需要实现一个根据车牌获取最后一次停车单的方法
-		// ParkingOrder
-		// parkingOrder=this.parkingOrderService.getLastParikngOrder(payPlateNo);
-		parkingOrder.setInPlateNo(payPlateNo);
-		parkingOrder.setAmountTime(payTime);
-		parkingOrder.setAmountOnlineOk(isPayOk);
-		parkingOrder.setAmountsReceivable(ssPayAmount);
-		parkingOrder.setAmountsPaid(ysPayAmount);
-
-		int resultInt = this.parkingOrderService.orderPay(parkingOrder);
-
-		String jsonstr = "\"" + resultInt + "\"";
+		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 	

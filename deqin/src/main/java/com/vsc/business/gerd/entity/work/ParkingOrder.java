@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -14,58 +12,207 @@ import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
 
 /**
- * 
- * @author jerry
+ * 停车单实体
+ * @author XiangXiaoLin
  *
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "parking_order")
 public class ParkingOrder extends IdEntity {
 
+	/**
+	 * 车牌号
+	 */
+	private java.lang.String plateNo;
+	/**
+	 * 进入相机ip
+	 */
 	private java.lang.String inCameraIp;
-	private java.lang.String inPlateNo;
+	/**
+	 * 进入时间
+	 */
 	private java.util.Date inTime;
-	private java.lang.String inChargeUser;
-	private java.lang.String inChargeStarttime;
+	/**
+	 * 进入照片url
+	 */
 	private java.lang.String inPicName;
-	private java.lang.String inFindstr;
-	private Passages inDoor;
-	private java.lang.String inSourceIp;
-	private java.lang.String inSourceName;
-	private java.util.Date createTime=new Date();
-	private java.util.Date updateTime;
-	private Boolean isEnabled;
-	private Integer carGategory;
-	private Integer carType;
-	private java.util.Date outTime;
-	private Double staytime;
-	private Passages outDoor;
-	private Integer parkingTimeType;
-	private Double amountsReceivable;
-	private Double amountsPaid;
-	private Integer isAmountSuccess;
-	private java.lang.String failReason;
-	private java.lang.String outPicName;
-	private Integer operateFlag;
-	private Integer amountType;
-	private Boolean amountOnlineOk;
-	private java.util.Date amountTime;
-	private java.lang.String orderNumber;
-	private java.lang.String paymentOrderNumber;
-	private ParkingGarage parkingGarage;
-	
-	
+	/**
+	 * 进去通道（校门）
+	 */
+	private String inSchoolDoorName;
+
+	/**
+	 * 出去相机IP
+	 */
 	private java.lang.String outCameraIp;
+	/**
+	 * 出去时间
+	 */
+	private java.util.Date outTime;
+	/**
+	 * 出去照片URL
+	 */
+	private java.lang.String outPicName;
+	/**
+	 * 出去通道（校门）
+	 */
+	private String outSchoolDoorName;
+
+	/**
+	 * 收费时间
+	 */
+	private java.util.Date payTime;
+	/**
+	 * 最迟离校时间
+	 */
 	private java.util.Date outTimeLast;
-	private java.lang.String preferentialWay;
+	/**
+	 * 是否完成收费 0否 1是
+	 */
+	private Integer isPayOk=Integer.valueOf(0);
+	/**
+	 * 实收金额
+	 */
+	private Double ssPayAmount;
+	/**
+	 * 应收金额
+	 */
+	private Double ysPayAmount;
+	/**
+	 * 优惠方式 (0.无 1.人工优惠 2.二维码优惠 3.优惠券优惠 4.evcard优惠)
+	 */
+	private Integer preferentialWay;
+	/**
+	 * 优惠劵编号
+	 */
 	private java.lang.String preferentialNum;
+	/**
+	 * 收费员
+	 */
 	private java.lang.String memberName;
+	/**
+	 * 在线支付金额
+	 */
 	private Double onlinePaymentAmount;
+	/**
+	 * 优惠金额
+	 */
 	private Double amountOfConcessions;
+	/**
+	 * 公交卡支付金额
+	 */
 	private Double busCardPaymentAmount;
+
+	/**
+	 * 支付编号
+	 */
+	private String payNumber;
+	/**
+	 * 单子状态 0未完成，1表示结束（只允许存在一个车牌一个0的单子）
+	 */
+	private Integer orderStatus=Integer.valueOf(0);
+	/**
+	 * 创建时间
+	 */
+	private java.util.Date createTime = new Date();
+	/**
+	 * 更新时间
+	 */
+	private java.util.Date updateTime;
+
+	/**
+	 * @return 车牌号
+	 */
+	@Column(name = "PLATE_NO")
+	public java.lang.String getPlateNo() {
+		return plateNo;
+	}
+
+	public void setPlateNo(java.lang.String plateNo) {
+		this.plateNo = plateNo;
+	}
 	
-	
-	
+	@Column(name = "ORDER_STATUS")
+	public Integer getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(Integer orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	@Column(name = "PAY_NUMBER")
+	public String getPayNumber() {
+		return payNumber;
+	}
+
+	public void setPayNumber(String payNumber) {
+		this.payNumber = payNumber;
+	}
+
+	@Column(name = "PAY_TIME")
+	public java.util.Date getPayTime() {
+		return payTime;
+	}
+
+	public void setPayTime(java.util.Date payTime) {
+		this.payTime = payTime;
+	}
+
+	@Column(name = "SS_PAY_AMOUNT")
+	public Double getSsPayAmount() {
+		return ssPayAmount;
+	}
+
+	public void setSsPayAmount(Double ssPayAmount) {
+		this.ssPayAmount = ssPayAmount;
+	}
+
+	@Column(name = "YS_PAY_AMOUNT")
+	public Double getYsPayAmount() {
+		return ysPayAmount;
+	}
+
+	public void setYsPayAmount(Double ysPayAmount) {
+		this.ysPayAmount = ysPayAmount;
+	}
+
+	@Column(name = "PREFERENTIAL_WAY")
+	public Integer getPreferentialWay() {
+		return preferentialWay;
+	}
+
+	public void setPreferentialWay(Integer preferentialWay) {
+		this.preferentialWay = preferentialWay;
+	}
+
+	@Column(name = "IN_SCHOOL_DOOR_NAME")
+	public String getInSchoolDoorName() {
+		return inSchoolDoorName;
+	}
+
+	public void setInSchoolDoorName(String inSchoolDoorName) {
+		this.inSchoolDoorName = inSchoolDoorName;
+	}
+
+	@Column(name = "OUT_SCHOOL_DOOR_NAME")
+	public String getOutSchoolDoorName() {
+		return outSchoolDoorName;
+	}
+
+	public void setOutSchoolDoorName(String outSchoolDoorName) {
+		this.outSchoolDoorName = outSchoolDoorName;
+	}
+
+	@Column(name = "IS_PAY_OK")
+	public Integer getIsPayOk() {
+		return isPayOk;
+	}
+
+	public void setIsPayOk(Integer isPayOk) {
+		this.isPayOk = isPayOk;
+	}
+
 	@Column(name = "ONLINE_PAYMENT_AMOUNT")
 	public Double getOnlinePaymentAmount() {
 		return onlinePaymentAmount;
@@ -74,6 +221,7 @@ public class ParkingOrder extends IdEntity {
 	public void setOnlinePaymentAmount(Double onlinePaymentAmount) {
 		this.onlinePaymentAmount = onlinePaymentAmount;
 	}
+
 	@Column(name = "AMOUNT_OF_CONCESSIONS")
 	public Double getAmountOfConcessions() {
 		return amountOfConcessions;
@@ -82,6 +230,7 @@ public class ParkingOrder extends IdEntity {
 	public void setAmountOfConcessions(Double amountOfConcessions) {
 		this.amountOfConcessions = amountOfConcessions;
 	}
+
 	@Column(name = "BUS_CARD_PAYMENT_AMOUNT")
 	public Double getBusCardPaymentAmount() {
 		return busCardPaymentAmount;
@@ -90,6 +239,7 @@ public class ParkingOrder extends IdEntity {
 	public void setBusCardPaymentAmount(Double busCardPaymentAmount) {
 		this.busCardPaymentAmount = busCardPaymentAmount;
 	}
+
 	@Column(name = "MEMBER_NAME")
 	public java.lang.String getMemberName() {
 		return memberName;
@@ -98,6 +248,7 @@ public class ParkingOrder extends IdEntity {
 	public void setMemberName(java.lang.String memberName) {
 		this.memberName = memberName;
 	}
+
 	@Column(name = "PREFERENTIAL_NUM")
 	public java.lang.String getPreferentialNum() {
 		return preferentialNum;
@@ -106,18 +257,7 @@ public class ParkingOrder extends IdEntity {
 	public void setPreferentialNum(java.lang.String preferentialNum) {
 		this.preferentialNum = preferentialNum;
 	}
-	/**
-	 * @return
-	 */
-	@Column(name = "PREFERENTIAL_WAY")
-	public java.lang.String getPreferentialWay() {
-		return preferentialWay;
-	}
 
-	public void setPreferentialWay(java.lang.String preferentialWay) {
-		this.preferentialWay = preferentialWay;
-	}
-	
 	/**
 	 * @return
 	 */
@@ -129,7 +269,7 @@ public class ParkingOrder extends IdEntity {
 	public void setOutTimeLast(java.util.Date outTimeLast) {
 		this.outTimeLast = outTimeLast;
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -141,6 +281,7 @@ public class ParkingOrder extends IdEntity {
 	public void setOutCameraIp(java.lang.String value) {
 		this.outCameraIp = value;
 	}
+
 	/**
 	 * @return
 	 */
@@ -156,18 +297,6 @@ public class ParkingOrder extends IdEntity {
 	/**
 	 * @return
 	 */
-	@Column(name = "IN_PLATE_NO")
-	public java.lang.String getInPlateNo() {
-		return this.inPlateNo;
-	}
-
-	public void setInPlateNo(java.lang.String value) {
-		this.inPlateNo = value;
-	}
-	
-	/**
-	 * @return
-	 */
 	@Column(name = "IN_TIME")
 	public java.util.Date getInTime() {
 		return this.inTime;
@@ -180,30 +309,6 @@ public class ParkingOrder extends IdEntity {
 	/**
 	 * @return
 	 */
-	@Column(name = "IN_CHARGE_USER")
-	public java.lang.String getInChargeUser() {
-		return this.inChargeUser;
-	}
-
-	public void setInChargeUser(java.lang.String value) {
-		this.inChargeUser = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "IN_CHARGE_STARTTIME")
-	public java.lang.String getInChargeStarttime() {
-		return this.inChargeStarttime;
-	}
-
-	public void setInChargeStarttime(java.lang.String value) {
-		this.inChargeStarttime = value;
-	}
-
-	/**
-	 * @return
-	 */
 	@Column(name = "IN_PIC_NAME")
 	public java.lang.String getInPicName() {
 		return this.inPicName;
@@ -211,55 +316,6 @@ public class ParkingOrder extends IdEntity {
 
 	public void setInPicName(java.lang.String value) {
 		this.inPicName = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "IN_FINDSTR")
-	public java.lang.String getInFindstr() {
-		return this.inFindstr;
-	}
-
-	public void setInFindstr(java.lang.String value) {
-		this.inFindstr = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@ManyToOne
-	@JoinColumn(name = "IN_DOOR")
-	public Passages getInDoor() {
-		return this.inDoor;
-	}
-
-	public void setInDoor(Passages value) {
-		this.inDoor = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "IN_SOURCE_IP")
-	public java.lang.String getInSourceIp() {
-		return this.inSourceIp;
-	}
-
-	public void setInSourceIp(java.lang.String value) {
-		this.inSourceIp = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "IN_SOURCE_NAME")
-	public java.lang.String getInSourceName() {
-		return this.inSourceName;
-	}
-
-	public void setInSourceName(java.lang.String value) {
-		this.inSourceName = value;
 	}
 
 	/**
@@ -289,42 +345,6 @@ public class ParkingOrder extends IdEntity {
 	/**
 	 * @return
 	 */
-	@Column(name = "IS_ENABLED")
-	public Boolean getIsEnabled() {
-		return this.isEnabled;
-	}
-
-	public void setIsEnabled(Boolean value) {
-		this.isEnabled = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "CAR_GATEGORY")
-	public Integer getCarGategory() {
-		return this.carGategory;
-	}
-
-	public void setCarGategory(Integer value) {
-		this.carGategory = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "CAR_TYPE")
-	public Integer getCarType() {
-		return this.carType;
-	}
-
-	public void setCarType(Integer value) {
-		this.carType = value;
-	}
-
-	/**
-	 * @return
-	 */
 	@Column(name = "OUT_TIME")
 	public java.util.Date getOutTime() {
 		return this.outTime;
@@ -337,91 +357,6 @@ public class ParkingOrder extends IdEntity {
 	/**
 	 * @return
 	 */
-	@Column(name = "STAYTIME")
-	public Double getStaytime() {
-		return this.staytime;
-	}
-
-	public void setStaytime(Double value) {
-		this.staytime = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@ManyToOne
-	@JoinColumn(name = "OUT_DOOR")
-	public Passages getOutDoor() {
-		return this.outDoor;
-	}
-
-	public void setOutDoor(Passages value) {
-		this.outDoor = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "PARKING_TIME_TYPE")
-	public Integer getParkingTimeType() {
-		return this.parkingTimeType;
-	}
-
-	public void setParkingTimeType(Integer value) {
-		this.parkingTimeType = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "AMOUNTS_RECEIVABLE")
-	public Double getAmountsReceivable() {
-		return this.amountsReceivable;
-	}
-
-	public void setAmountsReceivable(Double value) {
-		this.amountsReceivable = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "AMOUNTS_PAID")
-	public Double getAmountsPaid() {
-		return this.amountsPaid;
-	}
-
-	public void setAmountsPaid(Double value) {
-		this.amountsPaid = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "IS_AMOUNT_SUCCESS")
-	public Integer getIsAmountSuccess() {
-		return this.isAmountSuccess;
-	}
-
-	public void setIsAmountSuccess(Integer value) {
-		this.isAmountSuccess = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "FAIL_REASON")
-	public java.lang.String getFailReason() {
-		return this.failReason;
-	}
-
-	public void setFailReason(java.lang.String value) {
-		this.failReason = value;
-	}
-
-	/**
-	 * @return
-	 */
 	@Column(name = "OUT_PIC_NAME")
 	public java.lang.String getOutPicName() {
 		return this.outPicName;
@@ -429,89 +364,6 @@ public class ParkingOrder extends IdEntity {
 
 	public void setOutPicName(java.lang.String value) {
 		this.outPicName = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "OPERATE_FLAG")
-	public Integer getOperateFlag() {
-		return this.operateFlag;
-	}
-
-	public void setOperateFlag(Integer value) {
-		this.operateFlag = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "AMOUNT_TYPE")
-	public Integer getAmountType() {
-		return this.amountType;
-	}
-
-	public void setAmountType(Integer value) {
-		this.amountType = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "AMOUNT_ONLINE_OK")
-	public Boolean getAmountOnlineOk() {
-		return this.amountOnlineOk;
-	}
-
-	public void setAmountOnlineOk(Boolean value) {
-		this.amountOnlineOk = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "AMOUNT_TIME")
-	public java.util.Date getAmountTime() {
-		return this.amountTime;
-	}
-
-	public void setAmountTime(java.util.Date value) {
-		this.amountTime = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "ORDER_NUMBER")
-	public java.lang.String getOrderNumber() {
-		return this.orderNumber;
-	}
-
-	public void setOrderNumber(java.lang.String value) {
-		this.orderNumber = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "PAYMENT_ORDER_NUMBER")
-	public java.lang.String getPaymentOrderNumber() {
-		return this.paymentOrderNumber;
-	}
-
-	public void setPaymentOrderNumber(java.lang.String value) {
-		this.paymentOrderNumber = value;
-	}
-
-	
-	@ManyToOne
-	@JoinColumn(name = "PARKING_GARAGE_ID")
-	public ParkingGarage getParkingGarage() {
-		return parkingGarage;
-	}
-
-	public void setParkingGarage(ParkingGarage parkingGarage) {
-		this.parkingGarage = parkingGarage;
 	}
 
 	@Override

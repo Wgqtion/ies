@@ -1,31 +1,29 @@
 package com.vsc.business.gerd.service.work;
 
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.tuckey.web.filters.urlrewrite.utils.StringUtils;
 
 import com.vsc.business.gerd.entity.work.ParkingOrder;
 import com.vsc.business.gerd.repository.work.ParkingOrderDao;
-import com.vsc.modules.entity.MapBean;
 import com.vsc.modules.service.BaseService;
 
 /**
- * 
- * @author jerry
+ * 停车单控制
+ * @author XiangXiaoLin
  *
  */
 @Service
 @Transactional
 public class ParkingOrderService extends BaseService<ParkingOrder> {
-	private static Logger logger = LoggerFactory.getLogger(ParkingOrderService.class);
 
 	@Autowired
 	private ParkingOrderDao parkingOrderDao;
@@ -39,53 +37,111 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 	public JpaSpecificationExecutor<ParkingOrder> getJpaSpecificationExecutorDao() {
 		return this.parkingOrderDao;
 	}
-	
-	/**
-	 * 出场
-	 */
-	public int outSchool(ParkingOrder parkingOrder) {
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("isEnabled", 1);
-		map.put("inPlateNo", parkingOrder.getInPlateNo());
-		map.put("outPicName", parkingOrder.getOutPicName());
-		map.put("outTime", parkingOrder.getOutTime());
-		map.put("outDoorId", parkingOrder.getOutDoor().getId());
-
-		//获取最新的那一条记录 将id放入map再更新
-				List<MapBean<String, Object>>  maxvl=this.ibatisQueryDao.findAll("maxParkingOrderPay.select", map);
-				if(!maxvl.isEmpty()){
-					map.put("id", maxvl.get(0).get("id"));
-				}
-		
-		return this.ibatisQueryDao.update("updateParkingOrderOutSchool.update", map);
-	};
 
 	/**
-	 * 支付
+	 * 根据车牌，状态查询
+	 * 
+	 * @param parkingOrder
+	 * @return
 	 */
-	public int orderPay(ParkingOrder parkingOrder) {
+	private ParkingOrder getParkingOrderByPlateAndStatus(ParkingOrder parkingOrder, Integer orderStatus) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("plateNo", parkingOrder.getPlateNo());
+		params.put("orderStatus", orderStatus);
+		return this.find(params);
+	}
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("inPlateNo", parkingOrder.getInPlateNo());
-		map.put("payTime", parkingOrder.getAmountTime());
-		map.put("outTimeLast", parkingOrder.getOutTimeLast());
-		map.put("isPayOk", parkingOrder.getAmountOnlineOk());
-		map.put("ssPayAmount", parkingOrder.getAmountsReceivable());
-		map.put("ysPayAmount", parkingOrder.getAmountsPaid());
-		map.put("preferentialWay", parkingOrder.getPreferentialWay());
-		map.put("preferentialNum", parkingOrder.getPreferentialNum());
-		map.put("memberName", parkingOrder.getMemberName());
-		map.put("onlinePaymentAmount", parkingOrder.getOnlinePaymentAmount());
-		map.put("amountOfConcessions", parkingOrder.getAmountOfConcessions());
-		map.put("busCardPaymentAmount", parkingOrder.getBusCardPaymentAmount());
-		//获取最新的那一条记录 将id放入map再更新
-		List<MapBean<String, Object>>  maxvl=this.ibatisQueryDao.findAll("maxParkingOrderPay.select", map);
-		if(!maxvl.isEmpty()){
-			map.put("id", maxvl.get(0).get("id"));
+	/**
+	 * 进入控制
+	 * 
+	 * @param parkingOrder
+	 */
+	public void inParkingOrder(ParkingOrder parkingOrder) {
+
+		if (StringUtils.isBlank(parkingOrder.getPlateNo())) {
+			// 如果车牌空
+			parkingOrder.setOrderStatus(Integer.valueOf(1));
+		} else {
+			// 查找之前状态0的停车单
+			ParkingOrder upParkingOrder = getParkingOrderByPlateAndStatus(parkingOrder, Integer.valueOf(0));
+			if (upParkingOrder != null) {
+				upParkingOrder.setOrderStatus(Integer.valueOf(1));
+				this.save(upParkingOrder);
+			}
 		}
 
-		return this.ibatisQueryDao.update("updateParkingOrderPay.update", map);
-	};
+		Date now = new Date();
+		parkingOrder.setCreateTime(now);
+		parkingOrder.setUpdateTime(now);
+		parkingOrder.setPayNumber(UUID.randomUUID().toString());
+		this.save(parkingOrder);
+	}
+
+	/**
+	 * 出去控制
+	 */
+	public void outParkingOrder(ParkingOrder parkingOrder) {
+		// 直接保存标志
+		boolean flag = true;
+		if (!StringUtils.isBlank(parkingOrder.getPlateNo())) {
+			// 车牌不为空 ，查找之前状态0的停车单
+			ParkingOrder upParkingOrder = getParkingOrderByPlateAndStatus(parkingOrder, Integer.valueOf(0));
+			if (upParkingOrder != null) {
+				flag = false;
+				upParkingOrder.setOutTime(parkingOrder.getOutTime());
+				upParkingOrder.setOutCameraIp(parkingOrder.getOutCameraIp());
+				upParkingOrder.setOutPicName(parkingOrder.getOutPicName());
+				upParkingOrder.setOutSchoolDoorName(parkingOrder.getOutSchoolDoorName());
+				
+				upParkingOrder.setUpdateTime(new Date());
+				this.save(upParkingOrder);
+			}
+		}
+		if (flag) {
+			Date now = new Date();
+			parkingOrder.setCreateTime(now);
+			parkingOrder.setUpdateTime(now);
+			parkingOrder.setPayNumber(UUID.randomUUID().toString());
+			parkingOrder.setOrderStatus(Integer.valueOf(1));
+			this.save(parkingOrder);
+		}
+	}
+
+	/**
+	 * 支付控制
+	 */
+	public void payParkingOrder(ParkingOrder parkingOrder) {
+		// 直接保存标志
+		boolean flag = true;
+		if (!StringUtils.isBlank(parkingOrder.getPlateNo())) {
+			// 车牌不为空 ，查找之前状态0的停车单
+			ParkingOrder upParkingOrder = getParkingOrderByPlateAndStatus(parkingOrder, Integer.valueOf(0));
+			if (upParkingOrder != null) {
+				flag = false;
+				upParkingOrder.setAmountOfConcessions(parkingOrder.getAmountOfConcessions());
+				upParkingOrder.setBusCardPaymentAmount(parkingOrder.getBusCardPaymentAmount());
+				upParkingOrder.setIsPayOk(parkingOrder.getIsPayOk());
+				upParkingOrder.setMemberName(parkingOrder.getMemberName());
+				upParkingOrder.setOnlinePaymentAmount(parkingOrder.getOnlinePaymentAmount());
+				upParkingOrder.setPayTime(parkingOrder.getPayTime());
+				upParkingOrder.setPreferentialNum(parkingOrder.getPreferentialNum());
+				upParkingOrder.setPreferentialWay(parkingOrder.getPreferentialWay());
+				upParkingOrder.setSsPayAmount(parkingOrder.getSsPayAmount());
+				upParkingOrder.setYsPayAmount(parkingOrder.getYsPayAmount());
+
+				upParkingOrder.setOrderStatus(Integer.valueOf(1));
+				upParkingOrder.setUpdateTime(new Date());
+				this.save(upParkingOrder);
+			}
+		}
+		if (flag) {
+			Date now = new Date();
+			parkingOrder.setCreateTime(now);
+			parkingOrder.setUpdateTime(now);
+			parkingOrder.setPayNumber(UUID.randomUUID().toString());
+			parkingOrder.setOrderStatus(Integer.valueOf(1));
+			this.save(parkingOrder);
+		}
+	}
 
 }

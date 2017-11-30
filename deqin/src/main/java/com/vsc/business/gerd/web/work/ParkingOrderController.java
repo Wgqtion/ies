@@ -77,19 +77,19 @@ public class ParkingOrderController extends BaseController {
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
 	public ModelAndView create(@Valid ParkingOrder parkingOrder, @RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId, @RequestParam(value = "inDoorGroup.id", required = true) Long inDoorId, @RequestParam(value = "outDoorGroup.id", required = false) Long outDoorId) {
 
-		if (parkingGarageId == null) {
-			parkingOrder.setParkingGarage(null);
-		} else {
-			parkingOrder.setParkingGarage(this.parkingGarageService.getObjectById(parkingGarageId));
-		}
-
-		parkingOrder.setInDoor(this.passagesService.getObjectById(inDoorId));
-
-		if (outDoorId == null) {
-			parkingOrder.setOutDoor(null);
-		} else {
-			parkingOrder.setOutDoor(this.passagesService.getObjectById(outDoorId));
-		}
+//		if (parkingGarageId == null) {
+//			parkingOrder.setParkingGarage(null);
+//		} else {
+//			parkingOrder.setParkingGarage(this.parkingGarageService.getObjectById(parkingGarageId));
+//		}
+//
+//		parkingOrder.setInDoor(this.passagesService.getObjectById(inDoorId));
+//
+//		if (outDoorId == null) {
+//			parkingOrder.setOutDoor(null);
+//		} else {
+//			parkingOrder.setOutDoor(this.passagesService.getObjectById(outDoorId));
+//		}
 
 		parkingOrderService.save(parkingOrder);
 		return this.ajaxDoneSuccess("创建成功");
@@ -109,21 +109,24 @@ public class ParkingOrderController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingOrder parkingOrder, @RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId, @RequestParam(value = "inDoorGroup.id", required = true) Long inDoorId, @RequestParam(value = "outDoorGroup.id", required = false) Long outDoorId) {
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingOrder parkingOrder, 
+			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId, 
+			@RequestParam(value = "inDoorGroup.id", required = true) Long inDoorId, 
+			@RequestParam(value = "outDoorGroup.id", required = false) Long outDoorId) {
 
-		if (parkingGarageId == null) {
-			parkingOrder.setParkingGarage(null);
-		} else {
-			parkingOrder.setParkingGarage(this.parkingGarageService.getObjectById(parkingGarageId));
-		}
-
-		parkingOrder.setInDoor(this.passagesService.getObjectById(inDoorId));
-
-		if (outDoorId == null) {
-			parkingOrder.setOutDoor(null);
-		} else {
-			parkingOrder.setOutDoor(this.passagesService.getObjectById(outDoorId));
-		}
+//		if (parkingGarageId == null) {
+//			parkingOrder.setParkingGarage(null);
+//		} else {
+//			parkingOrder.setParkingGarage(this.parkingGarageService.getObjectById(parkingGarageId));
+//		}
+//
+//		parkingOrder.setInDoor(this.passagesService.getObjectById(inDoorId));
+//
+//		if (outDoorId == null) {
+//			parkingOrder.setOutDoor(null);
+//		} else {
+//			parkingOrder.setOutDoor(this.passagesService.getObjectById(outDoorId));
+//		}
 		parkingOrderService.save(parkingOrder);
 		return this.ajaxDoneSuccess("修改成功");
 	}

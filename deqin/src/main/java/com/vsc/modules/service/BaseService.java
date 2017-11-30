@@ -125,6 +125,19 @@ public abstract class BaseService<T> {
 	public List<T> findList(Map<String, Object> filterParams) {
 		return this.findAll(filterParams, null);
 	}
+	
+	/**
+	 * 根据条件查询单个数据，返回索引为0的
+	 * @param filterParams 查询条件
+	 * @return
+	 */
+	public T find(Map<String, Object> filterParams) {
+		List<T> list = this.findAll(filterParams, null);
+		if(list!=null&&list.size()>0){
+			return list.get(0);
+		}
+		return null;
+	}
 
 	/**
 	 * 获取某个查询条件的所有数据，并按要求排序
