@@ -16,7 +16,7 @@
 		LEFT JOIN T_PASSAGES PAS ON PL."ID"=PAS.PARKINGLOT_ID
 		UNION
 		SELECT 
-			'空','空'
+			'未识别','未识别'
 		FROM
 			DUAL
 	)  PT 
@@ -24,7 +24,7 @@
 	LEFT JOIN (
 		SELECT 
 			COUNT(*) innum,
-			NVL(PL."NAME",'空') AS "NAME"
+			NVL(PL."NAME",'未识别') AS "NAME"
 		FROM 
 			T_PARKING_ORDER PO
 		LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS."ID"
@@ -38,12 +38,12 @@
 			AND <![CDATA[to_char(PO.IN_TIME,'yyyy-MM-dd') <= #LTE_endTime#]]>			 
 			</isNotEmpty>
 		GROUP BY 
-			PL."NAME"
+			NVL(PL."NAME",'未识别')
 	)	INCAR ON INCAR."NAME"=PT.PLNAME
 	LEFT JOIN (
 		SELECT 
 			COUNT(*) outnum,
-			NVL(PL."NAME",'空') AS "NAME"
+			NVL(PL."NAME",'未识别') AS "NAME"
 		FROM 
 			T_PARKING_ORDER PO
 		LEFT JOIN T_PASSAGES PAS ON PO.OUT_SCHOOL_DOOR_NAME=PAS."ID"
@@ -57,7 +57,7 @@
 			AND <![CDATA[to_char(PO.OUT_TIME,'yyyy-MM-dd') <= #LTE_endTime#]]>			 
 			</isNotEmpty>
 		GROUP BY 
-			PL."NAME"
+			NVL(PL."NAME",'未识别')
 	)	OUTCAR ON OUTCAR."NAME"=PT.PLNAME
 	GROUP BY 
 			PT.PLNAME,INCAR.innum,OUTCAR.outnum
@@ -69,62 +69,23 @@
 <!-- 停车场收费统计-->
 <select id="report.carChargeTotal.total" resultClass="mapBean" parameterClass="map" >
 	SELECT 
-		PT.PLNAME AS name,INCAR.innum,OUTCAR.outnum
-	FROM
-	(
-		SELECT 
-			PL."NAME" AS PLNAME,PAS."NAME" AS PASNAME
-		FROM
-			T_PARKING_LOT PL
-		LEFT JOIN T_PASSAGES PAS ON PL."ID"=PAS.PARKINGLOT_ID
-		UNION
-		SELECT 
-			'空','空'
-		FROM
-			DUAL
-	)  PT 
-	
-	LEFT JOIN (
-		SELECT 
-			COUNT(*) innum,
-			NVL(PL."NAME",'空') AS "NAME"
-		FROM 
-			T_PARKING_ORDER PO
-		LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS."ID"
-		LEFT JOIN T_PARKING_LOT PL ON PL."ID"=PAS.PARKINGLOT_ID  
-		WHERE 
-			1=1
-			<isNotEmpty    property="GTE_startTime">
-			AND <![CDATA[to_char(PO.IN_TIME,'yyyy-MM-dd') >= #GTE_startTime#]]>
-			</isNotEmpty>
-			<isNotEmpty    property="LTE_endTime">
-			AND <![CDATA[to_char(PO.IN_TIME,'yyyy-MM-dd') <= #LTE_endTime#]]>			 
-			</isNotEmpty>
-		GROUP BY 
-			PL."NAME"
-	)	INCAR ON INCAR."NAME"=PT.PLNAME
-	LEFT JOIN (
-		SELECT 
-			COUNT(*) outnum,
-			NVL(PL."NAME",'空') AS "NAME"
-		FROM 
-			T_PARKING_ORDER PO
-		LEFT JOIN T_PASSAGES PAS ON PO.OUT_SCHOOL_DOOR_NAME=PAS."ID"
-		LEFT JOIN T_PARKING_LOT PL ON PL."ID"=PAS.PARKINGLOT_ID  
-		WHERE 
-			1=1
-			<isNotEmpty    property="GTE_startTime">
-			AND <![CDATA[to_char(PO.OUT_TIME,'yyyy-MM-dd') >= #GTE_startTime#]]>
-			</isNotEmpty>
-			<isNotEmpty    property="LTE_endTime">
-			AND <![CDATA[to_char(PO.OUT_TIME,'yyyy-MM-dd') <= #LTE_endTime#]]>			 
-			</isNotEmpty>
-		GROUP BY 
-			PL."NAME"
-	)	OUTCAR ON OUTCAR."NAME"=PT.PLNAME
+		SUM(PO.YS_PAY_AMOUNT) AS YS_PAY_AMOUNT,
+		SUM(PO.SS_PAY_AMOUNT) AS SS_PAY_AMOUNT,
+		NVL(PL."NAME",'未识别') AS name
+	FROM 
+		T_PARKING_ORDER PO
+	LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS."ID"
+	LEFT JOIN T_PARKING_LOT PL ON PL."ID"=PAS.PARKINGLOT_ID  
+	WHERE 
+		1=1
+		<isNotEmpty    property="GTE_startTime">
+		AND <![CDATA[to_char(PO.PAY_TIME,'yyyy-MM-dd') >= #GTE_startTime#]]>
+		</isNotEmpty>
+		<isNotEmpty    property="LTE_endTime">
+		AND <![CDATA[to_char(PO.PAY_TIME,'yyyy-MM-dd') <= #LTE_endTime#]]>			 
+		</isNotEmpty>
 	GROUP BY 
-			PT.PLNAME,INCAR.innum,OUTCAR.outnum
-	ORDER BY PT.PLNAME
+		NVL(PL."NAME",'未识别')
 </select>
 	
 	

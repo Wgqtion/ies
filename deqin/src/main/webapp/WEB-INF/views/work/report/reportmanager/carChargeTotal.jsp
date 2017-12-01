@@ -6,20 +6,20 @@
 $(function () {
 	
 	// 基于准备好的dom，初始化echarts图表
-    var myChart = echarts.init(document.getElementById('carInOutTotal_div')); 
+    var myChart = echarts.init(document.getElementById('carChargeTotal_div')); 
     
     var option = {
         tooltip: {
             show: true,
-            formatter: '{b}</br>{a}:{c}次'
+            formatter: '{b}</br>{a}:{c}元'
         },
         title: {
-            text: '停车场进出次数统计图表',
+            text: '停车场收费统计图表',
             x:'center',
             top:10
         },
         legend: {
-            data:['进','出'],
+            data:['应收金额','实收金额'],
             x: 'center',
 			y: 'bottom'
         },
@@ -46,13 +46,13 @@ $(function () {
         },
         series : [
             {
-                "name":"进",
+                "name":"应收金额",
                 "type":"bar",
-                "data":[<c:forEach items="${lm}" var="vm" varStatus="vi">${vm['innum']}<c:if test="${empty vm['innum'] }">0</c:if><c:if test="${!vi.last}">,</c:if></c:forEach>]
+                "data":[<c:forEach items="${lm}" var="vm" varStatus="vi">${vm['YS_PAY_AMOUNT']}<c:if test="${empty vm['YS_PAY_AMOUNT'] }">0</c:if><c:if test="${!vi.last}">,</c:if></c:forEach>]
             },{
-                "name":"出",
+                "name":"实收金额",
                 "type":"bar",
-                "data":[<c:forEach items="${lm}" var="vm" varStatus="vi">${vm['outnum']}<c:if test="${empty vm['outnum'] }">0</c:if><c:if test="${!vi.last}">,</c:if></c:forEach>]
+                "data":[<c:forEach items="${lm}" var="vm" varStatus="vi">${vm['SS_PAY_AMOUNT']}<c:if test="${empty vm['SS_PAY_AMOUNT'] }">0</c:if><c:if test="${!vi.last}">,</c:if></c:forEach>]
             }
         ]
     };
@@ -68,7 +68,7 @@ $(function () {
 
 <div class="pageHeader">
 	<form onsubmit="return navTabSearch(this);"
-		action="${ctx}/work/report/reportmanager/carInOutTotal"
+		action="${ctx}/work/report/reportmanager/carChargeTotal"
 		method="post">
 		<div class="searchBar">
 			<ul class="searchContent">
@@ -90,4 +90,4 @@ $(function () {
 		</div>
 	</form>
 </div>
-<div id="carInOutTotal_div" style="height:500px;"></div>
+<div id="carChargeTotal_div" style="height:500px;"></div>
