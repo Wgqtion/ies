@@ -51,7 +51,7 @@ public class ReportManagerController extends BaseController {
 			searchParams.put("LTE_endTime", endTime);
 		}
 
-		List<MapBean<String, Object>> lm = this.reportService.findIbatisQuery("report.inOutCarTotal.total", searchParams);
+		List<MapBean<String, Object>> lm = this.reportService.findIbatisQuery("report.carInOutTotal.total", searchParams);
 		model.addAttribute("lm", lm);
 		model.addAttribute("now", now);
 		model.addAttribute("startTime", starttime);
@@ -77,11 +77,11 @@ public class ReportManagerController extends BaseController {
 			searchParams.put("LTE_endTime", endTime);
 		}
 
-		List<MapBean<String, Object>> lm = this.reportService.findIbatisQuery("report.inOutCarTotal.total", searchParams);
+		List<MapBean<String, Object>> lm = this.reportService.findIbatisQuery("report.carChargeTotal.total", searchParams);
 		model.addAttribute("lm", lm);
 		model.addAttribute("now", now);
 		model.addAttribute("startTime", starttime);
 		model.addAttribute("endTime", endTime);
-		return PATH + Constants.SPT + "carInOutTotal";
+		return PATH + Constants.SPT + "carChargeTotal";
 	}
 }

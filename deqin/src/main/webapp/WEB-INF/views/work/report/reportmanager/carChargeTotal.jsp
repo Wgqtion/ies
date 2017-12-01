@@ -4,48 +4,62 @@
 <script type="text/javascript">
 
 $(function () {
-	var chart;
 	
-    $(document).ready(function() {
-    	chart = new Highcharts.Chart({
-    		chart: {
-                renderTo: 'carInOutTotal_div',
-                type: 'column'
-            },
-            title: {
-                text: '${startTime} 至 ${endTime}车辆进出次数统计图表'
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-            	//指定x轴分组
-            	categories: [<c:forEach items="${lm}" var="vm" varStatus="vi">'${vm['name']}'<c:if test="${!vi.last}">,</c:if></c:forEach>]  
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: '车辆/次数'
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.0f} 次</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            series: [
-					{name:'进',data:[
-						<c:forEach items="${lm}" var="vm" varStatus="vi">${vm['innum']}<c:if test="${empty vm['innum'] }">0</c:if><c:if test="${!vi.last}">,</c:if></c:forEach> 
-					]},
-	            	{name:'出',data:[
-						<c:forEach items="${lm}" var="vm" varStatus="vi">${vm['outnum']}<c:if test="${empty vm['outnum'] }">0</c:if><c:if test="${!vi.last}">,</c:if></c:forEach> 
-					]}
-            ]
-    	});
-    });
+	// 基于准备好的dom，初始化echarts图表
+    var myChart = echarts.init(document.getElementById('carInOutTotal_div')); 
+    
+    var option = {
+        tooltip: {
+            show: true,
+            formatter: '{b}</br>{a}:{c}次'
+        },
+        title: {
+            text: '车辆进出次数统计图表',
+            x:'center',
+            y:'bottom'
+        },
+        legend: {
+            data:['进','出']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis :{
+                type : 'category',
+                axisLabel:{  
+                    interval:0,//横轴信息全部显示  
+               	},
+                data : [<c:forEach items="${lm}" var="vm" varStatus="vi">'${vm['name']}'<c:if test="${!vi.last}">,</c:if></c:forEach>]
+        } ,
+        yAxis : {
+            type : 'value'
+        },
+        series : [
+            {
+                "name":"进",
+                "type":"bar",
+                "data":[<c:forEach items="${lm}" var="vm" varStatus="vi">${vm['innum']}<c:if test="${empty vm['innum'] }">0</c:if><c:if test="${!vi.last}">,</c:if></c:forEach>]
+            },{
+                "name":"出",
+                "type":"bar",
+                "data":[<c:forEach items="${lm}" var="vm" varStatus="vi">${vm['outnum']}<c:if test="${empty vm['outnum'] }">0</c:if><c:if test="${!vi.last}">,</c:if></c:forEach>]
+            }
+        ]
+    };
+
+    // 为echarts对象加载数据 
+    myChart.setOption(option); 
+	
+
+
 });
 </script>
 
@@ -74,13 +88,4 @@ $(function () {
 		</div>
 	</form>
 </div>
-<div class="pageContent">
-	<table width="98%" layoutH="60">
-		<tr>
-			<td colspan="3" align="center">
-				<div id="carInOutTotal_div"
-					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-			</td>
-		</tr>
-	</table>
-</div>
+<div id="carInOutTotal_div" style="height:500px;"></div>

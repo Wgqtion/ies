@@ -170,7 +170,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a>车辆报表</a>
+							<li><a>图表统计</a>
 							<ul>
 								<li><a title="车辆进出次数图表" href="${ctx}/work/report/reportmanager/carInOutTotal" target="navTab" rel="work_report_reportmanager_carInOutTotal">车辆进出次数图表</a></li>
 								<li><a title="车辆收费统计图表" href="${ctx}/work/report/reportmanager/carChargeTotal" target="navTab" rel="work_report_reportmanager_carChargeTotal">车辆收费统计图表</a></li>
