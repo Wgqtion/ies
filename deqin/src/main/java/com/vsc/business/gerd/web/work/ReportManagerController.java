@@ -33,7 +33,7 @@ public class ReportManagerController extends BaseController {
 	private ReportService reportService;
 	
 	/**
-	 * 车辆进出次数统计图表
+	 * 停车场进出次数统计图表
 	 */
 	@RequestMapping(value = "carInOutTotal")
 	public String carInOutTotal(Model model, HttpServletRequest request) {
@@ -59,7 +59,7 @@ public class ReportManagerController extends BaseController {
 		return PATH + Constants.SPT + "carInOutTotal";
 	}
 	/**
-	 * 车辆收费统计图表
+	 * 停车场收费统计图表
 	 */
 	@RequestMapping(value = "carChargeTotal")
 	public String carChargeTotal(Model model, HttpServletRequest request) {

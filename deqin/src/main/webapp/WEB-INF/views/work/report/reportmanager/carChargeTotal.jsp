@@ -14,12 +14,14 @@ $(function () {
             formatter: '{b}</br>{a}:{c}次'
         },
         title: {
-            text: '车辆进出次数统计图表',
+            text: '停车场进出次数统计图表',
             x:'center',
-            y:'bottom'
+            top:10
         },
         legend: {
-            data:['进','出']
+            data:['进','出'],
+            x: 'center',
+			y: 'bottom'
         },
         toolbox: {
             show: true,

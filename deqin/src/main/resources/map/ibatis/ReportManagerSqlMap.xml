@@ -3,7 +3,7 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap> 
 
-<!-- 车辆进出次数统计-->
+<!-- 停车场进出次数统计-->
 <select id="report.carInOutTotal.total" resultClass="mapBean" parameterClass="map" >
 	SELECT 
 		PT.PLNAME AS name,INCAR.innum,OUTCAR.outnum
@@ -66,7 +66,7 @@
 
 
 
-<!-- 车辆收费统计-->
+<!-- 停车场收费统计-->
 <select id="report.carChargeTotal.total" resultClass="mapBean" parameterClass="map" >
 	SELECT 
 		PT.PLNAME AS name,INCAR.innum,OUTCAR.outnum
