@@ -41,8 +41,8 @@
 <script src="${ctx}/static/js/dwz/dwz.print.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/dwz/vsc.select.comboxSelectRemoteData.js" type="text/javascript"></script>
 
-<script src="${ctx}/static/js/highcharts/highcharts.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/highcharts/highcharts-more.js" type="text/javascript"></script>
+<script src="${ctx}/static/js/echarts/echarts.common.min.js" type="text/javascript"></script>
+ 
  
 <%--dwz.scrollCenter.js
     dwz.util.number.js
