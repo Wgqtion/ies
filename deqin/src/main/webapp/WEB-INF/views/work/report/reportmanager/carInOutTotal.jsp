@@ -9,7 +9,7 @@ $(function () {
     $(document).ready(function() {
     	chart = new Highcharts.Chart({
     		chart: {
-                renderTo: 'inOutCarTotal_div',
+                renderTo: 'carInOutTotal_div',
                 type: 'column'
             },
             title: {
@@ -52,7 +52,7 @@ $(function () {
 
 <div class="pageHeader">
 	<form onsubmit="return navTabSearch(this);"
-		action="${ctx}/work/report/reportmanager/inOutCarTotal"
+		action="${ctx}/work/report/reportmanager/carInOutTotal"
 		method="post">
 		<div class="searchBar">
 			<ul class="searchContent">
@@ -78,7 +78,7 @@ $(function () {
 	<table width="98%" layoutH="60">
 		<tr>
 			<td colspan="3" align="center">
-				<div id="inOutCarTotal_div"
+				<div id="carInOutTotal_div"
 					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 			</td>
 		</tr>

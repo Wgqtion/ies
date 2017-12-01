@@ -35,8 +35,8 @@ public class ReportManagerController extends BaseController {
 	/**
 	 * 车辆进出次数
 	 */
-	@RequestMapping(value = "inOutCarTotal")
-	public String reportRm2(Model model, HttpServletRequest request) {
+	@RequestMapping(value = "carInOutTotal")
+	public String carInOutTotal(Model model, HttpServletRequest request) {
 		Map<String, Object> searchParams = this.getSearchRequest();
 		String starttime = (String) searchParams.get("GTE_startTime");
 		Date now = new Date();
@@ -56,6 +56,6 @@ public class ReportManagerController extends BaseController {
 		model.addAttribute("now", now);
 		model.addAttribute("startTime", starttime);
 		model.addAttribute("endTime", endTime);
-		return PATH + Constants.SPT + "inOutCarTotal";
+		return PATH + Constants.SPT + "carInOutTotal";
 	}
 }
