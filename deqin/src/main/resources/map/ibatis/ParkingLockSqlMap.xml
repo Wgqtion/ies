@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap> 
+	<!-- 查询地锁余位数条件-->
+	<sql id="surplusNumWhere">
+		WHERE
+			ga.IS_YUDING = 0
+		AND (
+			 (pLoc.SURPLUS_DETECTION='1' AND pLoc.IS_CAR_ON=0) 
+			 OR (pLoc.SURPLUS_DETECTION='2' AND pLoc.IS_OPEN=0) 
+			 OR (pLoc.SURPLUS_DETECTION='1,2' AND pLoc.IS_CAR_ON=0 AND pLoc.IS_OPEN=0))
+		AND pLoc.IS_ENABLED=1
+		AND pLoc.IS_OK=1
+		AND pLoc.IS_ONLINE=1
+		AND AR."ID" = #id#
+	</sql>
+	<!-- 查询地锁余位数-->
+	<select id="t_parking_garage.surplusNum" resultClass="mapBean" parameterClass="map" >
+		SELECT
+			COUNT(*) AS "num"
+		FROM
+			T_PARKING_GARAGE ga
+		LEFT JOIN T_PARKING_LOT_AREA AR ON GA.PARKING_LOT_AREA_ID=AR."ID"
+		LEFT JOIN T_PARKING_LOCK pLoc ON pLoc.PARKING_GARAGE_ID=ga."ID"
+		
+		<include refid="surplusNumWhere"/>
+	</select>
+	
+	<!-- 查询地锁操作日志状态 -->
+	<select id="t_parking_operation_event.getStatus" resultClass="mapBean" parameterClass="map" >
+		SELECT
+			EVENT_STATUS AS status
+		FROM
+			T_PARKING_LOCK_OPERATION_EVENT
+		WHERE
+			ID = #id#
+	</select> 
+	
+	<!-- 查询地锁状态 -->
+	<select id="t_parking_lock.get" resultClass="mapBean" parameterClass="map" >
+		select 
+			* 
+		FROM 
+			T_PARKING_LOCK
+		WHERE 
+			id=#id# 
+	</select> 
+	
+	<!-- 查询地锁余位车位信息-->
+	<select id="t_parking_garage.surplusGarages" resultClass="mapBean" parameterClass="map" >
+		SELECT
+			ga.*
+		FROM
+			T_PARKING_GARAGE ga
+		LEFT JOIN T_PARKING_LOT_AREA AR ON GA.PARKING_LOT_AREA_ID=AR."ID"
+		LEFT JOIN T_PARKING_LOCK pLoc ON pLoc.PARKING_GARAGE_ID=ga."ID"
+		
+		<include refid="surplusNumWhere"/>
+	</select> 
+	
+</sqlMap>
+

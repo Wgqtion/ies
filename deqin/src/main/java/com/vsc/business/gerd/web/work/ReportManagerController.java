@@ -51,6 +51,8 @@ public class ReportManagerController extends BaseController {
 			searchParams.put("LTE_endTime", endTime);
 		}
 
+		searchParams.put("who", "PAS.PLNAME");//通道
+		searchParams.put("who", "PT.PLNAME");//停车场
 		List<MapBean<String, Object>> lm = this.reportService.findIbatisQuery("report.carInOutTotal.total", searchParams);
 		model.addAttribute("lm", lm);
 		model.addAttribute("now", now);

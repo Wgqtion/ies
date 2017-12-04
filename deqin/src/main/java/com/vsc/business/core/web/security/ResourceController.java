@@ -33,7 +33,6 @@ import com.google.common.collect.Lists;
 import com.vsc.business.core.entity.security.Resource;
 import com.vsc.business.core.service.security.ResourceService;
 import com.vsc.business.core.web.BaseController;
-import com.vsc.modules.shiro.DBDefinitionsService;
 
 @Controller
 @RequestMapping(value = "/sys/resource")
@@ -41,25 +40,8 @@ public class ResourceController extends BaseController {
 	@Autowired
 	private ResourceService resourceService;
 	@Autowired
-	private DBDefinitionsService dbDefinitionsService;
-	@Autowired
 	private ShiroFilterFactoryBean shiroFilterFactoryBean;
 
-	@RequestMapping(value = "reloadchain")
-	public ModelAndView reloadchain() {
-
-		String definitions = dbDefinitionsService.getDefinitions();
-
-		if (StringUtils.isNotEmpty(definitions)) {
-			try {
-				this.refreshFilterChain(definitions);
-				return this.ajaxDoneSuccess("重新加载安全过滤成功");
-			} catch (Exception e) {
-				return this.ajaxDoneSuccess("重新加载安全过滤失败");
-			}
-		}
-		return this.ajaxDoneSuccess("无法重新加载安全过滤成功");
-	}
 
 	private void refreshFilterChain(String definitions) throws Exception {
 		AbstractShiroFilter shiroFilter = (AbstractShiroFilter) this.shiroFilterFactoryBean.getObject();

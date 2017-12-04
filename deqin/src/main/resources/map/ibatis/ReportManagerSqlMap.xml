@@ -10,13 +10,13 @@
 	FROM
 	(
 		SELECT 
-			PL."NAME" AS PLNAME,PAS."NAME" AS PASNAME
+			PL."NAME" AS PLNAME,PL."ID" AS PLID,PAS."NAME" AS PASNAME,PAS."ID" AS PASID
 		FROM
 			T_PARKING_LOT PL
 		LEFT JOIN T_PASSAGES PAS ON PL."ID"=PAS.PARKINGLOT_ID
 		UNION
 		SELECT 
-			'未识别','未识别'
+			'未识别',-1,'未识别',-1
 		FROM
 			DUAL
 	)  PT 
@@ -24,7 +24,8 @@
 	LEFT JOIN (
 		SELECT 
 			COUNT(*) innum,
-			NVL(PL."NAME",'未识别') AS "NAME"
+			NVL(PL."ID".-1) AS PLID,
+			NVL(PAS."ID".-1) AS PASID
 		FROM 
 			T_PARKING_ORDER PO
 		LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS."ID"
@@ -38,12 +39,13 @@
 			AND <![CDATA[to_char(PO.IN_TIME,'yyyy-MM-dd') <= #LTE_endTime#]]>			 
 			</isNotEmpty>
 		GROUP BY 
-			NVL(PL."NAME",'未识别')
-	)	INCAR ON INCAR."NAME"=PT.PLNAME
+			NVL(PL."ID".-1)
+	)	INCAR ON INCAR.PLID=PT.PLID
 	LEFT JOIN (
 		SELECT 
 			COUNT(*) outnum,
-			NVL(PL."NAME",'未识别') AS "NAME"
+			NVL(PL."ID".-1) AS PLID,
+			NVL(PAS."ID".-1) AS PASID
 		FROM 
 			T_PARKING_ORDER PO
 		LEFT JOIN T_PASSAGES PAS ON PO.OUT_SCHOOL_DOOR_NAME=PAS."ID"
@@ -57,10 +59,10 @@
 			AND <![CDATA[to_char(PO.OUT_TIME,'yyyy-MM-dd') <= #LTE_endTime#]]>			 
 			</isNotEmpty>
 		GROUP BY 
-			NVL(PL."NAME",'未识别')
-	)	OUTCAR ON OUTCAR."NAME"=PT.PLNAME
+			NVL(PL."ID".-1)
+	)	OUTCAR ON OUTCAR.PLID=PT.PLID
 	GROUP BY 
-			PT.PLNAME,INCAR.innum,OUTCAR.outnum
+			PT.PLID,INCAR.innum,OUTCAR.outnum
 	ORDER BY PT.PLNAME
 </select>
 
