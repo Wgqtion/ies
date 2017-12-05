@@ -164,7 +164,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a title="停车记录" href="${ctx}/work/parkingorder" target="navTab" rel="work_parkingorder">停车记录</a></li>
+							<li><a title="停车记录" href="${ctx}/work/parkingorder?isHome=true" target="navTab" rel="work_parkingorder">停车记录</a></li>
 						</ul>
 					</div> 
 					

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -40,6 +42,10 @@ public class ParkingOrder extends IdEntity {
 	 * 进去通道（校门）
 	 */
 	private String inSchoolDoorName;
+	/**
+	 * 进去通道 查询用
+	 */
+	private Passages inPassages;
 
 	/**
 	 * 出去相机IP
@@ -57,6 +63,10 @@ public class ParkingOrder extends IdEntity {
 	 * 出去通道（校门）
 	 */
 	private String outSchoolDoorName;
+	/**
+	 * 出去通道 查询用
+	 */
+	private Passages outPassages;
 
 	/**
 	 * 收费时间
@@ -198,6 +208,16 @@ public class ParkingOrder extends IdEntity {
 	public void setInSchoolDoorName(String inSchoolDoorName) {
 		this.inSchoolDoorName = inSchoolDoorName;
 	}
+	
+	@ManyToOne
+	@JoinColumn(name = "IN_SCHOOL_DOOR_NAME",insertable=false,updatable=false)
+	public Passages getInPassages() {
+		return inPassages;
+	}
+
+	public void setInPassages(Passages inPassages) {
+		this.inPassages = inPassages;
+	}
 
 	@Column(name = "OUT_SCHOOL_DOOR_NAME")
 	public String getOutSchoolDoorName() {
@@ -206,6 +226,16 @@ public class ParkingOrder extends IdEntity {
 
 	public void setOutSchoolDoorName(String outSchoolDoorName) {
 		this.outSchoolDoorName = outSchoolDoorName;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "OUT_SCHOOL_DOOR_NAME",insertable=false,updatable=false)
+	public Passages getOutPassages() {
+		return outPassages;
+	}
+
+	public void setOutPassages(Passages outPassages) {
+		this.outPassages = outPassages;
 	}
 
 	@Column(name = "IS_PAY_OK")

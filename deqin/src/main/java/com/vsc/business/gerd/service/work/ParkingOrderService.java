@@ -132,6 +132,7 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 				upParkingOrder.setOrderStatus(Integer.valueOf(1));
 				upParkingOrder.setUpdatePayTime(new Date());
 				this.save(upParkingOrder);
+				parkingOrder.setPayNumber(upParkingOrder.getPayNumber());
 			}
 		}
 		if (flag) {

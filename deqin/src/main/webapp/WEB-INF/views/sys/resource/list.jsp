@@ -26,9 +26,6 @@
 			<li><a rel="sys_resource_new" title="添加资源" class="add" href="${ctx}/sys/resource/new" target="dialog"><span>添加</span></a></li>
 			<li><a rel="sys_resource_update" title="编辑资源" class="edit" href="${ctx}/sys/resource/update/{sid}" target="dialog" warn="请选择一条记录"><span>编辑</span></a></li>
 			<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${ctx}/sys/resource/delete" class="delete"><span>删除</span></a></li>
-			<li class="line">line</li>
-			<li><a title="确实要重置系统所有URL资源记录吗(将清除所有数据重新创建)?" target="ajaxTodo" href="${ctx}/sys/resource/reset" class="icon"><span>重置</span></a></li>
-			<li><a title="确实要重新加载安全框架设置吗?" target="ajaxTodo" href="${ctx}/sys/resource/reloadchain" class="icon"><span>加载权限</span></a></li>
 		</ul>
 	</div>
 	<table class="table" width="100%" layoutH="138">
