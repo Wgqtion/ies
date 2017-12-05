@@ -6,7 +6,7 @@ var myChart;
 $(function() {
 	// 基于准备好的dom，初始化echarts图表
 	myChart = echarts
-			.init(document.getElementById('carInOutTotal_div'));
+			.init(document.getElementById('parkingInOutTotal_div'));
 	var option = {
 		tooltip : {
 			show : true,
@@ -44,12 +44,12 @@ $(function() {
 	// 为echarts对象加载数据 
 	myChart.setOption(option);
 	
-	carInOutTotalData();
+	parkingInOutTotalData();
 });
-function carInOutTotalData() {
-	var formData = $("#carInOutTotalForm").serialize();
+function parkingInOutTotalData() {
+	var formData = $("#parkingInOutTotalForm").serialize();
 	$.ajax({
-		url : "${ctx}/work/report/reportmanager/carInOutTotalData",
+		url : "${ctx}/work/chart/parkingInOutTotalData",
 		type : "post",
 		data : formData,
 		success : function(data) {
@@ -78,6 +78,8 @@ function carInOutTotalData() {
 						data : outnums
 					} ]
 				});
+			}else{
+				alert("图表请求数据失败!");
 			}
 		},
 		error : function(e) {
@@ -89,7 +91,7 @@ function carInOutTotalData() {
 
 
 <div class="pageHeader" >
-	<form id="carInOutTotalForm" action="#">
+	<form id="parkingInOutTotalForm" action="#">
 		<table style="width: 40%;">
 			<tr >
 				<td align="right" width="10%">日期:</td>
@@ -105,9 +107,9 @@ function carInOutTotalData() {
 						<option value="${lotArea.id}">${lotArea.name}</option>
 					</c:forEach>
 				</select></td>
-				<td width="10%"><button type="button" onclick="carInOutTotalData();">统计</button></td>
+				<td width="10%"><button type="button" onclick="parkingInOutTotalData();">统计</button></td>
 			</tr>
 		</table>
 	</form>
 </div>
-<div id="carInOutTotal_div" style="height: 400px;"></div>
+<div id="parkingInOutTotal_div" style="height: 400px;"></div>

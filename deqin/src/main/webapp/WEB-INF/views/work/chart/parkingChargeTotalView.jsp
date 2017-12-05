@@ -6,7 +6,7 @@ var myChart;
 $(function () {
 	
 	// 基于准备好的dom，初始化echarts图表
-    myChart = echarts.init(document.getElementById('carChargeTotal_div')); 
+    myChart = echarts.init(document.getElementById('parkingChargeTotal_div')); 
     
     var option = {
         tooltip: {
@@ -46,14 +46,14 @@ $(function () {
     // 为echarts对象加载数据 
     myChart.setOption(option); 
 	
-    carChargeTotalData();
+    parkingChargeTotalData();
 
 });
 
-function carChargeTotalData(){
-	var formData = $("#carChargeTotalForm").serialize();
+function parkingChargeTotalData(){
+	var formData = $("#parkingChargeTotalForm").serialize();
 	$.ajax({
-		url : "${ctx}/work/report/reportmanager/carChargeTotalData",
+		url : "${ctx}/work/chart/parkingChargeTotalData",
 		type : "post",
 		data : formData,
 		success : function(data) {
@@ -82,6 +82,8 @@ function carChargeTotalData(){
 		                "data":sspayamount
 					} ]
 				});
+			}else{
+				alert("图表请求数据失败!");
 			}
 		},
 		error : function(e) {
@@ -93,7 +95,7 @@ function carChargeTotalData(){
 
 
 <div class="pageHeader">
-	<form id="carChargeTotalForm" action="#">
+	<form id="parkingChargeTotalForm" action="#">
 		<table style="width: 40%;">
 			<tr >
 				<td align="right" width="10%">日期:</td>
@@ -109,9 +111,9 @@ function carChargeTotalData(){
 						<option value="${lotArea.id}">${lotArea.name}</option>
 					</c:forEach>
 				</select></td>
-				<td width="10%"><button type="button" onclick="carChargeTotalData();">统计</button></td>
+				<td width="10%"><button type="button" onclick="parkingChargeTotalData();">统计</button></td>
 			</tr>
 		</table>
 	</form>
 </div>
-<div id="carChargeTotal_div" style="height:400px;"></div>
+<div id="parkingChargeTotal_div" style="height:400px;"></div>
