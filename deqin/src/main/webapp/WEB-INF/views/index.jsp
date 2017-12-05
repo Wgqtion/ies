@@ -185,7 +185,7 @@
 							<li><a>停车场图表</a>
 							<ul>
 								<li><a title="进出次数图表" href="${ctx}/work/report/reportmanager/carInOutTotalView" target="navTab" rel="work_report_reportmanager_carInOutTotal">进出次数图表</a></li>
-								<li><a title="收费统计图表" href="${ctx}/work/report/reportmanager/carChargeTotal" target="navTab" rel="work_report_reportmanager_carChargeTotal">收费统计图表</a></li>
+								<li><a title="收费统计图表" href="${ctx}/work/report/reportmanager/carChargeTotalView" target="navTab" rel="work_report_reportmanager_carChargeTotal">收费统计图表</a></li>
 							</ul>
 							</li>
 						</ul>

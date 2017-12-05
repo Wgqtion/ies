@@ -22,16 +22,10 @@ $(function() {
 			x : 'center',
 			y : 'bottom'
 		},
+		color:['#90EE90','#FF3030'],
 		toolbox : {
 			show : true,
 			feature : {
-				dataZoom : {
-					yAxisIndex : 'none'
-				},
-				magicType : {
-					type : [ 'line', 'bar' ]
-				},
-				restore : {},
 				saveAsImage : {}
 			}
 		},
@@ -53,7 +47,6 @@ $(function() {
 	carInOutTotalData();
 });
 function carInOutTotalData() {
-	//${ctx}/work/report/reportmanager/carInOutTotalData
 	var formData = $("#carInOutTotalForm").serialize();
 	$.ajax({
 		url : "${ctx}/work/report/reportmanager/carInOutTotalData",
@@ -97,7 +90,7 @@ function carInOutTotalData() {
 
 <div class="pageHeader" >
 	<form id="carInOutTotalForm" action="#">
-		<table style="width: 35%;">
+		<table style="width: 40%;">
 			<tr >
 				<td align="right" width="10%">日期:</td>
 				<td width="40%"><input type="text" class="date" size="9"
@@ -117,4 +110,4 @@ function carInOutTotalData() {
 		</table>
 	</form>
 </div>
-<div id="carInOutTotal_div" style="height: 500px;"></div>
+<div id="carInOutTotal_div" style="height: 400px;"></div>
