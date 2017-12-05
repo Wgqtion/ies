@@ -65,7 +65,7 @@ public class ChartController extends BaseController {
 		if (StringUtils.isNotBlank(reportView.getSelectId())) {
 			reportView.setSelectType("PAS");
 		}
-		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("report.carInOutTotal.total", reportView);
+		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.carInOutTotal.total", reportView);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "success");
 		map.put("data", lm);
@@ -100,7 +100,7 @@ public class ChartController extends BaseController {
 		if (StringUtils.isNotBlank(reportView.getSelectId())) {
 			reportView.setSelectType("PAS");
 		}
-		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("report.carChargeTotal.total",
+		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.carChargeTotal.total",
 				reportView);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "success");

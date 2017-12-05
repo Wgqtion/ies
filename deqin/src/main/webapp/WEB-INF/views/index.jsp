@@ -178,9 +178,9 @@
 						<ul class="tree treeFolder">
 							<li><a>停车场图表</a>
 							<ul>
-								<li><a title="余位统计图表" href="${ctx}/work/chart/parkingChargeTotalView" target="navTab" rel="work_chart_parkingChargeTotal">收费统计图表</a></li>
-								<li><a title="进出次数图表" href="${ctx}/work/chart/parkingInOutTotalView" target="navTab" rel="work_chart_parkingInOutTotal">进出次数图表</a></li>
-								<li><a title="收费统计图表" href="${ctx}/work/chart/parkingChargeTotalView" target="navTab" rel="work_chart_parkingChargeTotal">收费统计图表</a></li>
+								<li><a title="余位统计图表" href="${ctx}/work/chart/parkingSurplusTotalView" target="navTab" rel="work_chart_parkingSurplusTotalView">收费统计图表</a></li>
+								<li><a title="进出次数图表" href="${ctx}/work/chart/parkingInOutTotalView" target="navTab" rel="work_chart_parkingInOutTotalView">进出次数图表</a></li>
+								<li><a title="收费统计图表" href="${ctx}/work/chart/parkingChargeTotalView" target="navTab" rel="work_chart_parkingChargeTotalView">收费统计图表</a></li>
 							</ul>
 							</li>
 						</ul>
