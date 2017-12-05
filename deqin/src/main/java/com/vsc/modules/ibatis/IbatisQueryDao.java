@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.vsc.modules.entity.MapBean;
+import com.vsc.modules.entity.ReportView;
 import com.vsc.modules.persistence.PropertySearchFilter;
 
 /**
@@ -135,6 +136,10 @@ public class IbatisQueryDao extends SqlMapClientDaoSupport {
 	public <T, K> List<MapBean<T, K>> findAll(String sqlId, Map<String, Object> query) {
 		 
 		return this.findAll(sqlId, query,null);
+	}
+	
+	public <T, K> List<MapBean<T, K>> findAll(String sqlId,ReportView reportView) {
+		return this.getSqlMapClientTemplate().queryForList(sqlId,reportView);
 	}
 
 	/**

@@ -28,31 +28,24 @@
 	<!-- 定制过滤器 -->
 	<bean id="permsany" class="com.vsc.modules.shiro.CustomPermissionsAuthorizationFilter" lazy-init="false"/>
 	<!-- 加入定制的过滤配置 -->
-	<bean id="dbDefinitionsService" class="com.vsc.modules.shiro.DBDefinitionsService">
-		<property name="filterName" value="permsany"/>
-		<property name="prefix"><value>				</value></property>
-		<property name="ibatisQueryDao" ref="ibatisQueryDao"></property>
-		<property name="sqlId" value="listshiro.resource_authority"></property>
-		<property name="urls">
-			<value>
-				/login = anon
-				/login/dialog = anon
-				/login/unauthorized = anon
-				/login/ajax = anon				
-				/logout = logout
-				/static/** = anon 
-				/index=user
-				/sys/**=user 
-				/attach/up=user 
-			</value>
-		</property>
-	</bean>
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login" />
 		<property name="successUrl" value="/" />
 		<property name="unauthorizedUrl" value="/login/unauthorized"></property>
-		<property name="filterChainDefinitions" value="#{dbDefinitionsService.definitions}"/>
+		<property name="filterChainDefinitions">  
+	        <value>  
+	            /login = anon
+				/login/dialog = anon
+				/login/unauthorized = anon
+				/login/ajax = anon				
+				/logout = logout
+				/static/** = anon 
+				/index=authc,permsany
+				/sys/**=authc,permsany
+				/attach/up=authc,permsany
+	        </value>  
+	    </property>
 	</bean>
 	
 	<!-- 用户授权信息Cache, 采用EhCache value="#{ numberGuess.randomNumber }"-->

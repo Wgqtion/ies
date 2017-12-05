@@ -19,6 +19,7 @@ import org.springside.modules.utils.Reflections;
 
 import com.google.common.collect.Lists;
 import com.vsc.modules.entity.MapBean;
+import com.vsc.modules.entity.ReportView;
 import com.vsc.modules.ibatis.IbatisQueryDao;
 import com.vsc.modules.persistence.DynamicSpecifications;
 import com.vsc.modules.persistence.PropertySearchFilter;
@@ -227,6 +228,10 @@ public abstract class BaseService<T> {
 
 	public List<MapBean<String, Object>> findIbatisQuery(String sqlId, List<PropertySearchFilter> filters) {
 		return ibatisQueryDao.findAll(sqlId, filters);
+	}
+	
+	public List<MapBean<String, Object>> findIbatisQuery(String sqlId, ReportView reportView) {
+		return ibatisQueryDao.findAll(sqlId, reportView);
 	}
 
 	public List<MapBean<String, Object>> findIbatisQuery(String sqlId, Map<String, Object> filters) {
