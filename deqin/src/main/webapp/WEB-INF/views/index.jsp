@@ -131,38 +131,32 @@
 							<li><a href="${ctx}/work/parkinglot" title="停车场管理" target="navTab" rel="work_parkinglot">停车场管理</a></li>
 							<li><a href="${ctx}/work/parkinglotarea" title="停车片区管理" target="navTab" rel="work_parkinglotarea">停车片区管理</a></li>
 							<li><a href="${ctx}/work/parkinggarage" title="停车位管理" target="navTab" rel="work_parkinggarage">停车位管理</a></li>
-							<li><a href="${ctx}/work/passages" title="出入口管理" target="navTab" rel="work_passages">出入口管理</a></li>
-							<li><a href="${ctx}/work/videodevice" title="视频设备" target="navTab" rel="work_videodevice">视频设备</a></li>
+							<li><a href="${ctx}/work/passages" title="进出口管理" target="navTab" rel="work_passages">进出口管理</a></li>
 						</ul>
 					</div>
 					<div class="accordionHeader">
 						<h2>
-							<span>Folder</span>使用记录
+							<span>Folder</span>子系统管理
 						</h2>
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a title="停车记录" href="${ctx}/work/parkingorder" target="navTab" rel="work_parkingorder">停车记录</a></li>
-							<li><a href="${ctx}/work/accessapply" title="出入申请记录" target="navTab" rel="work_accessapply">出入申请记录</a></li>
-							<li><a title="车位使用记录" href="${ctx}/work/parkinggaragecarnolog" target="navTab" rel="work_parkinggaragecarnolog">车位使用记录</a></li>
-							<li><a title="路径服务记录" href="${ctx}/work/routepathlog" target="navTab" rel="work_routepathlog">路径服务记录</a></li>
-
+							<li><a>地锁管理</a>
+							<ul>
+								<li><a title="地锁信息" href="${ctx}/work/parkinglock" target="navTab" rel="work_parkinglock">地锁信息</a></li>
+								<li><a title="地锁使用统计" href="${ctx}/work/parkinglockoperationevent" target="navTab" rel="work_parkinglockoperationevent">使用统计</a></li>
+								<li><a title="地锁日志信息" href="${ctx}/work/parkinglockeventlog" target="navTab" rel="work_parkinglockeventlog">日志信息</a></li>
+							</ul>
+							</li>
 						</ul>
-					</div>
-
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>地锁管理
-						</h2>
-					</div>
-					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a title="地锁信息" href="${ctx}/work/parkinglock" target="navTab" rel="work_parkinglock">地锁信息</a></li>
-							<li><a title="地锁使用统计" href="${ctx}/work/parkinglockoperationevent" target="navTab" rel="work_parkinglockoperationevent">使用统计</a></li>
-							<li><a title="地锁日志信息" href="${ctx}/work/parkinglockeventlog" target="navTab" rel="work_parkinglockeventlog">日志信息</a></li>
-
+							<li><a>全视频管理</a>
+							<ul>
+								<li><a title="全视频日志" href="${ctx}/work/parkinggaragecarnolog" target="navTab" rel="work_parkinggaragecarnolog">全视频日志</a></li>
+							</ul>
+							</li>
 						</ul>
-					</div>
+					</div> 
 					<div class="accordionHeader">
 						<h2>
 							<span>Folder</span>数据报表
@@ -170,7 +164,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a>xxxx</a>
+							<li><a title="停车记录" href="${ctx}/work/parkingorder" target="navTab" rel="work_parkingorder">停车记录</a></li>
 						</ul>
 					</div> 
 					
