@@ -6,7 +6,7 @@ var myChart;
 $(function() {
 	// 基于准备好的dom，初始化echarts图表
 	myChart = echarts
-			.init(document.getElementById('parkingInOutTotal_div'));
+			.init(document.getElementById('homeView_div'));
 	var option = {
 		tooltip : {
 			show : true,
@@ -44,10 +44,10 @@ $(function() {
 	// 为echarts对象加载数据 
 	myChart.setOption(option);
 	
-	parkingInOutTotalData();
+	homeViewData();
 });
-function parkingInOutTotalData() {
-	var formData = $("#parkingInOutTotalForm").serialize();
+function homeViewData() {
+	var formData = $("#homeViewForm").serialize();
 	$.ajax({
 		url : "${ctx}/work/chart/parkingInOutTotalData",
 		type : "post",
@@ -91,8 +91,8 @@ function parkingInOutTotalData() {
 
 <div style="width: 100%;">
 <div class="pageHeader" >
-	<form id="parkingInOutTotalForm" action="#">
-		<table id="parkingInOutTotalTable">
+	<form id="homeViewForm" action="#">
+		<table>
 			<tr >
 				<td align="right" width="50">日期:</td>
 				<td width="200"><input type="text" class="date" size="9"
@@ -107,10 +107,10 @@ function parkingInOutTotalData() {
 						<option value="${lotArea.id}">${lotArea.name}</option>
 					</c:forEach>
 				</select></td>
-				<td width="50"><button type="button" onclick="parkingInOutTotalData();">统计</button></td>
+				<td width="50"><button type="button" onclick="homeViewData();">统计</button></td>
 			</tr>
 		</table>
 	</form>
 </div>
-<div id="parkingInOutTotal_div" style="height: 400px;width: 100%;"></div>
+<div id="homeView_div" style="height: 400px;width: 100%;"></div>
 </div>

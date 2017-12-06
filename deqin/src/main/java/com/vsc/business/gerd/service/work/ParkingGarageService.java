@@ -1,8 +1,5 @@
 package com.vsc.business.gerd.service.work;
 
-import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +35,4 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	public JpaSpecificationExecutor<ParkingGarage> getJpaSpecificationExecutorDao() {
 		return this.parkingGarageDao;
 	}
-	
-	/**
-	 * 预约成功后,修改是否预约为1,预约车牌号为预约车牌号码
-	 * 
-	 * @param params
-	 */
-	public void updateParkingGarageYuding(Map<String, Object> params) {
-		this.ibatisQueryDao.update("updateParkingGarageYuding.update", params);
-	}
-
 }

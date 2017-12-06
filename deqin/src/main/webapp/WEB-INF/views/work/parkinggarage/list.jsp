@@ -51,9 +51,7 @@
 				<th <vsc:orderField name="ycoordinate"/>>Y坐标</th>
 				<th <vsc:orderField name="garageType"/>>车位类型</th>			
 				<th <vsc:orderField name="isEnabled"/>>状态</th> 
-				<th <vsc:orderField name="isOnline"/>>是否有车</th> 
 				<th <vsc:orderField name="carNo"/>>车牌号</th> 
-				<th <vsc:orderField name="intime"/>>车辆停入时间</th> 
 				
 			</tr>
 		</thead>
@@ -69,10 +67,8 @@
 					<td>${varitem.xcoordinate}</td>
 					<td>${varitem.ycoordinate}</td>
 					<td><s:message code="parkinggarage.garageType.${varitem.garageType}"/></td>
-					<td><s:message code="parkinggarage.isenabled.${varitem.isEnabled}"/></td>			
-					 <td><s:message code="parkinggarage.isOnline.${varitem.isOnline}"/></td>
+					<td><s:message code="parkinggarage.isenabled.${varitem.isEnabled}"/></td>		
 				<td>${varitem.carNo}</td>
-				<td><fmt:formatDate value='${ varitem.intime}' pattern='yyyy-MM-dd HH:mm:ss'/></td>
 				</tr>
 			</c:forEach>
 		</tbody>

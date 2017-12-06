@@ -425,8 +425,6 @@ public class WeixinController extends HttpServiceBaseController {
             return this.ajaxDoneError("车位不存在");
         } else if (!parkingGarage.getIsEnabled()) {
             return this.ajaxDoneError("车位不可用");
-        } else if (parkingGarage.getIsYuding()) {
-            return this.ajaxDoneError("车位被别人预约");
         } else {
             ParkingLotArea parkingLotArea = parkingGarage.getParkingLotArea();
             List<YudingSetting> ys = yudingSettingService.getAllList();
@@ -491,16 +489,8 @@ public class WeixinController extends HttpServiceBaseController {
             // 取出Shiro中的当前用户,不查询数据库
             // yuding.setUser(this.getCurrentUser());
             yuding.setParkingLotArea(parkingLotArea);
-
-            // 预约成功修改车位信息-将是否预约修改为1,预约车牌号添加上
-            Map<String, Object> params = Maps.newHashMap();
-
             yuding.setParkingGarage(parkingGarage);
             yudingdic = yudingService.save(yuding);
-            params.put("id", parkingGarage.getId());
-            params.put("isYuDing", Boolean.TRUE);
-            params.put("yudingCarNo", carNo);
-            this.parkingGarageService.updateParkingGarageYuding(params);
         }
 
         return this.ajaxDoneSuccess("预约成功", "{\"orderNumber\":" + yudingdic.getId() + "}");
@@ -533,13 +523,7 @@ public class WeixinController extends HttpServiceBaseController {
         if (i != 0) {
             ParkingGarage parkingGarage
                     = yuding.getParkingGarage();
-            parkingGarage.setIsOnline(Boolean.FALSE);
             this.parkingGarageService.save(parkingGarage);
-            params.put("id", yuding.getParkingGarage().getId());
-            params.put("isYuDing", Boolean.FALSE);
-            params.put("yudingCarNo", "");
-            params.put("intime", "");
-            this.parkingGarageService.updateParkingGarageYuding(params);
             return this.ajaxDoneSuccess("成功取消");
         }
         return this.ajaxDoneError("预约取消失败，没有找到预约信息");
@@ -573,7 +557,6 @@ public class WeixinController extends HttpServiceBaseController {
                 ParkingGarage parkingGarage = userOrder.getParkingGarage();
                 // TODO 假上锁
                 if (vl == null || vl.isEmpty()) {
-                    parkingGarage.setIsOnline(Boolean.FALSE);
                     fakeLocked(parkingGarage);
 //                    return this.ajaxDoneError("没有匹配的地锁");
                 } else {
@@ -694,9 +677,6 @@ public class WeixinController extends HttpServiceBaseController {
             userOrder.setCreateTime(now.getTime());
             userOrder.setIsDelete(0);
             ParkingGarage parkingGarage = parkingGarageService.getObjectById(parkingId);
-            if (vl == null || vl.isEmpty()) {
-                parkingGarage.setIsOnline(Boolean.TRUE);
-            }
             // TODO 假上锁
             fakeLocked(parkingGarage);
 
@@ -734,8 +714,6 @@ public class WeixinController extends HttpServiceBaseController {
 
     //假开关锁
     private void fakeLocked(ParkingGarage parkingGarage) {
-        Date now = new Date();
-        parkingGarage.setIntime(now);
         parkingGarageService.save(parkingGarage);
     }
 }

@@ -1,6 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<%@ include file="/WEB-INF/inc/include.inc.jsp"%>
-
 <script type="text/javascript">
 var myChart;
 $(function () {
@@ -96,24 +94,26 @@ function parkingChargeTotalData(){
 
 <div class="pageHeader">
 	<form id="parkingChargeTotalForm" action="#">
-		<table style="width: 40%;">
-			<tr >
-				<td align="right" width="10%">日期:</td>
-				<td width="40%"><input type="text" class="date" size="9"
+	<div style="width: 99%;">
+		<table>
+			<tr>
+				<td align="right" width="50">日期:</td>
+				<td width="250"><input type="text" class="date" size="9"
 					value="${reportView.startDate}" dateFmt="yyyy-MM-dd"
 					name="startDate" readonly="true" /> - <input
 					type="text" class="date" size="9" value="${reportView.endDate}"
 					dateFmt="yyyy-MM-dd" name="endDate" readonly="true" /></td>
-				<td align="right" width="15%">停车场:</td>
-				<td width="25%"><select id="selectId" name="selectId">
+				<td align="right" width="50">停车场:</td>
+				<td width="50"><select id="selectId" name="selectId">
 					<option value="">全部</option>
 					<c:forEach items="${lotAreaList}" var="lotArea">
 						<option value="${lotArea.id}">${lotArea.name}</option>
 					</c:forEach>
 				</select></td>
-				<td width="10%"><button type="button" onclick="parkingChargeTotalData();">统计</button></td>
+				<td width="50"><button type="button" onclick="parkingChargeTotalData();">统计</button></td>
 			</tr>
 		</table>
+	</div>
 	</form>
 </div>
 <div id="parkingChargeTotal_div" style="height:400px;"></div>

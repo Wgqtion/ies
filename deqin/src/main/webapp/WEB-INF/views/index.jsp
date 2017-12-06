@@ -32,7 +32,6 @@
 
 
 	<%@ include file="/WEB-INF/inc/include.js.jsp"%>
-	<script src="${ctx}/work/report/query/cwtj" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(function() {
 			DWZ.init("${ctx}/static/js/dwz/dwz.frag.xml", {
@@ -60,25 +59,10 @@
 					ctx : "${ctx}"
 				}
 			});
-
-			$("#index_system_dstj").loadUrl("${ctx}/work/report/query/dstj");
-
-			setTimeout(function() {
-				$("#random").show().skippr({
-					autoPlay : false,
-					autoPlayDuration : 2000,
-					arrows : false,
-					keyboardOnAlways : false
-				});
-				$("#random1").show().skippr({
-					autoPlay : false,
-					autoPlayDuration : 2000,
-					arrows : false,
-					keyboardOnAlways : false
-				});
-
-			}, 1100);
-
+			
+			
+			//homeDiv
+			$("#homeDiv").load("${ctx}/work/chart/homeView");
 		});
 	</script>
 </head>
@@ -231,48 +215,9 @@
 					<li><a href="javascript:;">我的主页</a></li>
 				</ul>
 				<div class="navTab-panel tabsPageContent layoutBox">
-					<div class="page unitBox" style="height: 100%">
-						<div class="index-portal-body panelContent" style="height: 100%">
-							<table width="98%" height="100%">
-								<tr height="50%">
-									<td width="50%" align="center" valign="middle">
-										<table>
-											<tr>
-												<td><div id="container_668662" style="width: 260px; height: 248px; margin: 0 auto"></div></td>
-												<td><div id="container_450650" style="width: 260px; height: 248px; margin: 0 auto"></div></td>
-											</tr>
-										</table> 
-									</td>
-									<td width="50%" align="center" valign="middle">
-										<!-- <img src="${ctx}/static/styles/vsc/images/3.png">
-										-->
-										<div id="random" style="display: none">
-											<div>
-												<a href="${ctx}/work/parkinglot/imageview/1" max="true" target="dialog" title="查看停车场平面图" rel="work_parkinglot_view_image"> <img src="${ctx}/static/images/1.png" title="上海宜事停车场" width="520" height="248" />
-												</a>
-											</div>
-											<div>
-												<a href="${ctx}/work/parkinglot/imageview/2" max="true" target="dialog" title="查看停车场平面图" rel="work_parkinglot_view_image"><img src="${ctx}/static/images/2.png" title="3号研发楼地下车库" width="520" height="248" /></a>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr height="50%">
-									<td align="center" valign="middle"><img src="${ctx}/static/styles/vsc/images/2.png"></td>
-									<td align="center" style="background: url(${ctx}/static/styles/vsc/images/4.png)  no-repeat center;">
-										<div style="margin: 10px 10px 30px -220px;">
-											<ul id="index_system_dstj">
-												<li style="line-height: 36px; font-weight: bold; color: #a2a2a2; font-size: 18px;">地锁总数0个</li>
-												<li style="line-height: 36px; font-weight: bold; color: #a2a2a2; font-size: 18px;">地锁正常0个</li>
-												<li style="line-height: 36px; font-weight: bold; color: #a2a2a2; font-size: 18px;">地锁异常0个</li>
-												<li style="line-height: 36px; font-weight: bold; color: #a2a2a2; font-size: 18px;">地锁已用0个</li>
-												<li style="line-height: 36px; font-weight: bold; color: #a2a2a2; font-size: 18px;">地锁可用0个</li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-
-							</table>
+					<div class="page unitBox" style="height: 100%;width: 99%;">
+						<div class="index-portal-body panelContent" style="height: 100%;width: 99%;">
+							<div id="homeDiv"></div>
 						</div>
 					</div>
 				</div>

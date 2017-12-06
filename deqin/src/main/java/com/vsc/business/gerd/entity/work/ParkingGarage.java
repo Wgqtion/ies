@@ -30,9 +30,6 @@ public class ParkingGarage extends IdEntity {
 	private Integer garageType;
 	private java.lang.String description;
 	private java.lang.String carNo;// 车牌号
-	private java.util.Date intime;// 停车时间
-	private Boolean isOnline=Boolean.FALSE;// 是否停车
-	private Boolean isYuding=Boolean.FALSE;
 	private java.lang.String xcoordinate;//x坐标
 	private java.lang.String ycoordinate;//y坐标
 
@@ -183,38 +180,6 @@ public class ParkingGarage extends IdEntity {
 	public void setCarNo(java.lang.String value) {
 		this.carNo = value;
 	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "INTIME")
-	public java.util.Date getIntime() {
-		return this.intime;
-	}
-
-	public void setIntime(java.util.Date value) {
-		this.intime = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "IS_ONLINE")
-	public Boolean getIsOnline() {
-		return this.isOnline;
-	}
-
-	public void setIsOnline(Boolean value) {
-		this.isOnline = value;
-	}
-@Column(name = "IS_YUDING")
-    public Boolean getIsYuding() {
-        return isYuding;
-    }
-
-    public void setIsYuding(Boolean isYuding) {
-        this.isYuding = isYuding;
-    }
 
 	@Override
 	public String toString() {
