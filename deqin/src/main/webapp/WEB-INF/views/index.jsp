@@ -61,6 +61,10 @@
 			});
 			
 			
+		});
+		
+		
+		$(function(){
 			//homeDiv
 			$("#homeDiv").load("${ctx}/homeView");
 		});
@@ -215,8 +219,8 @@
 					<li><a href="javascript:;">我的主页</a></li>
 				</ul>
 				<div class="navTab-panel tabsPageContent layoutBox">
-					<div class="page unitBox" style="height: 100%;width: 99%;">
-						<div class="index-portal-body panelContent" style="height: 100%;width: 99%;">
+					<div class="page unitBox">
+						<div class="index-portal-body panelContent">
 							<div id="homeDiv"></div>
 						</div>
 					</div>

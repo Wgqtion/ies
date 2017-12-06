@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/inc/include.inc.jsp"%>
 <script type="text/javascript">
 var myChart;
 $(function () {
@@ -44,7 +45,7 @@ $(function () {
     // 为echarts对象加载数据 
     myChart.setOption(option); 
 	
-
+    parkingChargeTotalData();
 });
 
 function parkingChargeTotalData(){
@@ -114,5 +115,5 @@ function parkingChargeTotalData(){
 		</table>
 	</form>
 </div>
-<div id="parkingChargeTotal_div" style="height:400px;width: 100%;"></div>
+<div id="parkingChargeTotal_div" class="pageContent" style="height:400px;"></div>
 </div>

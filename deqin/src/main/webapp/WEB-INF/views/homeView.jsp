@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/inc/include.inc.jsp"%>
-
 <script type="text/javascript">
 var myChart;
 $(function() {
@@ -89,8 +88,9 @@ function homeViewData() {
 }
 </script>
 
+
 <div style="width: 100%;">
-<div class="pageHeader" >
+<div class="pageHeader">
 	<form id="homeViewForm" action="#">
 		<table>
 			<tr >
@@ -112,5 +112,5 @@ function homeViewData() {
 		</table>
 	</form>
 </div>
-<div id="homeView_div" style="height: 400px;width: 99%;"></div>
+<div id="homeView_div" class="pageContent" style="height:400px;"></div>
 </div>

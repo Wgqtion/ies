@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/inc/include.inc.jsp"%>
-
 <script type="text/javascript">
 var myChart;
 $(function() {
@@ -89,13 +88,14 @@ function parkingInOutTotalData() {
 }
 </script>
 
+
 <div style="width: 100%;">
 <div class="pageHeader" >
 	<form id="parkingInOutTotalForm" action="#">
 		<table>
 			<tr >
 				<td align="right" width="50">日期:</td>
-				<td width="200"><input type="text" class="date" size="9"
+				<td width="250"><input type="text" class="date" size="9"
 					value="${reportView.startDate}" dateFmt="yyyy-MM-dd"
 					name="startDate" readonly="true" /> - <input
 					type="text" class="date" size="9" value="${reportView.endDate}"
@@ -112,5 +112,5 @@ function parkingInOutTotalData() {
 		</table>
 	</form>
 </div>
-<div id="parkingInOutTotal_div" style="height: 400px;width: 100%;"></div>
+<div id="parkingInOutTotal_div" class="pageContent" style="height:400px;"></div>
 </div>
