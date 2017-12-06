@@ -92,7 +92,7 @@ function parkingInOutTotalData() {
 <div style="width: 100%;">
 <div class="pageHeader" >
 	<form id="parkingInOutTotalForm" action="#">
-		<table id="parkingInOutTotalTable">
+		<table>
 			<tr >
 				<td align="right" width="50">日期:</td>
 				<td width="200"><input type="text" class="date" size="9"

@@ -29,7 +29,6 @@ import com.vsc.business.gerd.service.work.ParkingGarageService;
 import com.vsc.business.gerd.service.work.ParkingLotAreaService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
-import com.vsc.modules.entity.MapBean;
 import com.vsc.util.CoreUtils;
 
 /**

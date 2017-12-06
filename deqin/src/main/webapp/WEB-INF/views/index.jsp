@@ -62,7 +62,7 @@
 			
 			
 			//homeDiv
-			$("#homeDiv").load("${ctx}/work/chart/homeView");
+			$("#homeDiv").load("${ctx}/homeView");
 		});
 	</script>
 </head>

@@ -54,7 +54,7 @@
 
 <%-- jquery autocomplete --%>
 <script src="${ctx}/static/js/jquery-autocomplete/jquery.autocomplete.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/skippr/jquery.skippr.js" type="text/javascript"></script>
+<script src="${ctx}/static/js/skippr/jquery.skippr.min.js" type="text/javascript"></script>
 
 <%-- 部署模式 js 压缩文件 
 <script src="${ctx}/static/js/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>

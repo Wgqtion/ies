@@ -37,24 +37,6 @@ public class ChartController extends BaseController {
 	@Autowired
 	private ParkingLotService parkingLotService;
 
-	/**
-	 * 首页
-	 */
-	@RequestMapping(value = "homeView")
-	public String homeView(Model model, ReportView reportView, HttpServletRequest request) {
-		Date now = new Date();
-		reportView.setStartDate(DateFormatUtils.format(now, "yyyy-MM-dd"));
-		reportView.setEndDate(reportView.getStartDate());
-
-		Map<String, Object> filterParams = new HashMap<String, Object>();
-		filterParams.put("EQ_isEnabled", 1);
-		List<ParkingLot> lotAreaList = parkingLotService.findList(filterParams);
-
-		model.addAttribute("reportView", reportView);
-		model.addAttribute("lotAreaList", lotAreaList);
-		return "homeView";
-	}
-	
 	
 	/**
 	 * 停车场进出次数统计图表 页面
@@ -114,7 +96,7 @@ public class ChartController extends BaseController {
 	 */
 	@RequestMapping(value = "parkingChargeTotalData")
 	@ResponseBody
-	public Map<String, Object> carChargeTotalData(ReportView reportView, HttpServletRequest request) {
+	public Map<String, Object> parkingChargeTotalData(ReportView reportView, HttpServletRequest request) {
 		reportView.setSelectType("PL");
 		if (StringUtils.isNotBlank(reportView.getSelectId())) {
 			reportView.setSelectType("PAS");
