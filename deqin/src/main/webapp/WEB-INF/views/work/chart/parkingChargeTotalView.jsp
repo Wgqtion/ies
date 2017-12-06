@@ -92,9 +92,9 @@ function parkingChargeTotalData(){
 </script>
 
 
+<div style="width: 100%;">
 <div class="pageHeader">
 	<form id="parkingChargeTotalForm" action="#">
-	<div style="width: 99%;">
 		<table>
 			<tr>
 				<td align="right" width="50">日期:</td>
@@ -113,7 +113,7 @@ function parkingChargeTotalData(){
 				<td width="50"><button type="button" onclick="parkingChargeTotalData();">统计</button></td>
 			</tr>
 		</table>
-	</div>
 	</form>
 </div>
-<div id="parkingChargeTotal_div" style="height:400px;"></div>
+<div id="parkingChargeTotal_div" style="height:400px;width: 100%;"></div>
+</div>
