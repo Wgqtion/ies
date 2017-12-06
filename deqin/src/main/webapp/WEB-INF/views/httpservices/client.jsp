@@ -77,11 +77,11 @@
 					<h4>
 						<a href="javascript:return false;">接口地址</a>
 					</h4>
-					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/order/inschool</pre></p>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/order/parkingIn</pre></p>
 					<h4>
 						<a href="javascript:return false;">示例</a>
 					</h4>
-					<form class="bs-docs-example" action="<%=url%>/order/inschool" method="post">
+					<form class="bs-docs-example" action="<%=url%>/order/parkingIn" method="post">
 
 					<label>相机IP</label> <input type="text" name="inCameraIp" value="127.0.0.1"	placeholder="请输入相机ip" /><br /> 
 					<label>车牌号</label> <input	type="text" name="inPlateNo"  value="沪A12345" placeholder="请输入车牌号" /><br />
@@ -151,11 +151,11 @@
 					<h4>
 						<a href="javascript:return false;">接口地址</a>
 					</h4>
-					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/order/outschool</pre></p>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/order/parkingOut</pre></p>
 					<h4>
 						<a href="javascript:return false;">示例</a>
 					</h4>
-					<form class="bs-docs-example" action="<%=url%>/order/outschool" method="post">
+					<form class="bs-docs-example" action="<%=url%>/order/parkingOut" method="post">
 
 					<label>相机IP</label> <input type="text" name="outCameraIp" value="127.0.0.1"	placeholder="请输入相机ip" /><br /> 
 					<label>车牌号</label> <input	type="text" name="outPlateNo"  value="沪A12345" placeholder="请输入车牌号" /><br />
@@ -226,11 +226,11 @@
 					<h4>
 						<a href="javascript:return false;">接口地址</a>
 					</h4>
-					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/order/pay</pre></p>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/order/parkingPay</pre></p>
 					<h4>
 						<a href="javascript:return false;">示例</a>
 					</h4>
-					<form class="bs-docs-example" action="<%=url%>/order/pay" method="post">
+					<form class="bs-docs-example" action="<%=url%>/order/parkingPay" method="post">
 					<label>车牌号</label> <input	type="text" name="payPlateNo"  value="沪A12345" placeholder="请输入车牌号" /><br />
 					<label>收费时间</label><input  type="text" name="payTime" value="2017-04-10 16:11:20"/> <br/>
 					<label>限制出校时间</label><input  type="text" name="outTimeLast" value="2017-04-10 18:25:20"/> <br/>
@@ -395,16 +395,16 @@
 					<h4>
 						<a href="javascript:return false;">接口地址</a>
 					</h4>
-					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/garage/oneincar</pre></p>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/parking/parkingVideo</pre></p>
 					<h4>
 						<a href="javascript:return false;">示例</a>
 					</h4>
-					<form class="bs-docs-example" action="<%=url%>/garage/oneincar" method="post">
+					<form class="bs-docs-example" action="<%=url%>/parking/parkingVideo" method="post">
 					<label>车位编号</label><input  type="text" name="parkingName" value="1001"/> <br/>
 					<label>相机IP</label><input  type="text" name="cameraIp" value="127.0.0.1"/> <br/>
 					<label>车位状态</label><input  type="text" name="status" value="1"/> <br/>
-					<label>上报时间</label><input  type="text" name="intime" value="2016-04-10 12:10:20"/> <br/>
-					<label>车牌号</label><input  type="text" name="carNo" value="沪A12345"/>  <br/>	
+					<label>上报时间</label><input  type="text" name="inTime" value="2016-04-10 12:10:20"/> <br/>
+					<label>车牌号</label><input  type="text" name="plateNo" value="沪A12345"/>  <br/>	
 							
 						<button type="submit" class="btn">提交</button>
 					</form>
@@ -467,27 +467,27 @@
 					<h4>
 						<a href="javascript:return false;">接口地址</a>
 					</h4>
-					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/garage/incar</pre></p>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/parking/parkingVideos</pre></p>
 					<h4>
 						<a href="javascript:return false;">示例</a>
 					</h4>
-					<form class="bs-docs-example" action="<%=url%>/garage/incar" method="post">
-					<label>上报时间</label><input  type="text" name="intime" value="2016-04-10 12:10:20"/> <br/>
+					<form class="bs-docs-example" action="<%=url%>/parking/parkingVideos" method="post">
+					<label>上报时间</label><input  type="text" name="inTime" value="2016-04-10 12:10:20"/> <br/>
 					<label>车位1:</label><br/>	
-					<label>车位编号</label><input  type="text" name="carnologs[0].parkingName" value="1001"/> (carnologs[0].parkingName)<br/>
-					<label>相机IP</label><input  type="text" name="carnologs[0].cameraIp" value="127.0.0.1"/> (carnologs[0].cameraIp)<br/>
-					<label>车位状态</label><input  type="text" name="carnologs[0].status" value="0"/> (carnologs[0].status)<br/>
-					<label>车牌号</label><input  type="text" name="carnologs[0].carNo" value="沪A12345"/>  (carnologs[0].carNo)<br/>	
+					<label>车位编号</label><input  type="text" name="parkingVideos[0].parkingName" value="1001"/> (parkingVideos[0].parkingName)<br/>
+					<label>相机IP</label><input  type="text" name="parkingVideos[0].cameraIp" value="127.0.0.1"/> (parkingVideos[0].cameraIp)<br/>
+					<label>车位状态</label><input  type="text" name="parkingVideos[0].status" value="0"/> (parkingVideos[0].status)<br/>
+					<label>车牌号</label><input  type="text" name="parkingVideos[0].plateNo" value="沪A12345"/>  (parkingVideos[0].plateNo)<br/>	
 					<label>车位2:</label><br/>					
-					<label>车位编号</label><input  type="text" name="carnologs[1].parkingName" value="1002"/> (carnologs[1].parkingName)<br/>
-					<label>相机IP</label><input  type="text" name="carnologs[1].cameraIp" value="127.0.0.2"/> (carnologs[1].cameraIp)<br/>
-					<label>车位状态</label><input  type="text" name="carnologs[1].status" value="0"/> (carnologs[1].status)<br/>
-					<label>车牌号</label><input  type="text" name="carnologs[1].carNo" value="沪B12345"/>  (carnologs[1].carNo)<br/>
+					<label>车位编号</label><input  type="text" name="parkingVideos[1].parkingName" value="1002"/> (parkingVideos[1].parkingName)<br/>
+					<label>相机IP</label><input  type="text" name="parkingVideos[1].cameraIp" value="127.0.0.2"/> (parkingVideos[1].cameraIp)<br/>
+					<label>车位状态</label><input  type="text" name="parkingVideos[1].status" value="0"/> (parkingVideos[1].status)<br/>
+					<label>车牌号</label><input  type="text" name="parkingVideos[1].plateNo" value="沪B12345"/>  (parkingVideos[1].plateNo)<br/>
 					<label>车位X:依次类推<br/>					
-					<label>车位编号</label><input  type="text" name="carnologs[2].parkingName" value="1003"/> (carnologs[X].parkingName)<br/>
-					<label>相机IP</label><input  type="text" name="carnologs[2].cameraIp" value="127.0.0.3"/> (carnologs[X].cameraIp)<br/>
-					<label>车位状态</label><input  type="text" name="carnologs[2].status" value="1"/> (carnologs[X].status)<br/>
-					<label>车牌号</label><input  type="text" name="carnologs[2].carNo" value="沪C12345"/>  (carnologs[X].carNo)<br/>	
+					<label>车位编号</label><input  type="text" name="parkingVideos[2].parkingName" value="1003"/> (parkingVideos[X].parkingName)<br/>
+					<label>相机IP</label><input  type="text" name="parkingVideos[2].cameraIp" value="127.0.0.3"/> (parkingVideos[X].cameraIp)<br/>
+					<label>车位状态</label><input  type="text" name="parkingVideos[2].status" value="1"/> (parkingVideos[X].status)<br/>
+					<label>车牌号</label><input  type="text" name="parkingVideos[2].plateNo" value="沪C12345"/>  (parkingVideos[X].plateNo)<br/>	
 						<button type="submit" class="btn">提交</button>
 					</form>
 					<h4>
@@ -502,22 +502,22 @@
 									<th >说明</th>
 								</tr>
 								<tr>
-									<td>carnologs[0].parkingName</td>
+									<td>parkingVideos[0].parkingName</td>
 									<td>是</td>
 									<td>车位编号[X]为数据索引</td>
 								</tr>
 								<tr>
-									<td>carnologs[0].cameraIp</td>
+									<td>parkingVideos[0].cameraIp</td>
 									<td>是</td>
 									<td>相机IP</td>
 								</tr>
 									<tr>
-									<td>carnologs[0].status</td>
+									<td>parkingVideos[0].status</td>
 									<td>是</td>
 									<td>车位状态</td>
 								</tr>
 								 <tr>
-									<td>carnologs[0].carNo</td>
+									<td>parkingVideos[0].carNo</td>
 									<td>是</td>
 									<td>车牌号</td>
 								</tr>

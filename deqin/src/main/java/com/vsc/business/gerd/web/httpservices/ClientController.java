@@ -15,17 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.vsc.business.gerd.entity.work.ParkingGarage;
-import com.vsc.business.gerd.entity.work.ParkingGarageCarnoLog;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockEventLog;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.entity.work.ParkingOrder;
-import com.vsc.business.gerd.service.work.ParkingGarageCarnoLogService;
+import com.vsc.business.gerd.entity.work.ParkingVideo;
 import com.vsc.business.gerd.service.work.ParkingGarageService;
 import com.vsc.business.gerd.service.work.ParkingLockEventLogService;
 import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.business.gerd.service.work.ParkingOrderService;
+import com.vsc.business.gerd.service.work.ParkingVideoService;
 import com.vsc.business.gerd.vform.work.GarageIncarForm;
 import com.vsc.constants.Constants;
 
@@ -51,7 +50,7 @@ public class ClientController extends HttpServiceBaseController {
 	@Autowired
 	private ParkingLockEventLogService parkingLockEventLogService;
 	@Autowired
-	private ParkingGarageCarnoLogService parkingGarageCarnoLogService;
+	private ParkingVideoService parkingVideoService;
 
 	@RequestMapping(value = "")
 	public String index(Model model) {
@@ -62,8 +61,8 @@ public class ClientController extends HttpServiceBaseController {
 	 * 车辆进入接口 *
 	 * 
 	 */
-	@RequestMapping(value = "order/inschool")
-	public ModelAndView service1(@Valid ParkingOrder parkingOrder,
+	@RequestMapping(value = "order/parkingIn")
+	public ModelAndView parkingIn(@Valid ParkingOrder parkingOrder,
 			String inPlateNo,
 			HttpServletRequest request) {
 		parkingOrder.setPlateNo(inPlateNo);
@@ -76,8 +75,8 @@ public class ClientController extends HttpServiceBaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "order/outschool")
-	public ModelAndView outSchool(@Valid ParkingOrder parkingOrder,
+	@RequestMapping(value = "order/parkingOut")
+	public ModelAndView parkingOut(@Valid ParkingOrder parkingOrder,
 			String outPlateNo,
 			HttpServletRequest request) {
 		boolean flag=false;
@@ -97,8 +96,8 @@ public class ClientController extends HttpServiceBaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "order/pay")
-	public ModelAndView orderPay(@Valid ParkingOrder parkingOrder, 
+	@RequestMapping(value = "order/parkingPay")
+	public ModelAndView parkingPay(@Valid ParkingOrder parkingOrder, 
 			String payPlateNo,
 			HttpServletRequest request) {
 		parkingOrder.setPlateNo(payPlateNo);
@@ -109,81 +108,38 @@ public class ClientController extends HttpServiceBaseController {
 	}
 	
 	/**
-	 * 单个上报车位有车状态 *
+	 * 全视频 单个上报车位有车状态 *
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "garage/oneincar")
-	public ModelAndView service2(@Valid ParkingGarageCarnoLog parkingGarageCarnoLog, HttpServletRequest request) {
-		if (parkingGarageCarnoLog != null) {
-			parkingGarageCarnoLog.setCreateTime(new Date());
-			parkingGarageCarnoLogService.save(parkingGarageCarnoLog);
-
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("isOnline", parkingGarageCarnoLog.getStatus());
-			params.put("carNo", parkingGarageCarnoLog.getCarNo());
-			params.put("intime", parkingGarageCarnoLog.getIntime());
-			params.put("name", parkingGarageCarnoLog.getParkingName());
-			this.parkingGarageService.updateParkingGarageByName(params);
+	@RequestMapping(value = "parking/parkingVideo")
+	public ModelAndView service2(@Valid ParkingVideo parkingVideo, HttpServletRequest request) {
+		if (parkingVideo != null) {
+			parkingVideo.setCreateTime(new Date());
+			parkingVideoService.save(parkingVideo);
 		}
 
 		String jsonstr = "\"true\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 
+	
 	/**
-	 * 批量上报车位有车状态 *
+	 * 全视频 批量上报车位有车状态 *
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "garage/incar")
+	@RequestMapping(value = "parking/parkingVideos")
 	public ModelAndView service3(@Valid GarageIncarForm vo, HttpServletRequest request) {
-		if (vo.getCarnologs() != null) {
-			ParkingGarageCarnoLog[] vl = vo.getCarnologs();
+		if (vo.getParkingVideos()!= null) {
+			ParkingVideo[] vl = vo.getParkingVideos();
 			Date now = new Date();
 			for (int i = 0; i < vl.length; i++) {
 				if (vl[i] != null) {
-					ParkingGarageCarnoLog parkingGarageCarnoLog = vl[i];
-					parkingGarageCarnoLog.setCreateTime(now);
-					parkingGarageCarnoLog.setIntime(vo.getIntime());
-					parkingGarageCarnoLogService.save(parkingGarageCarnoLog);
-
-					Map<String, Object> params = new HashMap<String, Object>();
-					params.put("isOnline", parkingGarageCarnoLog.getStatus());
-					params.put("carNo", parkingGarageCarnoLog.getCarNo());
-					params.put("intime", parkingGarageCarnoLog.getIntime());
-					params.put("name", parkingGarageCarnoLog.getParkingName());
-					this.parkingGarageService.updateParkingGarageByName(params);
-				}
-			}
-		}
-
-		String jsonstr = "\"true\"";
-		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
-	}
-
-	/**
-	 * 批量上报车位有车状态 *
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "garage/campus")
-	public ModelAndView service4(@Valid GarageIncarForm vo, HttpServletRequest request) {
-		if (vo.getCarnologs() != null) {
-			ParkingGarageCarnoLog[] vl = vo.getCarnologs();
-			Date now = new Date();
-			for (int i = 0; i < vl.length; i++) {
-				if (vl[i] != null) {
-					ParkingGarageCarnoLog parkingGarageCarnoLog = vl[i];
-					parkingGarageCarnoLog.setCreateTime(now);
-					parkingGarageCarnoLog.setIntime(vo.getIntime());
-					parkingGarageCarnoLogService.save(parkingGarageCarnoLog);
-
-					Map<String, Object> params = new HashMap<String, Object>();
-					params.put("isOnline", parkingGarageCarnoLog.getStatus());
-					params.put("carNo", parkingGarageCarnoLog.getCarNo());
-					params.put("intime", parkingGarageCarnoLog.getIntime());
-					this.parkingGarageService.updateParkingGarageByName(params);
+					ParkingVideo parkingVideo = vl[i];
+					parkingVideo.setCreateTime(now);
+					parkingVideo.setInTime(vo.getIntime());
+					parkingVideoService.save(parkingVideo);
 				}
 			}
 		}
@@ -211,20 +167,6 @@ public class ClientController extends HttpServiceBaseController {
 
 		ParkingLock vm = vl.get(0);
 
-		ParkingGarage parkingGarage = vm.getParkingGarage();
-
-		Date now = new Date();
-		parkingGarage.setIsOnline(Boolean.TRUE);
-		parkingGarage.setIntime(now);
-		parkingGarageService.save(parkingGarage);
-
-		ParkingGarageCarnoLog parkingGarageCarnoLog = new ParkingGarageCarnoLog();
-		parkingGarageCarnoLog.setParkingGarage(parkingGarage);
-		parkingGarageCarnoLog.setCreateTime(now);
-		parkingGarageCarnoLog.setIntime(now);
-		parkingGarageCarnoLog.setParkingName(parkingGarage.getName());
-
-		parkingGarageCarnoLogService.save(parkingGarageCarnoLog);
 
 		this.parkingLockService.reverse(new Long[] { vm.getId() }, "02", this.getCurrentShiroUser() == null ? null : this.getCurrentShiroUser().id, ParkingLockOperationEvent.SOURCETYPE_PC);
 
@@ -249,21 +191,6 @@ public class ClientController extends HttpServiceBaseController {
 		}
 
 		ParkingLock vm = vl.get(0);
-
-		ParkingGarage parkingGarage = vm.getParkingGarage();
-
-		Date now = new Date();
-		parkingGarage.setIsOnline(Boolean.TRUE);
-		parkingGarage.setIntime(now);
-		parkingGarageService.save(parkingGarage);
-
-		ParkingGarageCarnoLog parkingGarageCarnoLog = new ParkingGarageCarnoLog();
-		parkingGarageCarnoLog.setParkingGarage(parkingGarage);
-		parkingGarageCarnoLog.setCreateTime(now);
-		parkingGarageCarnoLog.setIntime(now);
-		parkingGarageCarnoLog.setParkingName(parkingGarage.getName());
-
-		parkingGarageCarnoLogService.save(parkingGarageCarnoLog);
 
 		this.parkingLockService.reverse(new Long[] { vm.getId() }, "01", this.getCurrentShiroUser() == null ? null : this.getCurrentShiroUser().id, ParkingLockOperationEvent.SOURCETYPE_PC);
 

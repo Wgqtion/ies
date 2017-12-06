@@ -4,12 +4,6 @@
 <sqlMap> 
 	
 	
-	<!-- 根据车位编号修改停车位状态 -->
-	<update id="updateParkingGarageByName.update" parameterClass="map">
-		update t_parking_garage set is_online = #isOnline#,car_no=#carNo#,intime=#intime#
-			where name=#name#
-	</update>
-	
 	<!-- 更新校区管理停车位数量 -->
 	<update id="updateParkinglotCarNumber.update" parameterClass="map">
 		UPDATE T_PARKING_LOT TPL SET TPL.CAR_NUMBER = 

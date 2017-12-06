@@ -152,7 +152,7 @@
 						<ul class="tree treeFolder">
 							<li><a>全视频管理</a>
 							<ul>
-								<li><a title="全视频日志" href="${ctx}/work/parkinggaragecarnolog" target="navTab" rel="work_parkinggaragecarnolog">全视频日志</a></li>
+								<li><a title="全视频日志" href="${ctx}/work/parkingvideo" target="navTab" rel="work_parkingvideo">全视频日志</a></li>
 							</ul>
 							</li>
 						</ul>

@@ -34,7 +34,6 @@ import com.google.common.collect.Maps;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.service.security.AccountService;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
-import com.vsc.business.gerd.entity.work.ParkingGarageCarnoLog;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.entity.work.ParkingLot;
@@ -44,7 +43,6 @@ import com.vsc.business.gerd.entity.work.WeixinAttest;
 import com.vsc.business.gerd.entity.work.Yuding;
 import com.vsc.business.gerd.entity.work.YudingSetting;
 import com.vsc.business.gerd.entity.work.Yuyue;
-import com.vsc.business.gerd.service.work.ParkingGarageCarnoLogService;
 import com.vsc.business.gerd.service.work.ParkingGarageService;
 import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.business.gerd.service.work.ParkingLotAreaService;
@@ -91,10 +89,6 @@ public class WeixinController extends HttpServiceBaseController {
     //上锁
     @Autowired
     private ParkingLockService parkingLockService;
-
-    //车位地锁日志
-    @Autowired
-    private ParkingGarageCarnoLogService parkingGarageCarnoLogService;
 
     //用户
     @Autowired
@@ -732,16 +726,9 @@ public class WeixinController extends HttpServiceBaseController {
     //开关锁
     private String locked(List<ParkingLock> vl, String state, Long userId) {
         ParkingLock vm = vl.get(0);
-        Date now = new Date();
         ParkingGarage parkingGarage = vm.getParkingGarage();
         fakeLocked(parkingGarage);
 
-        ParkingGarageCarnoLog parkingGarageCarnoLog = new ParkingGarageCarnoLog();
-        parkingGarageCarnoLog.setParkingGarage(parkingGarage);
-        parkingGarageCarnoLog.setCreateTime(now);
-        parkingGarageCarnoLog.setIntime(now);
-        parkingGarageCarnoLog.setParkingName(parkingGarage.getName());
-        parkingGarageCarnoLogService.save(parkingGarageCarnoLog);
         return this.parkingLockService.reverse(new Long[]{vm.getId()}, state, userId, ParkingLockOperationEvent.SOURCETYPE_PHONE);
     }
 

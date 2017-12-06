@@ -38,10 +38,6 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	public JpaSpecificationExecutor<ParkingGarage> getJpaSpecificationExecutorDao() {
 		return this.parkingGarageDao;
 	}
-
-	public void updateParkingGarageByName(Map<String, Object> params) {
-		this.ibatisQueryDao.update("updateParkingGarageByName.update", params);
-	}
 	
 	/**
 	 * 预约成功后,修改是否预约为1,预约车牌号为预约车牌号码

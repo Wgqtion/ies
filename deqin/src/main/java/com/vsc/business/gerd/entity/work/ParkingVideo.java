@@ -2,8 +2,6 @@ package com.vsc.business.gerd.entity.work;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,20 +10,38 @@ import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
 
 /**
- * 
- * @author jerry
- * 
+ * 全视频实体类
+ * @author XiangXiaoLin
+ *
  */
 @Entity
-@Table(name = Constants.TABLE_PREFIX + "parking_garage_carno_log")
-public class ParkingGarageCarnoLog extends IdEntity {
+@Table(name = Constants.TABLE_PREFIX + "PARKING_VIDEO")
+public class ParkingVideo extends IdEntity {
 
-	private ParkingGarage parkingGarage;// 车位编号
-	private java.lang.String parkingName;// 车位编号
+	/**
+	 * 车位名称
+	 */
+	private java.lang.String parkingName;
+	/**
+	 * 相机IP
+	 */
 	private java.lang.String cameraIp;
+	
+	/**
+	 * 车位状态
+	 */
 	private Integer status;
-	private java.lang.String carNo;
-	private java.util.Date intime;
+	/**
+	 * 车牌号
+	 */
+	private java.lang.String plateNo;
+	/**
+	 * 进入时间
+	 */
+	private java.util.Date inTime;
+	/**
+	 * 创建时间
+	 */
 	private java.util.Date createTime;
 
 	/**
@@ -64,38 +80,28 @@ public class ParkingGarageCarnoLog extends IdEntity {
 		this.status = value;
 	}
 
+	
 	/**
 	 * @return
 	 */
-	@Column(name = "CAR_NO")
-	public java.lang.String getCarNo() {
-		return this.carNo;
+	@Column(name = "PLATE_NO")
+	public java.lang.String getPlateNo() {
+		return plateNo;
 	}
 
-	public void setCarNo(java.lang.String value) {
-		this.carNo = value;
+	public void setPlateNo(java.lang.String plateNo) {
+		this.plateNo = plateNo;
 	}
-
-	@ManyToOne
-	@JoinColumn(name = "PARKING_GARAGE_ID")
-	public ParkingGarage getParkingGarage() {
-		return parkingGarage;
-	}
-
-	public void setParkingGarage(ParkingGarage parkingGarage) {
-		this.parkingGarage = parkingGarage;
-	}
-
 	/**
 	 * @return
 	 */
-	@Column(name = "INTIME")
-	public java.util.Date getIntime() {
-		return this.intime;
+	@Column(name = "IN_TIME")
+	public java.util.Date getInTime() {
+		return inTime;
 	}
 
-	public void setIntime(java.util.Date value) {
-		this.intime = value;
+	public void setInTime(java.util.Date inTime) {
+		this.inTime = inTime;
 	}
 
 	/**

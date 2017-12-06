@@ -1,13 +1,13 @@
 package com.vsc.business.gerd.repository.work;
 
-import com.vsc.business.gerd.entity.work.ParkingGarageCarnoLog;
+import com.vsc.business.gerd.entity.work.ParkingVideo;
 import com.vsc.modules.repository.BaseDao;
 
 /**
  * 
- * @author jerry
+ * @author XiangXiaoLin
  *
  */
-public interface ParkingGarageCarnoLogDao extends BaseDao<ParkingGarageCarnoLog> {
+public interface ParkingVideoDao extends BaseDao<ParkingVideo> {
 
 }

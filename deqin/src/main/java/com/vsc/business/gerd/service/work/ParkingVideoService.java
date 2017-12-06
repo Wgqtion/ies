@@ -8,31 +8,31 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vsc.business.gerd.entity.work.ParkingGarageCarnoLog;
-import com.vsc.business.gerd.repository.work.ParkingGarageCarnoLogDao;
+import com.vsc.business.gerd.entity.work.ParkingVideo;
+import com.vsc.business.gerd.repository.work.ParkingVideoDao;
 import com.vsc.modules.service.BaseService;
 
 /**
  * 
- * @author jerry
+ * @author XiangXiaoLin
  *
  */
 @Service
 @Transactional
-public class ParkingGarageCarnoLogService extends BaseService<ParkingGarageCarnoLog> {
-	private static Logger logger = LoggerFactory.getLogger(ParkingGarageCarnoLogService.class);
+public class ParkingVideoService extends BaseService<ParkingVideo> {
+	private static Logger logger = LoggerFactory.getLogger(ParkingVideoService.class);
 
 	@Autowired
-	private ParkingGarageCarnoLogDao parkingGarageCarnoLogDao;
+	private ParkingVideoDao parkingVideoDao;
 
 	@Override
-	public PagingAndSortingRepository<ParkingGarageCarnoLog, Long> getPagingAndSortingRepositoryDao() {
-		return this.parkingGarageCarnoLogDao;
+	public PagingAndSortingRepository<ParkingVideo, Long> getPagingAndSortingRepositoryDao() {
+		return this.parkingVideoDao;
 	}
 
 	@Override
-	public JpaSpecificationExecutor<ParkingGarageCarnoLog> getJpaSpecificationExecutorDao() {
-		return this.parkingGarageCarnoLogDao;
+	public JpaSpecificationExecutor<ParkingVideo> getJpaSpecificationExecutorDao() {
+		return this.parkingVideoDao;
 	}
 
 }
