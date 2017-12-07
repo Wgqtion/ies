@@ -350,7 +350,7 @@ public class WeixinController extends HttpServiceBaseController {
         ParkingLock parkingLock=this.parkingLockService.findUniqueBy("parkingGarage", parkingId);
         parkingGarage.setParkingLock(parkingLock);
         
-        String[] isNotIgnoreFieldNames = {"id", "name", "parkingLotArea", "description", "garageType", "xcoordinate", "ycoordinate", "isOnline", "isEnabled", "isYuding","isCarOn","isOpen"};
+        String[] isNotIgnoreFieldNames = {"id", "name", "parkingLotArea", "description", "garageType", "xcoordinate", "ycoordinate", "isOnline", "isEnabled","isCarOn","isOpen"};
         String jsonstr = JSONUtil.toJSONString(parkingGarage, isNotIgnoreFieldNames, false, featureNames);
         // TODO 查询剩余车位
         return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
@@ -372,7 +372,7 @@ public class WeixinController extends HttpServiceBaseController {
         if (parkingGarages == null || parkingGarages.isEmpty()) {
             return this.ajaxDoneError("没有找到车位信息");
         }
-        String[] isNotIgnoreFieldNames = {"id", "name", "parkingLotArea", "description", "garageType", "xcoordinate", "ycoordinate", "isOnline", "isEnabled", "isYuding"};
+        String[] isNotIgnoreFieldNames = {"id", "name", "parkingLotArea", "description", "garageType", "xcoordinate", "ycoordinate", "isOnline", "isEnabled"};
         String jsonstr = JSONUtil.toJSONString(parkingGarages, isNotIgnoreFieldNames, false, featureNames);
         // TODO 查询剩余车位
         return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
@@ -513,8 +513,6 @@ public class WeixinController extends HttpServiceBaseController {
         if (userId != null && !userId.equals(yuding.getUser().getId())) {
             return this.ajaxDoneError("预约取消失败，没有权限");
         }
-        // 预约成功修改车位信息-将是否预约修改为1,预约车牌号添加上
-        Map<String, Object> params = Maps.newHashMap();
 
         if (yuding.getIsDelete()) {
             return this.ajaxDoneError("已被取消");

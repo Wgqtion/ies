@@ -60,14 +60,12 @@
 				}
 			});
 			
-			
+
+			setTimeout(function (){
+				$("#homeDiv").load("${ctx}/homeView");
+			},500);
 		});
 		
-		
-		$(function(){
-			//homeDiv
-			$("#homeDiv").load("${ctx}/homeView");
-		});
 	</script>
 </head>
 <body scroll="no">

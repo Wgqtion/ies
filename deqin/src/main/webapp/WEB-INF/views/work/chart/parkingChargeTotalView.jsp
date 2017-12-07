@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/inc/include.inc.jsp"%>
 <script type="text/javascript">
-var myChart;
+var parkingChargeTotalChart;
 $(function () {
 	
 	// 基于准备好的dom，初始化echarts图表
-    myChart = echarts.init(document.getElementById('parkingChargeTotal_div')); 
+    parkingChargeTotalChart = echarts.init(document.getElementById('parkingChargeTotal_div')); 
     
     var option = {
         tooltip: {
@@ -43,7 +43,7 @@ $(function () {
     };
 
     // 为echarts对象加载数据 
-    myChart.setOption(option); 
+    parkingChargeTotalChart.setOption(option); 
 	
     parkingChargeTotalData();
 });
@@ -65,8 +65,8 @@ function parkingChargeTotalData(){
 					yspayamount.push(result[i].yspayamount);
 					sspayamount.push(result[i].sspayamount);
 				}
-				myChart.hideLoading(); //隐藏加载动画
-				myChart.setOption({ //加载数据图表
+				parkingChargeTotalChart.hideLoading(); //隐藏加载动画
+				parkingChargeTotalChart.setOption({ //加载数据图表
 					xAxis : {
 						data : names
 					},

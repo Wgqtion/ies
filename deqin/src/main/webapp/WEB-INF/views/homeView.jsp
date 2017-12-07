@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/inc/include.inc.jsp"%>
 <script type="text/javascript">
-var myChart;
+var homeChart;
 $(function() {
 	// 基于准备好的dom，初始化echarts图表
-	myChart = echarts
+	homeChart = echarts
 			.init(document.getElementById('homeView_div'));
 	var option = {
 		tooltip : {
@@ -41,10 +41,12 @@ $(function() {
 		series : []
 	};
 	// 为echarts对象加载数据 
-	myChart.setOption(option);
+	homeChart.setOption(option);
 	
 	homeViewData();
 });
+
+
 function homeViewData() {
 	var formData = $("#homeViewForm").serialize();
 	$.ajax({
@@ -62,8 +64,8 @@ function homeViewData() {
 					innums.push(result[i].innum);
 					outnums.push(result[i].outnum);
 				}
-				myChart.hideLoading(); //隐藏加载动画
-				myChart.setOption({ //加载数据图表
+				homeChart.hideLoading(); //隐藏加载动画
+				homeChart.setOption({ //加载数据图表
 					xAxis : {
 						data : names
 					},

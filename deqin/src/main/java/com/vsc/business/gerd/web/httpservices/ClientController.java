@@ -44,8 +44,6 @@ public class ClientController extends HttpServiceBaseController {
 	@Autowired
 	private ParkingOrderService parkingOrderService;
 	@Autowired
-	private ParkingGarageService parkingGarageService;
-	@Autowired
 	private ParkingLockService parkingLockService;
 	@Autowired
 	private ParkingLockEventLogService parkingLockEventLogService;
