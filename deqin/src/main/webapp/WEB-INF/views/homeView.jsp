@@ -3,6 +3,19 @@
 <script type="text/javascript">
 var homeChart;
 $(function() {
+	
+	$('input.date').each(function(){
+		var $this = $(this);
+		var opts = {};
+		if ($this.attr("dateFmt")) opts.pattern = $this.attr("dateFmt");
+		if ($this.attr("minDate")) opts.minDate = $this.attr("minDate");
+		if ($this.attr("maxDate")) opts.maxDate = $this.attr("maxDate");
+		if ($this.attr("mmStep")) opts.mmStep = $this.attr("mmStep");
+		if ($this.attr("ssStep")) opts.ssStep = $this.attr("ssStep");
+		$this.datepicker(opts);
+	});
+	
+	
 	// 基于准备好的dom，初始化echarts图表
 	homeChart = echarts
 			.init(document.getElementById('homeView_div'));
