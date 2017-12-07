@@ -51,7 +51,6 @@
 				<th <vsc:orderField name="ycoordinate"/>>Y坐标</th>
 				<th <vsc:orderField name="garageType"/>>车位类型</th>			
 				<th <vsc:orderField name="isEnabled"/>>状态</th> 
-				<th <vsc:orderField name="carNo"/>>车牌号</th> 
 				
 			</tr>
 		</thead>
@@ -68,7 +67,6 @@
 					<td>${varitem.ycoordinate}</td>
 					<td><s:message code="parkinggarage.garageType.${varitem.garageType}"/></td>
 					<td><s:message code="parkinggarage.isenabled.${varitem.isEnabled}"/></td>		
-				<td>${varitem.carNo}</td>
 				</tr>
 			</c:forEach>
 		</tbody>

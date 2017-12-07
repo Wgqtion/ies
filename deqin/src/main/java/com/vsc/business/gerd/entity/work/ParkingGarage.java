@@ -29,7 +29,6 @@ public class ParkingGarage extends IdEntity {
 	private ParkingLotArea parkingLotArea;
 	private Integer garageType;
 	private java.lang.String description;
-	private java.lang.String carNo;// 车牌号
 	private java.lang.String xcoordinate;//x坐标
 	private java.lang.String ycoordinate;//y坐标
 
@@ -167,18 +166,6 @@ public class ParkingGarage extends IdEntity {
 
 	public void setDescription(java.lang.String value) {
 		this.description = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "CAR_NO")
-	public java.lang.String getCarNo() {
-		return this.carNo;
-	}
-
-	public void setCarNo(java.lang.String value) {
-		this.carNo = value;
 	}
 
 	@Override
