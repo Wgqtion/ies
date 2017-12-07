@@ -2,8 +2,55 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap> 
+	
+<!-- 停车场余位统计 -->
+<select id="chart.parkingSurplusTotal.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
+	SELECT
+		PLNAME AS name,"SUM"(STATUS) AS surplustotal
+	FROM
+		(
+			SELECT
+				NVL(PL."NAME",'未分配') AS PLNAME,
+				NVL(PL."ID",-1) AS PLID,
+				PV.STATUS
+			FROM
+				(
+					SELECT
+						*
+					FROM
+						(
+							SELECT
+								PARKING_NAME,
+								CREATE_TIME,
+								CAMERA_IP,
+								STATUS,
+								PLATE_NO,
+								IN_TIME,
+								ROW_NUMBER () OVER (
+									PARTITION BY PARKING_NAME
+									ORDER BY
+										CREATE_TIME DESC,
+										"ID" DESC
+								) rn
+							FROM
+								T_PARKING_VIDEO
+						) PV
+					WHERE
+						rn = 1
+				) PV
+			LEFT JOIN T_PARKING_GARAGE PG ON PG."NAME" = PV.PARKING_NAME
+			LEFT JOIN T_PARKING_LOT_AREA PLA ON PG.PARKING_LOT_AREA_ID = PLA."ID"
+			LEFT JOIN T_PARKING_LOT PL ON PLA.PARKING_LOT_ID = PL."ID"
+		) SurplusTotal
+	GROUP BY 
+		PLID,PLNAME
+	ORDER BY 
+		PLID DESC
+</select>
+	
+	
 	<!-- 停车场进出次数统计-->
-	<select id="chart.carInOutTotal.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
+	<select id="chart.parkingInOutTotal.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
 		SELECT 
 			PT.$selectType$NAME AS name,INCAR.innum,OUTCAR.outnum
 		FROM
@@ -64,7 +111,7 @@
 	</select>
 	
 	<!-- 停车场收费统计-->
-	<select id="chart.carChargeTotal.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
+	<select id="chart.parkingChargeTotal.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
 	
 		SELECT 
 			PT.$selectType$NAME AS name,
@@ -130,8 +177,8 @@
 				NVL($selectType$."NAME",'未分配')
 		)  PT 
 		GROUP BY 
-				PT.$selectType$NAME
-		ORDER BY PT.$selectType$NAME
+				PT.$selectType$ID,PT.$selectType$NAME
+		ORDER BY PT.$selectType$ID DESC
 	</select>
 	
 </sqlMap>

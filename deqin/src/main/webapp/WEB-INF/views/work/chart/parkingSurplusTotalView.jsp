@@ -1,24 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/inc/include.inc.jsp"%>
 <script type="text/javascript">
-var homeChart;
+var parkingSurplusTotalChart;
 $(function() {
-	
-	$('input.date').each(function(){
-		var $this = $(this);
-		var opts = {};
-		if ($this.attr("dateFmt")) opts.pattern = $this.attr("dateFmt");
-		if ($this.attr("minDate")) opts.minDate = $this.attr("minDate");
-		if ($this.attr("maxDate")) opts.maxDate = $this.attr("maxDate");
-		if ($this.attr("mmStep")) opts.mmStep = $this.attr("mmStep");
-		if ($this.attr("ssStep")) opts.ssStep = $this.attr("ssStep");
-		$this.datepicker(opts);
-	});
-	
-	
 	// 基于准备好的dom，初始化echarts图表
-	homeChart = echarts
-			.init(document.getElementById('homeView_div'));
+	parkingSurplusTotalChart = echarts
+			.init(document.getElementById('parkingSurplusTotal_div'));
 	var option = {
 		tooltip : {
 			show : true,
@@ -54,14 +41,12 @@ $(function() {
 		series : []
 	};
 	// 为echarts对象加载数据 
-	homeChart.setOption(option);
+	parkingSurplusTotalChart.setOption(option);
 	
-	homeViewData();
+	parkingSurplusTotalData();
 });
-
-
-function homeViewData() {
-	var formData = $("#homeViewForm").serialize();
+function parkingSurplusTotalData() {
+	var formData = $("#parkingSurplusTotalForm").serialize();
 	$.ajax({
 		url : "${ctx}/work/chart/parkingSurplusTotalData",
 		type : "post",
@@ -75,8 +60,8 @@ function homeViewData() {
 					names.push(result[i].name);
 					surplustotal.push(result[i].surplustotal);
 				}
-				homeChart.hideLoading(); //隐藏加载动画
-				homeChart.setOption({ //加载数据图表
+				parkingSurplusTotalChart.hideLoading(); //隐藏加载动画
+				parkingSurplusTotalChart.setOption({ //加载数据图表
 					xAxis : {
 						data : names
 					},
@@ -99,14 +84,14 @@ function homeViewData() {
 
 
 <div style="width: 100%;">
-<div class="pageHeader">
-	<form id="homeViewForm" action="#">
+<div class="pageHeader" >
+	<form id="parkingSurplusTotalForm" action="#">
 		<table>
 			<tr >
-				<td width="50"><button type="button" onclick="homeViewData();">统计</button></td>
+				<td width="50"><button type="button" onclick="parkingSurplusTotalData();">统计</button></td>
 			</tr>
 		</table>
 	</form>
 </div>
-<div id="homeView_div" class="pageContent" style="height:400px;"></div>
+<div id="parkingSurplusTotal_div" class="pageContent" style="height:400px;"></div>
 </div>

@@ -37,6 +37,36 @@ public class ChartController extends BaseController {
 	@Autowired
 	private ParkingLotService parkingLotService;
 
+	/**
+	 * 停车场余位统计图表 页面
+	 */
+	@RequestMapping(value = "parkingSurplusTotalView")
+	public String parkingSurplusTotalView(Model model, ReportView reportView, HttpServletRequest request) {
+		Date now = new Date();
+		reportView.setStartDate(DateFormatUtils.format(now, "yyyy-MM-dd"));
+		reportView.setEndDate(reportView.getStartDate());
+
+		Map<String, Object> filterParams = new HashMap<String, Object>();
+		filterParams.put("EQ_isEnabled", 1);
+		List<ParkingLot> lotAreaList = parkingLotService.findList(filterParams);
+
+		model.addAttribute("reportView", reportView);
+		model.addAttribute("lotAreaList", lotAreaList);
+		return PATH + Constants.SPT + "parkingSurplusTotalView";
+	}
+	
+	/**
+	 * 停车场进出次数统计图表 数据
+	 */
+	@RequestMapping(value = "parkingSurplusTotalData")
+	@ResponseBody
+	public Map<String, Object> parkingSurplusTotalData(ReportView reportView, HttpServletRequest request) {
+		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.parkingSurplusTotal.total", reportView);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("status", "success");
+		map.put("data", lm);
+		return map;
+	}
 	
 	/**
 	 * 停车场进出次数统计图表 页面
@@ -66,7 +96,7 @@ public class ChartController extends BaseController {
 		if (StringUtils.isNotBlank(reportView.getSelectId())) {
 			reportView.setSelectType("PAS");
 		}
-		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.carInOutTotal.total", reportView);
+		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.parkingInOutTotal.total", reportView);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "success");
 		map.put("data", lm);
@@ -101,7 +131,7 @@ public class ChartController extends BaseController {
 		if (StringUtils.isNotBlank(reportView.getSelectId())) {
 			reportView.setSelectType("PAS");
 		}
-		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.carChargeTotal.total",
+		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.parkingChargeTotal.total",
 				reportView);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "success");
@@ -109,21 +139,4 @@ public class ChartController extends BaseController {
 		return map;
 	}
 	
-	/**
-	 * 停车场余位统计图表 页面
-	 */
-	@RequestMapping(value = "parkingSurplusTotalView")
-	public String parkingSurplusTotalView(Model model, ReportView reportView, HttpServletRequest request) {
-		Date now = new Date();
-		reportView.setStartDate(DateFormatUtils.format(now, "yyyy-MM-dd"));
-		reportView.setEndDate(reportView.getStartDate());
-
-		Map<String, Object> filterParams = new HashMap<String, Object>();
-		filterParams.put("EQ_isEnabled", 1);
-		List<ParkingLot> lotAreaList = parkingLotService.findList(filterParams);
-
-		model.addAttribute("reportView", reportView);
-		model.addAttribute("lotAreaList", lotAreaList);
-		return PATH + Constants.SPT + "parkingSurplusTotalView";
-	}
 }
