@@ -23,11 +23,9 @@ public class ParkingGarage extends IdEntity {
 
 	private java.lang.String code;
 	private java.lang.String name;//车位编号
-	private java.lang.String ipAddress;//节点编号
 	private java.util.Date createTime;
 	private Boolean isEnabled=Boolean.TRUE;
 	private ParkingLotArea parkingLotArea;
-	private Integer garageType;
 	private java.lang.String description;
 	private java.lang.String xcoordinate;//x坐标
 	private java.lang.String ycoordinate;//y坐标
@@ -98,18 +96,6 @@ public class ParkingGarage extends IdEntity {
 	/**
 	 * @return
 	 */
-	@Column(name = "IP_ADDRESS")
-	public java.lang.String getIpAddress() {
-		return this.ipAddress;
-	}
-
-	public void setIpAddress(java.lang.String value) {
-		this.ipAddress = value;
-	}
-
-	/**
-	 * @return
-	 */
 	@Column(name = "CREATE_TIME")
 	public java.util.Date getCreateTime() {
 		return this.createTime;
@@ -142,18 +128,6 @@ public class ParkingGarage extends IdEntity {
 
 	public void setParkingLotArea(ParkingLotArea value) {
 		this.parkingLotArea = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "GARAGE_TYPE")
-	public Integer getGarageType() {
-		return this.garageType;
-	}
-
-	public void setGarageType(Integer value) {
-		this.garageType = value;
 	}
 
 	/**

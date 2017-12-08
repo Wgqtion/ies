@@ -20,7 +20,6 @@ import com.vsc.business.gerd.entity.work.ParkingLockEventLog;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.entity.work.ParkingOrder;
 import com.vsc.business.gerd.entity.work.ParkingVideo;
-import com.vsc.business.gerd.service.work.ParkingGarageService;
 import com.vsc.business.gerd.service.work.ParkingLockEventLogService;
 import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.business.gerd.service.work.ParkingOrderService;

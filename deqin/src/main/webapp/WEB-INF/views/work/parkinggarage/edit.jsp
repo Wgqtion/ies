@@ -18,16 +18,9 @@
 				</tr>
 				<tr>
 					<td class="fieldName">停车位编号:</td>
-					<td class="fieldInput"><label><input type="text" id="name" name="name" value="${vm.name}" validate="{required:true}" /></label><span for="name" generated="true" style="display: none" class="error"></span></td>
-					<td class="fieldName">车位类型:</td>
-					<td class="fieldInput"><label><form:radiobutton path="vm.garageType" value="0" validate="{required:true}" /> <s:message code="parkinggarage.garageType.0" /> </label> <label> <form:radiobutton path="vm.garageType" value="1" /> <s:message
-								code="parkinggarage.garageType.1" />
-					</label> <span for="garageType" generated="true" style="display: none" class="error"></span></td>
-				</tr>
-				<tr>
+					<td class="fieldInput"><label><input type="text" id="code" name="code" value="${vm.code}" validate="{required:true}" /></label><span for="code" generated="true" style="display: none" class="error"></span></td>
 					<td class="fieldName">停车位名称:</td>
-					<td class="fieldInput" colspan="3"><label><input type="text" id="ipAddress" name="ipAddress" value="${vm.ipAddress}" validate="{required:true}" /></label><span for="ipAddress" generated="true" style="display: none" class="error"></span></td>
-
+					<td class="fieldInput"><label><input type="text" id="name" name="name" value="${vm.name}" validate="{required:true}" /></label><span for="name" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 				<tr>
 					<td class="fieldName">停车位X坐标:</td>

@@ -7,9 +7,9 @@
 			<tbody>
 				<tr>
 					<td align="right">停车位编号:</td>
+					<td align="left">${vm.code}</td>
+					<td align="right">停车位名称:</td>
 					<td align="left">${vm.name}</td>
-					<td  align="right">车位类型:</td>
-					<td align="left"><s:message code="parkinggarage.garageType.${vm.garageType}" /></td>
 				</tr>
 				<tr>
 					<td align="right">状态:</td>

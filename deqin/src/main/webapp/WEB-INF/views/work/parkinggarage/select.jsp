@@ -7,7 +7,7 @@
 			<ul class="searchContent">
 				<li><label>停车场:</label> <input type="text" value="${param['search_LIKE_parkingLotArea.parkingLot.name']}" name="search_LIKE_parkingLotArea.parkingLot.name" /></li>
 				<li><label>停车片区:</label> <input type="text" value="${param['search_LIKE_parkingLotArea.name']}" name="search_LIKE_parkingLotArea.name" /></li>
-				<li><label>车位编号:</label> <input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /></li>
+				<li><label>车位编号:</label> <input type="text" value="${param.search_LIKE_code}" name="search_LIKE_code" /></li>
 			</ul>
 			<div class="subBar">
 				<ul>
@@ -37,7 +37,6 @@
 				<th width="30" align="center"></th>
 				<th <vsc:orderField name="name"/>>停车位编号</th>				
 				<th>停车片区</th><th>停车场</th>
-				<th <vsc:orderField name="garageType"/>>车位类型</th>
 				<th <vsc:orderField name="isEnabled"/>>状态</th>
 			</tr>
 		</thead>
@@ -49,7 +48,6 @@
 					<td><a href="${ctx}/work/parkinggarage/view/${item.id}" target="dialog" title="查看停车位" rel="parkinggarage_view">${item.name}</a></td>
 					<td>${item.parkingLotArea.name}</td>
 					<td>${item.parkingLotArea.parkingLot.name}</td>
-					<td><s:message code="parkinggarage.garageType.${item.garageType}"/></td>
 					<td><s:message code="parkinggarage.isenabled.${item.isEnabled}"/></td>			
 					 
 				</tr>

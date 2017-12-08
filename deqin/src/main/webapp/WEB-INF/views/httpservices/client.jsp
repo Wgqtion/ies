@@ -332,58 +332,7 @@
 				
 				
 				
-				<!-- //////////////////////////车位上锁/////////////////////////// START -->
-				<section id="车位上锁">
-					<div class="page-header">
-						<h2>
-							3. 车位上锁
-							</h1>
-					</div>
-					<h4>
-						<a href="javascript:return false;">接口地址</a>
-					</h4>
-					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/shangsuo/locked</pre></p>
-					<h4>
-						<a href="javascript:return false;">示例</a>
-					</h4>
-					<form class="bs-docs-example" action="<%=url%>/shangsuo/locked" method="post">
-
-						<label>车位编码</label> 
-						<input type="text" name="parkingGarageId" placeholder="请输入车位ID" /><br />
-						<button type="submit" class="btn">车位解锁</button>
-					</form>
-					<h4>
-						<a href="javascript:return false;">参数说明</a>
-					</h4>
-					<div class="bs-docs-example">
-						<table border="1" cellspacing="0" cellpadding="4" align="center" width="95%">
-							<tbody>
-								<tr>
-									<th style="width: 120px">参数</th>
-									<th style="width: 120px">是否必须</th>
-									<th >说明</th>
-								</tr>
-								<tr>
-									<td>parkingGarageId</td>
-									<td>是</td>
-									<td>车位ID</td>
-								</tr>
-								 
-							</tbody>
-						</table>
-					</div>
-
-					<h4>
-						<a href="javascript:return false;">返回说明</a>
-					</h4>
-				 			
-					<p>正常情况下返回的JSON数据包：<pre>{ "statusCode":"200", "callbackData":true, "message":"接口调用成功" }</pre>
-					</p>
-
-				</section>
-				<!-- //////////////////////////车位解锁/////////////////////////// END -->
-				 
-				
+			
 				
 				
 				<section id="单个车位状态上报">
@@ -400,7 +349,7 @@
 						<a href="javascript:return false;">示例</a>
 					</h4>
 					<form class="bs-docs-example" action="<%=url%>/parking/parkingVideo" method="post">
-					<label>车位编号</label><input  type="text" name="parkingName" value="1001"/> <br/>
+					<label>车位编号</label><input  type="text" name="parkingCode" value="1001"/> <br/>
 					<label>相机IP</label><input  type="text" name="cameraIp" value="127.0.0.1"/> <br/>
 					<label>车位状态</label><input  type="text" name="status" value="1"/> <br/>
 					<label>上报时间</label><input  type="text" name="inTime" value="2016-04-10 12:10:20"/> <br/>
@@ -420,7 +369,7 @@
 									<th >说明</th>
 								</tr>
 								<tr>
-									<td>parkingName</td>
+									<td>parkingCode</td>
 									<td>是</td>
 									<td>车位编号</td>
 								</tr>
@@ -474,17 +423,17 @@
 					<form class="bs-docs-example" action="<%=url%>/parking/parkingVideos" method="post">
 					<label>上报时间</label><input  type="text" name="inTime" value="2016-04-10 12:10:20"/> <br/>
 					<label>车位1:</label><br/>	
-					<label>车位编号</label><input  type="text" name="parkingVideos[0].parkingName" value="1001"/> (parkingVideos[0].parkingName)<br/>
+					<label>车位编号</label><input  type="text" name="parkingVideos[0].parkingCode" value="1001"/> (parkingVideos[0].parkingCode)<br/>
 					<label>相机IP</label><input  type="text" name="parkingVideos[0].cameraIp" value="127.0.0.1"/> (parkingVideos[0].cameraIp)<br/>
 					<label>车位状态</label><input  type="text" name="parkingVideos[0].status" value="0"/> (parkingVideos[0].status)<br/>
 					<label>车牌号</label><input  type="text" name="parkingVideos[0].plateNo" value="沪A12345"/>  (parkingVideos[0].plateNo)<br/>	
 					<label>车位2:</label><br/>					
-					<label>车位编号</label><input  type="text" name="parkingVideos[1].parkingName" value="1002"/> (parkingVideos[1].parkingName)<br/>
+					<label>车位编号</label><input  type="text" name="parkingVideos[1].parkingCode" value="1002"/> (parkingVideos[1].parkingCode)<br/>
 					<label>相机IP</label><input  type="text" name="parkingVideos[1].cameraIp" value="127.0.0.2"/> (parkingVideos[1].cameraIp)<br/>
 					<label>车位状态</label><input  type="text" name="parkingVideos[1].status" value="0"/> (parkingVideos[1].status)<br/>
 					<label>车牌号</label><input  type="text" name="parkingVideos[1].plateNo" value="沪B12345"/>  (parkingVideos[1].plateNo)<br/>
 					<label>车位X:依次类推<br/>					
-					<label>车位编号</label><input  type="text" name="parkingVideos[2].parkingName" value="1003"/> (parkingVideos[X].parkingName)<br/>
+					<label>车位编号</label><input  type="text" name="parkingVideos[2].parkingCode" value="1003"/> (parkingVideos[X].parkingCode)<br/>
 					<label>相机IP</label><input  type="text" name="parkingVideos[2].cameraIp" value="127.0.0.3"/> (parkingVideos[X].cameraIp)<br/>
 					<label>车位状态</label><input  type="text" name="parkingVideos[2].status" value="1"/> (parkingVideos[X].status)<br/>
 					<label>车牌号</label><input  type="text" name="parkingVideos[2].plateNo" value="沪C12345"/>  (parkingVideos[X].plateNo)<br/>	
@@ -502,7 +451,7 @@
 									<th >说明</th>
 								</tr>
 								<tr>
-									<td>parkingVideos[0].parkingName</td>
+									<td>parkingVideos[0].parkingCode</td>
 									<td>是</td>
 									<td>车位编号[X]为数据索引</td>
 								</tr>
@@ -517,7 +466,7 @@
 									<td>车位状态</td>
 								</tr>
 								 <tr>
-									<td>parkingVideos[0].carNo</td>
+									<td>parkingVideos[0].plateNo</td>
 									<td>是</td>
 									<td>车牌号</td>
 								</tr>
@@ -542,6 +491,57 @@
 				</section>
 				
 				
+					<!-- //////////////////////////车位上锁/////////////////////////// START -->
+				<section id="车位上锁">
+					<div class="page-header">
+						<h2>
+							3. 车位上锁
+							</h1>
+					</div>
+					<h4>
+						<a href="javascript:return false;">接口地址</a>
+					</h4>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/shangsuo/locked</pre></p>
+					<h4>
+						<a href="javascript:return false;">示例</a>
+					</h4>
+					<form class="bs-docs-example" action="<%=url%>/shangsuo/locked" method="post">
+
+						<label>车位编码</label> 
+						<input type="text" name="parkingGarageId" placeholder="请输入车位ID" /><br />
+						<button type="submit" class="btn">车位解锁</button>
+					</form>
+					<h4>
+						<a href="javascript:return false;">参数说明</a>
+					</h4>
+					<div class="bs-docs-example">
+						<table border="1" cellspacing="0" cellpadding="4" align="center" width="95%">
+							<tbody>
+								<tr>
+									<th style="width: 120px">参数</th>
+									<th style="width: 120px">是否必须</th>
+									<th >说明</th>
+								</tr>
+								<tr>
+									<td>parkingGarageId</td>
+									<td>是</td>
+									<td>车位ID</td>
+								</tr>
+								 
+							</tbody>
+						</table>
+					</div>
+
+					<h4>
+						<a href="javascript:return false;">返回说明</a>
+					</h4>
+				 			
+					<p>正常情况下返回的JSON数据包：<pre>{ "statusCode":"200", "callbackData":true, "message":"接口调用成功" }</pre>
+					</p>
+
+				</section>
+				<!-- //////////////////////////车位解锁/////////////////////////// END -->
+				 
 				
 							
 				<!-- //////////////////////////车位解锁/////////////////////////// START -->

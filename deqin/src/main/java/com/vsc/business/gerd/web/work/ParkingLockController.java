@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
-import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
-import com.vsc.business.gerd.service.work.ParkingGarageService;
 import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.constants.Constants;
 import com.vsc.util.CoreUtils;
@@ -38,8 +36,6 @@ public class ParkingLockController extends BaseController {
 
 	@Autowired
 	private ParkingLockService parkingLockService;
-	@Autowired
-	private ParkingGarageService parkingGarageService;
 	public static final String PATH = "work/parkinglock";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";
@@ -80,14 +76,6 @@ public class ParkingLockController extends BaseController {
 	public ModelAndView create(@Valid ParkingLock parkingLock,
 			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId,
 			String surplusDetections) {
-		if (parkingGarageId == null) {
-			parkingLock.setParkingGarage(null);
-		} else {
-			ParkingGarage pm = this.parkingGarageService.getObjectById(parkingGarageId);
-			parkingLock.setParkingGarage(pm);
-			pm.setGarageType(1);
-			parkingGarageService.save(pm); //已关联地锁的车位设置为地锁车位
-		}
 		parkingLock.setCreateTime(CoreUtils.nowtime());
 		parkingLock.setSurplusDetection(surplusDetections);
 		parkingLockService.save(parkingLock);
@@ -111,14 +99,6 @@ public class ParkingLockController extends BaseController {
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingLock parkingLock,
 			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId,
 			String surplusDetections) {
-		if (parkingGarageId == null) {
-			parkingLock.setParkingGarage(null);
-		} else {
-			ParkingGarage pm = this.parkingGarageService.getObjectById(parkingGarageId);
-			parkingLock.setParkingGarage(pm);
-			pm.setGarageType(1);
-			parkingGarageService.save(pm); //已关联地锁的车位设置为地锁车位
-		}
 		parkingLock.setSurplusDetection(surplusDetections);
 		parkingLockService.save(parkingLock);
 		return this.ajaxDoneSuccess("修改成功");

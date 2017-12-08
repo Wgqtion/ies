@@ -19,9 +19,9 @@ import com.vsc.modules.entity.IdEntity;
 public class ParkingVideo extends IdEntity {
 
 	/**
-	 * 车位名称
+	 * 车位编码
 	 */
-	private java.lang.String parkingName;
+	private java.lang.String parkingCode;
 	/**
 	 * 相机IP
 	 */
@@ -47,13 +47,13 @@ public class ParkingVideo extends IdEntity {
 	/**
 	 * @return
 	 */
-	@Column(name = "PARKING_NAME")
-	public java.lang.String getParkingName() {
-		return this.parkingName;
+	@Column(name = "PARKING_CODE")
+	public java.lang.String getParkingCode() {
+		return parkingCode;
 	}
 
-	public void setParkingName(java.lang.String value) {
-		this.parkingName = value;
+	public void setParkingCode(java.lang.String parkingCode) {
+		this.parkingCode = parkingCode;
 	}
 
 	/**
