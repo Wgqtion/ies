@@ -104,7 +104,6 @@
 							<li><a href="${ctx}/work/member" title="会员管理" target="navTab" rel="work_member">会员管理</a></li>
 							<li><a title="vip车辆管理" href="${ctx}/work/cardinfo" target="navTab" rel="work_cardinfo">vip车辆管理</a></li>
 							<li><a title="预约管理" href="${ctx}/work/yuding" target="navTab" rel="work_yuding">预约管理</a></li>
-							<li><a title="车辆反寻" href="${ctx}/work/parkingordernotfinished" target="navTab" rel="work_parkingorder_notfinished">车辆反寻</a></li>
 						</ul>
 					</div>
 					<div class="accordionHeader">
@@ -150,6 +149,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
+							<li><a title="车位查询" href="${ctx}/work/report/parkingGarageStatus" target="navTab" rel="work_report_parkingGarageStatus">车位查询</a></li>
 							<li><a title="停车记录" href="${ctx}/work/parkingorder?isHome=true" target="navTab" rel="work_parkingorder">停车记录</a></li>
 						</ul>
 					</div> 

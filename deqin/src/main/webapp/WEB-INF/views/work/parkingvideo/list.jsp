@@ -8,7 +8,7 @@
 			<ul class="searchContent">
 				   
 				<li><label>车位编号:</label> 
-					<input type="text" value="${param.search_LIKE_parkingName}" name="search_LIKE_parkingName" /> </li>
+					<input type="text" value="${param.search_LIKE_parkingCode}" name="search_LIKE_parkingCode" /> </li>
 				<li><label>车牌号:</label> 
 					<input type="text" value="${param.search_LIKE_plateNo}" name="search_LIKE_plateNo" /> </li>   
 				<li><label>相机IP:</label> 
@@ -36,7 +36,7 @@
 			<tr>
 				<th width="40" align="center">序号</th>
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>    
-				<th <vsc:orderField name="parkingName"/>>车位编号</th>   
+				<th <vsc:orderField name="parkingCode"/>>车位编号</th>   
 				<th <vsc:orderField name="cameraIp"/>>相机IP</th>   
 				<th <vsc:orderField name="status"/>>状态</th>   
 				<th <vsc:orderField name="plateNo"/>>车牌号</th>   
@@ -49,12 +49,7 @@
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>    
-					<!-- 
-					<td> <a href="${ctx}/work/parkinggaragecarnolog/view/${varitem.id}" target="dialog" title="查看"> ${varitem.parkingName} </a></td>   
-					<td> <a href="${ctx}/work/parkinggaragecarnolog/view/${varitem.id}" target="dialog" title="查看"> ${varitem.cameraIp} </a></td>   
-					<td> <a href="${ctx}/work/parkinggaragecarnolog/view/${varitem.id}" target="dialog" title="查看"> ${varitem.status} </a></td>   
-					<td> <a href="${ctx}/work/parkinggaragecarnolog/view/${varitem.id}" target="dialog" title="查看"> ${varitem.plateNo} </a> </td> --> 
-					<td>${varitem.parkingName}</td> 
+					<td>${varitem.parkingCode}</td> 
 					<td>${varitem.cameraIp}</td>			
 					<td><s:message code="parkinggaragecarnolog.status.${varitem.status}"/></td> 
 					<td>${varitem.plateNo}</td> 

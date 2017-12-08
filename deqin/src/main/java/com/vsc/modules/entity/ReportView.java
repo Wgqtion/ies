@@ -1,11 +1,26 @@
 package com.vsc.modules.entity;
 
-public class ReportView {
+public class ReportView<T> {
 	private String startDate;
 	private String endDate;
 	private String id;
 	private String selectId;
 	private String selectType;
+	private String value;
+	private T entity;
+	
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
+	public T getEntity() {
+		return entity;
+	}
+	public void setEntity(T entity) {
+		this.entity = entity;
+	}
 	public String getStartDate() {
 		return startDate;
 	}
