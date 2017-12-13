@@ -389,7 +389,7 @@
 									<td>上报时间(yyyy-MM-dd HH:mm:ss)</td>
 								</tr>
 								 <tr>
-									<td>carNo</td>
+									<td>plateNo</td>
 									<td>是</td>
 									<td>车牌号</td>
 								</tr>
