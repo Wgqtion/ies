@@ -44,6 +44,9 @@
 				/index=authc,permsany
 				/sys/**=authc,permsany
 				/attach/up=authc,permsany
+				/httpservices/client/** = anon 
+				/work/parkingorder/** = anon 
+				/** = authc  
 	        </value>  
 	    </property>
 	</bean>

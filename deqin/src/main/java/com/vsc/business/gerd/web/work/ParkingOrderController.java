@@ -55,24 +55,29 @@ public class ParkingOrderController extends BaseController {
 		return PATH_LIST;
 	}
 	
+	@RequestMapping(value = "test")
+	public String test(Model model,boolean isHome, HttpServletRequest request) {
+
+		PageRequest pageRequest = null;
+		if(isHome){
+			pageRequest=this.getPageRequest("id","DESC");
+		}else{
+			pageRequest=this.getPageRequest();	
+		}
+		Map<String, Object> searchParams = this.getSearchRequest();
+
+		Page<ParkingOrder> page = parkingOrderService.findPage(searchParams, pageRequest);
+		model.addAttribute("page", page);
+
+		return PATH+Constants.SPT+"test";
+	}
+	
 	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
 	public String view(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("vm", parkingOrderService.getObjectById(id));
 		return PATH_VIEW;
 	}
-
-	/**
-	 * 高级查询界面
-	 * 
-	 * @param id
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value = "search")
-	public String search(HttpServletRequest request) {
-		return PATH_SEARCH;
-	}
-
+	
 	@ModelAttribute("preloadModel")
 	public ParkingOrder getModel(@RequestParam(value = "id", required = false) Long id) {
 		if (id != null) {
