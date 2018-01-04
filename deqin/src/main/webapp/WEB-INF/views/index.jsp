@@ -141,6 +141,13 @@
 							</ul>
 							</li>
 						</ul>
+						<ul class="tree treeFolder">
+							<li><a>充电桩管理</a>
+							<ul>
+								<li><a title="充电桩平台" href="https://www.teld.cn/" target="navTab" rel="telaidian">充电桩平台</a></li>
+							</ul>
+							</li>
+						</ul>
 					</div> 
 					<div class="accordionHeader">
 						<h2>
