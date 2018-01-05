@@ -14,6 +14,10 @@
 					<td align="left">${vm.name}</td>
 				</tr>
 				<tr>
+					<td  align="right">出入口编码:</td>
+					<td align="left">${vm.code}</td>
+				</tr>
+				<tr>
 					<td  align="right">X坐标:</td>
 					<td align="left">${vm.xcoordinate}</td>
 				</tr>

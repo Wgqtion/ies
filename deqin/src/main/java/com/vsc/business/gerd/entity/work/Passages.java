@@ -1,5 +1,7 @@
 package com.vsc.business.gerd.entity.work;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -20,11 +22,19 @@ import com.vsc.modules.entity.IdEntity;
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX +"passages")
-public class Passages extends IdEntity {
+public class Passages extends IdEntity implements Serializable{
 
 	 
-     private ParkingLot parkinglot;
+     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 9067534546355004129L;
+	private ParkingLot parkinglot;
      private java.lang.String name;
+     /**
+      * 通道编号
+      */
+     private String code;
      private java.lang.String xcoordinate;
      private java.lang.String ycoordinate;
      private Boolean isEnabled;
@@ -42,7 +52,18 @@ public class Passages extends IdEntity {
 		this.parkinglot = parkinglot;
 	}
 
-	
+	/**
+	 * @return
+	 */
+	@Column(name = "CODE" )
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	/**
 	 * @return
 	 */

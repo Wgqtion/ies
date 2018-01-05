@@ -52,7 +52,7 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 	}
 
 	/**
-	 * 进入控制
+	 * 1.进入控制
 	 * 
 	 * @param parkingOrder
 	 */
@@ -76,38 +76,10 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 		this.save(parkingOrder);
 	}
 
-	/**
-	 * 出去控制
-	 */
-	public void outParkingOrder(ParkingOrder parkingOrder) {
-		// 直接保存标志
-		boolean flag = true;
-		if (!StringUtils.isBlank(parkingOrder.getPlateNo())) {
-			// 车牌不为空 ，查找之前状态0的停车单
-			ParkingOrder upParkingOrder = getParkingOrderByPlateAndStatus(parkingOrder, Integer.valueOf(0));
-			if (upParkingOrder != null&&upParkingOrder.getUpdateOutTime()==null) {
-				flag = false;
-				upParkingOrder.setOutTime(parkingOrder.getOutTime());
-				upParkingOrder.setOutCameraIp(parkingOrder.getOutCameraIp());
-				upParkingOrder.setOutPicName(parkingOrder.getOutPicName());
-				upParkingOrder.setOutSchoolDoorName(parkingOrder.getOutSchoolDoorName());
-				
-				upParkingOrder.setUpdateOutTime(new Date());
-				this.save(upParkingOrder);
-			}
-		}
-		if (flag) {
-			Date now = new Date();
-			parkingOrder.setCreateTime(now);
-			parkingOrder.setUpdateOutTime(now);
-			parkingOrder.setPayNumber(UUID.randomUUID().toString());
-			parkingOrder.setOrderStatus(Integer.valueOf(1));
-			this.save(parkingOrder);
-		}
-	}
+	
 
 	/**
-	 * 支付控制
+	 * 2.支付控制
 	 */
 	public void payParkingOrder(ParkingOrder parkingOrder) {
 		// 直接保存标志
@@ -129,7 +101,6 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 				upParkingOrder.setYsPayAmount(parkingOrder.getYsPayAmount());
 				upParkingOrder.setOutTimeLast(parkingOrder.getOutTimeLast());
 				
-				upParkingOrder.setOrderStatus(Integer.valueOf(1));
 				upParkingOrder.setUpdatePayTime(new Date());
 				this.save(upParkingOrder);
 				parkingOrder.setPayNumber(upParkingOrder.getPayNumber());
@@ -140,9 +111,38 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 			parkingOrder.setCreateTime(now);
 			parkingOrder.setUpdatePayTime(now);
 			parkingOrder.setPayNumber(UUID.randomUUID().toString());
+			this.save(parkingOrder);
+		}
+	}
+	
+	/**
+	 * 3.出去控制
+	 */
+	public void outParkingOrder(ParkingOrder parkingOrder) {
+		// 直接保存标志
+		boolean flag = true;
+		if (!StringUtils.isBlank(parkingOrder.getPlateNo())) {
+			// 车牌不为空 ，查找之前状态0的停车单
+			ParkingOrder upParkingOrder = getParkingOrderByPlateAndStatus(parkingOrder, Integer.valueOf(0));
+			if (upParkingOrder != null&&upParkingOrder.getUpdateOutTime()==null) {
+				flag = false;
+				upParkingOrder.setOutTime(parkingOrder.getOutTime());
+				upParkingOrder.setOutCameraIp(parkingOrder.getOutCameraIp());
+				upParkingOrder.setOutPicName(parkingOrder.getOutPicName());
+				upParkingOrder.setOutSchoolDoorName(parkingOrder.getOutSchoolDoorName());
+
+				upParkingOrder.setOrderStatus(Integer.valueOf(1));
+				upParkingOrder.setUpdateOutTime(new Date());
+				this.save(upParkingOrder);
+			}
+		}
+		if (flag) {
+			Date now = new Date();
+			parkingOrder.setCreateTime(now);
+			parkingOrder.setUpdateOutTime(now);
+			parkingOrder.setPayNumber(UUID.randomUUID().toString());
 			parkingOrder.setOrderStatus(Integer.valueOf(1));
 			this.save(parkingOrder);
 		}
 	}
-
 }

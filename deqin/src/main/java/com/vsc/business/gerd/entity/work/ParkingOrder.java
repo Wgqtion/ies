@@ -1,5 +1,6 @@
 package com.vsc.business.gerd.entity.work;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,8 +21,12 @@ import com.vsc.modules.entity.IdEntity;
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "parking_order")
-public class ParkingOrder extends IdEntity {
+public class ParkingOrder extends IdEntity implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -844106451317077383L;
 	/**
 	 * 车牌号
 	 */
@@ -210,7 +215,7 @@ public class ParkingOrder extends IdEntity {
 	}
 	
 	@ManyToOne
-	@JoinColumn(name = "IN_SCHOOL_DOOR_NAME",insertable=false,updatable=false)
+	@JoinColumn(name = "IN_SCHOOL_DOOR_NAME",referencedColumnName ="CODE",insertable=false,updatable=false)
 	public Passages getInPassages() {
 		return inPassages;
 	}
@@ -229,7 +234,7 @@ public class ParkingOrder extends IdEntity {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "OUT_SCHOOL_DOOR_NAME",insertable=false,updatable=false)
+	@JoinColumn(name = "OUT_SCHOOL_DOOR_NAME",referencedColumnName ="CODE",insertable=false,updatable=false)
 	public Passages getOutPassages() {
 		return outPassages;
 	}

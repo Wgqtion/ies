@@ -37,6 +37,7 @@
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>    
 				<th>所属停车场</th>   
 				<th <vsc:orderField name="name"/>>出入口名称</th>   
+				<th <vsc:orderField name="code"/>>出入口编号</th>   
 				<th <vsc:orderField name="xcoordinate"/>>X坐标</th>   
 				<th <vsc:orderField name="ycoordinate"/>>Y坐标</th>   
 				<th <vsc:orderField name="isEnabled"/>>状态</th>   
@@ -51,6 +52,7 @@
 					<td> <a href="${ctx}/work/passages/view/${varitem.id}" target="dialog" title="查看"> ${varitem.parkinglot.name} </a> 
 					</td>   
 					<td>${varitem.name}</td>   
+					<td>${varitem.code}</td>   
 					<td>${varitem.xcoordinate}</td>   
 					<td>${varitem.ycoordinate}</td>   
 					<td><s:message code="passages.isenabled.${varitem.isEnabled}"/></td>   

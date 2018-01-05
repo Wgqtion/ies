@@ -124,7 +124,7 @@
 									<td>进场照片URL</td>
 								</tr>
 								 <tr>
-									<td>inDoorId</td>
+									<td>inSchoolDoorName</td>
 									<td>是</td>
 									<td>进场入口ID</td>
 								</tr>
@@ -142,85 +142,11 @@
 
 				</section>
 				
-				<section id="出场接口">
-					<div class="page-header">
-						<h2>
-							2. 出场接口
-							</h1>
-					</div>
-					<h4>
-						<a href="javascript:return false;">接口地址</a>
-					</h4>
-					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/order/parkingOut</pre></p>
-					<h4>
-						<a href="javascript:return false;">示例</a>
-					</h4>
-					<form class="bs-docs-example" action="<%=url%>/order/parkingOut" method="post">
-
-					<label>相机IP</label> <input type="text" name="outCameraIp" value="127.0.0.1"	placeholder="请输入相机ip" /><br /> 
-					<label>车牌号</label> <input	type="text" name="outPlateNo"  value="沪A12345" placeholder="请输入车牌号" /><br />
-					<label>出场时间</label><input  type="text" name="outTime" value="2017-04-10 16:10:20"/> <br/>
-					<label>图片URL</label><input  type="text" name="outPicName" value="https://www.baidu.com/img/bd_logo1.png"/> <br/>
-					<label>出场出口</label><input  type="text" name="outSchoolDoorName" value="450850"/><br/>
-						
-							
-						<button type="submit" class="btn">提交</button>
-					</form>
-					<h4>
-						<a href="javascript:return false;">参数说明</a>
-					</h4>
-					<div class="bs-docs-example">
-						<table border="1" cellspacing="0" cellpadding="4" align="center" width="95%">
-							<tbody>
-								<tr>
-									<th style="width: 120px">参数</th>
-									<th style="width: 120px">是否必须</th>
-									<th >说明</th>
-								</tr>
-								<tr>
-									<td>outCameraIp</td>
-									<td>是</td>
-									<td>相机IP</td>
-								</tr>
-								<tr>
-									<td>outPlateNo</td>
-									<td>是</td>
-									<td>车牌号</td>
-								</tr>
-									<tr>
-									<td>outTime</td>
-									<td>是</td>
-									<td>出场时间(yyyy-MM-dd HH:mm:ss)</td>
-								</tr>
-								<tr>
-									<td>outPicName</td>
-									<td>是</td>
-									<td>出场照片URL</td>
-								</tr>
-								 <tr>
-									<td>outDoorId</td>
-									<td>是</td>
-									<td>出场出口ID</td>
-								</tr>
-								 
-							</tbody>
-						</table>
-					</div>
-
-					<h4>
-						<a href="javascript:return false;">返回说明</a>
-					</h4>
-				 			
-					<p>正常情况下返回的JSON数据包：<pre>{ "statusCode":"200", "callbackData":true, "message":"接口调用成功" }</pre>
-					</p>
-
-				</section>
-				
 				
 				<section id="支付接口">
 					<div class="page-header">
 						<h2>
-							3. 支付接口
+							2. 支付接口
 							</h1>
 					</div>
 					<h4>
@@ -331,6 +257,79 @@
 				</section>
 				
 				
+				<section id="出场接口">
+					<div class="page-header">
+						<h2>
+							3. 出场接口
+							</h1>
+					</div>
+					<h4>
+						<a href="javascript:return false;">接口地址</a>
+					</h4>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/order/parkingOut</pre></p>
+					<h4>
+						<a href="javascript:return false;">示例</a>
+					</h4>
+					<form class="bs-docs-example" action="<%=url%>/order/parkingOut" method="post">
+
+					<label>相机IP</label> <input type="text" name="outCameraIp" value="127.0.0.1"	placeholder="请输入相机ip" /><br /> 
+					<label>车牌号</label> <input	type="text" name="outPlateNo"  value="沪A12345" placeholder="请输入车牌号" /><br />
+					<label>出场时间</label><input  type="text" name="outTime" value="2017-04-10 16:10:20"/> <br/>
+					<label>图片URL</label><input  type="text" name="outPicName" value="https://www.baidu.com/img/bd_logo1.png"/> <br/>
+					<label>出场出口</label><input  type="text" name="outSchoolDoorName" value="450850"/><br/>
+						
+							
+						<button type="submit" class="btn">提交</button>
+					</form>
+					<h4>
+						<a href="javascript:return false;">参数说明</a>
+					</h4>
+					<div class="bs-docs-example">
+						<table border="1" cellspacing="0" cellpadding="4" align="center" width="95%">
+							<tbody>
+								<tr>
+									<th style="width: 120px">参数</th>
+									<th style="width: 120px">是否必须</th>
+									<th >说明</th>
+								</tr>
+								<tr>
+									<td>outCameraIp</td>
+									<td>是</td>
+									<td>相机IP</td>
+								</tr>
+								<tr>
+									<td>outPlateNo</td>
+									<td>是</td>
+									<td>车牌号</td>
+								</tr>
+									<tr>
+									<td>outTime</td>
+									<td>是</td>
+									<td>出场时间(yyyy-MM-dd HH:mm:ss)</td>
+								</tr>
+								<tr>
+									<td>outPicName</td>
+									<td>是</td>
+									<td>出场照片URL</td>
+								</tr>
+								 <tr>
+									<td>outSchoolDoorName</td>
+									<td>是</td>
+									<td>出场出口ID</td>
+								</tr>
+								 
+							</tbody>
+						</table>
+					</div>
+
+					<h4>
+						<a href="javascript:return false;">返回说明</a>
+					</h4>
+				 			
+					<p>正常情况下返回的JSON数据包：<pre>{ "statusCode":"200", "callbackData":true, "message":"接口调用成功" }</pre>
+					</p>
+
+				</section>
 				
 			
 				
