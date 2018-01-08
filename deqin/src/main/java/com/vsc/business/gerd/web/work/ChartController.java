@@ -56,7 +56,7 @@ public class ChartController extends BaseController {
 	}
 	
 	/**
-	 * 停车场进出次数统计图表 数据
+	 * 停车场余位统计图表 数据
 	 */
 	@RequestMapping(value = "parkingSurplusTotalData")
 	@ResponseBody
