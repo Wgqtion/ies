@@ -35,7 +35,6 @@
 		<thead>
 			<tr>
 				<th width="40" align="center">序号</th>
-				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>    
 				<th <vsc:orderField name="parkingCode"/>>车位编号</th>   
 				<th <vsc:orderField name="cameraIp"/>>相机IP</th>   
 				<th <vsc:orderField name="status"/>>状态</th>   
@@ -48,7 +47,6 @@
 			<c:forEach items="${page.content}" var="varitem" varStatus="varindex">
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
-					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>    
 					<td>${varitem.parkingCode}</td> 
 					<td>${varitem.cameraIp}</td>			
 					<td><s:message code="parkinggaragecarnolog.status.${varitem.status}"/></td> 
