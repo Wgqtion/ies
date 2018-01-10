@@ -12,11 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.vsc.business.gerd.entity.validate.work.InParkingOrderValidate;
+import com.vsc.business.gerd.entity.validate.work.OutParkingOrderValidate;
+import com.vsc.business.gerd.entity.validate.work.PayParkingOrderValidate;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockEventLog;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
@@ -61,19 +64,52 @@ public class ClientController extends HttpServiceBaseController {
 	 * 
 	 */
 	@RequestMapping(value = "order/parkingIn")
-	public ModelAndView parkingIn(@Valid ParkingOrder parkingOrder,BindingResult result,
-			@RequestParam(required=true) String inPlateNo,
+	public ModelAndView parkingIn(@Valid InParkingOrderValidate validate,BindingResult result,
+			ParkingOrder parkingOrder,
 			HttpServletRequest request) {
 		if(result.hasErrors()){
-			List<ObjectError>  list = result.getAllErrors();
-			for(ObjectError error: list){
-				return this.ajaxDoneError(error.getDefaultMessage());
-			}
-					
-		}
-		parkingOrder.setPlateNo(inPlateNo);
+			StringBuffer sb=new StringBuffer();
+            for (FieldError fieldError : result.getFieldErrors()) {
+            	if(sb.length()>0){
+            		sb.append(",");
+            	}
+                sb.append(fieldError.getDefaultMessage());
+            }
+            return this.ajaxDoneError(sb.toString());
+        }
+		parkingOrder.setPlateNo(validate.getInPlateNo());
 		this.parkingOrderService.inParkingOrder(parkingOrder);
 		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
+		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
+	}
+	/**
+	 * 车辆出去接口 *
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "order/parkingOut")
+	public ModelAndView parkingOut(@Valid OutParkingOrderValidate validate,BindingResult result,
+			ParkingOrder parkingOrder,
+			HttpServletRequest request) {
+		if(result.hasErrors()){
+			StringBuffer sb=new StringBuffer();
+            for (FieldError fieldError : result.getFieldErrors()) {
+            	if(sb.length()>0){
+            		sb.append(",");
+            	}
+                sb.append(fieldError.getDefaultMessage());
+            }
+            return this.ajaxDoneError(sb.toString());
+        }
+		boolean flag=false;
+		try {
+			parkingOrder.setPlateNo(validate.getOutPlateNo());
+			this.parkingOrderService.outParkingOrder(parkingOrder);
+			flag=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String jsonstr = "\"" + flag + "\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 	
@@ -83,48 +119,23 @@ public class ClientController extends HttpServiceBaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "order/parkingPay")
-	public ModelAndView parkingPay(@Valid ParkingOrder parkingOrder, BindingResult result,
-			@RequestParam(required=true) String payPlateNo,
+	public ModelAndView parkingPay(@Valid PayParkingOrderValidate validate,BindingResult result,
+			ParkingOrder parkingOrder,
 			HttpServletRequest request) {
 		if(result.hasErrors()){
-			List<ObjectError>  list = result.getAllErrors();
-			for(ObjectError error: list){
-				return this.ajaxDoneError(error.getDefaultMessage());
-			}
-					
-		}
-		parkingOrder.setPlateNo(payPlateNo);
+			StringBuffer sb=new StringBuffer();
+            for (FieldError fieldError : result.getFieldErrors()) {
+            	if(sb.length()>0){
+            		sb.append(",");
+            	}
+                sb.append(fieldError.getDefaultMessage());
+            }
+            return this.ajaxDoneError(sb.toString());
+        }
+		parkingOrder.setPlateNo(validate.getPayPlateNo());
 		this.parkingOrderService.payParkingOrder(parkingOrder);
 
 		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
-		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
-	}
-	
-	/**
-	 * 车辆出去接口 *
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "order/parkingOut")
-	public ModelAndView parkingOut(@Valid ParkingOrder parkingOrder,BindingResult result,
-			@RequestParam(required=true) String outPlateNo,
-			HttpServletRequest request) {
-		if(result.hasErrors()){
-			List<ObjectError>  list = result.getAllErrors();
-			for(ObjectError error: list){
-				return this.ajaxDoneError(error.getDefaultMessage());
-			}
-					
-		}
-		boolean flag=false;
-		try {
-			parkingOrder.setPlateNo(outPlateNo);
-			this.parkingOrderService.outParkingOrder(parkingOrder);
-			flag=true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		String jsonstr = "\"" + flag + "\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 	
