@@ -20,7 +20,7 @@ public class OutParkingOrderValidate{
 	/**
 	 * 出去相机IP
 	 */
-	@NotNull(message = "outCameraIp不能为空")
+	@NotBlank(message = "outCameraIp不能为空")
 	private java.lang.String outCameraIp;
 	/**
 	 * 出去时间
@@ -30,7 +30,7 @@ public class OutParkingOrderValidate{
 	/**
 	 * 出去照片URL
 	 */
-	@NotBlank(message = "outPicName不能为空")
+	@NotNull(message = "outPicName不能为空")
 	private java.lang.String outPicName;
 	/**
 	 * 出去通道（校门）

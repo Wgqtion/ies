@@ -19,7 +19,7 @@ public class InParkingOrderValidate{
 	/**
 	 * 进入相机ip
 	 */
-	@NotNull(message = "inCameraIp不能为空")
+	@NotBlank(message = "inCameraIp不能为空")
 	private java.lang.String inCameraIp;
 	/**
 	 * 进入时间
@@ -29,7 +29,7 @@ public class InParkingOrderValidate{
 	/**
 	 * 进入照片url
 	 */
-	@NotBlank(message = "inPicName不能为空")
+	@NotNull(message = "inPicName不能为空")
 	private java.lang.String inPicName;
 	/**
 	 * 进去通道（校门）
