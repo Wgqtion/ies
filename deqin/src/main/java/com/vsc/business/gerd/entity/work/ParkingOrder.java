@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -34,18 +35,22 @@ public class ParkingOrder extends IdEntity implements Serializable {
 	/**
 	 * 进入相机ip
 	 */
+	@NotNull(message = "不能为空")
 	private java.lang.String inCameraIp;
 	/**
 	 * 进入时间
 	 */
+	@NotNull(message = "不能为空")
 	private java.util.Date inTime;
 	/**
 	 * 进入照片url
 	 */
+	@NotNull(message = "不能为空")
 	private java.lang.String inPicName;
 	/**
 	 * 进去通道（校门）
 	 */
+	@NotNull(message = "不能为空")
 	private String inSchoolDoorName;
 	/**
 	 * 进去通道 查询用
@@ -55,18 +60,22 @@ public class ParkingOrder extends IdEntity implements Serializable {
 	/**
 	 * 出去相机IP
 	 */
+	@NotNull(message = "不能为空")
 	private java.lang.String outCameraIp;
 	/**
 	 * 出去时间
 	 */
+	@NotNull(message = "不能为空")
 	private java.util.Date outTime;
 	/**
 	 * 出去照片URL
 	 */
+	@NotNull(message = "不能为空")
 	private java.lang.String outPicName;
 	/**
 	 * 出去通道（校门）
 	 */
+	@NotNull(message = "不能为空")
 	private String outSchoolDoorName;
 	/**
 	 * 出去通道 查询用
@@ -76,22 +85,27 @@ public class ParkingOrder extends IdEntity implements Serializable {
 	/**
 	 * 收费时间
 	 */
+	@NotNull(message = "不能为空")
 	private java.util.Date payTime;
 	/**
 	 * 最迟离校时间
 	 */
+	@NotNull(message = "不能为空")
 	private java.util.Date outTimeLast;
 	/**
 	 * 是否完成收费 0否 1是
 	 */
+	@NotNull(message = "不能为空")
 	private Integer isPayOk=Integer.valueOf(0);
 	/**
 	 * 实收金额
 	 */
+	@NotNull(message = "不能为空")
 	private Double ssPayAmount;
 	/**
 	 * 应收金额
 	 */
+	@NotNull(message = "不能为空")
 	private Double ysPayAmount;
 	/**
 	 * 优惠方式 (0.无 1.人工优惠 2.二维码优惠 3.优惠券优惠 4.evcard优惠)
@@ -104,18 +118,22 @@ public class ParkingOrder extends IdEntity implements Serializable {
 	/**
 	 * 收费员
 	 */
+	@NotNull(message = "不能为空")
 	private java.lang.String memberName;
 	/**
 	 * 在线支付金额
 	 */
+	@NotNull(message = "不能为空")
 	private Double onlinePaymentAmount;
 	/**
 	 * 优惠金额
 	 */
+	@NotNull(message = "不能为空")
 	private Double amountOfConcessions;
 	/**
 	 * 公交卡支付金额
 	 */
+	@NotNull(message = "不能为空")
 	private Double busCardPaymentAmount;
 
 	/**

@@ -11,6 +11,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -59,9 +61,16 @@ public class ClientController extends HttpServiceBaseController {
 	 * 
 	 */
 	@RequestMapping(value = "order/parkingIn")
-	public ModelAndView parkingIn(@Valid ParkingOrder parkingOrder,
-			String inPlateNo,
+	public ModelAndView parkingIn(@Valid ParkingOrder parkingOrder,BindingResult result,
+			@RequestParam(required=true) String inPlateNo,
 			HttpServletRequest request) {
+		if(result.hasErrors()){
+			List<ObjectError>  list = result.getAllErrors();
+			for(ObjectError error: list){
+				return this.ajaxDoneError(error.getDefaultMessage());
+			}
+					
+		}
 		parkingOrder.setPlateNo(inPlateNo);
 		this.parkingOrderService.inParkingOrder(parkingOrder);
 		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
@@ -73,9 +82,16 @@ public class ClientController extends HttpServiceBaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "order/parkingOut")
-	public ModelAndView parkingOut(@Valid ParkingOrder parkingOrder,
-			String outPlateNo,
+	public ModelAndView parkingOut(@Valid ParkingOrder parkingOrder,BindingResult result,
+			@RequestParam(required=true) String outPlateNo,
 			HttpServletRequest request) {
+		if(result.hasErrors()){
+			List<ObjectError>  list = result.getAllErrors();
+			for(ObjectError error: list){
+				return this.ajaxDoneError(error.getDefaultMessage());
+			}
+					
+		}
 		boolean flag=false;
 		try {
 			parkingOrder.setPlateNo(outPlateNo);
@@ -94,9 +110,16 @@ public class ClientController extends HttpServiceBaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "order/parkingPay")
-	public ModelAndView parkingPay(@Valid ParkingOrder parkingOrder, 
-			String payPlateNo,
+	public ModelAndView parkingPay(@Valid ParkingOrder parkingOrder, BindingResult result,
+			@RequestParam(required=true) String payPlateNo,
 			HttpServletRequest request) {
+		if(result.hasErrors()){
+			List<ObjectError>  list = result.getAllErrors();
+			for(ObjectError error: list){
+				return this.ajaxDoneError(error.getDefaultMessage());
+			}
+					
+		}
 		parkingOrder.setPlateNo(payPlateNo);
 		this.parkingOrderService.payParkingOrder(parkingOrder);
 
