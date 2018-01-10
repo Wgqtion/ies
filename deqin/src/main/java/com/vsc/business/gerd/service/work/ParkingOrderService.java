@@ -84,7 +84,7 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 	public void payParkingOrder(ParkingOrder parkingOrder) {
 		// 直接保存标志
 		boolean flag = true;
-		if (!StringUtils.isBlank(parkingOrder.getPlateNo())) {
+		if (!(StringUtils.isBlank(parkingOrder.getPlateNo())||"无车牌".equals(parkingOrder.getPlateNo()))) {
 			// 车牌不为空 ，查找之前状态0的停车单
 			ParkingOrder upParkingOrder = getParkingOrderByPlateAndStatus(parkingOrder, Integer.valueOf(0));
 			if (upParkingOrder != null&&upParkingOrder.getUpdatePayTime()==null) {
@@ -121,7 +121,7 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 	public void outParkingOrder(ParkingOrder parkingOrder) {
 		// 直接保存标志
 		boolean flag = true;
-		if (!StringUtils.isBlank(parkingOrder.getPlateNo())) {
+		if (!(StringUtils.isBlank(parkingOrder.getPlateNo())||"无车牌".equals(parkingOrder.getPlateNo()))) {
 			// 车牌不为空 ，查找之前状态0的停车单
 			ParkingOrder upParkingOrder = getParkingOrderByPlateAndStatus(parkingOrder, Integer.valueOf(0));
 			if (upParkingOrder != null&&upParkingOrder.getUpdateOutTime()==null) {

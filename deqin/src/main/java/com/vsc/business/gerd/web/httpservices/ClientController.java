@@ -76,6 +76,30 @@ public class ClientController extends HttpServiceBaseController {
 		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
+	
+	/**
+	 * 车辆支付接口 *
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "order/parkingPay")
+	public ModelAndView parkingPay(@Valid ParkingOrder parkingOrder, BindingResult result,
+			@RequestParam(required=true) String payPlateNo,
+			HttpServletRequest request) {
+		if(result.hasErrors()){
+			List<ObjectError>  list = result.getAllErrors();
+			for(ObjectError error: list){
+				return this.ajaxDoneError(error.getDefaultMessage());
+			}
+					
+		}
+		parkingOrder.setPlateNo(payPlateNo);
+		this.parkingOrderService.payParkingOrder(parkingOrder);
+
+		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
+		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
+	}
+	
 	/**
 	 * 车辆出去接口 *
 	 * 
@@ -101,29 +125,6 @@ public class ClientController extends HttpServiceBaseController {
 			e.printStackTrace();
 		}
 		String jsonstr = "\"" + flag + "\"";
-		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
-	}
-	
-	/**
-	 * 车辆支付接口 *
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "order/parkingPay")
-	public ModelAndView parkingPay(@Valid ParkingOrder parkingOrder, BindingResult result,
-			@RequestParam(required=true) String payPlateNo,
-			HttpServletRequest request) {
-		if(result.hasErrors()){
-			List<ObjectError>  list = result.getAllErrors();
-			for(ObjectError error: list){
-				return this.ajaxDoneError(error.getDefaultMessage());
-			}
-					
-		}
-		parkingOrder.setPlateNo(payPlateNo);
-		this.parkingOrderService.payParkingOrder(parkingOrder);
-
-		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 	
