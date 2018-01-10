@@ -2,6 +2,8 @@ package com.vsc.business.gerd.entity.validate.work;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * 停车进入验证类
  * @author XiangXiaoLin
@@ -12,7 +14,7 @@ public class InParkingOrderValidate{
 	/**
 	 * 车牌号
 	 */
-	@NotNull(message = "inPlateNo不能为空")
+	@NotBlank(message = "inPlateNo不能为空")
 	private java.lang.String inPlateNo;
 	/**
 	 * 进入相机ip
@@ -27,12 +29,12 @@ public class InParkingOrderValidate{
 	/**
 	 * 进入照片url
 	 */
-	@NotNull(message = "inPicName不能为空")
+	@NotBlank(message = "inPicName不能为空")
 	private java.lang.String inPicName;
 	/**
 	 * 进去通道（校门）
 	 */
-	@NotNull(message = "inSchoolDoorName不能为空")
+	@NotBlank(message = "inSchoolDoorName不能为空")
 	private String inSchoolDoorName;
 	
 	public java.lang.String getInPlateNo() {

@@ -2,6 +2,8 @@ package com.vsc.business.gerd.entity.validate.work;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * 停车支付验证类
  * @author XiangXiaoLin
@@ -11,7 +13,7 @@ public class PayParkingOrderValidate{
 	/**
 	 * 车牌号
 	 */
-	@NotNull(message = "payPlateNo不能为空")
+	@NotBlank(message = "payPlateNo不能为空")
 	private java.lang.String payPlateNo;
 	
 	/**
@@ -42,7 +44,7 @@ public class PayParkingOrderValidate{
 	/**
 	 * 收费员
 	 */
-	@NotNull(message = "memberName不能为空")
+	@NotBlank(message = "memberName不能为空")
 	private java.lang.String memberName;
 	/**
 	 * 在线支付金额
