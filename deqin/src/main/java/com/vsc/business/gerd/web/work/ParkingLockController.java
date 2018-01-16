@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
+import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.service.work.ParkingLockService;
@@ -78,6 +79,9 @@ public class ParkingLockController extends BaseController {
 			String surplusDetections) {
 		parkingLock.setCreateTime(CoreUtils.nowtime());
 		parkingLock.setSurplusDetection(surplusDetections);
+		ParkingGarage pg=new ParkingGarage();
+		pg.setId(parkingGarageId);
+		parkingLock.setParkingGarage(pg);
 		parkingLockService.save(parkingLock);
 		return this.ajaxDoneSuccess("创建成功");
 	}
@@ -99,6 +103,9 @@ public class ParkingLockController extends BaseController {
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingLock parkingLock,
 			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId,
 			String surplusDetections) {
+		ParkingGarage pg=new ParkingGarage();
+		pg.setId(parkingGarageId);
+		parkingLock.setParkingGarage(pg);
 		parkingLock.setSurplusDetection(surplusDetections);
 		parkingLockService.save(parkingLock);
 		return this.ajaxDoneSuccess("修改成功");

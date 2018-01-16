@@ -12,7 +12,7 @@
 					<td class="fieldName">所属停车区:</td>
 					<td class="fieldInput" colspan="3"><label>
 					<input name="parkinglotareaGroup.id" value="${vm.parkingLotArea.id}" type="hidden" />
-					<input validate="{required:true}" id="parkinglotareaGroup_name" name="parkinglotareaGroup.name" value="${vm.parkingLotArea.name}" type="text"/> 
+					<input validate="{required:true}" readonly="readonly" id="parkinglotareaGroup_name" name="parkinglotareaGroup.name" value="${vm.parkingLotArea.name}" type="text"/> 
 					<a class="btnLook" rel="parkinggarage_parkinglotarea_select" title="选择车位所属停车区" href="${ctx}/work/parkinglotarea/select?single=true&search_EQ_isEnabled=1" lookupGroup="parkinglotareaGroup">查找带回</a> <span class="info">(选择停车片区)</span>
 					</label><span for="parkinglotareaGroup_name" generated="true" style="display: none" class="error"></span></td>
 				</tr>

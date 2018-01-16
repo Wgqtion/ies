@@ -6,7 +6,6 @@
 		class="pageForm required-validate"
 		onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<input type="hidden" name="id" value="${id}"/>
-		<input type="hidden" id="cardType" name="cardType" value="4"/>
 		<vsc:token tokenName="work.cardinfo.create"></vsc:token>
 		<vsc:callback></vsc:callback>
 		<div class="pageFormContent" layoutH="56">

@@ -5,6 +5,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.GenericGenerator;
+
 /**
  * 统一定义id的entity基类.
  * 
@@ -19,8 +21,9 @@ public abstract class IdEntity  {
 
 	protected Long id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@GenericGenerator(name = "persistenceGenerator", strategy = "increment") 
 	public Long getId() {
 		return id;
 	}

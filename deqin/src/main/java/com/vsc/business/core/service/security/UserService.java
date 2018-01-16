@@ -45,10 +45,6 @@ public class UserService extends BaseService<User> {
 		entity.getRoleList().clear();
 		entity.getRoleList().add(roleDao.findOne(roleId));
 
-		if (photoAttachId != null) {
-			entity.setPhotoAttach(attachDao.findOne(photoAttachId));
-		}
-		
 
 		this.userDao.save(entity);
 
@@ -60,10 +56,6 @@ public class UserService extends BaseService<User> {
 
 		entity.getRoleList().clear();
 		entity.getRoleList().add(roleDao.findOne(roleId));
-
-		if (photoAttachId != null) {
-			entity.setPhotoAttach(attachDao.findOne(photoAttachId));
-		}
 
 		return this.userDao.save(entity);
 

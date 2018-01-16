@@ -6,41 +6,28 @@
 <!-- 停车场余位统计 -->
 <select id="chart.parkingSurplusTotal.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
 	SELECT
-		PLNAME AS name,"SUM"(STATUS) AS surplustotal
+		PLNAME AS name,SUM(STATUS) AS surplustotal
 	FROM
 		(
 			SELECT
-				NVL(PL."NAME",'未分配') AS PLNAME,
-				NVL(PL."ID",-1) AS PLID,
+				IFNULL(PL.NAME,'未分配') AS PLNAME,
+				IFNULL(PL.ID,-1) AS PLID,
 				PV.STATUS
 			FROM
 				(
-					SELECT
-						*
-					FROM
-						(
-							SELECT
-								PARKING_CODE,
-								CREATE_TIME,
-								CAMERA_IP,
-								STATUS,
-								PLATE_NO,
-								IN_TIME,
-								ROW_NUMBER () OVER (
-									PARTITION BY PARKING_CODE
-									ORDER BY
-										CREATE_TIME DESC,
-										"ID" DESC
-								) rn
-							FROM
-								T_PARKING_VIDEO
-						) PV
-					WHERE
-						rn = 1
+					SELECT 
+						PARKING_CODE,
+						SUBSTRING_INDEX(GROUP_CONCAT(STATUS ORDER BY CREATE_TIME DESC,ID DESC),',',1) AS STATUS,
+						SUBSTRING_INDEX(GROUP_CONCAT(CAMERA_IP ORDER BY CREATE_TIME DESC,ID DESC),',',1) AS CAMERA_IP,
+						SUBSTRING_INDEX(GROUP_CONCAT(CREATE_TIME ORDER BY CREATE_TIME DESC,ID DESC),',',1) AS CREATE_TIME,
+						SUBSTRING_INDEX(GROUP_CONCAT(PLATE_NO ORDER BY CREATE_TIME DESC,ID DESC),',',1) AS PLATE_NO,
+						SUBSTRING_INDEX(GROUP_CONCAT(IN_TIME ORDER BY CREATE_TIME DESC,ID DESC),',',1) AS IN_TIME
+					FROM T_PARKING_VIDEO 
+					GROUP BY PARKING_CODE
 				) PV
-			LEFT JOIN T_PARKING_GARAGE PG ON PG."CODE" = PV.PARKING_CODE
-			LEFT JOIN T_PARKING_LOT_AREA PLA ON PG.PARKING_LOT_AREA_ID = PLA."ID"
-			LEFT JOIN T_PARKING_LOT PL ON PLA.PARKING_LOT_ID = PL."ID"
+			LEFT JOIN T_PARKING_GARAGE PG ON PG.CODE = PV.PARKING_CODE
+			LEFT JOIN T_PARKING_LOT_AREA PLA ON PG.PARKING_LOT_AREA_ID = PLA.ID
+			LEFT JOIN T_PARKING_LOT PL ON PLA.PARKING_LOT_ID = PL.ID
 		) SurplusTotal
 	GROUP BY 
 		PLID,PLNAME
@@ -56,49 +43,49 @@
 		FROM
 		(
 			SELECT 
-				PL."NAME" AS PLNAME,PL."ID" AS PLID,PAS."NAME" AS PASNAME,PAS."ID" AS PASID
+				PL.NAME AS PLNAME,PL.ID AS PLID,PAS.NAME AS PASNAME,PAS.ID AS PASID
 			FROM
 				T_PARKING_LOT PL
-			LEFT JOIN T_PASSAGES PAS ON PL."ID"=PAS.PARKINGLOT_ID
+			LEFT JOIN T_PASSAGES PAS ON PL.ID=PAS.PARKINGLOT_ID
 		)  PT 
 		
 		LEFT JOIN (
 			SELECT 
 				COUNT(*) innum,
-				$selectType$."ID" AS $selectType$ID
+				$selectType$.ID AS $selectType$ID
 			FROM 
 				T_PARKING_ORDER PO
-			LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS."CODE"
-			LEFT JOIN T_PARKING_LOT PL ON PL."ID"=PAS.PARKINGLOT_ID  
+			LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS.CODE
+			LEFT JOIN T_PARKING_LOT PL ON PL.ID=PAS.PARKINGLOT_ID  
 			WHERE 
 				1=1
 				<isNotEmpty    property="startDate">
-				AND <![CDATA[to_char(PO.IN_TIME,'yyyy-MM-dd') >= #startDate#]]>
+				AND <![CDATA[DATE_FORMAT(PO.IN_TIME,'yyyy-MM-dd') >= #startDate#]]>
 				</isNotEmpty>
 				<isNotEmpty    property="endDate">
-				AND <![CDATA[to_char(PO.IN_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
+				AND <![CDATA[DATE_FORMAT(PO.IN_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
 				</isNotEmpty>
 			GROUP BY 
-				$selectType$."ID"
+				$selectType$.ID
 		)	INCAR ON INCAR.$selectType$ID=PT.$selectType$ID
 		LEFT JOIN (
 			SELECT 
 				COUNT(*) outnum,
-				$selectType$."ID" AS $selectType$ID
+				$selectType$.ID AS $selectType$ID
 			FROM 
 				T_PARKING_ORDER PO
-			LEFT JOIN T_PASSAGES PAS ON PO.OUT_SCHOOL_DOOR_NAME=PAS."CODE"
-			LEFT JOIN T_PARKING_LOT PL ON PL."ID"=PAS.PARKINGLOT_ID  
+			LEFT JOIN T_PASSAGES PAS ON PO.OUT_SCHOOL_DOOR_NAME=PAS.CODE
+			LEFT JOIN T_PARKING_LOT PL ON PL.ID=PAS.PARKINGLOT_ID  
 			WHERE 
 				1=1
 				<isNotEmpty    property="startDate">
-				AND <![CDATA[to_char(PO.OUT_TIME,'yyyy-MM-dd') >= #startDate#]]>
+				AND <![CDATA[DATE_FORMAT(PO.OUT_TIME,'yyyy-MM-dd') >= #startDate#]]>
 				</isNotEmpty>
 				<isNotEmpty    property="endDate">
-				AND <![CDATA[to_char(PO.OUT_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
+				AND <![CDATA[DATE_FORMAT(PO.OUT_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
 				</isNotEmpty>
 			GROUP BY 
-				$selectType$."ID"
+				$selectType$.ID
 		)	OUTCAR ON OUTCAR.$selectType$ID=PT.$selectType$ID
 		WHERE 
 			1=1
@@ -122,28 +109,28 @@
 			SELECT 
 				SUM(YS_PAY_AMOUNT) AS ysPayAmount,
 				SUM(SS_PAY_AMOUNT) AS ssPayAmount,
-				NVL($selectType$."ID",-1) AS $selectType$ID,
-				NVL($selectType$."NAME",'未分配') AS $selectType$NAME
+				IFNULL($selectType$.ID,-1) AS $selectType$ID,
+				IFNULL($selectType$.NAME,'未分配') AS $selectType$NAME
 			FROM 
 				T_PARKING_ORDER PO
-			LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS."CODE"
-			LEFT JOIN T_PARKING_LOT PL ON PL."ID"=PAS.PARKINGLOT_ID  
+			LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS.CODE
+			LEFT JOIN T_PARKING_LOT PL ON PL.ID=PAS.PARKINGLOT_ID  
 			WHERE 
 				1=1 AND (IN_SCHOOL_DOOR_NAME IS NOT NULL OR (OUT_SCHOOL_DOOR_NAME IS NOT NULL AND IN_SCHOOL_DOOR_NAME IS NULL))
 				
 				<isNotEmpty    property="selectId">
-				AND PL."ID"=#selectId#
+				AND PL.ID=#selectId#
 				</isNotEmpty>
 				
 				<isNotEmpty    property="startDate">
-				AND <![CDATA[to_char(PO.PAY_TIME,'yyyy-MM-dd') >= #startDate#]]>
+				AND <![CDATA[DATE_FORMAT(PO.PAY_TIME,'yyyy-MM-dd') >= #startDate#]]>
 				</isNotEmpty>
 				<isNotEmpty    property="endDate">
-				AND <![CDATA[to_char(PO.PAY_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
+				AND <![CDATA[DATE_FORMAT(PO.PAY_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
 				</isNotEmpty>
 			GROUP BY 
-				NVL($selectType$."ID",-1),
-				NVL($selectType$."NAME",'未分配')
+				IFNULL($selectType$.ID,-1),
+				IFNULL($selectType$.NAME,'未分配')
 				
 				
 				
@@ -153,28 +140,28 @@
 			SELECT 
 				SUM(YS_PAY_AMOUNT) AS ysPayAmount,
 				SUM(SS_PAY_AMOUNT) AS ssPayAmount,
-				NVL($selectType$."ID",-1) AS $selectType$ID,
-				NVL($selectType$."NAME",'未分配') AS $selectType$NAME
+				IFNULL($selectType$.ID,-1) AS $selectType$ID,
+				IFNULL($selectType$.NAME,'未分配') AS $selectType$NAME
 			FROM 
 				T_PARKING_ORDER PO
-			LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS."CODE"
-			LEFT JOIN T_PARKING_LOT PL ON PL."ID"=PAS.PARKINGLOT_ID  
+			LEFT JOIN T_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS.CODE
+			LEFT JOIN T_PARKING_LOT PL ON PL.ID=PAS.PARKINGLOT_ID  
 			WHERE 
 				1=1 AND (IN_SCHOOL_DOOR_NAME IS NULL AND OUT_SCHOOL_DOOR_NAME IS NULL)
 				
 				<isNotEmpty    property="selectId">
-				AND PL."ID"=#selectId#
+				AND PL.ID=#selectId#
 				</isNotEmpty>
 				
 				<isNotEmpty    property="startDate">
-				AND <![CDATA[to_char(PO.PAY_TIME,'yyyy-MM-dd') >= #startDate#]]>
+				AND <![CDATA[DATE_FORMAT(PO.PAY_TIME,'yyyy-MM-dd') >= #startDate#]]>
 				</isNotEmpty>
 				<isNotEmpty    property="endDate">
-				AND <![CDATA[to_char(PO.PAY_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
+				AND <![CDATA[DATE_FORMAT(PO.PAY_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
 				</isNotEmpty>
 			GROUP BY 
-				NVL($selectType$."ID",-1),
-				NVL($selectType$."NAME",'未分配')
+				IFNULL($selectType$.ID,-1),
+				IFNULL($selectType$.NAME,'未分配')
 		)  PT 
 		GROUP BY 
 				PT.$selectType$ID,PT.$selectType$NAME

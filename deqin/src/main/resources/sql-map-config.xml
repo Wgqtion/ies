@@ -14,7 +14,6 @@
 		useStatementNamespaces="false"/>
 	    
 	<typeAlias alias="mapBean" type="com.vsc.modules.entity.MapBean"/>
-	<typeAlias alias="cardInfo" type="com.vsc.business.gerd.entity.work.CardInfo"/>
 	<!-- 这里无需配置sqlMap,可以通过spring的配置加载某个目录的多个SqlMap.xml-->
 	<sqlMap resource="emptyForIbatisParse_sqlmap.xml"/>
 </sqlMapConfig>

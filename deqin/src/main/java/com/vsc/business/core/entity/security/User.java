@@ -36,38 +36,16 @@ public class User extends IdEntity {
     private Long userType = 1L;
     private Boolean isEnabled = Boolean.TRUE;
     private Date updateTime;
-    private Attach photoAttach;
-
     private User createUser;
-
     private java.lang.String gender = "1";
-    private java.lang.String idNumber;
-    private java.lang.String dateOfBirth;
     private java.lang.String mobilePhone;
-    private java.lang.String email;
-    private java.lang.String nickname;
-    private java.lang.String schoolCardType;
-    private Integer expiryNum;
-    private java.util.Date expiryDate;
-    private java.util.Date registrationDate;
-    private java.util.Date lastLoginTime;
     private java.lang.String contactAddress;
-    private java.lang.String contactPhoneNumber;
     private java.lang.String sourceType;
     private String carNumber;
 
     private List<Attach> attachs = Lists.newArrayList();
     private List<Role> roleList = Lists.newArrayList();
 
-    /*
-	 * 新增字段-开始
-     */
-    private java.lang.String nUserType;
-    private java.lang.String cardTypeCode;
-    private java.lang.String cardTypeName;
-    private java.lang.String dept;
-    private java.lang.String deptName;
-    private java.lang.String NIsEnable;
 
 
     /**
@@ -84,78 +62,8 @@ public class User extends IdEntity {
         this.weixinId = weixinId;
     }
 
-    /**
-     * @return
-     */
-    @Column(name = "N_USER_TYPE")
-    public java.lang.String getnUserType() {
-        return nUserType;
-    }
-
-    public void setnUserType(java.lang.String nUserType) {
-        this.nUserType = nUserType;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "CARD_TYPE_CODE")
-    public java.lang.String getCardTypeCode() {
-        return cardTypeCode;
-    }
-
-    public void setCardTypeCode(java.lang.String cardTypeCode) {
-        this.cardTypeCode = cardTypeCode;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "CARD_TYPE_NAME")
-    public java.lang.String getCardTypeName() {
-        return cardTypeName;
-    }
-
-    public void setCardTypeName(java.lang.String cardTypeName) {
-        this.cardTypeName = cardTypeName;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "DEPT")
-    public java.lang.String getDept() {
-        return dept;
-    }
-
-    public void setDept(java.lang.String dept) {
-        this.dept = dept;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "N_IS_ENABLE")
-    public java.lang.String getNIsEnable() {
-        return NIsEnable;
-    }
-
-    public void setNIsEnable(java.lang.String nIsEnable) {
-        NIsEnable = nIsEnable;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "DEPT_NAME")
-    public java.lang.String getDeptName() {
-        return deptName;
-    }
-
-    public void setDeptName(java.lang.String deptName) {
-        this.deptName = deptName;
-    }
-
+ 
+  
     /*
 	 * 新增字段-结束
      */
@@ -267,16 +175,7 @@ public class User extends IdEntity {
         this.updateTime = updateTime;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "photo_attach_id")
-    public Attach getPhotoAttach() {
-        return photoAttach;
-    }
-
-    public void setPhotoAttach(Attach photoAttach) {
-        this.photoAttach = photoAttach;
-    }
-
+    
     /**
      * @return
      */
@@ -289,29 +188,7 @@ public class User extends IdEntity {
         this.gender = value;
     }
 
-    /**
-     * @return
-     */
-    @Column(name = "ID_NUMBER")
-    public java.lang.String getIdNumber() {
-        return this.idNumber;
-    }
-
-    public void setIdNumber(java.lang.String value) {
-        this.idNumber = value;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "DATE_OF_BIRTH")
-    public java.lang.String getDateOfBirth() {
-        return this.dateOfBirth;
-    }
-
-    public void setDateOfBirth(java.lang.String value) {
-        this.dateOfBirth = value;
-    }
+  
 
     /**
      * @return
@@ -325,89 +202,7 @@ public class User extends IdEntity {
         this.mobilePhone = value;
     }
 
-    /**
-     * @return
-     */
-    @Column(name = "EMAIL")
-    public java.lang.String getEmail() {
-        return this.email;
-    }
 
-    public void setEmail(java.lang.String value) {
-        this.email = value;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "NICKNAME")
-    public java.lang.String getNickname() {
-        return this.nickname;
-    }
-
-    public void setNickname(java.lang.String value) {
-        this.nickname = value;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "SCHOOL_CARD_TYPE")
-    public java.lang.String getSchoolCardType() {
-        return this.schoolCardType;
-    }
-
-    public void setSchoolCardType(java.lang.String value) {
-        this.schoolCardType = value;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "EXPIRY_NUM")
-    public Integer getExpiryNum() {
-        return this.expiryNum;
-    }
-
-    public void setExpiryNum(Integer value) {
-        this.expiryNum = value;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "EXPIRY_DATE")
-    public java.util.Date getExpiryDate() {
-        return this.expiryDate;
-    }
-
-    public void setExpiryDate(java.util.Date value) {
-        this.expiryDate = value;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "REGISTRATION_DATE")
-    public java.util.Date getRegistrationDate() {
-        return this.registrationDate;
-    }
-
-    public void setRegistrationDate(java.util.Date value) {
-        this.registrationDate = value;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "LAST_LOGIN_TIME")
-    public java.util.Date getLastLoginTime() {
-        return this.lastLoginTime;
-    }
-
-    public void setLastLoginTime(java.util.Date value) {
-        this.lastLoginTime = value;
-    }
 
     /**
      * @return
@@ -421,17 +216,7 @@ public class User extends IdEntity {
         this.contactAddress = value;
     }
 
-    /**
-     * @return
-     */
-    @Column(name = "CONTACT_PHONE_NUMBER")
-    public java.lang.String getContactPhoneNumber() {
-        return this.contactPhoneNumber;
-    }
-
-    public void setContactPhoneNumber(java.lang.String value) {
-        this.contactPhoneNumber = value;
-    }
+   
 
     /**
      * @return

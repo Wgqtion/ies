@@ -33,7 +33,7 @@
 	</bean>
 	
 	<bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-		<property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect">
+		<property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect">
 			<!--
 				<bean factory-method="getDialect" class="org.springside.modules.persistence.Hibernates">
 					<constructor-arg ref="dataSource"/>

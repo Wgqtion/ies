@@ -38,10 +38,7 @@ public class ParkingLot extends IdEntity {
     private Integer carNumber;
     private String address;
 
-    private Boolean canGetCard;
-    private Integer lasttime;
-    private Integer campusId;
-
+    
     private Integer freeCarNum = 0;
 
     private List<ParkingLotArea> parkingLotAreas = Lists.newArrayList();
@@ -182,31 +179,6 @@ public class ParkingLot extends IdEntity {
         return vl;
 
     }
-
-    public Boolean getCanGetCard() {
-        return canGetCard;
-    }
-
-    public void setCanGetCard(Boolean canGetCard) {
-        this.canGetCard = canGetCard;
-    }
-
-    public Integer getLasttime() {
-        return lasttime;
-    }
-
-    public void setLasttime(Integer lasttime) {
-        this.lasttime = lasttime;
-    }
-
-    public Integer getCampusId() {
-        return campusId;
-    }
-
-    public void setCampusId(Integer campusId) {
-        this.campusId = campusId;
-    }
-
     @Transient
     public Integer getFreeCarNum() {
         return freeCarNum;

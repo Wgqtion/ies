@@ -22,7 +22,7 @@
 					<td class="fieldInput">
 					<label>
 					<input name="parkingGarageGroup.id" value="${vm.parkingGarage.id}" type="hidden" />
-					<input validate="{required:true}" id="parkingGarageGroup_name" name="parkingGarageGroup.name" value="${vm.parkingGarage.name}" type="text"/> 
+					<input validate="{required:true}" readonly="readonly" id="parkingGarageGroup_name" name="parkingGarageGroup.name" value="${vm.parkingGarage.name}" type="text"/> 
 					<a class="btnLook" rel="parkinglock_parkingGarage_select" title="选择关联车位" href="${ctx}/work/parkinggarage/select?single=true&search_EQ_isEnabled=1" lookupGroup="parkingGarageGroup">查找带回</a> <span class="info">(选择关联车位)</span>
 					</label><span for="parkingGarageGroup_name" generated="true" style="display: none" class="error"></span>
 					</td>

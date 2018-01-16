@@ -87,12 +87,6 @@ public class CardInfoController extends BaseController {
 		return PATH_EDIT;
 	}
 
-	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
-	public String view(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vm", cardInfoService.getObjectById(id));
-		return PATH_VIEW;
-	}
-
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(
 			@Valid @ModelAttribute("preloadModel") CardInfo cardInfo) {
@@ -112,20 +106,7 @@ public class CardInfoController extends BaseController {
 		cardInfoService.deleteByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
-
 	
-	/**
-	 * 高级查询界面
-	 * 
-	 * @param id
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value = "search")
-	public String search(HttpServletRequest request) {
-		return PATH_SEARCH;
-	}
-
 	@ModelAttribute("preloadModel")
 	public CardInfo getModel(
 			@RequestParam(value = "id", required = false) Long id) {
@@ -133,15 +114,6 @@ public class CardInfoController extends BaseController {
 			return cardInfoService.getObjectById(id);
 		}
 		return null;
-	}
-	
-	@RequestMapping(value = "select")
-	public String select(Model model, ServletRequest request) {
-		PageRequest pageRequest = this.getPageRequest("carNo", "asc");
-		Map<String, Object> searchParams = this.getSearchRequest();
-		Page<CardInfo> page = cardInfoService.findPage(searchParams, pageRequest);
-		model.addAttribute("page", page);
-		return PATH_SELECT;
 	}
 
 }
