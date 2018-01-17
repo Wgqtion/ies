@@ -19,7 +19,7 @@ public class InParkingOrderValidate{
 	/**
 	 * 进入相机ip
 	 */
-	@NotBlank(message = "inCameraIp不能为空")
+	@NotNull(message = "inCameraIp不能为空")
 	private java.lang.String inCameraIp;
 	/**
 	 * 进入时间
