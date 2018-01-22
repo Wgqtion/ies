@@ -64,7 +64,7 @@
 				<th <vsc:orderField name="isOk"/>>是否异常</th>
 				<th <vsc:orderField name="isOnline"/>>是否在线</th>
 				<th <vsc:orderField name="isOpen"/>>开关状态</th>
-				<th <vsc:orderField name="isForeverOpen"/>>永久状态</th>
+				<th <vsc:orderField name="logUpdateTime"/>>最后上报时间</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -82,7 +82,7 @@
 					<td><s:message code="parkinglock.isOk.${varitem.isOk}" /></td>
 					<td><s:message code="parkinglock.isOnline.${varitem.isOnline}" /></td>
 					<td><s:message code="parkinglock.isOpen.${varitem.isOpen}" /></td>
-					<td><s:message code="parkinglock.isForeverOpenClose.${varitem.isForeverOpenClose}" /></td>
+					<td><fmt:formatDate value='${ varitem.logUpdateTime}' pattern='yyyy-MM-dd HH:mm:ss' /></td>
 				</tr>
 			</c:forEach>
 		</tbody>
