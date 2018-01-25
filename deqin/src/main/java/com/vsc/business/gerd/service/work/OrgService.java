@@ -8,8 +8,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vsc.business.gerd.entity.work.Invitation;
-import com.vsc.business.gerd.repository.work.InvitationDao;
+import com.vsc.business.gerd.entity.work.Org;
+import com.vsc.business.gerd.repository.work.OrgDao;
 import com.vsc.modules.service.BaseService;
 
 /**
@@ -19,21 +19,21 @@ import com.vsc.modules.service.BaseService;
  */
 @Service
 @Transactional
-public class InvitationService extends BaseService<Invitation> {
+public class OrgService extends BaseService<Org> {
 	private static Logger logger = LoggerFactory
-			.getLogger(InvitationService.class);
+			.getLogger(OrgService.class);
 
 	@Autowired
-	private InvitationDao invitationDao;
+	private OrgDao orgDao;
 
 	@Override
-	public PagingAndSortingRepository<Invitation, Long> getPagingAndSortingRepositoryDao() {
-		return this.invitationDao;
+	public PagingAndSortingRepository<Org, Long> getPagingAndSortingRepositoryDao() {
+		return this.orgDao;
 	}
 
 	@Override
-	public JpaSpecificationExecutor<Invitation> getJpaSpecificationExecutorDao() {
-		return this.invitationDao;
+	public JpaSpecificationExecutor<Org> getJpaSpecificationExecutorDao() {
+		return this.orgDao;
 	}
 
 }

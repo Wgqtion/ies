@@ -33,7 +33,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.service.security.AccountService;
-import com.vsc.business.gerd.entity.work.Invitation;
+import com.vsc.business.gerd.entity.work.Org;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
@@ -44,7 +44,7 @@ import com.vsc.business.gerd.entity.work.WeixinAttest;
 import com.vsc.business.gerd.entity.work.Yuding;
 import com.vsc.business.gerd.entity.work.YudingSetting;
 import com.vsc.business.gerd.entity.work.Yuyue;
-import com.vsc.business.gerd.service.work.InvitationService;
+import com.vsc.business.gerd.service.work.OrgService;
 import com.vsc.business.gerd.service.work.ParkingGarageService;
 import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.business.gerd.service.work.ParkingLotAreaService;
@@ -81,7 +81,7 @@ public class WeixinController extends HttpServiceBaseController {
     private ParkingLotAreaService parkingLotAreaService;
 
     @Autowired
-    private InvitationService invitationService;
+    private OrgService orgService;
     
     //预约
     @Autowired
@@ -161,13 +161,12 @@ public class WeixinController extends HttpServiceBaseController {
      * @param invitationCode 邀请码
      */
     @RequestMapping(value = "/invitation")
-    public ModelAndView invitation(Invitation invitation) throws ParseException {
+    public ModelAndView invitation(Org org) throws ParseException {
         //邀请码查询
     	Map<String, Object> searchParams = this.getSearchRequest();
-    	searchParams.put("EQ_invitationCode", invitation.getInvitationCode());
+    	searchParams.put("EQ_invitationCode", org.getInvitationCode());
     	searchParams.put("EQ_isDelete",0);
-    	searchParams.put("EQ_type",1);
-    	List<Invitation> list=invitationService.findList(searchParams);
+    	List<Org> list=orgService.findList(searchParams);
     	if(list!=null&&list.size()>0){
             return this.ajaxDoneSuccess("有效");
     	}

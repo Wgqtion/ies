@@ -180,6 +180,16 @@
 					</div> 
 					<div class="accordionHeader">
 						<h2>
+							<span>Folder</span>基础设置
+						</h2>
+					</div>
+					<div class="accordionContent">
+						<ul class="tree treeFolder">
+							<li><a href="${ctx}/work/org" target="navTab" rel="work_org">邀请码管理</a></li>
+						</ul>
+					</div>
+					<div class="accordionHeader">
+						<h2>
 							<span>Folder</span>系统管理
 						</h2>
 					</div>
