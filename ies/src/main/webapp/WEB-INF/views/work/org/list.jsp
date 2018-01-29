@@ -9,8 +9,8 @@
 				   
 				<li><label>名称:</label> 
 					<input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /> </li>   
-				<li><label>邀请码:</label> 
-					<input type="text" value="${param.search_LIKE_invitationCode}" name="search_LIKE_invitationCode" /> </li>   
+				<li><label>权限码:</label> 
+					<input type="text" value="${param.search_LIKE_code}" name="search_LIKE_code" /> </li>   
 				<li><div class="buttonActive">
 							<div class="buttonContent">
 								<button type="submit">检索</button>
@@ -28,7 +28,7 @@
 				warn="请选择一个记录"><span>编辑</span></a></li>
 			<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${ctx}/work/org/delete" class="delete"><span>删除</span></a></li>
 			<li class="line">line</li>
-			 	</ul>
+		</ul>
 	</div>
 	<table class="table" width="100%" layoutH="110">
 		<thead>
@@ -36,7 +36,7 @@
 				<th width="40" align="center">序号</th>
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>    
 				<th <vsc:orderField name="name"/>>名称</th>   
-				<th <vsc:orderField name="invitationCode"/>>邀请码</th>  
+				<th <vsc:orderField name="code"/>>权限码</th>  
 			</tr>
 		</thead>
 		<tbody>
@@ -45,7 +45,7 @@
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>    
 					<td>${varitem.name}</td>   
-					<td>${varitem.invitationCode}</td>   
+					<td>${varitem.code}</td>   
 				</tr>
 			</c:forEach>
 		</tbody>

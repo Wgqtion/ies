@@ -43,7 +43,20 @@ public class ParkingLot extends IdEntity {
 
     private List<ParkingLotArea> parkingLotAreas = Lists.newArrayList();
 
-    /**
+    private Org org;
+    
+    
+    @ManyToOne
+    @JoinColumn(name="ORG_CODE",referencedColumnName="CODE")
+    public Org getOrg() {
+		return org;
+	}
+
+	public void setOrg(Org org) {
+		this.org = org;
+	}
+
+	/**
      * @return
      */
     @Column(name = "NAME")

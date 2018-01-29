@@ -164,7 +164,7 @@ public class WeixinController extends HttpServiceBaseController {
     public ModelAndView invitation(Org org) throws ParseException {
         //邀请码查询
     	Map<String, Object> searchParams = this.getSearchRequest();
-    	searchParams.put("EQ_invitationCode", org.getInvitationCode());
+    	searchParams.put("EQ_code", org.getCode());
     	searchParams.put("EQ_isDelete",0);
     	List<Org> list=orgService.findList(searchParams);
     	if(list!=null&&list.size()>0){

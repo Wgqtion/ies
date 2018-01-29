@@ -126,6 +126,16 @@ public class ParkingLotController extends BaseController {
 		model.addAttribute("page", page);
 		return PATH_SELECT;
 	}
+	
+	@RequestMapping(value = "orgAuthority")
+	public String orgAuthority(Model model, ServletRequest request) {
+		PageRequest pageRequest = this.getPageRequest();
+		Map<String, Object> searchParams = this.getSearchRequest();
+		Page<ParkingLot> page = parkingLotService.findPage(searchParams, pageRequest);
+		model.addAttribute("page", page);
+		return PATH+"/orgAuthority";
+	}
+	
 	/**
 	 *  高级查询界面
 	 * @param id

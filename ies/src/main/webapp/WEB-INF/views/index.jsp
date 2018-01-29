@@ -185,7 +185,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a href="${ctx}/work/org" target="navTab" rel="work_org">邀请码管理</a></li>
+							<li><a href="${ctx}/work/org" target="navTab" rel="work_org">小程序权限</a></li>
 						</ul>
 					</div>
 					<div class="accordionHeader">

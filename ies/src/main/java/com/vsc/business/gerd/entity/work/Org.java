@@ -1,7 +1,13 @@
 package com.vsc.business.gerd.entity.work;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.vsc.constants.Constants;
@@ -14,7 +20,7 @@ import com.vsc.modules.entity.BasicEntity;
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "org")
-public class Org extends BasicEntity {
+public class Org extends BasicEntity implements Serializable{
 	
 	/**
 	 * 组织名称
@@ -24,13 +30,20 @@ public class Org extends BasicEntity {
 	 * 编码
 	 */
 	private String code;
-	
-	/**
-	 * 邀请码
-	 */
-	private java.lang.String invitationCode;
 
+	private List<ParkingLot> parkingLots=new ArrayList<ParkingLot>();
 	
+	
+	@OneToMany
+	@JoinColumn(name = "ORG_CODE",referencedColumnName="CODE")
+	public List<ParkingLot> getParkingLots() {
+		return parkingLots;
+	}
+
+	public void setParkingLots(List<ParkingLot> parkingLots) {
+		this.parkingLots = parkingLots;
+	}
+
 	@Column(name = "NAME")
 	public String getName() {
 		return name;
@@ -47,15 +60,6 @@ public class Org extends BasicEntity {
 
 	public void setCode(String code) {
 		this.code = code;
-	}
-
-	@Column(name = "INVITATION_CODE")
-	public java.lang.String getInvitationCode() {
-		return invitationCode;
-	}
-
-	public void setInvitationCode(java.lang.String invitationCode) {
-		this.invitationCode = invitationCode;
 	}
 	
 }

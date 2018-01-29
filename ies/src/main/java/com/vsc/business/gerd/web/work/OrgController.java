@@ -1,7 +1,6 @@
 package com.vsc.business.gerd.web.work;
 
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,9 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.Org;
+import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.service.work.OrgService;
 import com.vsc.constants.Constants;
 import com.vsc.util.CoreUtils;
+import com.vsc.util.RandomPassword;
 
 /**
  * 用户分组视图控制
@@ -40,7 +41,7 @@ public class OrgController extends BaseController {
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";
 	public static final String PATH_VIEW = PATH + Constants.SPT + "view";
-	public static final String PATH_SEARCH = PATH + Constants.SPT + "search";
+	public static final String PATH_SELECT = PATH + Constants.SPT + "select";
 
 	@RequestMapping(value = "")
 	public String list(Model model, HttpServletRequest request) {
@@ -53,23 +54,25 @@ public class OrgController extends BaseController {
 
 		return PATH_LIST;
 	}
-
+	
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) {
-		model.addAttribute("vm", new Org());
+		Org org=new Org();
+		org.setCode(RandomPassword.makeRandomPassword(8));
+		model.addAttribute("vm",org);
 		model.addAttribute("action", BaseController.CREATE);
 		return PATH_EDIT;
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid Org org) {
+	public ModelAndView create(@Valid Org org,
+			@RequestParam(value = "parkingLots.code", required = false) String[] codes) {
 		User user = this.getCurrentUser();
 		org.setCreateDate(CoreUtils.nowtime());
 		org.setCreateUser(user);
 		org.setUpdateUser(user);
 		org.setUpdateDate(CoreUtils.nowtime());
-		org.setCode(UUID.randomUUID().toString());
-		orgService.save(org);
+		orgService.save(org,codes);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
@@ -80,18 +83,13 @@ public class OrgController extends BaseController {
 		return PATH_EDIT;
 	}
 
-	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
-	public String view(@PathVariable("id") java.lang.Long id, Model model) {
-		model.addAttribute("vm", orgService.getObjectById(id));
-		return PATH_VIEW;
-	}
-
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Org org) {
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Org org,
+			@RequestParam(value = "parkingLots.code", required = false) String[] codes) {
 		User user = this.getCurrentUser();
 		org.setUpdateUser(user);
 		org.setUpdateDate(CoreUtils.nowtime());
-		orgService.save(org);
+		orgService.save(org,codes);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 
