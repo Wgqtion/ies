@@ -1,6 +1,5 @@
 package com.vsc.business.gerd.service.work;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -131,9 +130,9 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 						message="区域编号："+ipAddress+"，地锁编号："+lockNum+"，系统操作日志异常";
 						return message;
 					}
-					BigDecimal status=null;
+					Integer status=null;
 					if(ploeList!=null){
-						status=(BigDecimal) ploeList.get(0).get("status");
+						status=(Integer) ploeList.get(0).get("status");
 					}
 					if(status==null){
 						message="区域编号："+ipAddress+"，地锁编号："+lockNum+"，系统操作日志异常";
@@ -160,10 +159,11 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 					message="区域编号："+ipAddress+"，地锁编号："+lockNum+"，指令请求超时，请重试";
 					for(int j=0;j<60;j++){
 						Thread.sleep(500);
+						ParkingLock pl=this.findUniqueBy("id",ids[i]);
 						List<MapBean<String, Object>> parkingLocks=this.findIbatisQuery("t_parking_lock.get", filterParams);
 						if(parkingLocks!=null&&parkingLocks.size()>0){
 							MapBean<String, Object> parkingLock=parkingLocks.get(0);
-							BigDecimal isOpen=(BigDecimal) parkingLock.get("IS_OPEN");
+							Integer isOpen=(Integer) parkingLock.get("IS_OPEN");
 							if(isOpen==null){
 								message="区域编号："+ipAddress+"，地锁编号："+lockNum+"，地锁查询出错";
 								continue;
@@ -173,10 +173,6 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 								break;
 							}else if("0".equals(isOpen.toString())&&"01".equals(state)){
 								message="";
-								break;
-							}
-							if(j==35){
-								message="区域编号："+ipAddress+"，地锁编号："+lockNum+"，地锁控制失败，请重试";
 								break;
 							}
 						}else{

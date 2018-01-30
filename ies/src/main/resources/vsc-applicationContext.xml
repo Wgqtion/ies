@@ -52,7 +52,7 @@
 		<property name="sqlExecutor">
 			<bean class="com.vsc.modules.ibatis.LimitSqlExecutor">
 				<property name="dialect">
-					<bean class="com.vsc.modules.ibatis.dialect.OracleDialect"/>
+					<bean class="com.vsc.modules.ibatis.dialect.MySQLDialect"/>
 				</property>
 			</bean>
 		</property>

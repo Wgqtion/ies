@@ -44,7 +44,7 @@
 				/index=authc,permsany
 				/sys/**=authc,permsany
 				/attach/up=authc,permsany
-				/httpservices/client/** = anon 
+				/httpservices/** = anon 
 				/work/parkingorder/** = anon 
 				/** = authc  
 	        </value>  
