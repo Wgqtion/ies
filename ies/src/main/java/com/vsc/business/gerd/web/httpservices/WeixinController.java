@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -303,14 +305,24 @@ public class WeixinController extends HttpServiceBaseController {
      * @throws ParseException
      */
     @RequestMapping(value = "/parkinglot/find")
-    public ModelAndView parkinglotFind(@RequestParam(required = false) Long parkingLotId) throws ParseException {
+    public ModelAndView parkinglotFind(@RequestParam(required = true) Long userId) throws ParseException {
+    	Map<String, Object> orgParams = this.getSearchRequest();
+    	orgParams.put("EQ_users.id",userId);
+    	List<Org> orgs=this.orgService.findList(orgParams);
+    	
         Map<String, Object> searchParams = this.getSearchRequest();
         searchParams.put("EQ_isEnabled", true);
-        if(parkingLotId != null){
-            searchParams.put("EQ_parkingLot", parkingLotId);
+
+        Set<ParkingLot> parkingLots =new HashSet<ParkingLot>();
+        
+        if(orgs!=null){
+        	for(Org org:orgs){
+        		 searchParams.put("EQ_org.code",org.getCode());
+        		 parkingLots.addAll(parkingLotService.findList(searchParams));
+        	}
         }
-        List<ParkingLot> parkingLots = parkingLotService.findList(searchParams);
         if (parkingLots != null && !parkingLots.isEmpty()) {
+        	searchParams.remove("EQ_org.code");
             // 查询剩余车位
             for (ParkingLot parkingLot : parkingLots) {
                 int sumfree = 0;

@@ -305,7 +305,8 @@
 					</h4>
 					<form class="bs-docs-example" action="<%=url%>/parkinglot/find" method="post">
 
-						
+						<label>用户ID</label>
+                                                <input  type="text" name="userId" value="6562240"/> <br/>
 						<button type="submit" class="btn">获取厂库信息</button>
 					</form>
 					<h4>
@@ -320,9 +321,9 @@
 									<th >说明</th>
 								</tr>
 								<tr>
-									<td>无</td>
-									<td>无</td>
-									<td>无</td>
+									<td>userId</td>
+									<td>是</td>
+									<td>用户id</td>
 								</tr>
 								 
 							</tbody>
