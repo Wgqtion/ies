@@ -45,9 +45,23 @@ public class ParkingLot extends IdEntity {
 
     private Org org;
     
+    private String orgCode;
     
-    @ManyToOne
-    @JoinColumn(name="ORG_CODE",referencedColumnName="CODE")
+    
+    /**
+     * @return
+     */
+    @Column(name = "ORG_CODE")
+    public String getOrgCode() {
+		return orgCode;
+	}
+
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
+	}
+
+	@ManyToOne
+    @JoinColumn(name="ORG_CODE",referencedColumnName="CODE",insertable=false,updatable=false)
     public Org getOrg() {
 		return org;
 	}

@@ -314,7 +314,9 @@ public class WeixinController extends HttpServiceBaseController {
         searchParams.put("EQ_isEnabled", true);
 
         Set<ParkingLot> parkingLots =new HashSet<ParkingLot>();
-        
+        searchParams.put("ISNULL_orgCode",null);
+		parkingLots.addAll(parkingLotService.findList(searchParams));
+		searchParams.remove("ISNULL_orgCode");
         if(orgs!=null){
         	for(Org org:orgs){
         		 searchParams.put("EQ_org.code",org.getCode());
