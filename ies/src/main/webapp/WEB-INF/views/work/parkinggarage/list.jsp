@@ -9,8 +9,7 @@
 				<li><label>停车场:</label> <input type="text" value="${param['search_LIKE_parkingLotArea.parkingLot.name']}" name="search_LIKE_parkingLotArea.parkingLot.name" /></li>
 				<li><label>所属停车区:</label> <input type="text" value="${param['search_LIKE_parkingLotArea.name']}" name="search_LIKE_parkingLotArea.name" /></li>
 				<li><label>停车位编号:</label> <input type="text" value="${param.search_LIKE_code}" name="search_LIKE_code" /></li>
-				<li><label>停车位名称:</label> <input type="text" value="${param.search_EQ_name}" name="search_EQ_name" /></li>				
-				<li><label>车位类型:</label> 
+				<li><label>停车位名称:</label> <input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /></li>				
 				</ul>
 			<div class="subBar">
 				<ul>

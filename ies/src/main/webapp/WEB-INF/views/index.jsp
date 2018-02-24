@@ -8,7 +8,7 @@
 <meta HTTP-EQUIV="pragma" CONTENT="no-cache" />
 <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate" />
 <meta HTTP-EQUIV="expires" CONTENT="0">
-	<title>上海德勤智能停车管理平台</title>
+	<title>上海宜事智能停车管理平台</title>
 	<link rel="shortcut icon" href="${ctx}/static/images/favicon.ico?222" />
 	<link href="${ctx}/static/styles/themes/silver/style.css" rel="stylesheet" type="text/css" media="screen" />
 	<link href="${ctx}/static/styles/themes/css/core.css" rel="stylesheet" type="text/css" media="screen" />
@@ -96,32 +96,31 @@
 				<div class="accordion" fillSpace="sidebar">
 					<div class="accordionHeader">
 						<h2>
-							<span>Folder</span>车辆管理
+							<span>Folder</span>场库管理
 						</h2>
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a href="${ctx}/work/member" title="会员管理" target="navTab" rel="work_member">会员管理</a></li>
-							<li><a title="vip车辆管理" href="${ctx}/work/cardinfo" target="navTab" rel="work_cardinfo">vip车辆管理</a></li>
-							<li><a title="预约管理" href="${ctx}/work/yuding" target="navTab" rel="work_yuding">预约管理</a></li>
+							<li><a href="${ctx}/work/parkinglot" title="停车场信息" target="navTab" rel="work_parkinglot">停车场信息</a></li>
+							<li><a href="${ctx}/work/parkinglotarea" title="片区信息" target="navTab" rel="work_parkinglotarea">片区信息</a></li>
+							<li><a href="${ctx}/work/parkinggarage" title="车位信息" target="navTab" rel="work_parkinggarage">车位信息</a></li>
+							<li><a href="${ctx}/work/passages" title="通道信息" target="navTab" rel="work_passages">通道信息</a></li>
 						</ul>
 					</div>
 					<div class="accordionHeader">
 						<h2>
-							<span>Folder</span>设施管理
+							<span>Folder</span>用户管理
 						</h2>
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a href="${ctx}/work/parkinglot" title="停车场管理" target="navTab" rel="work_parkinglot">停车场管理</a></li>
-							<li><a href="${ctx}/work/parkinglotarea" title="停车片区管理" target="navTab" rel="work_parkinglotarea">停车片区管理</a></li>
-							<li><a href="${ctx}/work/parkinggarage" title="停车位管理" target="navTab" rel="work_parkinggarage">停车位管理</a></li>
-							<li><a href="${ctx}/work/passages" title="进出口管理" target="navTab" rel="work_passages">进出口管理</a></li>
+							<li><a href="${ctx}/sys/user" target="navTab" rel="sys_user">用户信息</a></li>
+							<li><a href="${ctx}/work/member" title="会员信息" target="navTab" rel="work_member">会员信息</a></li>
 						</ul>
 					</div>
 					<div class="accordionHeader">
 						<h2>
-							<span>Folder</span>子系统管理
+							<span>Folder</span>设备管理
 						</h2>
 					</div>
 					<div class="accordionContent">
@@ -149,6 +148,30 @@
 							</li>
 						</ul>
 					</div> 
+					
+					
+					<div class="accordionHeader">
+						<h2>
+							<span>Folder</span>车辆管理
+						</h2>
+					</div>
+					<div class="accordionContent">
+						<ul class="tree treeFolder">
+							<li><a title="车辆信息" href="${ctx}/work/cardinfo" target="navTab" rel="work_cardinfo">车辆信息</a></li>
+						</ul>
+					</div>
+					
+					<div class="accordionHeader">
+						<h2>
+							<span>Folder</span>订单管理
+						</h2>
+					</div>
+					<div class="accordionContent">
+						<ul class="tree treeFolder">
+							<li><a title="预约信息" href="${ctx}/work/yuding" target="navTab" rel="work_yuding">预约信息</a></li>
+						</ul>
+					</div>
+					
 					<div class="accordionHeader">
 						<h2>
 							<span>Folder</span>数据报表
@@ -171,9 +194,9 @@
 						<ul class="tree treeFolder">
 							<li><a>停车场图表</a>
 							<ul>
-								<li><a title="余位统计图表" href="${ctx}/work/chart/parkingSurplusTotalView" target="navTab" rel="work_chart_parkingSurplusTotalView">余位统计图表</a></li>
-								<li><a title="进出次数图表" href="${ctx}/work/chart/parkingInOutTotalView" target="navTab" rel="work_chart_parkingInOutTotalView">进出次数图表</a></li>
-								<li><a title="收费统计图表" href="${ctx}/work/chart/parkingChargeTotalView" target="navTab" rel="work_chart_parkingChargeTotalView">收费统计图表</a></li>
+								<li><a title="余位统计" href="${ctx}/work/chart/parkingSurplusTotalView" target="navTab" rel="work_chart_parkingSurplusTotalView">余位统计</a></li>
+								<li><a title="进出次数" href="${ctx}/work/chart/parkingInOutTotalView" target="navTab" rel="work_chart_parkingInOutTotalView">进出次数</a></li>
+								<li><a title="收费统计" href="${ctx}/work/chart/parkingChargeTotalView" target="navTab" rel="work_chart_parkingChargeTotalView">收费统计</a></li>
 							</ul>
 							</li>
 						</ul>
@@ -195,8 +218,6 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a href="${ctx}/sys/user" target="navTab" rel="sys_user">账号管理</a></li>
-
 							<li><a>权限管理</a>
 								<ul>
 									<li><a href="${ctx}/sys/role" target="navTab" rel="sys_role">角色管理</a></li>

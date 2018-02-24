@@ -10,7 +10,7 @@
 <meta HTTP-EQUIV="pragma" CONTENT="no-cache"/>
 <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"/>
 <meta HTTP-EQUIV="expires" CONTENT="0"/>
-<title>上海宜事智能地锁管理平台</title>
+<title>上海宜事智能停车管理平台</title>
 <link href="${ctx}/static/styles/themes/css/login.css" rel="stylesheet" type="text/css" />
 <link href="${ctx}/static/images/favicon.ico?222" rel="shortcut icon" type="image/x-icon" />
 <script src="${ctx}/static/js/jquery/1.7.2/jquery.js" type="text/javascript"></script>
