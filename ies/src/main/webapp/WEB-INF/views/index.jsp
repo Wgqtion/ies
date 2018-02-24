@@ -8,7 +8,7 @@
 <meta HTTP-EQUIV="pragma" CONTENT="no-cache" />
 <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate" />
 <meta HTTP-EQUIV="expires" CONTENT="0">
-	<title>上海宜事智能停车管理平台</title>
+	<title>${sysName}</title>
 	<link rel="shortcut icon" href="${ctx}/static/images/favicon.ico?222" />
 	<link href="${ctx}/static/styles/themes/silver/style.css" rel="stylesheet" type="text/css" media="screen" />
 	<link href="${ctx}/static/styles/themes/css/core.css" rel="stylesheet" type="text/css" media="screen" />

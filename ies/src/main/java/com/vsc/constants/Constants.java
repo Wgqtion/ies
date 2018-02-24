@@ -7,7 +7,7 @@ public class Constants {
 	 * 路径分隔符
 	 */
 	public static final char SPT = '/';
-	public static final String SYS_NAME = "职业技能培训平台";
+	public static final String SYS_NAME = "上海宜事智能停车管理平台";
 	/**
 	 * 系统表名前缀
 	 */

@@ -483,20 +483,20 @@ public class WeixinController extends HttpServiceBaseController {
             Date nowDay = now.getTime();
             nowDay = DateUtils.setMilliseconds(nowDay, 0);
             nowDay = DateUtils.setSeconds(nowDay, 0);
-            Date nowStart = DateUtils.addMinutes(nowDay, vm.getStartAddMinutes());
-            Date nowEnd = DateUtils.addMinutes(nowDay, vm.getEndAddMinutes());
-            String nowString = DateFormatUtils.format(nowDay, "yyyy-MM-dd");
-            int week = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-
-            Date dayStart = DateUtils.parseDate(nowString + " " + vm.getWeekStarttime(week), "yyyy-MM-dd HH:mm");
-            Date dayEnd = DateUtils.parseDate(nowString + " " + vm.getWeekEndtime(week), "yyyy-MM-dd HH:mm");
-
-            Date lockedStart = nowStart.getTime() > dayStart.getTime() ? nowStart : dayStart;
-            Date lockedEnd = nowEnd.getTime() < dayEnd.getTime() ? nowEnd : dayEnd;
-
-            if (!((lockedStart.getTime() <= nowDay.getTime()) && (lockedEnd.getTime() >= nowDay.getTime()))) {
-                return this.ajaxDoneError("申请时间不允许预约");
-            }
+//            Date nowStart = DateUtils.addMinutes(nowDay, vm.getStartAddMinutes());
+//            Date nowEnd = DateUtils.addMinutes(nowDay, vm.getEndAddMinutes());
+//            String nowString = DateFormatUtils.format(nowDay, "yyyy-MM-dd");
+//            int week = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+//
+//            Date dayStart = DateUtils.parseDate(nowString + " " + vm.getWeekStarttime(week), "yyyy-MM-dd HH:mm");
+//            Date dayEnd = DateUtils.parseDate(nowString + " " + vm.getWeekEndtime(week), "yyyy-MM-dd HH:mm");
+//
+//            Date lockedStart = nowStart.getTime() > dayStart.getTime() ? nowStart : dayStart;
+//            Date lockedEnd = nowEnd.getTime() < dayEnd.getTime() ? nowEnd : dayEnd;
+//
+//            if (!((lockedStart.getTime() <= nowDay.getTime()) && (lockedEnd.getTime() >= nowDay.getTime()))) {
+//                return this.ajaxDoneError("申请时间不允许预约");
+//            }
 
             // 地锁上锁
             Map<String, Object> searchParams = this.getSearchRequest();

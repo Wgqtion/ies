@@ -28,8 +28,6 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" title="添加" href="${ctx}/work/yuding/new?navTabId=work_yuding" target="dialog" rel="yuding_new"><span>添加</span></a></li>
-			<li><a class="edit" title="编辑" href="${ctx}/work/yuding/update/{sid}?navTabId=work_yuding" target="dialog" rel="yuding_update" warn="请选择一个记录"><span>编辑</span></a></li>
 			<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${ctx}/work/yuding/delete" class="delete"><span>删除</span></a></li>
 			<li class="line">line</li>
 			<li><a class="edit" title="预约设置" href="${ctx}/work/yudingsetting/update?navTabId=work_yuding" target="dialog" rel="yuding_setting_update"><span>预约设置</span></a></li>

@@ -9,7 +9,7 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li><label>车牌号:</label> <input type="text"
-					value="${param.search_LIKE_name}" name="search_LIKE_name" /></li>
+					value="${param.search_LIKE_carNo}" name="search_LIKE_carNo" /></li>
 				<li><label>车主姓名:</label> <input type="text"
 					value="${param.search_LIKE_owner}" name="search_LIKE_owner" /></li>
 				<li><label>有效期:</label><input type="text" class="date" size="7" value="${param.search_GTE_expireDate}" dateFmt="yyyy-MM-dd" name="search_GTE_expireDate"
