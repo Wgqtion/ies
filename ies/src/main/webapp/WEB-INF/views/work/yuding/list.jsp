@@ -10,7 +10,7 @@
 				<li><label>会员名:</label> <input type="text" value="${param['search_LIKE_user.name']}" name="search_LIKE_user.name" /></li>
 				<li><label>车牌号:</label> <input type="text" value="${param.search_LIKE_carNo}" name="search_LIKE_carNo" /></li>
 				<li><label>申请时间:</label> <input type="text" class="date" size="9" value="${param.search_GTE_createTime}" dateFmt="yyyy-MM-dd" name="search_GTE_createTime" readonly="true" />- <input type="text" class="date" size="9"
-					value="${param.search_LTE_createTime}" dateFmt="yyyy-MM-dd" name="search_LTE_createTime" readonly="true" /></li>
+					value="${param.search_LTE_createTime}" dateFmt="yyyy-MM-dd 23:59:59" name="search_LTE_createTime" readonly="true" /></li>
 
 			</ul>
 			<div class="subBar">

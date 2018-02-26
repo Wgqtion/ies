@@ -40,19 +40,19 @@
 	WHERE
 	1 = 1
 	<isNotEmpty    property="value">
-		AND PLATENO LIKE '%'||#value#||'%'
+		AND PLATENO LIKE CONCAT('%',#value#,'%')
 	</isNotEmpty>
 	<isNotEmpty    property="entity.name">
-		AND PGNAME  LIKE '%'||#entity.name#||'%'
+		AND PGNAME  LIKE CONCAT('%',#entity.name#,'%')
 	</isNotEmpty>
 	<isNotEmpty    property="entity.code">
-		AND PGCODE  LIKE '%'||#entity.code#||'%'
+		AND PGCODE  LIKE CONCAT('%',#entity.code#,'%')
 	</isNotEmpty>
 	<isNotEmpty    property="entity.parkingLotArea.name">
-		AND PLANAME  LIKE '%'||#entity.parkingLotArea.name#||'%'
+		AND PLANAME  LIKE CONCAT('%',#entity.parkingLotArea.name#,'%')
 	</isNotEmpty>
 	<isNotEmpty    property="entity.parkingLotArea.parkingLot.name">
-		AND PLNAME  LIKE '%'||#entity.parkingLotArea.parkingLot.name#||'%'
+		AND PLNAME  LIKE CONCAT('%',#entity.parkingLotArea.parkingLot.name#,'%')
 	</isNotEmpty>
 </select> 
 	
