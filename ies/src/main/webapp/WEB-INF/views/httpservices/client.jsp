@@ -58,8 +58,6 @@
 					<li><a href="#出场接口"><i class="icon-chevron-right"></i>3.出场接口</a></li>
 				   <li><a href="#全视频上报接口"><i class="icon-chevron-right"></i>4.全视频上报接口</a></li>
 					<li><a href="#地锁上报接口"><i class="icon-chevron-right"></i>5.地锁上报接口</a></li>
-					<li><a href="#车位上锁"><i class="icon-chevron-right"></i>6.车位上锁</a></li>
-					<li><a href="#车位解锁"><i class="icon-chevron-right"></i>7.车位解锁</a></li>
 				</ul>
 			</div>
 			<div class="span9">
@@ -410,7 +408,7 @@
 				<section id="地锁上报接口">
 					<div class="page-header">
 						<h2>
-							5.地锁事件上报接口
+							5.地锁上报接口
 							</h1>
 					</div>
 					<h4>
@@ -423,19 +421,19 @@
 					<form class="bs-docs-example" action="<%=url%>/locked/event/new" method="post">
  
 
-						<label>地锁编号</label> <input type="text" name="lockNum"
+						<label>地锁编号</label> <input type="text" name="lockNum" value="0004"
 							placeholder="请输入地锁编号" /><br /> 
 						<label>地锁区域</label> 
 						<input type="text" name="lockArea"
-							placeholder="请输入地锁区域" /><br /> 	
+							placeholder="请输入地锁区域" value="4455" /><br /> 	
 							
 						<label>设备状态和电量</label> <input type="text" name="state"
-							placeholder="请输入设备状态和电量" /><br /> 
+							placeholder="请输入设备状态和电量" value="87" /><br /> 
 						<label>数据段控制</label> <input type="text" name="mcOpen"
-							placeholder="请输入数据段控制" /><br /> 
+							placeholder="请输入数据段控制" value="153" /><br /> 
 						<label>事件类型</label> 
 						<input type="text" name="eventType"
-							placeholder="请输入事件类型" /><br /> 
+							placeholder="请输入事件类型" value="49" /><br /> 
                         
 					  <label>发生时间</label> <input type="text" name="reportedTime"
 							placeholder="yyyy-MM-dd HH:mm:ss" /><br /> 
