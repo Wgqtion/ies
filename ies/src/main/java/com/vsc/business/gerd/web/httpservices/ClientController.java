@@ -22,14 +22,12 @@ import com.vsc.business.gerd.entity.validate.work.OutParkingOrderValidate;
 import com.vsc.business.gerd.entity.validate.work.PayParkingOrderValidate;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockEventLog;
-import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.entity.work.ParkingOrder;
 import com.vsc.business.gerd.entity.work.ParkingVideo;
 import com.vsc.business.gerd.service.work.ParkingLockEventLogService;
 import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.business.gerd.service.work.ParkingOrderService;
 import com.vsc.business.gerd.service.work.ParkingVideoService;
-import com.vsc.business.gerd.vform.work.GarageIncarForm;
 import com.vsc.constants.Constants;
 
 /**
@@ -140,7 +138,7 @@ public class ClientController extends HttpServiceBaseController {
 	}
 	
 	/**
-	 * 全视频 单个上报车位有车状态 *
+	 * 全视频上报接口
 	 * 
 	 * @return
 	 */
@@ -154,83 +152,9 @@ public class ClientController extends HttpServiceBaseController {
 		String jsonstr = "\"true\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
-
 	
 	/**
-	 * 全视频 批量上报车位有车状态 *
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "parking/parkingVideos")
-	public ModelAndView service3(@Valid GarageIncarForm vo, HttpServletRequest request) {
-		if (vo.getParkingVideos()!= null) {
-			ParkingVideo[] vl = vo.getParkingVideos();
-			Date now = new Date();
-			for (int i = 0; i < vl.length; i++) {
-				if (vl[i] != null) {
-					ParkingVideo parkingVideo = vl[i];
-					parkingVideo.setCreateTime(now);
-					parkingVideo.setInTime(vo.getIntime());
-					parkingVideoService.save(parkingVideo);
-				}
-			}
-		}
-
-		String jsonstr = "\"true\"";
-		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
-	}
-
-	/**
-	 * 车位解锁 *
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "jiesuo/locked")
-	public ModelAndView service4(@RequestParam(required = true) Long parkingGarageId, HttpServletRequest request) {
-		String jsonstr = "\"true\"";
-
-		Map<String, Object> searchParams = this.getSearchRequest();
-		searchParams.put("EQ_parkingGarage", parkingGarageId);
-		List<ParkingLock> vl = this.parkingLockService.findList(searchParams);
-
-		if (vl.isEmpty()) {
-			return this.ajaxDoneSuccess("没有匹配的地锁", jsonstr);
-		}
-
-		ParkingLock vm = vl.get(0);
-
-
-		this.parkingLockService.reverse(new Long[] { vm.getId() }, "02", this.getCurrentShiroUser() == null ? null : this.getCurrentShiroUser().id, ParkingLockOperationEvent.SOURCETYPE_PC);
-
-		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
-	}
-
-	/**
-	 * 车位上锁 *
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "shangsuo/locked")
-	public ModelAndView service8(@RequestParam(required = true) Long parkingGarageId, HttpServletRequest request) {
-		String jsonstr = "\"false\"";
-
-		Map<String, Object> searchParams = this.getSearchRequest();
-		searchParams.put("EQ_parkingGarage", parkingGarageId);
-		List<ParkingLock> vl = this.parkingLockService.findList(searchParams);
-
-		if (vl.isEmpty()) {
-			return this.ajaxDoneSuccess("没有匹配的地锁", jsonstr);
-		}
-
-		ParkingLock vm = vl.get(0);
-
-		this.parkingLockService.reverse(new Long[] { vm.getId() }, "01", this.getCurrentShiroUser() == null ? null : this.getCurrentShiroUser().id, ParkingLockOperationEvent.SOURCETYPE_PC);
-
-		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
-	}
-
-	/**
-	 * 地锁事件上报服务 *
+	 * 地锁上报接口
 	 * 
 	 * @return
 	 */
@@ -348,6 +272,5 @@ public class ClientController extends HttpServiceBaseController {
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 
-	
 
 }

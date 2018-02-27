@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
