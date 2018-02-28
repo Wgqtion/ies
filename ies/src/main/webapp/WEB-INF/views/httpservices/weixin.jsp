@@ -55,8 +55,8 @@
 					<li><a href="#登录"><i class="icon-chevron-right"></i>1.登录</a></li>
 					<li><a href="#注册"><i class="icon-chevron-right"></i>2.注册</a></li> 
 					<li><a href="#预约查询"><i class="icon-chevron-right"></i>3.预约查询</a></li> 
-                                        <li><a href="#订单查询"><i class="icon-chevron-right"></i>4.订单查询</a></li> 
-					<li><a href="#厂库查询"><i class="icon-chevron-right"></i>5.厂库查询</a></li>
+                    <li><a href="#订单查询"><i class="icon-chevron-right"></i>4.订单查询</a></li> 
+					<li><a href="#场库查询"><i class="icon-chevron-right"></i>5.场库查询</a></li>
 					<li><a href="#片区查询"><i class="icon-chevron-right"></i>6.片区查询</a></li>
 					<li><a href="#车位查询"><i class="icon-chevron-right"></i>7.车位查询</a></li>
 					<li><a href="#预约车位"><i class="icon-chevron-right"></i>8.预约车位</a></li>
@@ -64,7 +64,6 @@
 					<li><a href="#车位解锁"><i class="icon-chevron-right"></i>10.车位解锁</a></li>
 					<li><a href="#车位上锁"><i class="icon-chevron-right"></i>11.车位上锁</a></li>
 					<li><a href="#取消订单"><i class="icon-chevron-right"></i>12.取消订单</a></li>
-					<li><a href="#单个车位详情查询"><i class="icon-chevron-right"></i>13.单个车位详情查询</a></li>
 				</ul>
 			</div>
 			<div class="span9">
@@ -104,9 +103,9 @@
 									<th >说明</th>
 								</tr>
 								<tr>
-									<td>weixinId</td>
+									<td>js_code</td>
 									<td>是</td>
-									<td>微信ID</td>
+									<td>小程序随机登录码</td>
 								</tr>
 								 
 							</tbody>
@@ -164,6 +163,11 @@
 									<td>weixinId</td>
 									<td>是</td>
 									<td>微信ID</td>
+								</tr>
+								<tr>
+									<td>name</td>
+									<td>否</td>
+									<td>微信昵称</td>
 								</tr>
 								<tr>
 									<td>carNumber</td>
@@ -289,11 +293,11 @@
 				</section>
 				<!-- //////////////////////////订单查询/////////////////////////// END -->
 
-				<!-- //////////////////////////厂库查询/////////////////////////// START -->
-				<section id="厂库查询">
+				<!-- //////////////////////////场库查询/////////////////////////// START -->
+				<section id="场库查询">
 					<div class="page-header">
 						<h2>
-							5. 厂库查询
+							5. 场库查询
 							</h1>
 					</div>
 					<h4>
@@ -307,7 +311,7 @@
 
 						<label>用户ID</label>
                                                 <input  type="text" name="userId" value="6562240"/> <br/>
-						<button type="submit" class="btn">获取厂库信息</button>
+						<button type="submit" class="btn">获取场库信息</button>
 					</form>
 					<h4>
 						<a href="javascript:return false;">参数说明</a>
@@ -372,7 +376,7 @@
 									<th >说明</th>
 								</tr>
 								<tr>
-									<td>parkinglotId</td>
+									<td>parkingLotId</td>
 									<td>是</td>
 									<td>停车场ID</td>
 								</tr>
@@ -423,7 +427,7 @@
 									<th >说明</th>
 								</tr>
 								<tr>
-									<td>parkinglotAreaId</td>
+									<td>parkingLotAreaId</td>
 									<td>是</td>
 									<td>片区ID</td>
 								</tr>
@@ -486,7 +490,7 @@
 								</tr>
 								<tr>
 									<td>inTime</td>
-									<td>是</td>
+									<td>否</td>
 									<td>预约时间(格式：yyyy-MM-dd HH:mm)</td>
 								</tr>
 								<tr>
@@ -496,7 +500,7 @@
 								</tr>
 								<tr>
 									<td>carNo</td>
-									<td>是</td>
+									<td>否</td>
 									<td>车牌号码</td>
 								</tr>
 								 
@@ -733,9 +737,9 @@
 									<td>用户ID</td>
 								</tr>
 								<tr>
-									<td>parkingId</td>
+									<td>orderId</td>
 									<td>是</td>
-									<td>车位ID</td>
+									<td>订单号</td>
 								</tr>
 								 
 							</tbody>
@@ -752,57 +756,7 @@
 				</section>
 				<!-- //////////////////////////取消订单/////////////////////////// END -->
                                 
-                                
-				<!-- //////////////////////////单个车位详情查询/////////////////////////// START -->
-				<section id="单个车位详情查询">
-					<div class="page-header">
-						<h2>
-                                                        13. 单个车位详情查询
-							</h1>
-					</div>
-					<h4>
-						<a href="javascript:return false;">接口地址</a>
-					</h4>
-					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/parkinggarage/alone</pre></p>
-					<h4>
-						<a href="javascript:return false;">示例</a>
-					</h4>
-					<form class="bs-docs-example" action="<%=url%>/parkinggarage/alone" method="post">
-
-						<label>车位ID</label>
-                                                <input  type="text" name="parkingId" value=""/> <br/>
-						<button type="submit" class="btn">获取车位信息</button>
-					</form>
-					<h4>
-						<a href="javascript:return false;">参数说明</a>
-					</h4>
-					<div class="bs-docs-example">
-						<table border="1" cellspacing="0" cellpadding="4" align="center" width="95%">
-							<tbody>
-								<tr>
-									<th style="width: 120px">参数</th>
-									<th style="width: 120px">是否必须</th>
-									<th >说明</th>
-								</tr>
-								<tr>
-									<td>parkingId</td>
-									<td>是</td>
-									<td>片区ID</td>
-								</tr>
-								 
-							</tbody>
-						</table>
-					</div>
-
-					<h4>
-						<a href="javascript:return false;">返回说明</a>
-					</h4>
-				 			
-					<p>正常情况下返回的JSON数据包：<pre>{ "statusCode":"200", "callbackData":[{ "id":车位ID, "garageType":"车位类型", "isOnline":有车无车, "canGetCard":可否预约 }], "message":"接口调用成功" }</pre>
-					</p>
-
-				</section>
-				<!-- //////////////////////////单个车位详情查询/////////////////////////// END -->
+                
 			</div>
 		</div>
 

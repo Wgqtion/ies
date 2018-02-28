@@ -76,7 +76,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 			ParkingLockOperationEvent lockEvent = new ParkingLockOperationEvent();
 			lockEvent.setCreateTime(now);
 			lockEvent.setReportedTime(now);
-			lockEvent.setEventType(0);
+			lockEvent.setEventType(Integer.valueOf(state));
 			lockEvent.setMessage("下发["+state+"]指令");
 			lockEvent.setSourceType(sourceType);
 			lockEvent.setIpAddress(ipAddress);

@@ -217,7 +217,7 @@ public class WeixinController extends HttpServiceBaseController {
         user = accountService.findByWeixinId(weixinId);
         String[] isNotIgnoreFieldNames = {"id", "mobilePhone", "weixinId", "carNumber", "name"};
         String jsonstr = JSONUtil.toJSONString(user, isNotIgnoreFieldNames, false, featureNames);
-        return this.ajaxDoneSuccess("登陆成功", jsonstr);
+        return this.ajaxDoneSuccess("注册成功", jsonstr);
     }
 
     /**
@@ -366,30 +366,6 @@ public class WeixinController extends HttpServiceBaseController {
         freeCarNum(parkingLotAreas);
         String[] isNotIgnoreFieldNames = {"id", "name", "baiduLatitudeLng", "baiduLatitudeLat", "isEnabled", "carNumber", "children", "freeCarNum"};
         String jsonstr = JSONUtil.toJSONString(parkingLotAreas, isNotIgnoreFieldNames, false, featureNames);
-        return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
-    }
-
-    /**
-     * 单个车位详情查询
-     *
-     * @param parkingId 车位ID
-     * @return
-     * @throws ParseException
-     */
-    @RequestMapping(value = "/parkinggarage/alone")
-    public ModelAndView parkinggarageAlone(@RequestParam(required = true) Long parkingId) throws ParseException {
-
-        ParkingGarage parkingGarage=this.parkingGarageService.findUniqueBy("id",parkingId);
-        if (parkingGarage == null || !parkingGarage.getIsEnabled()) {
-            return this.ajaxDoneError("没有找到车位信息");
-        }
-        //查询地锁状态
-        ParkingLock parkingLock=this.parkingLockService.findUniqueBy("parkingGarage", parkingId);
-        parkingGarage.setParkingLock(parkingLock);
-        
-        String[] isNotIgnoreFieldNames = {"id", "name", "parkingLotArea", "description", "garageType", "xcoordinate", "ycoordinate", "isOnline", "isEnabled","isCarOn","isOpen"};
-        String jsonstr = JSONUtil.toJSONString(parkingGarage, isNotIgnoreFieldNames, false, featureNames);
-        // TODO 查询剩余车位
         return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
     }
 
