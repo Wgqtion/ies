@@ -727,4 +727,66 @@ public class WeixinController extends HttpServiceBaseController {
     private void fakeLocked(ParkingGarage parkingGarage) {
         parkingGarageService.save(parkingGarage);
     }
+    
+    
+    /**
+     * 权限码查询
+     *
+     * @param userId
+     */
+    @RequestMapping(value = "/org/find")
+    public ModelAndView orgFind(@RequestParam(required = true) Long userId) throws ParseException {
+    	Map<String, Object> orgParams = this.getSearchRequest();
+    	orgParams.put("EQ_users.id",userId);
+    	List<Org> orgs=this.orgService.findList(orgParams);
+        String[] isNotIgnoreFieldNames = {"id", "name","code"};
+        String jsonstr = JSONUtil.toJSONString(orgs, isNotIgnoreFieldNames, false, featureNames);
+        return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
+    }
+    
+    /**
+     * 添加权限码
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/org/add")
+    public ModelAndView orgAdd(
+            @RequestParam(required = true) Long userId,
+            @RequestParam(required = true) String code) throws Exception {
+    	Org org=this.orgService.findUniqueBy("code",code); 
+        if (org==null)
+        {
+            return this.ajaxDoneError("没有权限信息");	
+        }else{
+        	User user=this.userService.getObjectById(userId);
+        	if(user==null){
+        		return this.ajaxDoneError("没有用户信息");	
+        	}
+        	org.getUsers().add(user);
+        	this.orgService.save(org);
+            return this.ajaxDoneSuccess("添加成功");
+        }
+    }
+    
+    /**
+     * 删除权限码
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/org/delete")
+    public ModelAndView orgDelete(
+            @RequestParam(required = true) Long userId,
+            @RequestParam(required = true) String code) throws Exception {
+    	User user=this.userService.getObjectById(userId);
+    	if(user==null){
+    		return this.ajaxDoneError("没有用户信息");	
+    	}
+    	Org org=this.orgService.findUniqueBy("code",code); 
+        if (org==null) {
+            return this.ajaxDoneError("没有权限信息");	
+        }
+    	org.getUsers().remove(user);
+    	this.orgService.save(org);
+        return this.ajaxDoneSuccess("删除成功");
+    }
 }

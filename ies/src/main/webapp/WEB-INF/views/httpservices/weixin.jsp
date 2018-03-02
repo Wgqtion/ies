@@ -64,6 +64,9 @@
 					<li><a href="#车位解锁"><i class="icon-chevron-right"></i>10.车位解锁</a></li>
 					<li><a href="#车位上锁"><i class="icon-chevron-right"></i>11.车位上锁</a></li>
 					<li><a href="#取消订单"><i class="icon-chevron-right"></i>12.取消订单</a></li>
+					<li><a href="#权限码查询"><i class="icon-chevron-right"></i>13.权限码查询</a></li>
+					<li><a href="#添加权限码"><i class="icon-chevron-right"></i>14.添加权限码</a></li>
+					<li><a href="#删除权限码"><i class="icon-chevron-right"></i>15.删除权限码</a></li>
 				</ul>
 			</div>
 			<div class="span9">
@@ -756,6 +759,168 @@
 				</section>
 				<!-- //////////////////////////取消订单/////////////////////////// END -->
                                 
+                
+                <!-- //////////////////////////权限码查询/////////////////////////// START -->
+				<section id="权限码查询">
+					<div class="page-header">
+						<h2>
+							13. 权限码查询
+							</h1>
+					</div>
+					<h4>
+						<a href="javascript:return false;">接口地址</a>
+					</h4>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/org/find</pre></p>
+					<h4>
+						<a href="javascript:return false;">示例</a>
+					</h4>
+					<form class="bs-docs-example" action="<%=url%>/org/find" method="post">
+                                                <label>用户ID</label> 
+						<input type="text" name="userId" placeholder="请输入用户ID" /><br />
+						<button type="submit" class="btn">权限码查询</button>
+					</form>
+					<h4>
+						<a href="javascript:return false;">参数说明</a>
+					</h4>
+					<div class="bs-docs-example">
+						<table border="1" cellspacing="0" cellpadding="4" align="center" width="95%">
+							<tbody>
+								<tr>
+									<th style="width: 120px">参数</th>
+									<th style="width: 120px">是否必须</th>
+									<th >说明</th>
+								</tr>
+								<tr>
+									<td>userId</td>
+									<td>是</td>
+									<td>用户ID</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<h4>
+						<a href="javascript:return false;">返回说明</a>
+					</h4>
+				 			
+					<p>正常情况下返回的JSON数据包：<pre>{ "statusCode":"200", "callbackData":[ { "code":"a5819ImW", "id":17, "name":"万润权限" }, { "code":"WQegdidg", "id":16, "name":"同济权限" } ], "message":"接口调用成功" }</pre>
+					</p>
+
+				</section>
+				<!-- //////////////////////////权限码查询/////////////////////////// END -->
+                
+                
+                <!-- //////////////////////////权限码查询/////////////////////////// START -->
+				<section id="添加权限码">
+					<div class="page-header">
+						<h2>
+							14. 添加权限码
+							</h1>
+					</div>
+					<h4>
+						<a href="javascript:return false;">接口地址</a>
+					</h4>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/org/add</pre></p>
+					<h4>
+						<a href="javascript:return false;">示例</a>
+					</h4>
+					<form class="bs-docs-example" action="<%=url%>/org/add" method="post">
+                                                <label>用户ID</label> 
+						<input type="text" name="userId" placeholder="请输入用户ID" /><br />
+						<input type="text" name="code" placeholder="请输入权限码" /><br />
+						<button type="submit" class="btn">添加权限码</button>
+					</form>
+					<h4>
+						<a href="javascript:return false;">参数说明</a>
+					</h4>
+					<div class="bs-docs-example">
+						<table border="1" cellspacing="0" cellpadding="4" align="center" width="95%">
+							<tbody>
+								<tr>
+									<th style="width: 120px">参数</th>
+									<th style="width: 120px">是否必须</th>
+									<th >说明</th>
+								</tr>
+								<tr>
+									<td>userId</td>
+									<td>是</td>
+									<td>用户ID</td>
+								</tr>
+								<tr>
+									<td>code</td>
+									<td>是</td>
+									<td>权限码</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<h4>
+						<a href="javascript:return false;">返回说明</a>
+					</h4>
+				 			
+					<p>正常情况下返回的JSON数据包：<pre>{ "statusCode":"200", "message":"添加成功" }</pre>
+					</p>
+
+				</section>
+				<!-- //////////////////////////添加权限码/////////////////////////// END -->
+				
+				
+				<!-- //////////////////////////权限码查询/////////////////////////// START -->
+				<section id="删除权限码">
+					<div class="page-header">
+						<h2>
+							15. 删除权限码
+							</h1>
+					</div>
+					<h4>
+						<a href="javascript:return false;">接口地址</a>
+					</h4>
+					<p><pre>http请求方式: POST<br/>http://<%=servername+url%>/org/delete</pre></p>
+					<h4>
+						<a href="javascript:return false;">示例</a>
+					</h4>
+					<form class="bs-docs-example" action="<%=url%>/org/delete" method="post">
+                                                <label>用户ID</label> 
+						<input type="text" name="userId" placeholder="请输入用户ID" /><br />
+						<input type="text" name="code" placeholder="请输入权限码" /><br />
+						<button type="submit" class="btn">删除权限码</button>
+					</form>
+					<h4>
+						<a href="javascript:return false;">参数说明</a>
+					</h4>
+					<div class="bs-docs-example">
+						<table border="1" cellspacing="0" cellpadding="4" align="center" width="95%">
+							<tbody>
+								<tr>
+									<th style="width: 120px">参数</th>
+									<th style="width: 120px">是否必须</th>
+									<th >说明</th>
+								</tr>
+								<tr>
+									<td>userId</td>
+									<td>是</td>
+									<td>用户ID</td>
+								</tr>
+								<tr>
+									<td>code</td>
+									<td>是</td>
+									<td>权限码</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<h4>
+						<a href="javascript:return false;">返回说明</a>
+					</h4>
+				 			
+					<p>正常情况下返回的JSON数据包：<pre>{ "statusCode":"200", "message":"删除成功" }</pre>
+					</p>
+
+				</section>
+				<!-- //////////////////////////删除权限码/////////////////////////// END -->
+                
                 
 			</div>
 		</div>
