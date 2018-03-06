@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.Org;
-import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.service.work.OrgService;
 import com.vsc.constants.Constants;
 import com.vsc.util.CoreUtils;
@@ -48,7 +47,7 @@ public class OrgController extends BaseController {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
-
+		searchParams.put("EQ_isDelete",0);
 		Page<Org> page = orgService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
@@ -95,13 +94,13 @@ public class OrgController extends BaseController {
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") java.lang.Long id) {
-		orgService.deleteById(id);
+		orgService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
 	public ModelAndView deleteBatch(@RequestParam java.lang.Long[] ids) {
-		orgService.deleteByIds(ids);
+		orgService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 

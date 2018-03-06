@@ -307,6 +307,7 @@ public class WeixinController extends HttpServiceBaseController {
     public ModelAndView parkinglotFind(@RequestParam(required = true) Long userId) throws ParseException {
     	Map<String, Object> orgParams = this.getSearchRequest();
     	orgParams.put("EQ_users.id",userId);
+    	orgParams.put("EQ_isDelete",0);
     	List<Org> orgs=this.orgService.findList(orgParams);
     	
         Map<String, Object> searchParams = this.getSearchRequest();
