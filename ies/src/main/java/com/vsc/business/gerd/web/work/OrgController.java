@@ -57,7 +57,19 @@ public class OrgController extends BaseController {
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) {
 		Org org=new Org();
-		org.setCode(RandomPassword.makeRandomPassword(8));
+		String code=null;
+		boolean flag=true;
+		while(flag){
+			code=RandomPassword.makeRandomPassword(8);
+			Map<String, Object> searchParams = this.getSearchRequest();
+			searchParams.put("EQ_isDelete",0);
+			searchParams.put("EQ_code",code);
+			Org o=this.orgService.find(searchParams);
+			if(o==null){
+				flag=false;
+			}
+		}
+		org.setCode(code);
 		model.addAttribute("vm",org);
 		model.addAttribute("action", BaseController.CREATE);
 		return PATH_EDIT;
