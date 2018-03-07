@@ -82,7 +82,9 @@ public class CompanyService extends BaseService<Company> {
 	 */
 	public int getMaxCode(){
 		int i=0;
-		List<Company> list=this.findAll(new HashMap(), "code","desc");
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_isDelete",0);
+		List<Company> list=this.findAll(searchParams, "code","desc");
 		if(list!=null&&list.size()>0){
 			Company c=list.get(0);
 			i=Integer.valueOf(c.getCode());
