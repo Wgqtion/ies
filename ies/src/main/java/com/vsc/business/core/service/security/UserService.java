@@ -27,9 +27,6 @@ public class UserService extends BaseService<User> {
 	@Autowired
 	private RoleDao roleDao;
 
-	@Autowired
-	private AttachDao attachDao;
-
 	@Override
 	public PagingAndSortingRepository<User, Long> getPagingAndSortingRepositoryDao() {
 		return this.userDao;

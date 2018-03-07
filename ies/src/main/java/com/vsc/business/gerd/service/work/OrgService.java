@@ -13,10 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springside.modules.utils.Collections3;
 
+import com.vsc.business.core.entity.security.User;
 import com.vsc.business.gerd.entity.work.Org;
 import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.repository.work.OrgDao;
 import com.vsc.modules.service.BaseService;
+import com.vsc.modules.shiro.ShiroUserUtils;
+import com.vsc.util.CoreUtils;
 
 /**
  * 用户分组逻辑操作
@@ -47,6 +50,13 @@ public class OrgService extends BaseService<Org> {
 
 	
 	public Org save(Org entity,String[] codes) {
+		User user=ShiroUserUtils.GetCurrentUser();
+		if(entity.getId()==null){
+			entity.setCreateDate(CoreUtils.nowtime());
+			entity.setCreateUser(user);
+		}
+		entity.setUpdateUser(user);
+		entity.setUpdateDate(CoreUtils.nowtime());
 		if(codes!=null){
 			List<ParkingLot> list=new ArrayList<ParkingLot>();
 			for(String code:codes){

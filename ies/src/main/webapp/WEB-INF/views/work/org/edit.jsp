@@ -21,7 +21,7 @@
 				<tr>
 					<td>分配停车场：</td>
 					<td>
-						<input name="parkingLots.code" value="<vsc:fetchElementPropertyToString propertyName="code" list="${vm.parkingLots}"/>" type="hidden"/> 
+						<input name="parkingLots.code" value="<vsc:fetchElementPropertyToString propertyName="code" list="${vm.parkingLots}"/>" type="hidden" validate="{required:true}" /> 
 						<a class="btnLook" rel="parkinglot_orgAuthority" title="选择授权" href="${ctx}/work/parkinglot/orgAuthority" <c:if test="${not empty vm.parkingLots}">data="{orgAuthorityCodes:[<c:forEach items="${vm.parkingLots}" var="item" varStatus="index">'{code:\'${item.code}\', name:\'${item.name}\'}'<c:if test="${!index.last}">,</c:if></c:forEach>]}"</c:if> lookupGroup="parkingLots">查找带回</a> <span class="info">(点击选择授权)</span>
 					</td>
 				</tr>

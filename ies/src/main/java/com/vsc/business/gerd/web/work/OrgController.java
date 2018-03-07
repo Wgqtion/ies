@@ -17,12 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.Org;
 import com.vsc.business.gerd.service.work.OrgService;
 import com.vsc.constants.Constants;
-import com.vsc.util.CoreUtils;
 import com.vsc.util.RandomPassword;
 
 /**
@@ -78,11 +76,6 @@ public class OrgController extends BaseController {
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
 	public ModelAndView create(@Valid Org org,
 			@RequestParam(value = "parkingLots.code", required = false) String[] codes) {
-		User user = this.getCurrentUser();
-		org.setCreateDate(CoreUtils.nowtime());
-		org.setCreateUser(user);
-		org.setUpdateUser(user);
-		org.setUpdateDate(CoreUtils.nowtime());
 		orgService.save(org,codes);
 		return this.ajaxDoneSuccess("创建成功");
 	}
@@ -97,9 +90,6 @@ public class OrgController extends BaseController {
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Org org,
 			@RequestParam(value = "parkingLots.code", required = false) String[] codes) {
-		User user = this.getCurrentUser();
-		org.setUpdateUser(user);
-		org.setUpdateDate(CoreUtils.nowtime());
 		orgService.save(org,codes);
 		return this.ajaxDoneSuccess("修改成功");
 	}

@@ -24,6 +24,12 @@
 		<property name="accountService" ref="accountService"/>
 	</bean>
 	
+	<!-- 項目自定义的ShiroUser, 所有userService依赖的dao都需要用depends-on声明 -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" depends-on="userDao,roleDao">
+		<property name="staticMethod" value="com.vsc.modules.shiro.ShiroUserUtils.setUserService"/>
+		<property name="arguments" ref="userService"/>
+	</bean>
+	
 	<!-- Shiro Filter -->
 	<!-- 定制过滤器 -->
 	<bean id="permsany" class="com.vsc.modules.shiro.CustomPermissionsAuthorizationFilter" lazy-init="false"/>
