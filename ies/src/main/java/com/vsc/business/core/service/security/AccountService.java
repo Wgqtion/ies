@@ -53,11 +53,6 @@ public class AccountService {
 		return userDao.findByLoginName(loginName);
 	}
         
-        public User findByWeixinId(String weixinId){
-            return userDao.findByWeixinId(weixinId);
-        }
-        
-
 	@Transactional(readOnly = false)
 	public void registerUser(User user) {
 		entryptPassword(user); 

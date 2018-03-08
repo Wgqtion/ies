@@ -1,5 +1,7 @@
 package com.vsc.business.gerd.entity.work;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -8,10 +10,8 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.vsc.business.core.entity.security.User;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
-import java.io.Serializable;
 
 /**
  *
@@ -32,7 +32,7 @@ public class Yuding extends IdEntity implements Serializable {
     private Boolean isLockedOk = false;
     private Boolean isEnabled = true;
     private Boolean isDelete = false;
-    private User user;
+    private WxUser wxUser;
     private String carNo;
     private CardInfo cardInfo;
     private ParkingLotArea parkingLotArea;
@@ -156,16 +156,16 @@ public class Yuding extends IdEntity implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    public User getUser() {
-        return user;
-    }
+    @JoinColumn(name = "WX_USER_ID")
+    public WxUser getWxUser() {
+		return wxUser;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setWxUser(WxUser wxUser) {
+		this.wxUser = wxUser;
+	}
 
-    @Column(name = "CAR_NO")
+	@Column(name = "CAR_NO")
     public String getCarNo() {
         return carNo;
     }

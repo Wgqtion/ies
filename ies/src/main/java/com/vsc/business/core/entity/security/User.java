@@ -26,7 +26,6 @@ import com.vsc.modules.entity.IdEntity;
 @Table(name = Constants.TABLE_PREFIX + "user")
 public class User extends IdEntity {
 
-    private String weixinId;
     private String loginName;
     private String name;
     private String plainPassword;
@@ -38,29 +37,13 @@ public class User extends IdEntity {
     private Date updateTime;
     private User createUser;
     private java.lang.String gender = "1";
-    private java.lang.String mobilePhone;
     private java.lang.String contactAddress;
     private java.lang.String sourceType;
-    private String carNumber;
 
     private List<Attach> attachs = Lists.newArrayList();
     private List<Role> roleList = Lists.newArrayList();
 
 
-
-    /**
-     * 微信ID
-     *
-     * @return
-     */
-    @Column(name = "WEIXIN_ID")
-    public String getWeixinId() {
-        return weixinId;
-    }
-
-    public void setWeixinId(String weixinId) {
-        this.weixinId = weixinId;
-    }
 
  
   
@@ -190,19 +173,6 @@ public class User extends IdEntity {
 
   
 
-    /**
-     * @return
-     */
-    @Column(name = "MOBILE_PHONE")
-    public java.lang.String getMobilePhone() {
-        return this.mobilePhone;
-    }
-
-    public void setMobilePhone(java.lang.String value) {
-        this.mobilePhone = value;
-    }
-
-
 
     /**
      * @return
@@ -229,17 +199,6 @@ public class User extends IdEntity {
     public void setSourceType(java.lang.String value) {
         this.sourceType = value;
     }
-
-
-    @Column(name = "CAR_NUMBER")
-    public String getCarNumber() {
-        return carNumber;
-    }
-
-    public void setCarNumber(String carNumber) {
-        this.carNumber = carNumber;
-    }
-
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

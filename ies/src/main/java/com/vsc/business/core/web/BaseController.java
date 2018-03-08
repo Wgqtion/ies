@@ -9,7 +9,6 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.WebUtils;
 import org.springside.modules.utils.Encodes;
 
-import com.google.common.collect.Maps;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.service.security.ShiroDbRealm.ShiroUser;
 import com.vsc.business.core.service.security.UserService;

@@ -13,7 +13,7 @@ public class Yuyue implements Serializable {
     private Boolean isLockedOk = false;
     private Boolean isEnabled = true;
     private Boolean isDelete = false;
-    private Long userId;
+    private Long wxUserId;
     private String carNumber;
     private ParkingGarage parkingGarage;
     private YudingSetting yudingSetting;
@@ -79,12 +79,12 @@ public class Yuyue implements Serializable {
         this.isDelete = isDelete;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getWxUserId() {
+        return wxUserId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setWxUserId(Long wxUserId) {
+        this.wxUserId = wxUserId;
     }
 
     public String getCarNumber() {

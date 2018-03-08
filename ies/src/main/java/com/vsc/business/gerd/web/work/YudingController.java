@@ -1,13 +1,10 @@
 package com.vsc.business.gerd.web.work;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +22,7 @@ import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.ParkingLotArea;
 import com.vsc.business.gerd.entity.work.Yuding;
 import com.vsc.business.gerd.service.work.ParkingLotAreaService;
+import com.vsc.business.gerd.service.work.WxUserService;
 import com.vsc.business.gerd.service.work.YudingService;
 import com.vsc.constants.Constants;
 
@@ -39,6 +37,10 @@ public class YudingController extends BaseController {
 
 	@Autowired
 	private YudingService yudingService;
+	
+	@Autowired
+	private WxUserService wxUserService;
+	
 	@Autowired
 	private ParkingLotAreaService parkingLotAreaService;
 
@@ -68,70 +70,10 @@ public class YudingController extends BaseController {
 
 	}
 
-	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
-	public String createForm(Model model) {
-		model.addAttribute("vm", new Yuding());
-		model.addAttribute("action", BaseController.CREATE);
-		return PATH_EDIT;
-	}
-
-	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid Yuding yuding,
-			@RequestParam(value = "yudingUserGroup.id", required = false) Long memberId,
-			@RequestParam(value = "parkingLotAreaGroup.id", required = false) Long parkingLotAreaId) {
-		Date now = new Date();
-		yuding.setLasttime(now.getTime());
-		yuding.setCreateTime(now);
-		if ((yuding.getYuyueTime() != null) && (yuding.getLockedMinutes() != null)) {
-			Date lockedStarttime = DateUtils.addMinutes(yuding.getYuyueTime(), -1 * yuding.getLockedMinutes());
-			yuding.setLockedStartTime(lockedStarttime);
-		}
-		if (memberId != null) {
-			yuding.setUser(this.userService.getObjectById(memberId));
-		}
-		yuding.setParkingLotArea(this.parkingLotAreaService.getObjectById(parkingLotAreaId));
-
-		yudingService.save(yuding);
-		return this.ajaxDoneSuccess("创建成功");
-	}
-
-	@RequestMapping(value = BaseController.UPDATE + "/{id}", method = RequestMethod.GET)
-	public String updateForm(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vm", yudingService.getObjectById(id));
-		model.addAttribute("action", BaseController.UPDATE);
-		return PATH_EDIT;
-	}
-
 	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
 	public String view(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("vm", yudingService.getObjectById(id));
 		return PATH_VIEW;
-	}
-
-	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Yuding yuding,
-			@RequestParam(value = "yudingUserGroup.id", required = false) Long memberId,
-			@RequestParam(value = "parkingLotAreaGroup.id", required = false) Long parkingLotAreaId) {
-		Date now = new Date();
-		yuding.setLasttime(now.getTime());
-
-		if ((yuding.getYuyueTime() != null) && (yuding.getLockedMinutes() != null)) {
-			Date lockedStarttime = DateUtils.addMinutes(yuding.getYuyueTime(), -1 * yuding.getLockedMinutes());
-			yuding.setLockedStartTime(lockedStarttime);
-		} else {
-			yuding.setLockedStartTime(null);
-		}
-		if (memberId != null) {
-			yuding.setUser(this.userService.getObjectById(memberId));
-		} else {
-			yuding.setUser(null);
-		}
-
-		ParkingLotArea parkingLotArea = this.parkingLotAreaService.getObjectById(parkingLotAreaId);
-		yuding.setParkingLotArea(parkingLotArea);
-
-		yudingService.save(yuding);
-		return this.ajaxDoneSuccess("修改成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
@@ -146,16 +88,7 @@ public class YudingController extends BaseController {
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
-	/**
-	 *  高级查询界面
-	 * @param id
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value = "search")
-	public String search(HttpServletRequest request) {
-		return PATH_SEARCH;
-	}
+	
 
 	@ModelAttribute("preloadModel")
 	public Yuding getModel(@RequestParam(value = "id", required = false) Long id) {

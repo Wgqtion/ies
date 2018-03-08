@@ -32,8 +32,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
-import com.vsc.business.core.entity.security.User;
-import com.vsc.business.core.service.security.AccountService;
 import com.vsc.business.gerd.entity.work.Org;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.entity.work.ParkingLock;
@@ -42,6 +40,7 @@ import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.entity.work.ParkingLotArea;
 import com.vsc.business.gerd.entity.work.UserOrder;
 import com.vsc.business.gerd.entity.work.WeixinAttest;
+import com.vsc.business.gerd.entity.work.WxUser;
 import com.vsc.business.gerd.entity.work.Yuding;
 import com.vsc.business.gerd.entity.work.YudingSetting;
 import com.vsc.business.gerd.entity.work.Yuyue;
@@ -51,6 +50,7 @@ import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.business.gerd.service.work.ParkingLotAreaService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.business.gerd.service.work.UserOrderService;
+import com.vsc.business.gerd.service.work.WxUserService;
 import com.vsc.business.gerd.service.work.YudingService;
 import com.vsc.business.gerd.service.work.YudingSettingService;
 import com.vsc.constants.Constants;
@@ -96,9 +96,9 @@ public class WeixinController extends HttpServiceBaseController {
     @Autowired
     private ParkingLockService parkingLockService;
 
-    //用户
+    //微信用户
     @Autowired
-    private AccountService accountService;
+    private WxUserService wxUserService;
 
     //停车场
     @Autowired
@@ -141,39 +141,20 @@ public class WeixinController extends HttpServiceBaseController {
         System.out.println(result);
         //登录信息转对象
         WeixinAttest weixinAttest = JSONObject.parseObject(result, WeixinAttest.class);
-        User user = null;
+        WxUser wxUser = null;
         try {
-            user = accountService.findByWeixinId(weixinAttest.getOpenid());
-            if (user == null || user.getId() == null) {
+        	wxUser = wxUserService.getByWeixinId(weixinAttest.getOpenid());
+            if (wxUser == null || wxUser.getId() == null) {
                 return this.ajaxDoneError("没有注册信息", result);
             }
         } catch (Exception e) {
             return this.ajaxDoneError("获取openId失败", result);
         }
 
-        String[] isNotIgnoreFieldNames = {"id", "mobilePhone", "weixinId", "carNumber", "name"};
-        String jsonstr = JSONUtil.toJSONString(user, isNotIgnoreFieldNames, false, featureNames);
+        String[] isNotIgnoreFieldNames = {"id", "telephone", "weixinId", "carNumber", "name"};
+        String jsonstr = JSONUtil.toJSONString(wxUser, isNotIgnoreFieldNames, false, featureNames);
         return this.ajaxDoneSuccess("登陆成功", jsonstr);
     }
-
-    /**
-     * 邀请码查询
-     *
-     * @param invitationCode 邀请码
-     */
-    @RequestMapping(value = "/invitation")
-    public ModelAndView invitation(Org org) throws ParseException {
-        //邀请码查询
-    	Map<String, Object> searchParams = this.getSearchRequest();
-    	searchParams.put("EQ_code", org.getCode());
-    	searchParams.put("EQ_isDelete",0);
-    	List<Org> list=orgService.findList(searchParams);
-    	if(list!=null&&list.size()>0){
-            return this.ajaxDoneSuccess("有效");
-    	}
-    	return this.ajaxDoneError("失败");
-    }
-    
     
     /**
      * 注册
@@ -192,31 +173,29 @@ public class WeixinController extends HttpServiceBaseController {
             @RequestParam(required = false) String carNumber,
             @RequestParam(required = false) String tel) throws ParseException {
         //登录信息查询
-        User user = accountService.findByWeixinId(weixinId);
-        if (user == null) {
-            user = new User();
-            user.setLoginName(weixinId);
-            user.setWeixinId(weixinId);
-            user.setPlainPassword("111111");
+        WxUser wxUser = wxUserService.getByWeixinId(weixinId);
+        if (wxUser == null) {
+        	wxUser = new WxUser();
+        	wxUser.setWeixinId(weixinId);
             if (name != null) {
-                user.setName(name);
+            	wxUser.setName(name);
             } else {
-                user.setName("测试");
+            	wxUser.setName("测试");
             }
             if (carNumber != null) {
-                user.setCarNumber(carNumber);
+            	wxUser.setCarNumber(carNumber);
             }
             if (tel != null) {
-                user.setMobilePhone(tel);
+            	wxUser.setTelephone(tel);
             }
-            accountService.registerUser(user);
+            wxUserService.save(wxUser);
         } else {
             return this.ajaxDoneError("已有注册信息");
         }
         // 返回新的登录信息
-        user = accountService.findByWeixinId(weixinId);
-        String[] isNotIgnoreFieldNames = {"id", "mobilePhone", "weixinId", "carNumber", "name"};
-        String jsonstr = JSONUtil.toJSONString(user, isNotIgnoreFieldNames, false, featureNames);
+        wxUser = wxUserService.getByWeixinId(weixinId);
+        String[] isNotIgnoreFieldNames = {"id", "telephone", "weixinId", "carNumber", "name"};
+        String jsonstr = JSONUtil.toJSONString(wxUser, isNotIgnoreFieldNames, false, featureNames);
         return this.ajaxDoneSuccess("注册成功", jsonstr);
     }
 
@@ -233,12 +212,11 @@ public class WeixinController extends HttpServiceBaseController {
 
         List<Yuyue> yuyues = new ArrayList<Yuyue>();
         List<YudingSetting> vl = yudingSettingService.getAllList();
-        List<Yuding> yudings = yudingService.findByUser(userId);
+        List<Yuding> yudings = yudingService.findByWxUser(userId);
         Map<String, Object> searchParams = this.getSearchRequest();
         for (Yuding yuding : yudings) {
             Yuyue yuyue = new Yuyue();
-
-            yuyue.setUserId(yuding.getUser().getId());
+            yuyue.setWxUserId(yuding.getWxUser().getId());
             yuyue.setOrderNumber(yuding.getId());
             yuyue.setCarNumber(yuding.getCarNo());
             yuyue.setYuyueTime(yuding.getYuyueTime());
@@ -279,7 +257,7 @@ public class WeixinController extends HttpServiceBaseController {
 
         //订单查询
         Map<String, Object> orderMap = new HashMap<String, Object>();
-        orderMap.put("EQ_user", userId);
+        orderMap.put("EQ_wxUser", userId);
         orderMap.put("NOTEQ_isDelete", new Integer(1));
         List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
         if (userOrderlList == null || userOrderlList.isEmpty()) {
@@ -291,7 +269,7 @@ public class WeixinController extends HttpServiceBaseController {
             userOrder.getParkingGarage().setParkingLock(parkingLock);
             
         }
-        String[] isNotIgnoreFieldNames = {"id", "createTime", "outTime", "user", "name", "parkingGarage", "description", "isDelete", "isCarOn", "isOpen"};
+        String[] isNotIgnoreFieldNames = {"id", "createTime", "outTime", "wxUser", "name", "parkingGarage", "description", "isDelete", "isCarOn", "isOpen"};
         String jsonstr = JSONUtil.toJSONString(userOrderlList, isNotIgnoreFieldNames, false, featureNames);
         return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
     }
@@ -318,12 +296,14 @@ public class WeixinController extends HttpServiceBaseController {
 		parkingLots.addAll(parkingLotService.findList(searchParams));
 		searchParams.remove("ISNULL_orgCode");
         if(orgs!=null){
+        	searchParams.put("EQ_org.isDelete",0);
         	for(Org org:orgs){
         		 searchParams.put("EQ_org.code",org.getCode());
         		 parkingLots.addAll(parkingLotService.findList(searchParams));
         	}
         }
         if (parkingLots != null && !parkingLots.isEmpty()) {
+        	searchParams.remove("EQ_org.isDelete");
         	searchParams.remove("EQ_org.code");
             // 查询剩余车位
             for (ParkingLot parkingLot : parkingLots) {
@@ -414,7 +394,7 @@ public class WeixinController extends HttpServiceBaseController {
 
         //订单查询
         Map<String, Object> orderMap = new HashMap<String, Object>();
-        orderMap.put("EQ_user", userId);
+        orderMap.put("EQ_wxUser", userId);
         orderMap.put("NOTEQ_isDelete", new Integer(1));
         List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
         if (userOrderlList != null && !userOrderlList.isEmpty()) {
@@ -430,7 +410,7 @@ public class WeixinController extends HttpServiceBaseController {
         }
 
         // 判断是有有预约
-        List<Yuding> isYuding = yudingService.findByUser(userId);
+        List<Yuding> isYuding = yudingService.findByWxUser(userId);
         if (isYuding != null && !isYuding.isEmpty()) {
             return this.ajaxDoneError("已有预约");
         }
@@ -442,8 +422,8 @@ public class WeixinController extends HttpServiceBaseController {
         } else {
             ParkingLotArea parkingLotArea = parkingGarage.getParkingLotArea();
             List<YudingSetting> ys = yudingSettingService.getAllList();
-            User user = accountService.getUser(userId);
-            if (user == null || user.getId() == null) {
+            WxUser wxUser = wxUserService.getObjectById(userId);
+            if (wxUser == null || wxUser.getId() == null) {
                 return this.ajaxDoneError("用户信息有误");
             }
             if (ys.isEmpty()) {
@@ -487,7 +467,7 @@ public class WeixinController extends HttpServiceBaseController {
                 }
             }
 
-            yuding.setUser(user);
+            yuding.setWxUser(wxUser);
             yuding.setLasttime(now.getTime().getTime());
             yuding.setCreateTime(now.getTime());
             yuding.setYuyueTime(nowDay);
@@ -524,7 +504,7 @@ public class WeixinController extends HttpServiceBaseController {
             @RequestParam(required = true) Long orderNumber
     ) throws ParseException {
         Yuding yuding = yudingService.getObjectById(orderNumber);
-        if (userId != null && !userId.equals(yuding.getUser().getId())) {
+        if (userId != null && !userId.equals(yuding.getWxUser().getId())) {
             return this.ajaxDoneError("预约取消失败，没有权限");
         }
 
@@ -555,7 +535,7 @@ public class WeixinController extends HttpServiceBaseController {
         String jsonstr = "\"false\"";
 
         Map<String, Object> orderMap = new HashMap<String, Object>();
-        orderMap.put("EQ_user", userId);
+        orderMap.put("EQ_wxUser", userId);
         orderMap.put("NOTEQ_isDelete", new Integer(1));
         List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
         if (userOrderlList != null && !userOrderlList.isEmpty()) {
@@ -600,7 +580,7 @@ public class WeixinController extends HttpServiceBaseController {
             @RequestParam(required = false) Long orderId) throws Exception {
         Calendar now = Calendar.getInstance();
         Map<String, Object> orderMap = new HashMap<String, Object>();
-        orderMap.put("EQ_user", userId);
+        orderMap.put("EQ_wxUser", userId);
         orderMap.put("NOTEQ_isDelete", new Integer(1));
         List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
         if (userOrderlList != null && !userOrderlList.isEmpty()) {
@@ -637,7 +617,7 @@ public class WeixinController extends HttpServiceBaseController {
         List<ParkingLock> vl = this.parkingLockService.findList(searchParams);
 
         //预约单查询
-        List<Yuding> yudings = yudingService.findByUser(userId);
+        List<Yuding> yudings = yudingService.findByWxUser(userId);
         if (yudings != null && !yudings.isEmpty()) {
             if (!parkingId.equals(yudings.get(0).getParkingGarage().getId())) {
                 return this.ajaxDoneError("没有该车位解锁权限，您预定的车位为" + yudings.get(0).getParkingGarage().getId());
@@ -646,7 +626,7 @@ public class WeixinController extends HttpServiceBaseController {
 
         Map<String, Object> searchYuding = new HashMap<String, Object>();
         searchYuding.put("EQ_parkingGarage", parkingId);
-        searchYuding.put("NOTEQ_user", userId);
+        searchYuding.put("NOTEQ_wxUser", userId);
         searchYuding.put("EQ_isDelete", Boolean.FALSE);
         List<Yuding> yudingParking = this.yudingService.findList(searchYuding);
         if (yudingParking != null && !yudingParking.isEmpty()) {
@@ -659,7 +639,7 @@ public class WeixinController extends HttpServiceBaseController {
 //        }
         Map<String, Object> orderUserMap = new HashMap<String, Object>();
         // 订单查询
-        orderUserMap.put("EQ_user", userId);
+        orderUserMap.put("EQ_wxUser", userId);
         orderUserMap.put("NOTEQ_isDelete", new Integer(1));
         List<UserOrder> userOrderlList = userOrderService.findList(orderUserMap);
         if (userOrderlList != null && !userOrderlList.isEmpty()) {
@@ -673,7 +653,7 @@ public class WeixinController extends HttpServiceBaseController {
             orderParkingMap.put("EQ_isDelete", new Integer(0));
             List<UserOrder> orderParkingList = userOrderService.findList(orderParkingMap);
             for (UserOrder userOrder : orderParkingList) {
-                if (userOrder != null && userOrder.getUser() != null && !userId.equals(userOrder.getUser().getId())) {
+                if (userOrder != null && userOrder.getWxUser() != null && !userId.equals(userOrder.getWxUser().getId())) {
                     return this.ajaxDoneError("该车位已被占用");
                 }
             }
@@ -685,7 +665,7 @@ public class WeixinController extends HttpServiceBaseController {
             }
             // 创建订单
             UserOrder userOrder = new UserOrder();
-            userOrder.setUser(userService.getObjectById(userId));
+            userOrder.setWxUser(this.wxUserService.getObjectById(userId));
             userOrder.setCreateTime(now.getTime());
             userOrder.setIsDelete(0);
             ParkingGarage parkingGarage = parkingGarageService.getObjectById(parkingId);
@@ -739,6 +719,7 @@ public class WeixinController extends HttpServiceBaseController {
     public ModelAndView orgFind(@RequestParam(required = true) Long userId) throws ParseException {
     	Map<String, Object> orgParams = this.getSearchRequest();
     	orgParams.put("EQ_users.id",userId);
+    	orgParams.put("EQ_isDelete",0);
     	List<Org> orgs=this.orgService.findList(orgParams);
         String[] isNotIgnoreFieldNames = {"id", "name","code"};
         String jsonstr = JSONUtil.toJSONString(orgs, isNotIgnoreFieldNames, false, featureNames);
@@ -754,16 +735,16 @@ public class WeixinController extends HttpServiceBaseController {
     public ModelAndView orgAdd(
             @RequestParam(required = true) Long userId,
             @RequestParam(required = true) String code) throws Exception {
-    	Org org=this.orgService.findUniqueBy("code",code); 
+    	Org org=this.orgService.getByCode(code); 
         if (org==null)
         {
             return this.ajaxDoneError("没有权限信息");	
         }else{
-        	User user=this.userService.getObjectById(userId);
-        	if(user==null){
+        	WxUser wxUser=this.wxUserService.getObjectById(userId);
+        	if(wxUser==null){
         		return this.ajaxDoneError("没有用户信息");	
         	}
-        	org.getUsers().add(user);
+        	org.getUsers().add(wxUser);
         	this.orgService.save(org);
             return this.ajaxDoneSuccess("添加成功");
         }
@@ -778,15 +759,15 @@ public class WeixinController extends HttpServiceBaseController {
     public ModelAndView orgDelete(
             @RequestParam(required = true) Long userId,
             @RequestParam(required = true) String code) throws Exception {
-    	User user=this.userService.getObjectById(userId);
-    	if(user==null){
+    	WxUser wxUser=this.wxUserService.getObjectById(userId);
+    	if(wxUser==null){
     		return this.ajaxDoneError("没有用户信息");	
     	}
-    	Org org=this.orgService.findUniqueBy("code",code); 
+    	Org org=this.orgService.getByCode(code); 
         if (org==null) {
             return this.ajaxDoneError("没有权限信息");	
         }
-    	org.getUsers().remove(user);
+    	org.getUsers().remove(wxUser);
     	this.orgService.save(org);
         return this.ajaxDoneSuccess("删除成功");
     }

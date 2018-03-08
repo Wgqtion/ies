@@ -5,5 +5,4 @@ import com.vsc.modules.repository.BaseDao;
 
 public interface UserDao extends BaseDao<User> {
 	User findByLoginName(String loginName);
-        User findByWeixinId(String weixinId);
 }

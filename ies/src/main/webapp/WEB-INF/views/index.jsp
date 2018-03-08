@@ -114,8 +114,8 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a href="${ctx}/sys/user" target="navTab" rel="sys_user">用户信息</a></li>
-							<li><a href="${ctx}/work/member" title="会员信息" target="navTab" rel="work_member">会员信息</a></li>
+							<li><a href="${ctx}/sys/user" target="navTab" rel="sys_user">后台用户</a></li>
+							<li><a href="${ctx}/work/wxUser" title="微信用户" target="navTab" rel="work_wxUser">微信用户</a></li>
 						</ul>
 					</div>
 					<div class="accordionHeader">

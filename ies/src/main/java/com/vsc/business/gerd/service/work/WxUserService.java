@@ -1,6 +1,5 @@
 package com.vsc.business.gerd.service.work;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,73 +15,57 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springside.modules.utils.Collections3;
 
 import com.vsc.business.core.entity.security.User;
-import com.vsc.business.gerd.entity.work.Org;
-import com.vsc.business.gerd.entity.work.ParkingLot;
-import com.vsc.business.gerd.repository.work.OrgDao;
+import com.vsc.business.gerd.entity.work.WxUser;
+import com.vsc.business.gerd.repository.work.WxUserDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.util.CoreUtils;
 
 /**
- * 用户分组逻辑操作
+ * 微信用户逻辑操作
  * @author XiangXiaoLin
  *
  */
 @Service
 @Transactional
-public class OrgService extends BaseService<Org> {
+public class WxUserService extends BaseService<WxUser> {
 	private static Logger logger = LoggerFactory
-			.getLogger(OrgService.class);
+			.getLogger(WxUserService.class);
 
 	@Autowired
-	private OrgDao orgDao;
-	
-	@Autowired
-	private ParkingLotService parkingLotService;
+	private WxUserDao wxUserDao;
 
 	@Override
-	public PagingAndSortingRepository<Org, Long> getPagingAndSortingRepositoryDao() {
-		return this.orgDao;
+	public PagingAndSortingRepository<WxUser, Long> getPagingAndSortingRepositoryDao() {
+		return this.wxUserDao;
 	}
 
 	@Override
-	public JpaSpecificationExecutor<Org> getJpaSpecificationExecutorDao() {
-		return this.orgDao;
+	public JpaSpecificationExecutor<WxUser> getJpaSpecificationExecutorDao() {
+		return this.wxUserDao;
 	}
 
 	/**
-	 * 根据编码查询权限 ，未删除的
-	 * @param code
+	 * 根据weixinId查询，未删除的
+	 * @param weixinId
 	 * @return
 	 */
-	public Org getByCode(String code){
+	public WxUser getByWeixinId(String weixinId){
 		Map<String, Object> searchParams = new HashMap<String,Object>();
 		searchParams.put("EQ_isDelete",0);
-		searchParams.put("code", code);
+		searchParams.put("weixinId", weixinId);
 		return find(searchParams);
 	}
 	
-	public Org save(Org entity,String[] codes) {
+	public WxUser save(WxUser entity,String[] codes) {
 		User user=ShiroUserUtils.GetCurrentUser();
-		if(entity.getId()==null){
-			entity.setCreateDate(CoreUtils.nowtime());
-			entity.setCreateUser(user);
-		}
 		entity.setUpdateUser(user);
 		entity.setUpdateDate(CoreUtils.nowtime());
-		if(codes!=null){
-			List<ParkingLot> list=new ArrayList<ParkingLot>();
-			for(String code:codes){
-				ParkingLot parkingLot=parkingLotService.findUniqueBy("code",code);
-				list.add(parkingLot);
-			}
-			entity.setParkingLots(list);
-		}
 		return super.save(entity);
 	}
 
 	public void deleteUpdateById(Long id) {
-		Org entity=getObjectById(id);
+		WxUser entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}
@@ -104,7 +87,5 @@ public class OrgService extends BaseService<Org> {
 			}
 		}
 	}
-
-	
 	
 }

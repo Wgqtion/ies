@@ -5,15 +5,16 @@
  */
 package com.vsc.business.gerd.entity.work;
 
-import com.vsc.business.core.entity.security.User;
-import com.vsc.constants.Constants;
-import com.vsc.modules.entity.IdEntity;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.vsc.constants.Constants;
+import com.vsc.modules.entity.IdEntity;
 
 /**
  *
@@ -25,7 +26,7 @@ public class UserOrder extends IdEntity{
     private Integer carType;
     private java.util.Date outTime;
     private java.lang.String orderNumber;
-    private User user;
+    private WxUser wxUser;
     private ParkingGarage parkingGarage;
     private java.util.Date createTime=new Date();
     private java.util.Date updateTime;
@@ -60,13 +61,13 @@ public class UserOrder extends IdEntity{
     }
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    public User getUser() {
-        return user;
+    @JoinColumn(name = "WX_USER_ID")
+    public WxUser getWxUser() {
+        return wxUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setWxUser(WxUser wxUser) {
+        this.wxUser = wxUser;
     }
 
     @ManyToOne

@@ -12,7 +12,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.vsc.business.core.entity.security.User;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.BasicEntity;
 
@@ -40,15 +39,15 @@ public class Org extends BasicEntity implements Serializable{
 
 	private List<ParkingLot> parkingLots=new ArrayList<ParkingLot>();
 	
-	private List<User> users=new ArrayList<User>();
+	private List<WxUser> users=new ArrayList<WxUser>();
 	
 	@ManyToMany
 	@JoinTable(name = Constants.TABLE_PREFIX+"org_user", joinColumns = { @JoinColumn(name = "org_code",referencedColumnName="code") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
-	public List<User> getUsers() {
+	public List<WxUser> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<WxUser> users) {
 		this.users = users;
 	}
 

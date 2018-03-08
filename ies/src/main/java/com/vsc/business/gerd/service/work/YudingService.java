@@ -40,8 +40,8 @@ public class YudingService extends BaseService<Yuding> {
             return this.yudingDao.upDel(isDelete, id ,userId);
         }
         
-        public List<Yuding> findByUser(Long userId){
-            return this.yudingDao.findByUserIdAndIsDelete(userId,false);
+        public List<Yuding> findByWxUser(Long userId){
+            return this.yudingDao.findByWxUserIdAndIsDelete(userId,false);
         }
 
 }
