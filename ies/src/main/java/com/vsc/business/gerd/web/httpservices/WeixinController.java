@@ -188,6 +188,7 @@ public class WeixinController extends HttpServiceBaseController {
             wxUser.setCountry(country);
             wxUser.setProvince(province);
             wxUser.setCity(city);
+            wxUser.setCreateDate(new Date());
             wxUserService.save(wxUser);
         } else {
             return this.ajaxDoneError("已有注册信息");

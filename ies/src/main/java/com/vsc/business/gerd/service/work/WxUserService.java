@@ -53,7 +53,7 @@ public class WxUserService extends BaseService<WxUser> {
 	public WxUser getByWeixinId(String weixinId){
 		Map<String, Object> searchParams = new HashMap<String,Object>();
 		searchParams.put("EQ_isDelete",0);
-		searchParams.put("weixinId", weixinId);
+		searchParams.put("EQ_weixinId", weixinId);
 		return find(searchParams);
 	}
 	
