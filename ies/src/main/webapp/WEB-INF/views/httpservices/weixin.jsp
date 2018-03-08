@@ -149,6 +149,14 @@
                                                 <input type="text" name="carNumber" placeholder="请输入车牌" /><br />
                                                 <label>用户手机号</label>
                                                 <input type="text" name="tel" placeholder="请输入手机号" /><br />
+                                                <label>性别（0男，1女）</label>
+                                                <input type="text" name="sex" placeholder="请输入性别" /><br />
+                                                <label>国家</label>
+                                                <input type="text" name="country" placeholder="请输入国家" /><br />
+                                                <label>省</label>
+                                                <input type="text" name="province" placeholder="请输入省" /><br />
+                                                <label>城市</label>
+                                                <input type="text" name="city" placeholder="请输入城市" /><br />
 						<button type="submit" class="btn">注册</button>
 					</form>
 					<h4>
@@ -181,6 +189,26 @@
 									<td>tel</td>
 									<td>否</td>
 									<td>用户手机号</td>
+								</tr>
+								<tr>
+									<td>sex</td>
+									<td>否</td>
+									<td>性别</td>
+								</tr>
+								<tr>
+									<td>country</td>
+									<td>否</td>
+									<td>国家</td>
+								</tr>
+								<tr>
+									<td>province</td>
+									<td>否</td>
+									<td>省</td>
+								</tr>
+								<tr>
+									<td>city</td>
+									<td>否</td>
+									<td>城市</td>
 								</tr>
 								 
 							</tbody>

@@ -3,7 +3,6 @@ package com.vsc.business.core.entity.security;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -30,22 +29,16 @@ public class User extends IdEntity {
     private String name;
     private String plainPassword;
     private String password;
-    private String salt;
     private Date createTime;
     private Long userType = 1L;
     private Boolean isEnabled = Boolean.TRUE;
     private Date updateTime;
     private User createUser;
-    private java.lang.String gender = "1";
-    private java.lang.String contactAddress;
-    private java.lang.String sourceType;
 
     private List<Attach> attachs = Lists.newArrayList();
     private List<Role> roleList = Lists.newArrayList();
 
 
-
- 
   
     /*
 	 * 新增字段-结束
@@ -85,14 +78,6 @@ public class User extends IdEntity {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
 
     @ManyToMany
@@ -156,48 +141,6 @@ public class User extends IdEntity {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    
-    /**
-     * @return
-     */
-    @Column(name = "GENDER")
-    public java.lang.String getGender() {
-        return this.gender;
-    }
-
-    public void setGender(java.lang.String value) {
-        this.gender = value;
-    }
-
-  
-
-
-    /**
-     * @return
-     */
-    @Column(name = "CONTACT_ADDRESS")
-    public java.lang.String getContactAddress() {
-        return this.contactAddress;
-    }
-
-    public void setContactAddress(java.lang.String value) {
-        this.contactAddress = value;
-    }
-
-   
-
-    /**
-     * @return
-     */
-    @Column(name = "SOURCE_TYPE")
-    public java.lang.String getSourceType() {
-        return this.sourceType;
-    }
-
-    public void setSourceType(java.lang.String value) {
-        this.sourceType = value;
     }
     @Override
     public String toString() {

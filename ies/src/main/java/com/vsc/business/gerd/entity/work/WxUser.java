@@ -33,6 +33,22 @@ public class WxUser extends IdEntity {
      */
     private String telephone;
     /**
+     * 性别
+     */
+    private Integer sex;
+    /**
+     * 国家
+     */
+    private String country;
+    /**
+     * 省
+     */
+    private String province;
+    /**
+     * 城市
+     */
+    private String city;
+    /**
      * 车牌号
      */
     private String carNumber;
@@ -124,6 +140,42 @@ public class WxUser extends IdEntity {
 
 	public void setIsDelete(Boolean isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	@Column(name = "SEX")
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+	@Column(name = "COUNTRY")
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	@Column(name = "PROVINCE")
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	@Column(name = "CITY")
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	@Override

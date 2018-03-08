@@ -151,7 +151,7 @@ public class WeixinController extends HttpServiceBaseController {
             return this.ajaxDoneError("获取openId失败", result);
         }
 
-        String[] isNotIgnoreFieldNames = {"id", "telephone", "weixinId", "carNumber", "name"};
+        String[] isNotIgnoreFieldNames = {"id", "telephone", "weixinId", "carNumber", "name","sex","country","province","city"};
         String jsonstr = JSONUtil.toJSONString(wxUser, isNotIgnoreFieldNames, false, featureNames);
         return this.ajaxDoneSuccess("登陆成功", jsonstr);
     }
@@ -171,30 +171,30 @@ public class WeixinController extends HttpServiceBaseController {
             @RequestParam(required = true) String weixinId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String carNumber,
-            @RequestParam(required = false) String tel) throws ParseException {
+            @RequestParam(required = false) String tel,
+            @RequestParam(required = false) Integer sex,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String province,
+            @RequestParam(required = false) String city) throws ParseException {
         //登录信息查询
         WxUser wxUser = wxUserService.getByWeixinId(weixinId);
         if (wxUser == null) {
         	wxUser = new WxUser();
         	wxUser.setWeixinId(weixinId);
-            if (name != null) {
-            	wxUser.setName(name);
-            } else {
-            	wxUser.setName("测试");
-            }
-            if (carNumber != null) {
-            	wxUser.setCarNumber(carNumber);
-            }
-            if (tel != null) {
-            	wxUser.setTelephone(tel);
-            }
+        	wxUser.setName(name);
+            wxUser.setCarNumber(carNumber);
+            wxUser.setTelephone(tel);
+            wxUser.setSex(sex);
+            wxUser.setCountry(country);
+            wxUser.setProvince(province);
+            wxUser.setCity(city);
             wxUserService.save(wxUser);
         } else {
             return this.ajaxDoneError("已有注册信息");
         }
         // 返回新的登录信息
         wxUser = wxUserService.getByWeixinId(weixinId);
-        String[] isNotIgnoreFieldNames = {"id", "telephone", "weixinId", "carNumber", "name"};
+        String[] isNotIgnoreFieldNames = {"id", "telephone", "weixinId", "carNumber", "name","sex","country","province","city"};
         String jsonstr = JSONUtil.toJSONString(wxUser, isNotIgnoreFieldNames, false, featureNames);
         return this.ajaxDoneSuccess("注册成功", jsonstr);
     }

@@ -23,7 +23,6 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li><a class="edit" title="编辑用户" rel="work_wxUser_update" href="${ctx}/work/wxUser/update/{sid}?navTabId=work_wxUser" target="dialog" warn="请选择一个会员"><span>编辑</span></a></li>
-			<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${ctx}/work/wxUser/delete" class="delete"><span>删除</span></a></li>
 			<li class="line">line</li>
 			 
 		</ul>

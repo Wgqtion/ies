@@ -36,7 +36,7 @@
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th <vsc:orderField name="loginName"/>>登录名</th>
 				<th <vsc:orderField name="name"/>>姓名</th>
-				<th>角色类型</th>
+				<th>角色</th>
 				<th <vsc:orderField name="isEnabled"/>>使用状态</th>				
 				<th width="140" align="center" <vsc:orderField name="createTime"/>>创建时间</th>
 				<th width="120">操作</th>
