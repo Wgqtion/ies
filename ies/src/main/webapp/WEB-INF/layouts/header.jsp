@@ -13,10 +13,6 @@
 				</a>
 			
 				<ul class="dropdown-menu">
-					<shiro:hasRole name="admin">
-						<li><a href="${ctx}/admin/user">Admin Users</a></li>
-						<li class="divider"></li>
-					</shiro:hasRole>
 					<li><a href="${ctx}/profile">Edit Profile</a></li>
 					<li><a href="${ctx}/logout">Logout</a></li>
 				</ul>

@@ -36,9 +36,8 @@
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th <vsc:orderField name="loginName"/>>登录名</th>
 				<th <vsc:orderField name="name"/>>姓名</th>
-				<th>角色</th>
 				<th <vsc:orderField name="isEnabled"/>>使用状态</th>				
-				<th width="140" align="center" <vsc:orderField name="createTime"/>>创建时间</th>
+				<th width="140" align="center" <vsc:orderField name="createDate"/>>创建时间</th>
 				<th width="120">操作</th>
 			</tr>
 		</thead>
@@ -49,9 +48,8 @@
 					<td><input name="ids" value="${item.id}" type="checkbox"></td>
 					<td><a href="${ctx}/sys/user/view/${item.id}" target="dialog" title="查看用户" rel="sys_user_view"> ${item.loginName} </a></td>
 					<td>${item.name}</td>
-					<td><vsc:fetchElementPropertyToString propertyName="name" list="${item.roleList}"></vsc:fetchElementPropertyToString></td>
 					<td><s:message code="user.isenabled.${item.isEnabled}"></s:message></td>					
-					<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm" /></td>
+					<td><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm" /></td>
 					<td><a title="重置密码" rel="sys_user_reset" target="dialog" href="${ctx}/sys/user/reset/${item.id}" class="btnEdit">重置密码</a> <a title="删除 ${item.name}" target="ajaxTodo"
 						href="${ctx}/sys/user/delete/${item.id}" class="btnDel">删除</a></td>
 				</tr>

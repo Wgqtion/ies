@@ -4,8 +4,6 @@
 <div class="pageHeader">
 	<form rel="pagerForm" method="post" action="${ctx}/sys/user/select" onsubmit="return dwzSearch(this, 'dialog');">
 		<div class="searchBar">
-			<input name="search_EQ_userType" value="${param.search_EQ_userType}" type="hidden"> <input name="single" value="${param.single}" type="hidden">
-
 			<ul class="searchContent">
 				<li><label>姓名：</label> <input class="textInput" name="search_LIKE_name" value="${param.search_LIKE_name}" type="text"></li>
 				<li><label>登录名：</label> <input class="textInput" name="search_LIKE_loginName" value="${param.search_LIKE_loginName}" type="text"></li>
@@ -52,7 +50,7 @@
 				 
 				<th <vsc:orderField name="isEnabled"/>>使用状态</th>
 				<th <vsc:orderField name="createUser"/>>创建人</th>
-				<th width="140" align="center" <vsc:orderField name="createTime"/>>创建时间</th>
+				<th width="140" align="center" <vsc:orderField name="createDate"/>>创建时间</th>
 				 
 			</tr>
 		</thead>
@@ -68,7 +66,7 @@
 					<td>${item.name}</td>
 					<td><s:message code="user.isenabled.${item.isEnabled}"></s:message></td>
 					<td>${item.createUser.name}</td>
-					<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm" /></td>					 
+					<td><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm" /></td>					 
 				</tr>
 			</c:forEach>
 		</tbody>

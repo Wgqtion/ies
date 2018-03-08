@@ -5,7 +5,6 @@
 <div class="pageContent">
 	<form method="post" action="${ctx}/sys/user/${action}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<input type="hidden" name="id" value="${id}">
-		<input type="hidden" name="userType" value="0">
 		<vsc:token tokenName="sys.user.create"></vsc:token>
 		<vsc:callback navTabId="sys_user"></vsc:callback>
 		<div class="pageFormContent" layoutH="56">
@@ -37,7 +36,17 @@
 					</dd>
 				</dl>
 			</c:if>
-					
+			<dl class="nowrap">
+				<dt>所属公司：</dt>
+				<dd>
+					<select id="companyCode" name="company.code" validate="{required:true}">
+					<option value="">全部</option>
+					<c:forEach items="${companyList}" var="company">
+						<option value="${company.code}">${company.name}</option>
+					</c:forEach>
+				</select>
+				</dd>
+			</dl>
 			<dl class="nowrap">
 				<dt>使用状态：</dt>
 				<dd>

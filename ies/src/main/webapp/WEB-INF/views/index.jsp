@@ -208,7 +208,6 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a href="${ctx}/work/company" target="navTab" rel="work_company">公司管理</a></li>
 							<li><a href="${ctx}/work/org" target="navTab" rel="work_org">小程序权限</a></li>
 						</ul>
 					</div>
@@ -219,6 +218,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
+							<li><a href="${ctx}/work/company" target="navTab" rel="work_company">公司管理</a></li>
 							<li><a>权限管理</a>
 								<ul>
 									<li><a href="${ctx}/sys/role" target="navTab" rel="sys_role">角色管理</a></li>

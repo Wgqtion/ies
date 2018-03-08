@@ -11,16 +11,10 @@
 					<td align="left">${vm.name}</td>
 				</tr>
 				<tr>
-					<td align="right">角色类型：</td>
-					<td align="left"><s:message code="user.usertype.${vm.userType}"></s:message></td>
 					<td align="right">创建时间：</td>
-					<td align="left"><fmt:formatDate value="${vm.createTime}" pattern="yyyy-MM-dd HH:mm" /></td>
-				</tr>
-				<tr>
+					<td align="left"><fmt:formatDate value="${vm.createDate}" pattern="yyyy-MM-dd HH:mm" /></td>
 					<td align="right">使用状态：</td>
 					<td align="left"><s:message code="user.isenabled.${vm.isEnabled}"></s:message></td>
-					<td align="right"></td>
-					<td align="left"></td>
 				</tr>
 			</tbody>
 		</table>

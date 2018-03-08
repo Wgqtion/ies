@@ -1,8 +1,8 @@
 package com.vsc.business.core.service.security;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,22 +11,18 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Maps;
 import com.vsc.business.core.entity.security.User;
-import com.vsc.business.core.repository.security.RoleDao;
 import com.vsc.business.core.repository.security.UserDao;
-import com.vsc.business.core.repository.sys.upload.AttachDao;
 import com.vsc.modules.service.BaseService;
+import com.vsc.modules.shiro.ShiroUserUtils;
+import com.vsc.util.CoreUtils;
 
 @Service
 @Transactional
 public class UserService extends BaseService<User> {
-	private static Logger logger = LoggerFactory.getLogger(AccountService.class);
+	private static Logger logger = LoggerFactory.getLogger(UserService.class);
 	@Autowired
 	private UserDao userDao;
-	@Autowired
-	private RoleDao roleDao;
-
 	@Override
 	public PagingAndSortingRepository<User, Long> getPagingAndSortingRepositoryDao() {
 		return this.userDao;
@@ -37,32 +33,34 @@ public class UserService extends BaseService<User> {
 		return this.userDao;
 	}
 
-	public User save(User entity, Long photoAttachId, Long roleId) {
+	public User save(User entity, Long photoAttachId) {
 
-		entity.getRoleList().clear();
-		entity.getRoleList().add(roleDao.findOne(roleId));
-
-
+		User user=ShiroUserUtils.GetCurrentUser();
+		Date now=CoreUtils.nowtime();
+		if(entity.getId()==null){
+			entity.setCreateDate(now);
+			entity.setCreateUser(user);
+		}
+		entity.setUpdateUser(user);
+		entity.setUpdateDate(now);		
 		this.userDao.save(entity);
 
 		return entity;
 
 	}
-
-	public User save(User entity, Long adminUserId, Long photoAttachId, Long roleId, Long[] hospitalIds) {
-
-		entity.getRoleList().clear();
-		entity.getRoleList().add(roleDao.findOne(roleId));
-
-		return this.userDao.save(entity);
-
-	}
-
-	public List<User> findAllAdminUser() {
-		Map<String, Object> filterParams = Maps.newHashMap();
-		filterParams.put("EQ_userType", 2);
-		return this.findList(filterParams);
-	}
 	
+	public void deleteUpdateById(Long id) {
+		User entity=getObjectById(id);
+		entity.setIsDelete(true);
+		save(entity);
+	}
+
+	public void deleteUpdateByIds(Long[] ids) {
+		if (ArrayUtils.isNotEmpty(ids)) {
+			for (int i = 0; i < ids.length; i++) {
+				deleteUpdateById(ids[i]);
+			}
+		}
+	}
 	
 }

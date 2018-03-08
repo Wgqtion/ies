@@ -1,5 +1,6 @@
 package com.vsc.business.core.web.security;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -24,8 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.service.security.UserService;
 import com.vsc.business.core.web.BaseController;
+import com.vsc.business.gerd.service.work.CompanyService;
 import com.vsc.constants.Constants;
-import com.vsc.util.CoreUtils;
 
 /**
  * 用户管理的Controller 
@@ -44,13 +45,16 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private CompanyService companyService;
 
 	@RequestMapping(value = "")
 	public String list(Model model, HttpServletRequest request) {
 
 		PageRequest pageRequest = this.getPageRequest("id", "asc");
 		Map<String, Object> searchParams = this.getSearchRequest();
-		searchParams.put("EQ_userType", 0);
+		searchParams.put("EQ_isDelete", 0);
 		Page<User> page = userService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
@@ -70,6 +74,9 @@ public class UserController extends BaseController {
 	public String createForm(Model model) {
 		model.addAttribute("vm", new User());
 		model.addAttribute("action", BaseController.CREATE);
+		Map<String, Object> filterParams = new HashMap<String, Object>();
+		filterParams.put("EQ_isDelete",0);
+		model.addAttribute("companyList",companyService.findList(filterParams));
 		return PATH_EDIT;
 	}
 
@@ -78,8 +85,8 @@ public class UserController extends BaseController {
 			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId
 			) {
 		user.setPassword(user.getPlainPassword());
-		user.setCreateTime(CoreUtils.nowtime());
-		userService.save(user, photoAttachId, user.getUserType());
+		user.setCompany(companyService.getByCode(user.getCompany().getCode()));
+		userService.save(user, photoAttachId);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
@@ -87,6 +94,9 @@ public class UserController extends BaseController {
 	public String updateForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("vm", userService.getObjectById(id));
 		model.addAttribute("action", BaseController.UPDATE);
+		Map<String, Object> filterParams = new HashMap<String, Object>();
+		filterParams.put("EQ_isDelete",0);
+		model.addAttribute("companyList",companyService.findList(filterParams));
 		return PATH_EDIT;
 	}
 
@@ -100,8 +110,8 @@ public class UserController extends BaseController {
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") User user,
 			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId) {
 		//user.setPassword(MD5Util.MD5(user.getPlainPassword())); 
-		user.setUpdateTime(CoreUtils.nowtime());
-		userService.save(user, photoAttachId, user.getUserType());
+		user.setCompany(companyService.getByCode(user.getCompany().getCode()));
+		userService.save(user, photoAttachId);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 
@@ -136,13 +146,13 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) {
-		userService.deleteById(id);
+		userService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
 	public ModelAndView deleteBatch(@RequestParam Long[] ids) {
-		userService.deleteByIds(ids);
+		userService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 

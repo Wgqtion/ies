@@ -50,6 +50,17 @@ public class CompanyService extends BaseService<Company> {
 		return this.companyDao;
 	}
 	
+	/**
+	 * 根据code查询，未删除的
+	 * @param code
+	 * @return
+	 */
+	public Company getByCode(String code){
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_isDelete",0);
+		searchParams.put("EQ_code",code);
+		return this.find(searchParams);
+	}
 	
 	@Override
 	public Company save(Company entity) {
@@ -61,10 +72,7 @@ public class CompanyService extends BaseService<Company> {
 			boolean flag=true;
 			while(flag){
 				code="0"+CodeUtils.GenerateCode(this.getMaxCode(),3);
-				Map<String, Object> searchParams = new HashMap<String, Object>();
-				searchParams.put("EQ_isDelete",0);
-				searchParams.put("EQ_code",code);
-				Company c=this.find(searchParams);
+				Company c=getByCode(code);
 				if(c==null){
 					flag=false;
 				}

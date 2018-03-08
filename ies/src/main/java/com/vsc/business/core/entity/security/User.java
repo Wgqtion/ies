@@ -1,6 +1,5 @@
 package com.vsc.business.core.entity.security;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -18,29 +17,40 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.vsc.business.core.entity.sys.upload.Attach;
+import com.vsc.business.gerd.entity.work.Company;
 import com.vsc.constants.Constants;
-import com.vsc.modules.entity.IdEntity;
+import com.vsc.modules.entity.BasicEntity;
 
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "user")
-public class User extends IdEntity {
+public class User extends BasicEntity {
 
     private String loginName;
     private String name;
     private String plainPassword;
     private String password;
-    private Date createTime;
-    private Long userType = 1L;
     private Boolean isEnabled = Boolean.TRUE;
-    private Date updateTime;
-    private User createUser;
+    
+    /**
+     * 公司
+     */
+    private Company company;
 
     private List<Attach> attachs = Lists.newArrayList();
     private List<Role> roleList = Lists.newArrayList();
 
 
-  
-    /*
+    @ManyToOne
+	@JoinColumn(name = "COMPANY_CODE",referencedColumnName="CODE")
+    public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	/*
 	 * 新增字段-结束
      */
     @NotBlank
@@ -92,24 +102,6 @@ public class User extends IdEntity {
         this.roleList = roleList;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "create_user_id")
-    public User getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(User createUser) {
-        this.createUser = createUser;
-    }
-
     @OneToMany(mappedBy = "user")
     public List<Attach> getAttachs() {
         return attachs;
@@ -119,28 +111,12 @@ public class User extends IdEntity {
         this.attachs = attachs;
     }
 
-    public Long getUserType() {
-        return userType;
-    }
-
-    public void setUserType(Long userType) {
-        this.userType = userType;
-    }
-
     public Boolean getIsEnabled() {
         return isEnabled;
     }
 
     public void setIsEnabled(Boolean isEnabled) {
         this.isEnabled = isEnabled;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
     @Override
     public String toString() {

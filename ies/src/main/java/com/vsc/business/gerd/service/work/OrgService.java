@@ -1,6 +1,7 @@
 package com.vsc.business.gerd.service.work;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,12 +65,13 @@ public class OrgService extends BaseService<Org> {
 	
 	public Org save(Org entity,String[] codes) {
 		User user=ShiroUserUtils.GetCurrentUser();
+		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){
-			entity.setCreateDate(CoreUtils.nowtime());
+			entity.setCreateDate(now);
 			entity.setCreateUser(user);
 		}
 		entity.setUpdateUser(user);
-		entity.setUpdateDate(CoreUtils.nowtime());
+		entity.setUpdateDate(now);
 		if(codes!=null){
 			List<ParkingLot> list=new ArrayList<ParkingLot>();
 			for(String code:codes){

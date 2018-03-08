@@ -1,6 +1,5 @@
 package com.vsc.business.gerd.web.work;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,6 @@ import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.ParkingLotArea;
 import com.vsc.business.gerd.entity.work.Yuding;
 import com.vsc.business.gerd.service.work.ParkingLotAreaService;
-import com.vsc.business.gerd.service.work.WxUserService;
 import com.vsc.business.gerd.service.work.YudingService;
 import com.vsc.constants.Constants;
 
@@ -37,9 +35,6 @@ public class YudingController extends BaseController {
 
 	@Autowired
 	private YudingService yudingService;
-	
-	@Autowired
-	private WxUserService wxUserService;
 	
 	@Autowired
 	private ParkingLotAreaService parkingLotAreaService;
@@ -60,14 +55,6 @@ public class YudingController extends BaseController {
 		model.addAttribute("page", page);
 
 		return PATH_LIST;
-	}
-
-	@RequestMapping(value = "export")
-	public ModelAndView exportList(HttpServletRequest request) {
-		Map<String, Object> searchParams = this.getSearchRequest();
-		List<Yuding> list = yudingService.findAll(searchParams, this.getSortOrderBy(), this.getSortOrderDesc());
-		return this.reportView(PATH_LIST, list, REPORT_FORMAT_XLS);
-
 	}
 
 	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
@@ -97,14 +84,4 @@ public class YudingController extends BaseController {
 		}
 		return null;
 	}
-
-	@RequestMapping(value = "checkParkingLotAreaIsMinNode")
-	@ResponseBody
-	public boolean checkParkingLotAreaIsMinNode(@RequestParam(value = "parkingLotAreaGroup.id") Long pid) {
-
-		ParkingLotArea parkingLotArea = this.parkingLotAreaService.getObjectById(pid);
-		return parkingLotArea.getChildren().isEmpty();
-
-	}
-
 }

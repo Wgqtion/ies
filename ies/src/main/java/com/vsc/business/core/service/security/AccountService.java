@@ -9,14 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springside.modules.utils.DateProvider;
 
 import com.vsc.business.core.entity.security.User;
 //import com.vsc.business.core.entity.security.WeixinLogin;
 import com.vsc.business.core.repository.security.UserDao;
 //import com.vsc.business.core.repository.security.WeixinDao;
 import com.vsc.business.core.service.security.ShiroDbRealm.ShiroUser;
- 
 import com.vsc.modules.service.ServiceException;
 import com.vsc.util.MD5Util;
 
@@ -37,9 +35,6 @@ public class AccountService {
 	private static Logger logger = LoggerFactory.getLogger(AccountService.class);
 
 	private UserDao userDao;
-//        private WeixinDao weixinDao;
- 
-	private DateProvider dateProvider = DateProvider.DEFAULT;
 
 	public List<User> getAllUser() {
 		return (List<User>) userDao.findAll();
@@ -53,12 +48,6 @@ public class AccountService {
 		return userDao.findByLoginName(loginName);
 	}
         
-	@Transactional(readOnly = false)
-	public void registerUser(User user) {
-		entryptPassword(user); 
-		user.setCreateTime(dateProvider.getDate()); 
-		userDao.save(user);
-	}
 //	@Transactional(readOnly = false)
 //	public void registerWeixin(WeixinLogin weixinLogin) {
 //		weixinDao.save(weixinLogin);
@@ -114,10 +103,5 @@ public class AccountService {
 	@Autowired
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
-	}
-
-	 
-	public void setDateProvider(DateProvider dateProvider) {
-		this.dateProvider = dateProvider;
 	}
 }
