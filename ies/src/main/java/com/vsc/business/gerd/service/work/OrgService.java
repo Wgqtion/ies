@@ -86,6 +86,7 @@ public class OrgService extends BaseService<Org> {
 	public void deleteUpdateById(Long id) {
 		Org entity=getObjectById(id);
 		entity.setIsDelete(true);
+		entity.setParkingLots(null);
 		save(entity);
 	}
 

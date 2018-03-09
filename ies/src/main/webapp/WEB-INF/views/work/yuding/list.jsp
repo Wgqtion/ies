@@ -51,7 +51,7 @@
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>
-					<td>${varitem.user.name}</td>
+					<td>${varitem.wxUser.name}</td>
 					<td><a href="${ctx}/work/yuding/view/${varitem.id}" target="dialog" title="查看预约" rel="yuding_view">${varitem.carNo}</a></td>
 					<td>${varitem.parkingLotArea.fullIndexName}</td>
 					<td><fmt:formatDate value='${varitem.yuyueTime}' pattern='yyyy-MM-dd HH:mm' /></td>
