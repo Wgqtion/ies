@@ -42,7 +42,7 @@
 					<select id="companyCode" name="company.code" validate="{required:true}">
 					<option value="">全部</option>
 					<c:forEach items="${companyList}" var="company">
-						<option value="${company.code}">${company.name}</option>
+						<option value="${company.code}" <c:if test="${company.code eq vm.company.code }">selected='selected'</c:if>>${company.name}</option>
 					</c:forEach>
 				</select>
 				</dd>

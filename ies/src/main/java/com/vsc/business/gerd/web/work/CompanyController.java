@@ -21,7 +21,6 @@ import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.Company;
 import com.vsc.business.gerd.service.work.CompanyService;
 import com.vsc.constants.Constants;
-import com.vsc.util.RandomPassword;
 
 /**
  * 公司视图控制

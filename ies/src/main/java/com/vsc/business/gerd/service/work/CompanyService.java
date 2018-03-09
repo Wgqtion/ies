@@ -49,6 +49,17 @@ public class CompanyService extends BaseService<Company> {
 	public JpaSpecificationExecutor<Company> getJpaSpecificationExecutorDao() {
 		return this.companyDao;
 	}
+	/**
+	 * 未删除的
+	 * @return
+	 */
+	public List<Company> getList(){
+		Map<String, Object> filterParams = new HashMap<String, Object>();
+		filterParams.put("EQ_isDelete",0);
+		User user=ShiroUserUtils.GetCurrentUser();
+		filterParams.put("RLIKE_code", user.getCompany().getCode());
+		return findList(filterParams);
+	}
 	
 	/**
 	 * 根据code查询，未删除的

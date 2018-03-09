@@ -1,6 +1,5 @@
 package com.vsc.business.core.web.security;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -55,6 +54,8 @@ public class UserController extends BaseController {
 		PageRequest pageRequest = this.getPageRequest("id", "asc");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		searchParams.put("EQ_isDelete", 0);
+		User user=this.getCurrentUser();
+		searchParams.put("RLIKE_company.code", user.getCompany().getCode());
 		Page<User> page = userService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
@@ -74,9 +75,7 @@ public class UserController extends BaseController {
 	public String createForm(Model model) {
 		model.addAttribute("vm", new User());
 		model.addAttribute("action", BaseController.CREATE);
-		Map<String, Object> filterParams = new HashMap<String, Object>();
-		filterParams.put("EQ_isDelete",0);
-		model.addAttribute("companyList",companyService.findList(filterParams));
+		model.addAttribute("companyList",companyService.getList());
 		return PATH_EDIT;
 	}
 
@@ -94,9 +93,7 @@ public class UserController extends BaseController {
 	public String updateForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("vm", userService.getObjectById(id));
 		model.addAttribute("action", BaseController.UPDATE);
-		Map<String, Object> filterParams = new HashMap<String, Object>();
-		filterParams.put("EQ_isDelete",0);
-		model.addAttribute("companyList",companyService.findList(filterParams));
+		model.addAttribute("companyList",companyService.getList());
 		return PATH_EDIT;
 	}
 
