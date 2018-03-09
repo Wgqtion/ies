@@ -64,7 +64,7 @@
 				</tr>
 				<tr>
 					<td class="fieldName" valign="top">说明:</td>
-					<td class="fieldInput" colspan="3"><label><textarea cols="80" rows="5" id="description" name="description" validate="{required:true}">${vm.description}</textarea></label><span for="description" generated="true"
+					<td class="fieldInput" colspan="3"><label><textarea cols="80" rows="5" id="description" name="description">${vm.description}</textarea></label><span for="description" generated="true"
 						style="display: none" class="error"></span></td>
 				</tr>
 			</table>
