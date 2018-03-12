@@ -75,8 +75,8 @@ public class OrgController extends BaseController {
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
 	public ModelAndView create(@Valid Org org,
-			@RequestParam(value = "parkingLots.code", required = false) String[] codes) {
-		orgService.save(org,codes);
+			@RequestParam(value = "parkingLots.id", required = false) String[] ids) {
+		orgService.save(org,ids);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 

@@ -1,6 +1,5 @@
 package com.vsc.business.gerd.web.work;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -21,9 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.ParkingLot;
+import com.vsc.business.gerd.service.work.CompanyService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
-import com.vsc.util.CoreUtils;
 
 /**
  * 
@@ -36,6 +35,9 @@ public class ParkingLotController extends BaseController {
 
 	@Autowired
 	private ParkingLotService parkingLotService;
+	
+	@Autowired
+	private CompanyService companyService;
 	
 	public static final String PATH = "work/parkinglot";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
@@ -50,32 +52,23 @@ public class ParkingLotController extends BaseController {
  
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
-
 		Page<ParkingLot> page = parkingLotService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
 		return PATH_LIST;
 	}
 
-	@RequestMapping(value = "export")
-	public ModelAndView exportList(HttpServletRequest request) {
-		Map<String, Object> searchParams = this.getSearchRequest();
-		List<ParkingLot> list = parkingLotService.findAll(searchParams, this.getSortOrderBy(), this.getSortOrderDesc());
-		return this.reportView(PATH_LIST, list, REPORT_FORMAT_XLS);
-
-	}
-
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) {
 		model.addAttribute("vm", new ParkingLot());
 		model.addAttribute("action", BaseController.CREATE);
+		model.addAttribute("companyList",companyService.getList());
 		return PATH_EDIT;
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
 	public ModelAndView create(@Valid ParkingLot parkingLot,
 			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId) {
-		parkingLot.setCreateTime(CoreUtils.nowtime());
 		parkingLotService.save(parkingLot, photoAttachId);
 		return this.ajaxDoneSuccess("创建成功");
 	}
@@ -84,6 +77,7 @@ public class ParkingLotController extends BaseController {
 	public String updateForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("vm", parkingLotService.getObjectById(id));
 		model.addAttribute("action", BaseController.UPDATE);
+		model.addAttribute("companyList",companyService.getList());
 		return PATH_EDIT;
 	}
 
@@ -108,13 +102,13 @@ public class ParkingLotController extends BaseController {
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) {
-		parkingLotService.deleteById(id);
+		parkingLotService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
 	public ModelAndView deleteBatch(@RequestParam Long[] ids) {
-		parkingLotService.deleteByIds(ids);
+		parkingLotService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
@@ -135,17 +129,6 @@ public class ParkingLotController extends BaseController {
 		model.addAttribute("page", page);
 		return PATH+"/orgAuthority";
 	}
-	
-	/**
-	 *  高级查询界面
-	 * @param id
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value = "search")
-	public String search(HttpServletRequest request) {
-		return PATH_SEARCH;
-	}
 
 	@ModelAttribute("preloadModel")
 	public ParkingLot getModel(@RequestParam(value = "id", required = false) Long id) {
@@ -154,5 +137,4 @@ public class ParkingLotController extends BaseController {
 		}
 		return null;
 	}
-
 }

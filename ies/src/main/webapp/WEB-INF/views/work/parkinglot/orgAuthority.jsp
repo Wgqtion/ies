@@ -4,7 +4,7 @@
 <script>
 	function allCheck(e){
 		if($(e).is(":checked")){
-			$("[name=codes]:checkbox").each(function(){
+			$("[name=ids]:checkbox").each(function(){
 				if(!$(this).is(":checked")){
 					$(this).click();
 					$(this).click();
@@ -12,7 +12,7 @@
 				}
 			});
 		}else{
-			$("[name=codes]:checkbox").each(function(){
+			$("[name=ids]:checkbox").each(function(){
 				if($(this).is(":checked")){
 					$(this).click();
 					$(this).click();
@@ -41,14 +41,14 @@
 					<li>
 						<div class="button">
 							<div class="buttonContent">
-								<button type="button" multLookup="orgAuthorityCodes" warn="请选择资源">选择</button>
+								<button type="button" multLookup="orgAuthorityIds" warn="请选择资源">选择</button>
 							</div>
 						</div>
 					</li>
 					<li>
 						<div class="button">
 							<div class="buttonContent">
-								<button type="button" onclick="javascript:$.bringBack({code:'',name:''})">清空</button>
+								<button type="button" onclick="javascript:$.bringBack({id:'',name:''})">清空</button>
 							</div>
 						</div>
 					</li>
@@ -65,17 +65,17 @@
 				<th <vsc:orderField name="name"/>>停车场名称</th>
 				<th <vsc:orderField name="isEnabled"/>>状态</th>
 				<th <vsc:orderField name="carNumber"/>>车位数</th>
-				<th <vsc:orderField name="createTime"/>>创建时间</th> 
+				<th <vsc:orderField name="createDate"/>>创建时间</th> 
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${page.content}" var="item" varStatus="index">
 				<tr>
-					<td><input <vsc:defaultIfIndexOfParameterValues cacheName="orgAuthorityCodes" objectToFind="{code:'${item.code}',name:'${item.name}'}"  yesStr="checked=\"checked\""/> onclick="javascript:pagePass(this,'pagerForm','orgAuthorityCodes')" type="checkbox" name="codes" value="{code:'${item.code}',name:'${item.name}'}" /></td>
+					<td><input <vsc:defaultIfIndexOfParameterValues cacheName="orgAuthorityIds" objectToFind="{id:'${item.id}',name:'${item.name}'}"  yesStr="checked=\"checked\""/> onclick="javascript:pagePass(this,'pagerForm','orgAuthorityIds')" type="checkbox" name="ids" value="{id:'${item.id}',name:'${item.name}'}" /></td>
 					<td><a href="${ctx}/work/parkinglot/view/${item.id}" target="dialog" title="查看停车场" rel="parkinglot_view">${item.name}</a></td>
 					<td><s:message code="parkinglot.isenabled.${item.isEnabled}"/></td>
 					<td>${item.carNumber}</td>
-					<td><fmt:formatDate value='${item.createTime}' pattern='yyyy-MM-dd HH:mm' /></td> 
+					<td><fmt:formatDate value='${item.createDate}' pattern='yyyy-MM-dd HH:mm' /></td> 
 				</tr>
 			</c:forEach>
 		</tbody>

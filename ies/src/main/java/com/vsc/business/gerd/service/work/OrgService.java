@@ -63,7 +63,7 @@ public class OrgService extends BaseService<Org> {
 		return find(searchParams);
 	}
 	
-	public Org save(Org entity,String[] codes) {
+	public Org save(Org entity,String[] ids) {
 		User user=ShiroUserUtils.GetCurrentUser();
 		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){
@@ -72,10 +72,10 @@ public class OrgService extends BaseService<Org> {
 		}
 		entity.setUpdateUser(user);
 		entity.setUpdateDate(now);
-		if(codes!=null){
+		if(ids!=null){
 			List<ParkingLot> list=new ArrayList<ParkingLot>();
-			for(String code:codes){
-				ParkingLot parkingLot=parkingLotService.findUniqueBy("code",code);
+			for(String id:ids){
+				ParkingLot parkingLot=parkingLotService.findUniqueBy("id",id);
 				list.add(parkingLot);
 			}
 			entity.setParkingLots(list);

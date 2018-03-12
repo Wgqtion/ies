@@ -38,7 +38,7 @@
 				<th <vsc:orderField name="name"/>>停车场名称</th>
 				<th <vsc:orderField name="isEnabled"/>>状态</th>
 				<th <vsc:orderField name="carNumber"/>>车位数</th>
-				<th <vsc:orderField name="createTime"/>>创建时间</th> 
+				<th <vsc:orderField name="createDate"/>>创建时间</th> 
 				 
 			</tr>
 		</thead>
@@ -50,7 +50,7 @@
 					<td><a href="${ctx}/work/parkinglot/view/${varitem.id}" target="dialog" title="查看停车场" rel="parkinglot_view">${varitem.name}</a></td>
 					<td><s:message code="parkinglot.isenabled.${varitem.isEnabled}"/></td>
 					<td>${varitem.carNumber}</td>
-					<td><fmt:formatDate value='${varitem.createTime}' pattern='yyyy-MM-dd HH:mm' /></td> 
+					<td><fmt:formatDate value='${varitem.createDate}' pattern='yyyy-MM-dd HH:mm' /></td> 
 				 
 				</tr>
 			</c:forEach>

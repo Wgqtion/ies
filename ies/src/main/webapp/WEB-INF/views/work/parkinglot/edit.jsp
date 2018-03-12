@@ -18,9 +18,14 @@
 					</td>
 				</tr> 
 				<tr>
-					<td class="fieldName">编号:</td>
+					<td class="fieldName">所属公司:</td>
 					<td class="fieldInput">
-						<label><input type="text" id="code" name="code" value="${vm.code}" validate="{required:true}" /></label><span for="code" generated="true" style="display: none" class="error"></span>
+						<select id="companyCode" name="companyCode" validate="{required:true}">
+							<option value="">全部</option>
+							<c:forEach items="${companyList}" var="company">
+								<option value="${company.code}" <c:if test="${company.code eq vm.companyCode }">selected='selected'</c:if>>${company.name}</option>
+							</c:forEach>
+						</select>
 					</td>
 				</tr>
 				

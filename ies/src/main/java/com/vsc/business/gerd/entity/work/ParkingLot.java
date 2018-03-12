@@ -15,29 +15,26 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.google.common.collect.Lists;
 import com.vsc.business.core.entity.sys.upload.Attach;
 import com.vsc.constants.Constants;
-import com.vsc.modules.entity.IdEntity;
+import com.vsc.modules.entity.BasicEntity;
 
 /**
- * 校区[停车场]
- *
- * @author jerry
+ * 停车场
+ * @author XiangXiaoLin
  *
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "parking_lot")
-public class ParkingLot extends IdEntity {
+public class ParkingLot extends BasicEntity {
 
     private java.lang.String name;
-    private java.util.Date createTime;
-    private Boolean isEnabled = true;
     private java.lang.String baiduLatitudeLng;
     private java.lang.String baiduLatitudeLat;
     private java.lang.String description;
     private Attach photoAttach;
-    private String code;
     private Integer carNumber;
     private String address;
 
+    private Boolean isEnabled = true;
     
     private Integer freeCarNum = 0;
 
@@ -47,6 +44,36 @@ public class ParkingLot extends IdEntity {
     
     private String orgCode;
     
+    /**
+     * 所属公司
+     */
+    private Company company;
+    /**
+     * 公司code
+     */
+    private String companyCode;
+    
+    /**
+     * @return
+     */
+    @Column(name = "COMPANY_CODE")
+    public String getCompanyCode() {
+		return companyCode;
+	}
+
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "COMPANY_CODE",referencedColumnName="CODE",insertable=false,updatable=false)
+    public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
     
     /**
      * @return
@@ -80,18 +107,6 @@ public class ParkingLot extends IdEntity {
 
     public void setName(java.lang.String value) {
         this.name = value;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "CREATE_TIME")
-    public java.util.Date getCreateTime() {
-        return this.createTime;
-    }
-
-    public void setCreateTime(java.util.Date value) {
-        this.createTime = value;
     }
 
     /**
@@ -171,15 +186,6 @@ public class ParkingLot extends IdEntity {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    @Column(name = "code")
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     @OneToMany(mappedBy = "parkingLot")

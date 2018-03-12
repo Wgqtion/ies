@@ -294,13 +294,13 @@ public class WeixinController extends HttpServiceBaseController {
 
         Set<ParkingLot> parkingLots =new HashSet<ParkingLot>();
         searchParams.put("ISNULL_orgCode",null);
-		parkingLots.addAll(parkingLotService.findList(searchParams));
+		parkingLots.addAll(parkingLotService.findAllList(searchParams));
 		searchParams.remove("ISNULL_orgCode");
         if(orgs!=null){
         	searchParams.put("EQ_org.isDelete",0);
         	for(Org org:orgs){
         		 searchParams.put("EQ_org.code",org.getCode());
-        		 parkingLots.addAll(parkingLotService.findList(searchParams));
+        		 parkingLots.addAll(parkingLotService.findAllList(searchParams));
         	}
         }
         if (parkingLots != null && !parkingLots.isEmpty()) {

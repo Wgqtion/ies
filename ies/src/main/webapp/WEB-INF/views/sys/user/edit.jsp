@@ -39,12 +39,12 @@
 			<dl class="nowrap">
 				<dt>所属公司：</dt>
 				<dd>
-					<select id="companyCode" name="company.code" validate="{required:true}">
-					<option value="">全部</option>
-					<c:forEach items="${companyList}" var="company">
-						<option value="${company.code}" <c:if test="${company.code eq vm.company.code }">selected='selected'</c:if>>${company.name}</option>
-					</c:forEach>
-				</select>
+					<select id="companyCode" name="companyCode" validate="{required:true}">
+						<option value="">全部</option>
+						<c:forEach items="${companyList}" var="company">
+							<option value="${company.code}" <c:if test="${company.code eq vm.companyCode }">selected='selected'</c:if>>${company.name}</option>
+						</c:forEach>
+					</select>
 				</dd>
 			</dl>
 			<dl class="nowrap">

@@ -2,6 +2,7 @@ package com.vsc.business.core.entity.security;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -38,10 +39,25 @@ public class User extends BasicEntity {
 
     private List<Attach> attachs = Lists.newArrayList();
     private List<Role> roleList = Lists.newArrayList();
+    /**
+     * 公司code
+     */
+    private String companyCode;
+    
+    /**
+     * @return
+     */
+    @Column(name = "COMPANY_CODE")
+    public String getCompanyCode() {
+		return companyCode;
+	}
 
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
+	}
 
     @ManyToOne
-	@JoinColumn(name = "COMPANY_CODE",referencedColumnName="CODE")
+	@JoinColumn(name = "COMPANY_CODE",referencedColumnName="CODE",insertable=false,updatable=false)
     public Company getCompany() {
 		return company;
 	}

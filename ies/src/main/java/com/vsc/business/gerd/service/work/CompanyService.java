@@ -1,5 +1,6 @@
 package com.vsc.business.gerd.service.work;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,8 +77,9 @@ public class CompanyService extends BaseService<Company> {
 	@Override
 	public Company save(Company entity) {
 		User user=ShiroUserUtils.GetCurrentUser();
+		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){
-			entity.setCreateDate(CoreUtils.nowtime());
+			entity.setCreateDate(now);
 			entity.setCreateUser(user);	
 			String code=null;
 			boolean flag=true;
@@ -91,7 +93,7 @@ public class CompanyService extends BaseService<Company> {
 			entity.setCode(code);
 		}
 		entity.setUpdateUser(user);
-		entity.setUpdateDate(CoreUtils.nowtime());
+		entity.setUpdateDate(now);
 		return super.save(entity);
 	}
 

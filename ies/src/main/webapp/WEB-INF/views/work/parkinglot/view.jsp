@@ -5,7 +5,7 @@
 		<table class="viewTable">
 			<tbody>
 				<tr>
-					<td width="15%" align="right">校区名:</td>
+					<td width="15%" align="right">停车场名:</td>
 					<td width="30%" align="left">${vm.name}</td>
 					<td width="15%" align="right"></td>
 					<td align="left"></td>
@@ -29,14 +29,14 @@
 				</tr>
 				 <tr>
 					<td class="fieldName" valign="top">创建时间:</td>
-					<td class="fieldInput" colspan="3"><fmt:formatDate value='${vm.createTime}' pattern='yyyy-MM-dd HH:mm' /></td>
+					<td class="fieldInput" colspan="3"><fmt:formatDate value='${vm.createDate}' pattern='yyyy-MM-dd HH:mm' /></td>
 				</tr>
 				<tr>
 					<td class="fieldName" valign="top">说明:</td>
 					<td class="fieldInput" colspan="3">${vm.description}</td>
 				</tr>
 				<tr>
-					<td class="fieldName" valign="top">校区图片:</td>
+					<td class="fieldName" valign="top">图片:</td>
 					<td class="fieldInput" colspan="3"><img style="max-width:650px" src="${vm.photoAttach.downloadPath}"/> 
 					</td>
 				</tr>
