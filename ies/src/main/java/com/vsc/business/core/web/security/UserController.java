@@ -84,7 +84,7 @@ public class UserController extends BaseController {
 			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId
 			) {
 		user.setPassword(user.getPlainPassword());
-		user.setCompany(companyService.getByCode(user.getCompany().getCode()));
+		user.setCompany(companyService.getByCode(user.getCompanyCode()));
 		userService.save(user, photoAttachId);
 		return this.ajaxDoneSuccess("创建成功");
 	}
@@ -107,7 +107,7 @@ public class UserController extends BaseController {
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") User user,
 			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId) {
 		//user.setPassword(MD5Util.MD5(user.getPlainPassword())); 
-		user.setCompany(companyService.getByCode(user.getCompany().getCode()));
+		user.setCompany(companyService.getByCode(user.getCompanyCode()));
 		userService.save(user, photoAttachId);
 		return this.ajaxDoneSuccess("修改成功");
 	}
