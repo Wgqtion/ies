@@ -89,8 +89,8 @@ public class OrgController extends BaseController {
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Org org,
-			@RequestParam(value = "parkingLots.code", required = false) String[] codes) {
-		orgService.save(org,codes);
+			@RequestParam(value = "parkingLots.id", required = false) String[] ids) {
+		orgService.save(org,ids);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 

@@ -21,8 +21,8 @@ import com.vsc.constants.Constants;
 import com.vsc.modules.entity.BasicEntity;
 
 /**
- * 
- * @author jerry
+ * 停车片区
+ * @author XiangXiaoLin
  *
  */
 @Entity

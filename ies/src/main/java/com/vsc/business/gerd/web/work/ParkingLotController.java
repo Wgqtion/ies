@@ -26,7 +26,7 @@ import com.vsc.constants.Constants;
 
 /**
  * 
- * @author jerry
+ * @author XiangXiaoLin
  *
  */
 @Controller

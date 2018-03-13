@@ -4,8 +4,10 @@
 <sqlMap> 
 	<!-- 查询地锁余位数条件-->
 	<sql id="surplusNumWhere">
-		WHERE
-			GA.ID NOT IN(
+	WHERE
+		ga.IS_DELETE=0
+		
+		AND GA.ID NOT IN(
 				SELECT PARKING_GARAGE_ID FROM T_YUDING WHERE IS_DELETE=0
 			)
 		AND (

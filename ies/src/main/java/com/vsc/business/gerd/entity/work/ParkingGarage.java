@@ -10,20 +10,19 @@ import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.vsc.constants.Constants;
-import com.vsc.modules.entity.IdEntity;
+import com.vsc.modules.entity.BasicEntity;
 
 /**
- * 
- * @author Administrator
- * 
+ * 车位实体类
+ * @author XiangXiaoLin
+ *
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "parking_garage")
-public class ParkingGarage extends IdEntity {
+public class ParkingGarage extends BasicEntity {
 
 	private java.lang.String code;
 	private java.lang.String name;//车位编号
-	private java.util.Date createTime;
 	private Boolean isEnabled=Boolean.TRUE;
 	private ParkingLotArea parkingLotArea;
 	private java.lang.String description;
@@ -91,18 +90,6 @@ public class ParkingGarage extends IdEntity {
 
 	public void setName(java.lang.String value) {
 		this.name = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "CREATE_TIME")
-	public java.util.Date getCreateTime() {
-		return this.createTime;
-	}
-
-	public void setCreateTime(java.util.Date value) {
-		this.createTime = value;
 	}
 
 	/**

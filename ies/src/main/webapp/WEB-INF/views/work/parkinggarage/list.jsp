@@ -8,8 +8,8 @@
 			<ul class="searchContent">
 				<li><label>停车场:</label> <input type="text" value="${param['search_LIKE_parkingLotArea.parkingLot.name']}" name="search_LIKE_parkingLotArea.parkingLot.name" /></li>
 				<li><label>所属停车区:</label> <input type="text" value="${param['search_LIKE_parkingLotArea.name']}" name="search_LIKE_parkingLotArea.name" /></li>
-				<li><label>停车位编号:</label> <input type="text" value="${param.search_LIKE_code}" name="search_LIKE_code" /></li>
-				<li><label>停车位名称:</label> <input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /></li>				
+				<li><label>停车位名称:</label> <input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /></li>
+				<li><label>停车位编码:</label> <input type="text" value="${param.search_LIKE_code}" name="search_LIKE_code" /></li>				
 				</ul>
 			<div class="subBar">
 				<ul>
@@ -37,9 +37,10 @@
 			<tr>
 				<th width="40" align="center">序号</th>
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-				<th <vsc:orderField name="code"/>>停车位编号</th>	
-				<th <vsc:orderField name="name"/>>停车位名称</th> 			
-				<th>所属停车区</th><th>停车场</th>
+				<th <vsc:orderField name="name"/>>停车位名称</th> 	
+				<th <vsc:orderField name="code"/>>停车位编码</th> 			
+				<th>所属停车区</th>
+				<th>停车场</th>
 				<th <vsc:orderField name="xcoordinate"/>>X坐标</th>
 				<th <vsc:orderField name="ycoordinate"/>>Y坐标</th>	
 				<th <vsc:orderField name="isEnabled"/>>状态</th> 
@@ -51,8 +52,8 @@
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id}" type="checkbox"></td>
-					<td><a href="${ctx}/work/parkinggarage/view/${varitem.id}" target="dialog" title="查看停车位" rel="parkinggarage_view">${varitem.code}</a></td>
-					<td>${varitem.name}</td>
+					<td><a href="${ctx}/work/parkinggarage/view/${varitem.id}" target="dialog" title="查看停车位" rel="parkinggarage_view">${varitem.name}</a></td>
+					<td>${varitem.code}</td>
 					<td>${varitem.parkingLotArea.fullIndexName}</td>
 					<td>${varitem.parkingLotArea.parkingLot.name}</td>
 					<td>${varitem.xcoordinate}</td>

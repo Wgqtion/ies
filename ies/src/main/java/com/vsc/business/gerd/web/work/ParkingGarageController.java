@@ -29,11 +29,10 @@ import com.vsc.business.gerd.service.work.ParkingGarageService;
 import com.vsc.business.gerd.service.work.ParkingLotAreaService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
-import com.vsc.util.CoreUtils;
 
 /**
  * 
- * @author jerry
+ * @author XiangXiaoLin
  *
  */
 @Controller
@@ -85,15 +84,6 @@ public class ParkingGarageController extends BaseController {
 		return PATH_LIST;
 	}
 
-	@RequestMapping(value = "export")
-	public ModelAndView exportList(HttpServletRequest request) {
-		Map<String, Object> searchParams = this.getSearchRequest();
-		List<ParkingGarage> list = parkingGarageService.findAll(searchParams, this.getSortOrderBy(),
-				this.getSortOrderDesc());
-		return this.reportView(PATH_LIST, list, REPORT_FORMAT_XLS);
-
-	}
-
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) {
 		model.addAttribute("vm", new ParkingGarage());
@@ -105,7 +95,6 @@ public class ParkingGarageController extends BaseController {
 	public ModelAndView create(@Valid ParkingGarage parkingGarage,
 			@RequestParam(value = "parkinglotareaGroup.id", required = true) Long parkinglotareaId) {
 		ParkingLotArea pm = parkinglotareaService.getObjectById(parkinglotareaId);
-		parkingGarage.setCreateTime(CoreUtils.nowtime());
 		parkingGarage.setParkingLotArea(pm);
 		parkingGarageService.save(parkingGarage);
 		return this.ajaxDoneSuccess("创建成功");
@@ -135,25 +124,14 @@ public class ParkingGarageController extends BaseController {
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) {
-		parkingGarageService.deleteById(id);
+		parkingGarageService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
 	public ModelAndView deleteBatch(@RequestParam Long[] ids) {
-		parkingGarageService.deleteByIds(ids);
+		parkingGarageService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
-	}
-
-	/**
-	 *  高级查询界面
-	 * @param id
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value = "search")
-	public String search(HttpServletRequest request) {
-		return PATH_SEARCH;
 	}
 
 	@RequestMapping(value = "select")
