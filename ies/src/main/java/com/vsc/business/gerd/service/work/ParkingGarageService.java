@@ -141,6 +141,7 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 		List<ParkingGarage> list=this.findAll(searchParams, "code","desc");
 		if(list!=null&&list.size()>0){
 			ParkingGarage c=list.get(0);
+			if(c.getCode()!=null)
 			i=Integer.valueOf(c.getCode());
 		}
 		return i;

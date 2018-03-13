@@ -108,6 +108,7 @@ public class CompanyService extends BaseService<Company> {
 		List<Company> list=this.findAll(searchParams, "code","desc");
 		if(list!=null&&list.size()>0){
 			Company c=list.get(0);
+			if(c.getCode()!=null)
 			i=Integer.valueOf(c.getCode());
 		}
 		return i;
