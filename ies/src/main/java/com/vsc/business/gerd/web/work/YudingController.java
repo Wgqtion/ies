@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
-import com.vsc.business.gerd.entity.work.ParkingLotArea;
 import com.vsc.business.gerd.entity.work.Yuding;
-import com.vsc.business.gerd.service.work.ParkingLotAreaService;
 import com.vsc.business.gerd.service.work.YudingService;
 import com.vsc.constants.Constants;
 
@@ -35,9 +32,6 @@ public class YudingController extends BaseController {
 
 	@Autowired
 	private YudingService yudingService;
-	
-	@Autowired
-	private ParkingLotAreaService parkingLotAreaService;
 
 	public static final String PATH = "work/yuding";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";

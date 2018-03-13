@@ -206,6 +206,14 @@ public class ParkingLot extends BasicEntity {
         List<ParkingLotArea> vl = Lists.newArrayList();
         for (ParkingLotArea parkingLotArea : this.parkingLotAreas) {
             if (parkingLotArea.getParent() == null) {
+            	List<ParkingLotArea> list=parkingLotArea.getChildren();
+            	if(list!=null){
+            		for(int i=0;i<list.size();i++){
+            			if(list.get(i).getIsDelete()){
+            				list.remove(i);
+            			}
+            		}
+            	}
                 vl.add(parkingLotArea);
             }
         }

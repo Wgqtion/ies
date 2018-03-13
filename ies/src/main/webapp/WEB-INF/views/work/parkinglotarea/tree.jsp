@@ -6,15 +6,13 @@
 		<div layoutH="10" style="float: left; display: block; overflow: auto; width: 215px; border: solid 1px #CCC; line-height: 21px; background: #fff">
 			<ul class="tree treeFolder expand">
 			 <c:forEach items="${vl}" var="root">
-				
-				<li ${(empty param['search_EQ_parent']) ? "class='selected'" : ""}><a title='点击查看校区停车区' href='${ctx}/work/parkinglotarea/list?search_EQ_parkingLot=${root.id}' target='ajax' rel='catalogBox'>${root.name}</a>
+				<li ${(empty param['search_EQ_parent']) ? "class='selected'" : ""}><a title='点击查看停车片区' href='${ctx}/work/parkinglotarea/list?search_EQ_parkingLot=${root.id}' target='ajax' rel='catalogBox'>${root.name}</a>
 				 
 				<vsc:tree className="tree treeFolder expand" root="${root.rootParkingLotAreas}" isRoot="false" curSelectid="${param['search_EQ_parent'] }" childFieldName="children" idFieldName="id" nameFieldName="name" pidFieldName="parent"
 				noteTemplet="<a title='点击查看 {name} 子区域' href='${ctx}/work/parkinglotarea/list?search_EQ_parent={id}' target='ajax' rel='catalogBox'>{name}</a>">
 				</vsc:tree>
-				 
 				</li>
-				</c:forEach>
+			</c:forEach>
 			</ul>
 		</div>
 		<div id="catalogBox" class="unitBox" style="margin-left: 220px;">

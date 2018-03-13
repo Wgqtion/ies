@@ -311,7 +311,7 @@ public class WeixinController extends HttpServiceBaseController {
                 int sumfree = 0;
                 searchParams.put("EQ_parkingLot", parkingLot.getId());
                 searchParams.put("ISNULL_parent", null);
-                List<ParkingLotArea> parkingLotAreas = this.parkingLotAreaService.findList(searchParams);
+                List<ParkingLotArea> parkingLotAreas = this.parkingLotAreaService.findAllList(searchParams);
                 //余位查询
                 freeCarNum(parkingLotAreas);
                 for (ParkingLotArea parkingLotArea : parkingLotAreas) {
@@ -340,7 +340,7 @@ public class WeixinController extends HttpServiceBaseController {
         searchParams.put("EQ_isEnabled", true);
         searchParams.put("EQ_parkingLot", parkingLotId);
         searchParams.put("ISNULL_parent", null);
-        List<ParkingLotArea> parkingLotAreas = this.parkingLotAreaService.findList(searchParams);
+        List<ParkingLotArea> parkingLotAreas = this.parkingLotAreaService.findAllList(searchParams);
         if (parkingLotAreas == null || parkingLotAreas.isEmpty()) {
             return ajaxDoneError("片区信息为空");
         }

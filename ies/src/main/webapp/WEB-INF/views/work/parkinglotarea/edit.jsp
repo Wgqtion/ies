@@ -9,12 +9,6 @@
 		<div class="pageFormContent" layoutH="56">
 			<table class="formTable">
 				<tr>
-					<td class="fieldName">停车片区名称:</td>
-					<td class="fieldInput"><label><input type="text" id="name" name="name" value="${vm.name}" validate="{required:true}" /></label><span for="name" generated="true" style="display: none" class="error"></span></td>
-					<td class="fieldName">编号:</td>
-					<td class="fieldInput"><label><input type="text" id="code" name="code" value="${vm.code}" validate="{required:true}" /></label><span for="code" generated="true" style="display: none" class="error"></span></td>
-				</tr>
-				<tr>
 					<td class="fieldName">所属停车场:</td>
 					<td class="fieldInput">
 					<label>
@@ -23,6 +17,14 @@
 					<a class="btnLook" rel="parkinglotarea_parkinglot_select" title="选择所属停车场" href="${ctx}/work/parkinglot/select?single=true&search_EQ_isEnabled=true" lookupGroup="parkinglotGroup">查找带回</a> <span class="info">(选择停车场)</span>
 					</label><span for="parkinglotGroup_name" generated="true" style="display: none" class="error"></span>
 					</td>
+					<td class="fieldName">停车片区名称:</td>
+					<td class="fieldInput"><label><input type="text" id="name" name="name" value="${vm.name}" validate="{required:true}" /></label><span for="name" generated="true" style="display: none" class="error"></span></td>
+				</tr>
+				<tr>
+					<td class="fieldName">状态:</td>
+					<td class="fieldInput"><label> <form:radiobutton path="vm.isEnabled" value="false" validate="{required:true}" /> <s:message code="parkinglot.isenabled.false" />
+					</label> <label> <form:radiobutton path="vm.isEnabled" value="true" /> <s:message code="parkinglot.isenabled.true" />
+					</label> <span style="display: none" class="error" generated="true" for="isEnabled"></span></td>
 					<td class="fieldName">车位数:</td>
 					<td class="fieldInput"><label><input type="text" id="carNumber" name="carNumber" value="${vm.carNumber}" validate="{required:true}" /></label><span for="carNumber" generated="true" style="display: none" class="error"></span></td>
 				</tr>
@@ -45,14 +47,6 @@
 						<td class="fieldName" >百度Y坐标:</td>
 					<td class="fieldInput" ><label><input  name="baiduLatitudeLat" value="${vm.baiduLatitudeLat}"/></label><span for="baiduLatitudeLat" generated="true"
 						style="display: none" class="error"></span></td>
-				</tr>
-				
-				
-				<tr>
-					<td class="fieldName">状态:</td>
-					<td class="fieldInput" colspan="3"><label> <form:radiobutton path="vm.isEnabled" value="false" validate="{required:true}" /> <s:message code="parkinglot.isenabled.false" />
-					</label> <label> <form:radiobutton path="vm.isEnabled" value="true" /> <s:message code="parkinglot.isenabled.true" />
-					</label> <span style="display: none" class="error" generated="true" for="isEnabled"></span></td>
 				</tr>
 				<tr>
 					<td class="fieldName" valign="top">平面图:</td>

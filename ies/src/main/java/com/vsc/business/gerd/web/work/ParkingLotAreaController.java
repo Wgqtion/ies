@@ -27,7 +27,6 @@ import com.vsc.business.gerd.entity.work.ParkingLotArea;
 import com.vsc.business.gerd.service.work.ParkingLotAreaService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
-import com.vsc.util.CoreUtils;
 
 /**
  * 
@@ -74,15 +73,6 @@ public class ParkingLotAreaController extends BaseController {
 		return PATH_LIST;
 	}
 
-	@RequestMapping(value = "export")
-	public ModelAndView exportList(HttpServletRequest request) {
-		Map<String, Object> searchParams = this.getSearchRequest();
-		List<ParkingLotArea> list = parkingLotAreaService.findAll(searchParams, this.getSortOrderBy(),
-				this.getSortOrderDesc());
-		return this.reportView(PATH_LIST, list, REPORT_FORMAT_XLS);
-
-	}
-
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) {
 		model.addAttribute("vm", new ParkingLotArea());
@@ -95,7 +85,6 @@ public class ParkingLotAreaController extends BaseController {
 			@RequestParam(value = "parkinglotGroup.id", required = true) Long parkinglotId,
 			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId,
 			@RequestParam(value = "parentId", required = false) Long parentId) {
-		parkingLotArea.setCreateTime(CoreUtils.nowtime());
 		ParkingLot pm = parkingLotService.getObjectById(parkinglotId);
 		parkingLotArea.setParkingLot(pm);
 
@@ -140,13 +129,13 @@ public class ParkingLotAreaController extends BaseController {
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) {
-		parkingLotAreaService.deleteById(id);
+		parkingLotAreaService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
 	public ModelAndView deleteBatch(@RequestParam Long[] ids) {
-		parkingLotAreaService.deleteByIds(ids);
+		parkingLotAreaService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
@@ -158,16 +147,6 @@ public class ParkingLotAreaController extends BaseController {
 		return PATH_SELECT;
 	}
 
-	/**
-	 *  高级查询界面
-	 * @param id
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value = "search")
-	public String search(HttpServletRequest request) {
-		return PATH_SEARCH;
-	}
 
 	@ModelAttribute("preloadModel")
 	public ParkingLotArea getModel(@RequestParam(value = "id", required = false) Long id) {

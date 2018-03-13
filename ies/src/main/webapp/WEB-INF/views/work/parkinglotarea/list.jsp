@@ -36,8 +36,8 @@
 			<tr>
 				<th width="40" align="center">序号</th>
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th <vsc:orderField name="parkingLot"/>>停车场</th>
 				<th <vsc:orderField name="name"/>>停车片区</th>
-				<th <vsc:orderField name="parkingLot"/>>校区</th>
 				<th <vsc:orderField name="carNumber"/>>车位数</th>
 				<th <vsc:orderField name="isEnabled"/>>状态</th>
 			</tr>
@@ -47,8 +47,8 @@
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>
+					<td><a href="${ctx}/work/parkinglot/view/${varitem.parkingLot.id}" target="dialog" title="查看停车场" rel="parkinglot_view"> ${varitem.parkingLot.name} </a></td>
 					<td><a href="${ctx}/work/parkinglotarea/view/${varitem.id}" target="dialog" title="查看停车片区" rel="parkinglotarea_view"> ${varitem.fullIndexName}</a></td>
-					<td><a href="${ctx}/work/parkinglot/view/${varitem.parkingLot.id}" target="dialog" title="查看校区" rel="parkinglot_view"> ${varitem.parkingLot.name} </a></td>
 					<td>${varitem.carNumber}</td>
 					<td><s:message code="parkinglot.isenabled.${varitem.isEnabled}" /></td>
 				</tr>

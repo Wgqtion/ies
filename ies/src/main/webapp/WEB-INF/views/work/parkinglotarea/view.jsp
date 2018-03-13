@@ -24,7 +24,7 @@
 				</tr>
 				<tr>
 					<td align="right">创建时间:</td>
-					<td align="left"><fmt:formatDate value='${vm.createTime}'
+					<td align="left"><fmt:formatDate value='${vm.createDate}'
 							pattern='yyyy-MM-dd HH:mm:ss' /></td>
 				</tr>
 			</tbody>

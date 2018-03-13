@@ -24,8 +24,8 @@ import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.util.CoreUtils;
 
 /**
- * 
- * @author jerry
+ * 停车场逻辑操作
+ * @author XiangXiaoLin
  *
  */
 @Service

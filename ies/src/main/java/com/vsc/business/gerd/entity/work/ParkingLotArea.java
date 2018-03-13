@@ -18,7 +18,7 @@ import org.hibernate.annotations.NotFoundAction;
 import com.google.common.collect.Lists;
 import com.vsc.business.core.entity.sys.upload.Attach;
 import com.vsc.constants.Constants;
-import com.vsc.modules.entity.IdEntity;
+import com.vsc.modules.entity.BasicEntity;
 
 /**
  * 
@@ -27,10 +27,9 @@ import com.vsc.modules.entity.IdEntity;
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "parking_lot_area")
-public class ParkingLotArea extends IdEntity {
+public class ParkingLotArea extends BasicEntity {
 
 	private java.lang.String name;
-	private java.util.Date createTime;
 	private Boolean isEnabled;
 	private java.lang.String baiduLatitudeLng;
 	private java.lang.String baiduLatitudeLat;
@@ -38,13 +37,14 @@ public class ParkingLotArea extends IdEntity {
 	private Attach photoAttach;
 	private Integer carNumber;
 	private ParkingLot parkingLot;
-	private String code;
 	private ParkingLotArea parent;
 	private List<ParkingLotArea> children = Lists.newArrayList();
 	private String fullIndexName;
 	
 	private Integer freeCarNum=0;
 
+   
+	
 	/**
 	 * @return
 	 */
@@ -55,18 +55,6 @@ public class ParkingLotArea extends IdEntity {
 
 	public void setName(java.lang.String value) {
 		this.name = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "CREATE_TIME")
-	public java.util.Date getCreateTime() {
-		return this.createTime;
-	}
-
-	public void setCreateTime(java.util.Date value) {
-		this.createTime = value;
 	}
 
 	/**
@@ -137,15 +125,6 @@ public class ParkingLotArea extends IdEntity {
 
 	public void setCarNumber(Integer value) {
 		this.carNumber = value;
-	}
-
-	@Column(name = "code")
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	/**
