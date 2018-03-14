@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
-import com.vsc.business.gerd.entity.work.Company;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.repository.work.ParkingGarageDao;
 import com.vsc.modules.service.BaseService;
@@ -88,12 +87,14 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 				entity.setCreateUser(user);	
 				String code=null;
 				boolean flag=true;
+				int i=0;
 				while(flag){
-					code=CodeUtils.GenerateCode(this.getMaxCode(),5);
+					code=CodeUtils.GenerateCode(this.getMaxCode()+i,5);
 					ParkingGarage p=getByCode(code);
 					if(p==null){
 						flag=false;
 					}
+					i++;
 				}
 				entity.setCode(code);
 			}

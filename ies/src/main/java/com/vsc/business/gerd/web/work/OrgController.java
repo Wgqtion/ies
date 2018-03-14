@@ -59,10 +59,7 @@ public class OrgController extends BaseController {
 		boolean flag=true;
 		while(flag){
 			code=RandomPassword.makeRandomPassword(8);
-			Map<String, Object> searchParams = this.getSearchRequest();
-			searchParams.put("EQ_isDelete",0);
-			searchParams.put("EQ_code",code);
-			Org o=this.orgService.find(searchParams);
+			Org o=this.orgService.getByCode(code);
 			if(o==null){
 				flag=false;
 			}

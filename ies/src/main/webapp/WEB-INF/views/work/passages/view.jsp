@@ -7,7 +7,7 @@
 			<tbody>
 				<tr>
 					<td align="right">停车场:</td>
-					<td align="left">${vm.parkinglot.name}</td>
+					<td align="left">${vm.parkingLot.name}</td>
 				</tr>
 				<tr>
 					<td  align="right">出入口名称:</td>

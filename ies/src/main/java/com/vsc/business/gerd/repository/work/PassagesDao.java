@@ -5,7 +5,7 @@ import com.vsc.business.gerd.entity.work.Passages;
 
 /**
  * 
- * @author ThinkPad
+ * @author XiangXiaoLin
  *
  */
 public interface PassagesDao extends BaseDao<Passages> {

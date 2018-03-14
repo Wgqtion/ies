@@ -1,6 +1,5 @@
 package com.vsc.business.gerd.web.work;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -29,7 +28,7 @@ import com.vsc.constants.Constants;
  
 /**
  * 
- * @author ThinkPad
+ * @author XiangXiaoLin
  *
  */
 @Controller
@@ -62,15 +61,6 @@ public class PassagesController extends BaseController {
 		return PATH_LIST;
 	}
 	
-	@RequestMapping(value = "export")
-	public ModelAndView exportList(HttpServletRequest request){
-		Map<String, Object> searchParams = this.getSearchRequest();
-		List<Passages> list=passagesService.findAll(searchParams, this.getSortOrderBy(), this.getSortOrderDesc());
-		return this.reportView(PATH_LIST, list, REPORT_FORMAT_XLS);
-		
-	}
-	
-	
 
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) {
@@ -84,7 +74,7 @@ public class PassagesController extends BaseController {
 			@RequestParam(value = "parkinglotGroup.id", required = true) Long parkinglotId) {
 		
 		ParkingLot pm = parkingLotService.getObjectById(parkinglotId);
-		passages.setParkinglot(pm);
+		passages.setParkingLot(pm);
 		
 		passagesService.save(passages);		 
 		return this.ajaxDoneSuccess("创建成功");
@@ -108,33 +98,21 @@ public class PassagesController extends BaseController {
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Passages passages,
 			@RequestParam(value = "parkinglotGroup.id", required = true) Long parkinglotId) {
 		ParkingLot pm = parkingLotService.getObjectById(parkinglotId);
-		passages.setParkinglot(pm);
+		passages.setParkingLot(pm);
 		passagesService.save(passages);		
 		return this.ajaxDoneSuccess("修改成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE+"/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) {
-		passagesService.deleteById(id);		 
+		passagesService.deleteUpdateById(id);		 
 		return this.ajaxDoneSuccess("删除成功");
 	}
 	
 	@RequestMapping(value = BaseController.DELETE,method = RequestMethod.POST)
 	public ModelAndView deleteBatch(@RequestParam Long[] ids) {
-		passagesService.deleteByIds(ids);		 
+		passagesService.deleteUpdateByIds(ids);		 
 		return this.ajaxDoneSuccess("删除成功");
-	}
-	
-	
-	/**
-	 *  高级查询界面
-	 * @param id
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value = "search")
-	public String search(HttpServletRequest request) {	 
-		return PATH_SEARCH;
 	}
 
 	 

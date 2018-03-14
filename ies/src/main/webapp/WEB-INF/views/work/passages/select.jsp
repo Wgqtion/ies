@@ -39,7 +39,6 @@
 				<th <vsc:orderField name="xcoordinate"/>>X坐标</th>   
 				<th <vsc:orderField name="ycoordinate"/>>Y坐标</th>   
 				<th <vsc:orderField name="isEnabled"/>>是否启用</th>   
-				<th <vsc:orderField name="mark"/>>备注</th>  
 			</tr>
 		</thead>
 		<tbody>
@@ -47,13 +46,12 @@
 				<tr>
 					<td><a title="查找带回" href="javascript:$.bringBack({id:'${item.id}', name:'${item.name}'})" class="btnSelect">选择</a></td>
 					 
-					<td> <a href="${ctx}/work/passages/view/${item.id}" target="dialog" title="查看"> ${item.parkinglot.name} </a> 
+					<td> <a href="${ctx}/work/passages/view/${item.id}" target="dialog" title="查看"> ${item.parkingLot.name} </a> 
 					</td>   
 					<td>${item.name}</td>   
 					<td>${item.xcoordinate}</td>   
 					<td>${item.ycoordinate}</td>   
 					<td><s:message code="passages.isenabled.${item.isEnabled}"/></td>   
-					<td>${item.mark}</td>  		
 					 
 				</tr>
 			</c:forEach>

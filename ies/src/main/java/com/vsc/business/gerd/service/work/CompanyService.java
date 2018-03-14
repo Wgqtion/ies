@@ -56,9 +56,9 @@ public class CompanyService extends BaseService<Company> {
 	 */
 	public List<Company> getList(){
 		Map<String, Object> filterParams = new HashMap<String, Object>();
-		filterParams.put("EQ_isDelete",0);
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_code", user.getCompany().getCode());
+		filterParams.put("EQ_isDelete",0);
 		return findList(filterParams);
 	}
 	
@@ -83,12 +83,14 @@ public class CompanyService extends BaseService<Company> {
 			entity.setCreateUser(user);	
 			String code=null;
 			boolean flag=true;
+			int i=0;
 			while(flag){
-				code="0"+CodeUtils.GenerateCode(this.getMaxCode(),3);
+				code="0"+CodeUtils.GenerateCode(this.getMaxCode()+i,3);
 				Company c=getByCode(code);
 				if(c==null){
 					flag=false;
 				}
+				i++;
 			}
 			entity.setCode(code);
 		}

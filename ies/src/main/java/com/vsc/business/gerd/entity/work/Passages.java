@@ -11,25 +11,25 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.vsc.constants.Constants;
-import com.vsc.modules.entity.IdEntity;
+import com.vsc.modules.entity.BasicEntity;
 
  
 
 /**
- * 
- * @author ThinkPad
+ * 通道实体类
+ * @author XiangXiaoLin
  *
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX +"passages")
-public class Passages extends IdEntity implements Serializable{
+public class Passages extends BasicEntity implements Serializable{
 
 	 
      /**
 	 * 
 	 */
 	private static final long serialVersionUID = 9067534546355004129L;
-	private ParkingLot parkinglot;
+	private ParkingLot parkingLot;
      private java.lang.String name;
      /**
       * 通道编号
@@ -44,12 +44,12 @@ public class Passages extends IdEntity implements Serializable{
      
     @ManyToOne
  	@JoinColumn(name = "PARKINGLOT_ID")
-	public ParkingLot getParkinglot() {
-		return parkinglot;
+	public ParkingLot getParkingLot() {
+		return parkingLot;
 	}
 
-	public void setParkinglot(ParkingLot parkinglot) {
-		this.parkinglot = parkinglot;
+	public void setParkingLot(ParkingLot parkingLot) {
+		this.parkingLot = parkingLot;
 	}
 
 	/**

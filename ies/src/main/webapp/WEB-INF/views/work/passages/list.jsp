@@ -8,7 +8,7 @@
 			<ul class="searchContent">
 				   
 				<li><label>所属停车场:</label> 
-					<input type="text" value="${param['search_LIKE_parkinglot.name']}" name="search_LIKE_parkinglot.name" /> </li>   
+					<input type="text" value="${param['search_LIKE_parkingLot.name']}" name="search_LIKE_parkingLot.name" /> </li>   
 				<li><label>出入口名称:</label> 
 					<input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /> </li>   
 				<li><div class="buttonActive">
@@ -41,7 +41,6 @@
 				<th <vsc:orderField name="xcoordinate"/>>X坐标</th>   
 				<th <vsc:orderField name="ycoordinate"/>>Y坐标</th>   
 				<th <vsc:orderField name="isEnabled"/>>状态</th>   
-				<th <vsc:orderField name="mark"/>>备注</th>  
 			</tr>
 		</thead>
 		<tbody>
@@ -49,14 +48,13 @@
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>    
-					<td> <a href="${ctx}/work/passages/view/${varitem.id}" target="dialog" title="查看"> ${varitem.parkinglot.name} </a> 
+					<td> <a href="${ctx}/work/passages/view/${varitem.id}" target="dialog" title="查看"> ${varitem.parkingLot.name} </a> 
 					</td>   
 					<td>${varitem.name}</td>   
 					<td>${varitem.code}</td>   
 					<td>${varitem.xcoordinate}</td>   
 					<td>${varitem.ycoordinate}</td>   
 					<td><s:message code="passages.isenabled.${varitem.isEnabled}"/></td>   
-					<td>${varitem.mark}</td>  
 				</tr>
 			</c:forEach>
 		</tbody>
