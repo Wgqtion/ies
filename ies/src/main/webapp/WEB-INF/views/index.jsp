@@ -129,14 +129,6 @@
 							<ul>
 								<li><a title="地锁信息" href="${ctx}/work/parkinglock" target="navTab" rel="work_parkinglock">地锁信息</a></li>
 								<li><a title="地锁使用统计" href="${ctx}/work/parkinglockoperationevent" target="navTab" rel="work_parkinglockoperationevent">使用统计</a></li>
-								<li><a title="地锁日志信息" href="${ctx}/work/parkinglockeventlog" target="navTab" rel="work_parkinglockeventlog">日志信息</a></li>
-							</ul>
-							</li>
-						</ul>
-						<ul class="tree treeFolder">
-							<li><a>全视频管理</a>
-							<ul>
-								<li><a title="全视频日志" href="${ctx}/work/parkingvideo" target="navTab" rel="work_parkingvideo">全视频日志</a></li>
 							</ul>
 							</li>
 						</ul>
@@ -225,12 +217,6 @@
 									<li><a href="${ctx}/sys/authority" target="navTab" rel="sys_authority">授权管理</a></li>
 									<li><a href="${ctx}/sys/resource" target="navTab" rel="sys_resource">资源管理</a></li>
 								</ul></li>
-							<li><a>日志管理</a>
-								<ul>
-									<li><a href="${ctx}/sys/loginlog" target="navTab" rel="sys_loginlog">登录日志</a></li>
-									<!-- 
-									<li><a href="${ctx}/sys/syslog" target="navTab" rel="sys_syslog">系统日志</a></li> -->
-								</ul></li>
 						</ul>
 					</div>
 
@@ -266,7 +252,7 @@
 		</div>
 	</div>
 	<div id="footer">
-		Copyright &copy; 2017 <a href="#" target="dialog">版权所有</a>
+		Copyright &copy; 2017-2018 <a href="#" target="dialog">版权所有</a>
 	</div>
 </body>
 </html>
