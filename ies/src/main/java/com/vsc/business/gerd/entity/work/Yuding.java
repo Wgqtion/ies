@@ -14,15 +14,20 @@ import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
 
 /**
- *
- * @author jerry
+ * 
+ * @author XiangXiaoLin
  *
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "yuding")
 public class Yuding extends IdEntity implements Serializable {
 
-    private java.util.Date lockedStartTime;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5854732314086228752L;
+	
+	private java.util.Date lockedStartTime;
     private java.util.Date yuyueTime;
     private Integer lockedMinutes;
     private Double lockedCost;
@@ -33,12 +38,20 @@ public class Yuding extends IdEntity implements Serializable {
     private Boolean isEnabled = true;
     private Boolean isDelete = false;
     private WxUser wxUser;
-    private String carNo;
-    private Car car;
-    private ParkingLotArea parkingLotArea;
     private ParkingGarage parkingGarage;
+    
+    private String carNo;
+    
+    @Column(name = "CAR_NO")
+    public String getCarNo() {
+		return carNo;
+	}
 
-    /**
+	public void setCarNo(String carNo) {
+		this.carNo = carNo;
+	}
+
+	/**
      * @return
      */
     @Column(name = "LOCKED_START_TIME")
@@ -164,35 +177,6 @@ public class Yuding extends IdEntity implements Serializable {
 	public void setWxUser(WxUser wxUser) {
 		this.wxUser = wxUser;
 	}
-
-	@Column(name = "CAR_NO")
-    public String getCarNo() {
-        return carNo;
-    }
-
-    public void setCarNo(String carNo) {
-        this.carNo = carNo;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "CAR_ID")
-    public Car getCar() {
-        return car;
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "PARKING_LOT_AREA_ID")
-    public ParkingLotArea getParkingLotArea() {
-        return parkingLotArea;
-    }
-
-    public void setParkingLotArea(ParkingLotArea parkingLotArea) {
-        this.parkingLotArea = parkingLotArea;
-    }
 
     @ManyToOne
     @JoinColumn(name = "PARKING_GARAGE_ID")

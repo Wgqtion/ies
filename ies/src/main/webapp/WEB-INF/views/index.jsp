@@ -160,7 +160,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a title="预约信息" href="${ctx}/work/yuding" target="navTab" rel="work_yuding">预约信息</a></li>
+							<li><a title="预约订单" href="${ctx}/work/yuding" target="navTab" rel="work_yuding">预约订单</a></li>
 						</ul>
 					</div>
 					

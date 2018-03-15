@@ -7,7 +7,7 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 
-				<li><label>会员名:</label> <input type="text" value="${param['search_LIKE_user.name']}" name="search_LIKE_user.name" /></li>
+				<li><label>会员名:</label> <input type="text" value="${param['search_LIKE_wxUser.name']}" name="search_LIKE_wxUser.name" /></li>
 				<li><label>车牌号:</label> <input type="text" value="${param.search_LIKE_carNo}" name="search_LIKE_carNo" /></li>
 				<li><label>申请时间:</label> <input type="text" class="date" size="9" value="${param.search_GTE_createTime}" dateFmt="yyyy-MM-dd" name="search_GTE_createTime" readonly="true" />- <input type="text" class="date" size="9"
 					value="${param.search_LTE_createTime}" dateFmt="yyyy-MM-dd 23:59:59" name="search_LTE_createTime" readonly="true" /></li>
@@ -30,7 +30,7 @@
 		<ul class="toolBar">
 			<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${ctx}/work/yuding/delete" class="delete"><span>删除</span></a></li>
 			<li class="line">line</li>
-			<li><a class="edit" title="预约设置" href="${ctx}/work/yudingsetting/update?navTabId=work_yuding" target="dialog" rel="yuding_setting_update"><span>预约设置</span></a></li>
+			<%-- <li><a class="edit" title="预约设置" href="${ctx}/work/yudingsetting/update?navTabId=work_yuding" target="dialog" rel="yuding_setting_update"><span>预约设置</span></a></li> --%>
 			
 		</ul>
 	</div>
@@ -52,8 +52,8 @@
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>
 					<td>${varitem.wxUser.name}</td>
-					<td><a href="${ctx}/work/yuding/view/${varitem.id}" target="dialog" title="查看预约" rel="yuding_view">${varitem.carNo}</a></td>
-					<td>${varitem.parkingLotArea.fullIndexName}</td>
+					<td>${varitem.carNo}</td>
+					<td>${varitem.parkingGarage.parkingLotArea.fullIndexName}</td>
 					<td><fmt:formatDate value='${varitem.yuyueTime}' pattern='yyyy-MM-dd HH:mm' /></td>
 					<td><fmt:formatDate value='${ varitem.createTime}' pattern='yyyy-MM-dd HH:mm' /></td>
 					 

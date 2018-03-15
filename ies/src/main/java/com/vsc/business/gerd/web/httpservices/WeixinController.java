@@ -214,13 +214,12 @@ public class WeixinController extends HttpServiceBaseController {
         List<Yuyue> yuyues = new ArrayList<Yuyue>();
         List<YudingSetting> vl = yudingSettingService.getAllList();
         List<Yuding> yudings = yudingService.findByWxUser(userId);
-        Map<String, Object> searchParams = this.getSearchRequest();
         for (Yuding yuding : yudings) {
             Yuyue yuyue = new Yuyue();
             yuyue.setWxUserId(yuding.getWxUser().getId());
             yuyue.setOrderNumber(yuding.getId());
-            yuyue.setCarNumber(yuding.getCarNo());
             yuyue.setYuyueTime(yuding.getYuyueTime());
+            yuyue.setCarNumber(yuding.getCarNo());
             yuyue.setCreateTime(yuding.getCreateTime());
             yuyue.setParkingGarage(yuding.getParkingGarage());
             yuyue.setIsDelete(yuding.getIsDelete());
@@ -228,8 +227,6 @@ public class WeixinController extends HttpServiceBaseController {
             if (!vl.isEmpty()) {
                 yuyue.setYudingSetting(vl.get(0));
             }
-            searchParams.put("EQ_parkingLot", yuding.getParkingLotArea().getParkingLot().getId());
-
             yuyue.setShoufei(new Double(0));
             //查询地锁状态
             ParkingLock parkingLock=this.parkingLockService.findUniqueBy("parkingGarage", yuding.getParkingGarage().getId());
@@ -240,7 +237,7 @@ public class WeixinController extends HttpServiceBaseController {
         if (yuyues.isEmpty()) {
             return this.ajaxDoneError("没有预约信息");
         }
-        String[] isNotIgnoreFieldNames = {"orderNumber", "userId", "carNumber", "isEnabled", "parkingGarage", "name", "yuyueTime", "createTime", "description", "xcoordinate", "ycoordinate", "yudingSetting", "lockedCost", "lockedHourCost", "shoufei", "cardType", "id", "isCarOn"};
+        String[] isNotIgnoreFieldNames = {"orderNumber", "userId","carNumber", "isEnabled", "parkingGarage", "name", "yuyueTime", "createTime", "description", "xcoordinate", "ycoordinate", "yudingSetting", "lockedCost", "lockedHourCost", "shoufei", "cardType", "id", "isCarOn"};
         String jsonstr = JSONUtil.toJSONString(yuyues, isNotIgnoreFieldNames, false, featureNames);
         return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
     }
@@ -389,9 +386,7 @@ public class WeixinController extends HttpServiceBaseController {
             @RequestParam(required = true) Long parkingId,
             @RequestParam(required = false) Date inTime
     ) throws ParseException {
-        Yuding yudingdic;
         Yuding yuding = new Yuding();
-
         //订单查询
         Map<String, Object> orderMap = new HashMap<String, Object>();
         orderMap.put("EQ_wxUser", userId);
@@ -420,7 +415,6 @@ public class WeixinController extends HttpServiceBaseController {
         } else if (!parkingGarage.getIsEnabled()) {
             return this.ajaxDoneError("车位不可用");
         } else {
-            ParkingLotArea parkingLotArea = parkingGarage.getParkingLotArea();
             List<YudingSetting> ys = yudingSettingService.getAllList();
             WxUser wxUser = wxUserService.getObjectById(userId);
             if (wxUser == null || wxUser.getId() == null) {
@@ -468,10 +462,10 @@ public class WeixinController extends HttpServiceBaseController {
             }
 
             yuding.setWxUser(wxUser);
+            yuding.setCarNo(carNo);
             yuding.setLasttime(now.getTime().getTime());
             yuding.setCreateTime(now.getTime());
             yuding.setYuyueTime(nowDay);
-            yuding.setCarNo(carNo);
             yuding.setLockedCost(vm.getLockedCost());
             yuding.setLockedHourCost(vm.getLockedHourCost());
             if ((yuding.getYuyueTime() != null) && (vm.getLockedMinutes() != null)) {
@@ -482,12 +476,11 @@ public class WeixinController extends HttpServiceBaseController {
 
             // 取出Shiro中的当前用户,不查询数据库
             // yuding.setUser(this.getCurrentUser());
-            yuding.setParkingLotArea(parkingLotArea);
             yuding.setParkingGarage(parkingGarage);
-            yudingdic = yudingService.save(yuding);
+            yudingService.save(yuding);
         }
 
-        return this.ajaxDoneSuccess("预约成功", "{\"orderNumber\":" + yudingdic.getId() + "}");
+        return this.ajaxDoneSuccess("预约成功", "{\"orderNumber\":" + yuding.getId() + "}");
     }
 
     /**

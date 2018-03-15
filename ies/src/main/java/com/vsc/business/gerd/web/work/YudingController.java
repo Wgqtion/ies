@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.Yuding;
 import com.vsc.business.gerd.service.work.YudingService;
 import com.vsc.constants.Constants;
+import com.vsc.modules.shiro.ShiroUserUtils;
 
 /**
  * 
- * @author jerry
+ * @author XiangXiaoLin
  *
  */
 @Controller
@@ -44,19 +46,14 @@ public class YudingController extends BaseController {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
-
+		User user=ShiroUserUtils.GetCurrentUser();
+		searchParams.put("RLIKE_parkingGarage.parkingLotArea.parkingLot.companyCode", user.getCompany().getCode());
 		Page<Yuding> page = yudingService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
 		return PATH_LIST;
 	}
-
-	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
-	public String view(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vm", yudingService.getObjectById(id));
-		return PATH_VIEW;
-	}
-
+	
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) {
 		yudingService.deleteById(id);
@@ -68,8 +65,6 @@ public class YudingController extends BaseController {
 		yudingService.deleteByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
-
-	
 
 	@ModelAttribute("preloadModel")
 	public Yuding getModel(@RequestParam(value = "id", required = false) Long id) {
