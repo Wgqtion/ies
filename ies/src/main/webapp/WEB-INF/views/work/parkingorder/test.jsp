@@ -7,7 +7,7 @@
 		<thead>
 			<tr>
 				<th width="40" align="center">序号</th>
-				<th <vsc:orderField name="plateNo"/>>车牌号</th>
+				<th <vsc:orderField name="carNo"/>>车牌号</th>
 				<th>停车场</th>
 				<th <vsc:orderField name="inTime"/>>进场时间</th>
 				<th>进口</th>
@@ -22,8 +22,8 @@
 			<c:forEach items="${page.content}" var="varitem" varStatus="varindex">
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
-					<td>${varitem.plateNo}</td>
-					<td>${varitem.inPassages.parkinglot.name}</td>
+					<td>${varitem.carNo}</td>
+					<td>${varitem.inPassages.parkingLot.name}</td>
 					<td><fmt:formatDate value='${varitem.inTime}' pattern='yyyy-MM-dd HH:mm' /></td>
 					<td>${varitem.inPassages.name}</td>
 					<td><fmt:formatDate value='${varitem.outTime}' pattern='yyyy-MM-dd HH:mm' /></td>

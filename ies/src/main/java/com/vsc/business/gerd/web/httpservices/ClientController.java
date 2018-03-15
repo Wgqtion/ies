@@ -75,7 +75,7 @@ public class ClientController extends HttpServiceBaseController {
             }
             return this.ajaxDoneError(sb.toString());
         }
-		parkingOrder.setPlateNo(validate.getInPlateNo());
+		parkingOrder.setCarNo(validate.getInPlateNo());
 		this.parkingOrderService.inParkingOrder(parkingOrder);
 		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
@@ -101,7 +101,7 @@ public class ClientController extends HttpServiceBaseController {
         }
 		boolean flag=false;
 		try {
-			parkingOrder.setPlateNo(validate.getOutPlateNo());
+			parkingOrder.setCarNo(validate.getOutPlateNo());
 			this.parkingOrderService.outParkingOrder(parkingOrder);
 			flag=true;
 		} catch (Exception e) {
@@ -130,7 +130,7 @@ public class ClientController extends HttpServiceBaseController {
             }
             return this.ajaxDoneError(sb.toString());
         }
-		parkingOrder.setPlateNo(validate.getPayPlateNo());
+		parkingOrder.setCarNo(validate.getPayPlateNo());
 		this.parkingOrderService.payParkingOrder(parkingOrder);
 
 		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";

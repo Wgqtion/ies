@@ -30,7 +30,7 @@ public class ParkingOrder extends IdEntity implements Serializable {
 	/**
 	 * 车牌号
 	 */
-	private java.lang.String plateNo;
+	private java.lang.String carNo;
 	/**
 	 * 进入相机ip
 	 */
@@ -142,13 +142,13 @@ public class ParkingOrder extends IdEntity implements Serializable {
 	/**
 	 * @return 车牌号
 	 */
-	@Column(name = "PLATE_NO")
-	public java.lang.String getPlateNo() {
-		return plateNo;
+	@Column(name = "CAR_NO")
+	public java.lang.String getCarNo() {
+		return carNo;
 	}
 
-	public void setPlateNo(java.lang.String plateNo) {
-		this.plateNo = plateNo;
+	public void setCarNo(java.lang.String carNo) {
+		this.carNo = carNo;
 	}
 	
 	@Column(name = "ORDER_STATUS")

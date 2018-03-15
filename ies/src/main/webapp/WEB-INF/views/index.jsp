@@ -160,6 +160,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
+							<li><a title="停车记录单" href="${ctx}/work/parkingorder?isHome=true" target="navTab" rel="work_parkingorder">停车记录单</a></li>
 							<li><a title="预约订单" href="${ctx}/work/yuding" target="navTab" rel="work_yuding">预约订单</a></li>
 						</ul>
 					</div>
@@ -171,8 +172,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a title="车位查询" href="${ctx}/work/report/parkingGarageStatus" target="navTab" rel="work_report_parkingGarageStatus">车位查询</a></li>
-							<li><a title="停车记录" href="${ctx}/work/parkingorder?isHome=true" target="navTab" rel="work_parkingorder">停车记录</a></li>
+							<li><a title="车位状态查询" href="${ctx}/work/report/parkingGarageStatus" target="navTab" rel="work_report_parkingGarageStatus">车位状态查询</a></li>
 						</ul>
 					</div> 
 					

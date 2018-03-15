@@ -7,8 +7,8 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 
-				<li><label>车牌号:</label> <input type="text" value="${param.search_LIKE_plateNo}" name="search_LIKE_plateNo" /></li>
-				<li><label>停车场:</label> <input type="text" value="${param['search_LIKE_inPassages.parkinglot.name']}" name="search_LIKE_inPassages.parkinglot.name" /></li>
+				<li><label>车牌号:</label> <input type="text" value="${param.search_LIKE_carNo}" name="search_LIKE_carNo" /></li>
+				<li><label>停车场:</label> <input type="text" value="${param['search_LIKE_inPassages.parkingLot.name']}" name="search_LIKE_inPassages.parkingLot.name" /></li>
 				<li><label>进场时间:</label><input type="text" class="date" size="7" value="${param.search_GTE_inTime}" dateFmt="yyyy-MM-dd" name="search_GTE_inTime" readonly="true" /> - <input type="text" class="date" size="7" value="${param.search_LTE_inTime}" dateFmt="yyyy-MM-dd 23:59:59" name="search_LTE_inTime" readonly="true" /></li>
 				<li><label>出场时间:</label> <input type="text" class="date" size="7" value="${param.search_GTE_outTime}" dateFmt="yyyy-MM-dd" name="search_GTE_outTime" readonly="true" /> - <input type="text" class="date" size="7" value="${param.search_LTE_outTime}" dateFmt="yyyy-MM-dd 23:59:59" name="search_LTE_outTime" readonly="true" /></li>
 
@@ -35,7 +35,7 @@
 		<thead>
 			<tr>
 				<th width="40" align="center">序号</th>
-				<th <vsc:orderField name="plateNo"/>>车牌号</th>
+				<th <vsc:orderField name="carNo"/>>车牌号</th>
 				<th>停车场</th>
 				<th <vsc:orderField name="inTime"/>>进场时间</th>
 				<th>进口</th>
@@ -50,8 +50,8 @@
 			<c:forEach items="${page.content}" var="varitem" varStatus="varindex">
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
-					<td>${varitem.plateNo}</td>
-					<td>${varitem.inPassages.parkinglot.name}</td>
+					<td>${varitem.carNo}</td>
+					<td>${varitem.inPassages.parkingLot.name}</td>
 					<td><fmt:formatDate value='${varitem.inTime}' pattern='yyyy-MM-dd HH:mm' /></td>
 					<td>${varitem.inPassages.name}</td>
 					<td><fmt:formatDate value='${varitem.outTime}' pattern='yyyy-MM-dd HH:mm' /></td>

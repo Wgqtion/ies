@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.ParkingOrder;
 import com.vsc.business.gerd.service.work.ParkingOrderService;
 import com.vsc.constants.Constants;
+import com.vsc.modules.shiro.ShiroUserUtils;
 
 /**
  * 
@@ -48,7 +50,6 @@ public class ParkingOrderController extends BaseController {
 			pageRequest=this.getPageRequest();	
 		}
 		Map<String, Object> searchParams = this.getSearchRequest();
-
 		Page<ParkingOrder> page = parkingOrderService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
@@ -65,17 +66,10 @@ public class ParkingOrderController extends BaseController {
 			pageRequest=this.getPageRequest();	
 		}
 		Map<String, Object> searchParams = this.getSearchRequest();
-
 		Page<ParkingOrder> page = parkingOrderService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
 		return PATH+Constants.SPT+"test";
-	}
-	
-	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
-	public String view(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vm", parkingOrderService.getObjectById(id));
-		return PATH_VIEW;
 	}
 	
 	@ModelAttribute("preloadModel")
