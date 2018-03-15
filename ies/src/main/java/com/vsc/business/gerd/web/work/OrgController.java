@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.Org;
+import com.vsc.business.gerd.service.work.CompanyService;
 import com.vsc.business.gerd.service.work.OrgService;
 import com.vsc.constants.Constants;
 import com.vsc.util.RandomPassword;
@@ -34,6 +35,10 @@ public class OrgController extends BaseController {
 
 	@Autowired
 	private OrgService orgService;
+	
+	@Autowired
+	private CompanyService companyService;
+	
 	public static final String PATH = "work/org";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";
@@ -45,7 +50,6 @@ public class OrgController extends BaseController {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
-		searchParams.put("EQ_isDelete",0);
 		Page<Org> page = orgService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
@@ -67,6 +71,7 @@ public class OrgController extends BaseController {
 		org.setCode(code);
 		model.addAttribute("vm",org);
 		model.addAttribute("action", BaseController.CREATE);
+		model.addAttribute("companyList",companyService.getList());
 		return PATH_EDIT;
 	}
 
@@ -81,6 +86,7 @@ public class OrgController extends BaseController {
 	public String updateForm(@PathVariable("id") java.lang.Long id, Model model) {
 		model.addAttribute("vm", orgService.getObjectById(id));
 		model.addAttribute("action", BaseController.UPDATE);
+		model.addAttribute("companyList",companyService.getList());
 		return PATH_EDIT;
 	}
 

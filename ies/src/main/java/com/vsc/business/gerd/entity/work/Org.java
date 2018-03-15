@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -40,6 +41,38 @@ public class Org extends BasicEntity implements Serializable{
 	private List<ParkingLot> parkingLots=new ArrayList<ParkingLot>();
 	
 	private List<WxUser> users=new ArrayList<WxUser>();
+	
+	/**
+     * 所属公司
+     */
+    private Company company;
+    /**
+     * 公司code
+     */
+    private String companyCode;
+    
+    /**
+     * @return
+     */
+    @Column(name = "COMPANY_CODE")
+    public String getCompanyCode() {
+		return companyCode;
+	}
+
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "COMPANY_CODE",referencedColumnName="CODE",insertable=false,updatable=false)
+    public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	
 	
 	@ManyToMany
 	@JoinTable(name = Constants.TABLE_PREFIX+"org_user", joinColumns = { @JoinColumn(name = "org_code",referencedColumnName="code") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })

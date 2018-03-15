@@ -10,6 +10,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import org.springside.modules.utils.Collections3;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.gerd.entity.work.Org;
 import com.vsc.business.gerd.entity.work.ParkingLot;
+import com.vsc.business.gerd.entity.work.ParkingLotArea;
 import com.vsc.business.gerd.repository.work.OrgDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
@@ -50,7 +53,28 @@ public class OrgService extends BaseService<Org> {
 	public JpaSpecificationExecutor<Org> getJpaSpecificationExecutorDao() {
 		return this.orgDao;
 	}
+	
+	/**
+	 * 根据条件查询，未删除的
+	 */
+	@Override
+	public List<Org> findList(Map<String, Object> filterParams) {
+		filterParams.put("EQ_isDelete", 0);
+		return super.findList(filterParams);
+	}
 
+	/**
+	 * 根据条件查询，未删除，like 用户公司code%
+	 */
+	@Override
+	public Page<Org> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
+		User user=ShiroUserUtils.GetCurrentUser();
+		filterParams.put("RLIKE_companyCode", user.getCompany().getCode());
+		filterParams.put("EQ_isDelete", 0); 
+		return super.findPage(filterParams, pageRequest);
+	}
+
+	
 	/**
 	 * 根据编码查询权限 ，未删除的
 	 * @param code
@@ -59,7 +83,7 @@ public class OrgService extends BaseService<Org> {
 	public Org getByCode(String code){
 		Map<String, Object> searchParams = new HashMap<String,Object>();
 		searchParams.put("EQ_isDelete",0);
-		searchParams.put("code", code);
+		searchParams.put("EQ_code", code);
 		return find(searchParams);
 	}
 	
