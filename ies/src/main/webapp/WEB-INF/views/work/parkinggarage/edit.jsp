@@ -9,7 +9,7 @@
 		<div class="pageFormContent" layoutH="56">
 			<table class="formTable">
 				<tr>
-					<td class="fieldName">所属停车区:</td>
+					<td class="fieldName"><span class="required">*</span>所属停车片区:</td>
 					<td class="fieldInput" colspan="3"><label>
 					<input name="parkinglotareaGroup.id" value="${vm.parkingLotArea.id}" type="hidden" />
 					<input validate="{required:true}" readonly="readonly" id="parkinglotareaGroup_name" name="parkinglotareaGroup.name" value="${vm.parkingLotArea.name}" type="text"/> 
@@ -17,17 +17,17 @@
 					</label><span for="parkinglotareaGroup_name" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 				<tr>
-					<td class="fieldName">停车位名称:</td>
+					<td class="fieldName"><span class="required">*</span>车位名称:</td>
 					<td class="fieldInput"><label><input type="text" id="name" name="name" value="${vm.name}" validate="{required:true}" /></label><span for="name" generated="true" style="display: none" class="error"></span></td>
-					<td class="fieldName">状态:</td>
+					<td class="fieldName"><span class="required">*</span>状态:</td>
 					<td class="fieldInput"><label><form:radiobutton path="vm.isEnabled" value="false" validate="{required:true}" /> <s:message code="parkinggarage.isenabled.false" /> </label> <label> <form:radiobutton path="vm.isEnabled" value="true" />
 							<s:message code="parkinggarage.isenabled.true" />
 					</label> <span style="display: none" class="error" generated="true" for="isEnabled"></span></td>
 				</tr>
 				<tr>
-					<td class="fieldName">停车位X坐标:</td>
+					<td class="fieldName"><span class="required">*</span>停车位X坐标:</td>
 					<td class="fieldInput"><label><input type="text" id="name" name="xcoordinate" value="${vm.xcoordinate}" validate="{required:true}" /></label><span for="name" generated="true" style="display: none" class="error"></span></td>
-					<td class="fieldName">停车位Y坐标:</td>
+					<td class="fieldName"><span class="required">*</span>停车位Y坐标:</td>
 					<td class="fieldInput"><label><input type="text" id="name" name="ycoordinate" value="${vm.ycoordinate}" validate="{required:true}" /></label><span for="name" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 				<tr>

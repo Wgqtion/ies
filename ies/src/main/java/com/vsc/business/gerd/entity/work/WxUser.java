@@ -31,7 +31,7 @@ public class WxUser extends IdEntity {
     /**
      * 手机号
      */
-    private String telephone;
+    private String telphone;
     /**
      * 性别
      */
@@ -51,7 +51,7 @@ public class WxUser extends IdEntity {
     /**
      * 车牌号
      */
-    private String carNumber;
+    private String carNo;
     private Date createDate;
     private Date updateDate;
     private User updateUser;
@@ -82,7 +82,7 @@ public class WxUser extends IdEntity {
 		this.name = name;
 	}
 	
-	@Column(name = "CREATE_TIME")
+	@Column(name = "CREATE_DATE")
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -91,7 +91,7 @@ public class WxUser extends IdEntity {
 		this.createDate = createDate;
 	}
 	
-	@Column(name = "UPDATE_TIME")
+	@Column(name = "UPDATE_DATE")
 	public Date getUpdateDate() {
 		return updateDate;
 	}
@@ -101,28 +101,22 @@ public class WxUser extends IdEntity {
 	}
 
   
-	/**
-     * @return
-     */
-    @Column(name = "CAR_NUMBER")
-    public String getCarNumber() {
-		return carNumber;
+	@Column(name = "TELPHONE")
+	public String getTelphone() {
+		return telphone;
 	}
 
-	public void setCarNumber(String carNumber) {
-		this.carNumber = carNumber;
+	public void setTelphone(String telphone) {
+		this.telphone = telphone;
 	}
 
-	/**
-     * @return
-     */
-    @Column(name = "TELEPHONE")
-    public String getTelephone() {
-		return telephone;
+	@Column(name = "CAR_NO")
+	public String getCarNo() {
+		return carNo;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	public void setCarNo(String carNo) {
+		this.carNo = carNo;
 	}
 	
 	@ManyToOne

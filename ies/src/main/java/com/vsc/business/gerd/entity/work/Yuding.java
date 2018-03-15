@@ -34,7 +34,7 @@ public class Yuding extends IdEntity implements Serializable {
     private Boolean isDelete = false;
     private WxUser wxUser;
     private String carNo;
-    private CardInfo cardInfo;
+    private Car car;
     private ParkingLotArea parkingLotArea;
     private ParkingGarage parkingGarage;
 
@@ -175,13 +175,13 @@ public class Yuding extends IdEntity implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "CAR_INFO_ID")
-    public CardInfo getCardInfo() {
-        return cardInfo;
+    @JoinColumn(name = "CAR_ID")
+    public Car getCar() {
+        return car;
     }
 
-    public void setCardInfo(CardInfo cardInfo) {
-        this.cardInfo = cardInfo;
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     @ManyToOne

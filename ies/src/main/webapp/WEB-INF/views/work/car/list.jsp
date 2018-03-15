@@ -5,7 +5,7 @@
 
 <div class="pageHeader">
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);"
-		action="${ctx}/work/cardinfo" method="post">
+		action="${ctx}/work/car" method="post">
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li><label>车牌号:</label> <input type="text"
@@ -31,13 +31,13 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li><a class="add" title="添加"
-				href="${ctx}/work/cardinfo/new?navTabId=work_cardinfo"
-				target="dialog" rel="cardinfo_new"><span>添加</span></a></li>
+				href="${ctx}/work/car/new?navTabId=work_car"
+				target="dialog" rel="car_new"><span>添加</span></a></li>
 			<li><a class="edit" title="编辑"
-				href="${ctx}/work/cardinfo/update/{sid}?navTabId=work_cardinfo"
-				target="dialog" rel="cardinfo_update" warn="请选择一个记录"><span>编辑</span></a></li>
+				href="${ctx}/work/car/update/{sid}?navTabId=work_car"
+				target="dialog" rel="car_update" warn="请选择一个记录"><span>编辑</span></a></li>
 			<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids"
-				href="${ctx}/work/cardinfo/delete" class="delete"><span>删除</span></a></li>
+				href="${ctx}/work/car/delete" class="delete"><span>删除</span></a></li>
 			<li class="line">line</li>
 		</ul>
 	</div>
@@ -48,9 +48,8 @@
 				<th width="30"><input type="checkbox" group="ids"
 					class="checkboxCtrl"></th>
 				<th <vsc:orderField name="owner"/>>车主姓名</th>
-				<th <vsc:orderField name="mobile"/>>电话</th>
+				<th <vsc:orderField name="telphone"/>>电话</th>
 				<th <vsc:orderField name="carNo"/>>车牌</th>
-				<th <vsc:orderField name="userNo"/>>车辆编号</th>
 				<th <vsc:orderField name="expireDate"/>>有效期</th> 
 				<th <vsc:orderField name="carType"/>>车辆类型</th> 
 			</tr>
@@ -61,11 +60,10 @@
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>
 					<td>${varitem.owner}</td>
-					<td>${varitem.mobile}</td>
+					<td>${varitem.telphone}</td>
 					<td>${varitem.carNo}</td>
-					<td>${varitem.userNo}</td>
 					<td><fmt:formatDate value="${varitem.expireDate}" pattern="yyyy-MM-dd" /></td> 				 
-					<td><s:message code="cardinfo.carType.${varitem.carType}"></s:message></td>					 
+					<td><s:message code="car.carType.${varitem.carType}"></s:message></td>					 
 				</tr>
 			</c:forEach>
 		</tbody>

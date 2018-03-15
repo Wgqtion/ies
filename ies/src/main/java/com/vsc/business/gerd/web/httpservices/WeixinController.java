@@ -151,7 +151,7 @@ public class WeixinController extends HttpServiceBaseController {
             return this.ajaxDoneError("获取openId失败", result);
         }
 
-        String[] isNotIgnoreFieldNames = {"id", "telephone", "weixinId", "carNumber", "name","sex","country","province","city"};
+        String[] isNotIgnoreFieldNames = {"id", "telphone", "weixinId", "carNo", "name","sex","country","province","city"};
         String jsonstr = JSONUtil.toJSONString(wxUser, isNotIgnoreFieldNames, false, featureNames);
         return this.ajaxDoneSuccess("登陆成功", jsonstr);
     }
@@ -182,8 +182,8 @@ public class WeixinController extends HttpServiceBaseController {
         	wxUser = new WxUser();
         	wxUser.setWeixinId(weixinId);
         	wxUser.setName(name);
-            wxUser.setCarNumber(carNumber);
-            wxUser.setTelephone(tel);
+            wxUser.setCarNo(carNumber);
+            wxUser.setTelphone(tel);
             wxUser.setSex(sex);
             wxUser.setCountry(country);
             wxUser.setProvince(province);
@@ -195,7 +195,7 @@ public class WeixinController extends HttpServiceBaseController {
         }
         // 返回新的登录信息
         wxUser = wxUserService.getByWeixinId(weixinId);
-        String[] isNotIgnoreFieldNames = {"id", "telephone", "weixinId", "carNumber", "name","sex","country","province","city"};
+        String[] isNotIgnoreFieldNames = {"id", "telphone", "weixinId", "carNo", "name","sex","country","province","city"};
         String jsonstr = JSONUtil.toJSONString(wxUser, isNotIgnoreFieldNames, false, featureNames);
         return this.ajaxDoneSuccess("注册成功", jsonstr);
     }

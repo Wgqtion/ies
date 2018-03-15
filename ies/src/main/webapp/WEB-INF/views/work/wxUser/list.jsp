@@ -44,8 +44,8 @@
 					<td align="center">${index.count + (page.number * page.size)}</td>
 					<td><input name="ids" value="${item.id}" type="checkbox"></td>
 					<td>${item.name}</td>
-					<td>${item.carNumber}</td>
-					<td>${item.telephone}</td>
+					<td>${item.carNo}</td>
+					<td>${item.telphone}</td>
 					<td><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm" /></td>
 				</tr>
 			</c:forEach>

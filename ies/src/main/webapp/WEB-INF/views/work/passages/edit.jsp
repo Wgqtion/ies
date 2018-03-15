@@ -10,7 +10,7 @@
 			<table class="formTable">
 			
 				<tr>
-					<td class="fieldName"><label>所属停车场:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>所属停车场:</label></td>
 					<td class="fieldInput">
 					<label>
 					<input name="parkinglotGroup.id" value="${vm.parkingLot.id}" type="hidden" />
@@ -18,7 +18,7 @@
 					<a class="btnLook" rel="passages_parkinglot_select" title="选择车位所属停车场" href="${ctx}/work/parkinglot/select?single=true&search_EQ_isEnabled=1" lookupGroup="parkinglotGroup">查找带回</a> <span class="info">(选择停车场)</span>
 					</label><span for="parkinglotGroup_name" generated="true" style="display: none" class="error"></span></td>
 					
-					<td class="fieldName"><label>是否启用:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>是否启用:</label></td>
 					<td class="fieldInput">
 						<label><form:radiobutton path="vm.isEnabled" value="1" validate="{required:true}" />启用</label> 
 						<label><form:radiobutton path="vm.isEnabled" value="0" />停用</label>
@@ -26,13 +26,13 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="fieldName"><label>出入口名称:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>出入口名称:</label></td>
 					<td class="fieldInput" colspan="3"><label><input type="text" id="name" name="name" value="${vm.name}" validate="{required:true}" /></label><span for="name" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 				<tr>
-					<td class="fieldName"><label>X坐标:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>X坐标:</label></td>
 					<td class="fieldInput"><label><input type="text" id="xcoordinate" name="xcoordinate" value="${vm.xcoordinate}" validate="{required:true}" /></label><span for="xcoordinate" generated="true" style="display: none" class="error"></span></td>
-					<td class="fieldName"><label>Y坐标:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>Y坐标:</label></td>
 					<td class="fieldInput"><label><input type="text" id="ycoordinate" name="ycoordinate" value="${vm.ycoordinate}" validate="{required:true}" /></label><span for="ycoordinate" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 				

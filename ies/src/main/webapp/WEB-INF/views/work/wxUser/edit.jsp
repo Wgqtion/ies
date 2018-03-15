@@ -14,13 +14,13 @@
 				</tr>
 				<tr>
 					<td class="fieldName"><span class="required">*</span>手机：</td>
-					<td class="fieldInput"><label> <input type="text" name="telephone"  value="${vm.telephone}" validate="{required:true}" />
-					</label><span for="telephone" generated="true" style="display: none" class="error"></span></td>
+					<td class="fieldInput"><label> <input type="text" name="telphone"  value="${vm.telphone}" validate="{required:true}" />
+					</label><span for="telphone" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 				<tr>
 					<td class="fieldName"><span class="required">*</span>车牌号：</td>
-					<td class="fieldInput"><label> <input type="text" name="carNumber"  value="${vm.carNumber}" validate="{required:true}" />
-					</label><span for="carNumber" generated="true" style="display: none" class="error"></span></td>
+					<td class="fieldInput"><label> <input type="text" name="carNo"  value="${vm.carNo}" validate="{required:true}" />
+					</label><span for="carNo" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 			</table>
 		</div>

@@ -9,7 +9,7 @@
 		<div class="pageFormContent" layoutH="56">
 			<table class="formTable"> 
 				<tr>
-					<td class="fieldName">停车场名称:</td>
+					<td class="fieldName"><span class="required">*</span>停车场名称:</td>
 					<td class="fieldInput"><label><input type="text" id="name" name="name" value="${vm.name}" validate="{required:true}" /></label><span for="name" generated="true" style="display: none" class="error"></span></td>
 					<td rowspan="6"  class="fieldName" valign="top">停车场图片:</td>
 					<td rowspan="6"  class="fieldInput">					 
@@ -18,7 +18,7 @@
 					</td>
 				</tr> 
 				<tr>
-					<td class="fieldName">所属公司:</td>
+					<td class="fieldName"><span class="required">*</span>所属公司:</td>
 					<td class="fieldInput">
 						<select id="companyCode" name="companyCode" validate="{required:true}">
 							<option value="">全部</option>
@@ -30,28 +30,28 @@
 				</tr>
 				
 				<tr>
-					<td class="fieldName">百度纬度坐标:</td>
+					<td class="fieldName"><span class="required">*</span>百度纬度坐标:</td>
 					<td class="fieldInput"><label><input type="text" id="baiduLatitudeLng" name="baiduLatitudeLng" value="${vm.baiduLatitudeLng}" validate="{required:true}" /></label><span for="baiduLatitudeLng" generated="true"
 						style="display: none" class="error"></span></td> 
 				</tr> 
 				<tr>
-					<td class="fieldName">百度经度坐标:</td>
+					<td class="fieldName"><span class="required">*</span>百度经度坐标:</td>
 					<td class="fieldInput"><label><input type="text" id="baiduLatitudeLat" name="baiduLatitudeLat" value="${vm.baiduLatitudeLat}" validate="{required:true}" /></label><span for="baiduLatitudeLat" generated="true"
 						style="display: none" class="error"></span></td>
 				</tr> 
 				<tr>
-					<td class="fieldName">车位数量:</td>
+					<td class="fieldName"><span class="required">*</span>车位数量:</td>
 					<td class="fieldInput"><label><input type="text" id="carNumber" name="carNumber" value="${vm.carNumber}" validate="{required:true}" /></label><span for="carNumber" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 				
 				<tr>
-					<td class="fieldName">状态:</td>
+					<td class="fieldName"><span class="required">*</span>状态:</td>
 					<td class="fieldInput"><label> <form:radiobutton path="vm.isEnabled" value="false" validate="{required:true}" /> <s:message code="parkinglot.isenabled.false" />
 					</label> <label> <form:radiobutton path="vm.isEnabled" value="true" /> <s:message code="parkinglot.isenabled.true" />
 					</label> <span style="display: none" class="error" generated="true" for="isEnabled"></span></td>
 				</tr>
 				<tr>
-					<td class="fieldName">地址:</td>
+					<td class="fieldName"><span class="required">*</span>地址:</td>
 					<td class="fieldInput" colspan="3"><label><input type="text" size="50" id="address" name="address" value="${vm.address}" validate="{required:true}" /></label><span for="address" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 				<tr>

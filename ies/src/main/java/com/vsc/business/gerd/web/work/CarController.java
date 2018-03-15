@@ -1,9 +1,7 @@
 package com.vsc.business.gerd.web.work;
 
-import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -20,23 +18,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
-import com.vsc.business.gerd.entity.work.CardInfo;
-import com.vsc.business.gerd.service.work.CardInfoService;
+import com.vsc.business.gerd.entity.work.Car;
+import com.vsc.business.gerd.service.work.CarService;
+import com.vsc.business.gerd.service.work.CompanyService;
 import com.vsc.constants.Constants;
 
 /**
- * 
- * @author Administrator
- * 
+ * 车辆 视图控制
+ * @author XiangXiaoLin
+ *
  */
 @Controller
-@RequestMapping(value = Constants.SPT + CardInfoController.PATH)
-public class CardInfoController extends BaseController {
+@RequestMapping(value = Constants.SPT + CarController.PATH)
+public class CarController extends BaseController {
 
 	@Autowired
-	private CardInfoService cardInfoService;
+	private CarService carService;
 
-	public static final String PATH = "work/cardinfo";
+	@Autowired
+	private CompanyService companyService;
+	
+	public static final String PATH = "work/car";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";
 	public static final String PATH_VIEW = PATH + Constants.SPT + "view";
@@ -49,69 +51,60 @@ public class CardInfoController extends BaseController {
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
 
-		Page<CardInfo> page = cardInfoService.findPage(searchParams,
+		Page<Car> page = carService.findPage(searchParams,
 				pageRequest);
 		model.addAttribute("page", page);
 
 		return PATH_LIST;
 	}
 
-	@RequestMapping(value = "export")
-	public ModelAndView exportList(HttpServletRequest request) {
-		Map<String, Object> searchParams = this.getSearchRequest();
-		List<CardInfo> list = cardInfoService.findAll(searchParams,
-				this.getSortOrderBy(), this.getSortOrderDesc());
-		return this.reportView(PATH_LIST, list, REPORT_FORMAT_XLS);
-
-	}
-
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) {
-		model.addAttribute("vm", new CardInfo());
+		model.addAttribute("vm", new Car());
 		model.addAttribute("action", BaseController.CREATE);
+		model.addAttribute("companyList",companyService.getList());
 		return PATH_EDIT;
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
 	public ModelAndView create(
-			@Valid CardInfo cardInfo) {
-	
-		cardInfoService.save(cardInfo);
+			@Valid Car car) {
+		carService.save(car);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
 	@RequestMapping(value = BaseController.UPDATE + "/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vm", cardInfoService.getObjectById(id));
+		model.addAttribute("vm", carService.getObjectById(id));
 		model.addAttribute("action", BaseController.UPDATE);
+		model.addAttribute("companyList",companyService.getList());
 		return PATH_EDIT;
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(
-			@Valid @ModelAttribute("preloadModel") CardInfo cardInfo) {
-		
-		cardInfoService.save(cardInfo);
+			@Valid @ModelAttribute("preloadModel") Car car) {
+		carService.save(car);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) {
-		cardInfoService.deleteById(id);
+		carService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
 	public ModelAndView deleteBatch(@RequestParam Long[] ids) {
-		cardInfoService.deleteByIds(ids);
+		carService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 	
 	@ModelAttribute("preloadModel")
-	public CardInfo getModel(
+	public Car getModel(
 			@RequestParam(value = "id", required = false) Long id) {
 		if (id != null) {
-			return cardInfoService.getObjectById(id);
+			return carService.getObjectById(id);
 		}
 		return null;
 	}
