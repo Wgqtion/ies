@@ -16,7 +16,6 @@
 			 OR (pLoc.SURPLUS_DETECTION='2' AND pLoc.IS_OPEN=0) 
 			 OR (pLoc.SURPLUS_DETECTION='1,2' AND pLoc.IS_CAR_ON=0 AND pLoc.IS_OPEN=0))
 		AND pLoc.IS_ENABLED=1
-		AND pLoc.IS_OK=1
 		AND pLoc.IS_ONLINE=1
 		AND AR.ID = #id#
 	</sql>
