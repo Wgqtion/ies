@@ -15,12 +15,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.MapBean;
 import com.vsc.modules.entity.ReportView;
+import com.vsc.modules.shiro.ShiroUserUtils;
 
 /**
  * 报表统计
@@ -45,7 +47,6 @@ public class ChartController extends BaseController {
 		Date now = new Date();
 		reportView.setStartDate(DateFormatUtils.format(now, "yyyy-MM-dd"));
 		reportView.setEndDate(reportView.getStartDate());
-
 		Map<String, Object> filterParams = new HashMap<String, Object>();
 		filterParams.put("EQ_isEnabled", 1);
 		List<ParkingLot> lotAreaList = parkingLotService.findList(filterParams);
@@ -61,6 +62,8 @@ public class ChartController extends BaseController {
 	@RequestMapping(value = "parkingSurplusTotalData")
 	@ResponseBody
 	public Map<String, Object> parkingSurplusTotalData(ReportView reportView, HttpServletRequest request) {
+		User user=ShiroUserUtils.GetCurrentUser();
+		reportView.setCompanyCode(user.getCompanyCode());
 		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.parkingSurplusTotal.total", reportView);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "success");
@@ -96,6 +99,8 @@ public class ChartController extends BaseController {
 		if (StringUtils.isNotBlank(reportView.getSelectId())) {
 			reportView.setSelectType("PAS");
 		}
+		User user=ShiroUserUtils.GetCurrentUser();
+		reportView.setCompanyCode(user.getCompanyCode());
 		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.parkingInOutTotal.total", reportView);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "success");
@@ -131,6 +136,8 @@ public class ChartController extends BaseController {
 		if (StringUtils.isNotBlank(reportView.getSelectId())) {
 			reportView.setSelectType("PAS");
 		}
+		User user=ShiroUserUtils.GetCurrentUser();
+		reportView.setCompanyCode(user.getCompanyCode());
 		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.parkingChargeTotal.total",
 				reportView);
 		Map<String, Object> map = new HashMap<String, Object>();
