@@ -229,7 +229,7 @@ public class WeixinController extends HttpServiceBaseController {
             }
             yuyue.setShoufei(new Double(0));
             //查询地锁状态
-            ParkingLock parkingLock=this.parkingLockService.findUniqueBy("parkingGarage", yuding.getParkingGarage().getId());
+            ParkingLock parkingLock=this.parkingLockService.getByGarageId(yuding.getParkingGarage().getId());
             yuyue.getParkingGarage().setParkingLock(parkingLock);
             
             yuyues.add(yuyue);
@@ -263,7 +263,7 @@ public class WeixinController extends HttpServiceBaseController {
         }
         for(UserOrder userOrder:userOrderlList){
             //查询地锁状态
-            ParkingLock parkingLock=this.parkingLockService.findUniqueBy("parkingGarage", userOrder.getParkingGarage().getId());
+            ParkingLock parkingLock=this.parkingLockService.getByGarageId(userOrder.getParkingGarage().getId());
             userOrder.getParkingGarage().setParkingLock(parkingLock);
             
         }
@@ -449,10 +449,8 @@ public class WeixinController extends HttpServiceBaseController {
 //            }
 
             // 地锁上锁
-            Map<String, Object> searchParams = this.getSearchRequest();
-            searchParams.put("EQ_parkingGarage", parkingId);
-            List<ParkingLock> vl = this.parkingLockService.findList(searchParams);
-            if (vl == null || vl.isEmpty()) {
+            ParkingLock vl = this.parkingLockService.getByGarageId(parkingId);
+            if (vl == null) {
 //                return this.ajaxDoneError("没有匹配的地锁");
             } else {
                 String message= locked(vl, "01", userId);
@@ -536,12 +534,10 @@ public class WeixinController extends HttpServiceBaseController {
             if (!parkingId.equals(userOrder.getParkingGarage().getId())) {
                 return this.ajaxDoneError("没有该车位上锁权限，您的订单车位为" + userOrder.getParkingGarage().getId());
             } else {
-                Map<String, Object> searchParams = this.getSearchRequest();
-                searchParams.put("EQ_parkingGarage", parkingId);
-                List<ParkingLock> vl = this.parkingLockService.findList(searchParams);
+                ParkingLock vl = this.parkingLockService.getByGarageId(parkingId);
                 ParkingGarage parkingGarage = userOrder.getParkingGarage();
                 // TODO 假上锁
-                if (vl == null || vl.isEmpty()) {
+                if (vl == null) {
                     fakeLocked(parkingGarage);
 //                    return this.ajaxDoneError("没有匹配的地锁");
                 } else {
@@ -605,10 +601,7 @@ public class WeixinController extends HttpServiceBaseController {
             @RequestParam(required = true) Long parkingId) {
         Calendar now = Calendar.getInstance();
         String jsonstr = "\"true\"";
-        Map<String, Object> searchParams = this.getSearchRequest();
-        searchParams.put("EQ_parkingGarage", parkingId);
-        List<ParkingLock> vl = this.parkingLockService.findList(searchParams);
-
+        ParkingLock vl = this.parkingLockService.getByGarageId(parkingId);
         //预约单查询
         List<Yuding> yudings = yudingService.findByWxUser(userId);
         if (yudings != null && !yudings.isEmpty()) {
@@ -650,7 +643,7 @@ public class WeixinController extends HttpServiceBaseController {
                     return this.ajaxDoneError("该车位已被占用");
                 }
             }
-            if (vl != null && !vl.isEmpty()) {
+            if (vl != null) {
             	String message=  locked(vl, "02", userId);
             	if(message.length()>0){
             		 return this.ajaxDoneError(message.toString());
@@ -689,12 +682,10 @@ public class WeixinController extends HttpServiceBaseController {
     }
 
     //开关锁
-    private String locked(List<ParkingLock> vl, String state, Long userId) {
-        ParkingLock vm = vl.get(0);
-        ParkingGarage parkingGarage = vm.getParkingGarage();
+    private String locked(ParkingLock vl, String state, Long userId) {
+        ParkingGarage parkingGarage = vl.getParkingGarage();
         fakeLocked(parkingGarage);
-
-        return this.parkingLockService.reverse(new Long[]{vm.getId()}, state, userId, ParkingLockOperationEvent.SOURCETYPE_PHONE);
+        return this.parkingLockService.reverse(new Long[]{vl.getId()}, state, userId, ParkingLockOperationEvent.SOURCETYPE_PHONE);
     }
 
     //假开关锁

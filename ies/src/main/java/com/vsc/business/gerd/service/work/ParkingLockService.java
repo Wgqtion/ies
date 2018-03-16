@@ -5,21 +5,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.repository.security.UserDao;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.repository.work.ParkingLockDao;
 import com.vsc.modules.entity.MapBean;
 import com.vsc.modules.service.BaseService;
+import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.modules.tcp.TcpClient;
 import com.vsc.util.CoreUtils;
 import com.vsc.util.HexUtils;
@@ -27,8 +32,8 @@ import com.vsc.util.HexUtils;
 import io.netty.buffer.ByteBuf;
 
 /**
- * 
- * @author jerry
+ * 地锁逻辑操作
+ * @author XiangXiaoLin
  *
  */
 @Service
@@ -54,6 +59,88 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	public JpaSpecificationExecutor<ParkingLock> getJpaSpecificationExecutorDao() {
 		return this.parkingLockDao;
 	}
+	
+	/**
+	 * 根据ipAddress与lockNum查询，未删除的
+	 */
+	public ParkingLock getByCode(String ipAddress,String lockNum){
+		Map<String, Object> orderMap = new HashMap<String, Object>();
+        orderMap.put("EQ_ipAddress", ipAddress);
+        orderMap.put("EQ_lockNum", lockNum);
+        orderMap.put("EQ_isDelete",0);
+        return find(orderMap);
+	}
+	
+	/**
+	 * 根据parkingGarage查询，未删除的
+	 */
+	public ParkingLock getByGarageId(Long parkingGarageId){
+		Map<String, Object> orderMap = new HashMap<String, Object>();
+        orderMap.put("EQ_parkingGarage", parkingGarageId);
+        orderMap.put("EQ_isDelete",0);
+        return find(orderMap);
+	}
+	
+	/**
+	 * 根据条件查询，未删除的
+	 */
+	@Override
+	public List<ParkingLock> findList(Map<String, Object> filterParams) {
+		User user=ShiroUserUtils.GetCurrentUser();
+		filterParams.put("RLIKE_parkingGarage.parkingLotArea.parkingLot.companyCode", user.getCompany().getCode());
+		filterParams.put("EQ_isDelete", 0);
+		return super.findList(filterParams);
+	}
+	
+	/**
+	 * 根据条件查询，未删除的
+	 */
+	public List<ParkingLock> findAllList(Map<String, Object> filterParams) {
+		filterParams.put("EQ_isDelete", 0);
+		return super.findList(filterParams);
+	}
+
+	/**
+	 * 根据条件查询，未删除，like 用户公司code%
+	 */
+	@Override
+	public Page<ParkingLock> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
+		User user=ShiroUserUtils.GetCurrentUser();
+		filterParams.put("RLIKE_parkingGarage.parkingLotArea.parkingLot.companyCode", user.getCompany().getCode());
+		filterParams.put("EQ_isDelete", 0); 
+		return super.findPage(filterParams, pageRequest);
+	}
+	
+	
+	public void deleteUpdateById(Long id) {
+		ParkingLock entity=getObjectById(id);
+		entity.setIsDelete(true);
+		save(entity);
+	}
+
+	public void deleteUpdateByIds(Long[] ids) {
+		if (ArrayUtils.isNotEmpty(ids)) {
+			for (int i = 0; i < ids.length; i++) {
+				deleteUpdateById(ids[i]);
+			}
+		}
+	}
+	
+	public ParkingLock save(ParkingLock entity) {
+		User user=ShiroUserUtils.GetCurrentUser();
+		if(user!=null){
+			Date now=CoreUtils.nowtime();
+			if(entity.getId()==null){
+				entity.setCreateDate(now);
+				entity.setCreateUser(user);	
+			}
+			entity.setUpdateUser(user);
+			entity.setUpdateDate(now);
+			
+		}
+		return this.parkingLockDao.save(entity);
+	}
+	
 	@Transactional(propagation=Propagation.NOT_SUPPORTED) 
 	public String reverse(Long[] ids,String state, Long userId, int sourceType){
 		String message=new String();
@@ -63,7 +150,6 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		 
 		String lockNumVl=CoreUtils.fetchElementPropertyToString(vl, "lockNum", ",");//地锁编号
 		String ipAddressVl=CoreUtils.fetchElementPropertyToString(vl, "ipAddress", ",");//地锁区域编号
-		String deviceNumVl=CoreUtils.fetchElementPropertyToString(vl, "deviceNum", ",");//地锁设备编号
 		
 		String[] lockNums=lockNumVl.split(",");
 		String[] ipAddresss=ipAddressVl.split(",");

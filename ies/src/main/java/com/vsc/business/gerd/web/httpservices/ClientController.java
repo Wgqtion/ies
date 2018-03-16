@@ -1,9 +1,6 @@
 package com.vsc.business.gerd.web.httpservices;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -188,20 +185,14 @@ public class ClientController extends HttpServiceBaseController {
 		
 		
 		//查询地锁信息
-		Map<String, Object> orderMap = new HashMap<String, Object>();
-        orderMap.put("EQ_ipAddress", lockArea);
-        orderMap.put("EQ_lockNum", lockNum);
-//		ParkingLock parkingLock = parkingLockService.findUniqueBy("lockNum", lockNum);
-        List<ParkingLock> parkingLocks =parkingLockService.findList(orderMap);
+		
+        ParkingLock parkingLock =parkingLockService.getByCode(lockArea+"",lockNum);
         
-		ParkingLock parkingLock = null;
 		boolean isSave=false;
 		if(eventType!=34){
 			isSave=true;
 		}
-		if(parkingLocks!=null&&parkingLocks.size()>0&&isSave){
-			parkingLock = parkingLocks.get(0);
-			
+		if(parkingLock!=null&&isSave){
 			//是否保存日志
 			boolean flag=parkingLock.getIsOpen()==parkingLockEventLog.getIsOpen()
 						&&parkingLock.getIsCarOn()==parkingLockEventLog.getIsCarOn()

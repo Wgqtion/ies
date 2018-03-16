@@ -9,15 +9,13 @@
 		<div class="pageFormContent" layoutH="56">
 			<table class="formTable">
 				<tr>
+					<td class="fieldName"><label>区域编号:</label></td>
+					<td class="fieldInput"><label><input type="text" id="ipAddress" name="ipAddress" value="${vm.ipAddress}" validate="{required:true}" /></label><span for="ipAddress" generated="true" style="display: none" class="error"></span></td>
 					<td class="fieldName"><label>地锁编号:</label></td>
 					<td class="fieldInput"><label><input type="text" id="lockNum" name="lockNum" value="${vm.lockNum}" validate="{required:true}" /></label><span for="lockNum" generated="true" style="display: none" class="error"></span></td>
-					<td class="fieldName"><label>设备编号:</label></td>
-					<td class="fieldInput"><label><input type="text" id="deviceNum" name="deviceNum" value="${vm.deviceNum}" validate="{required:true}" /></label><span for="deviceNum" generated="true" style="display: none" class="error"></span></td>
 
 				</tr>
 				<tr>
-					<td class="fieldName"><label>区域编号:</label></td>
-					<td class="fieldInput"><label><input type="text" id="ipAddress" name="ipAddress" value="${vm.ipAddress}" validate="{required:true}" /></label><span for="ipAddress" generated="true" style="display: none" class="error"></span></td>
 					<td class="fieldName"><label>关联车位:</label></td>
 					<td class="fieldInput">
 					<label>
@@ -26,18 +24,18 @@
 					<a class="btnLook" rel="parkinglock_parkingGarage_select" title="选择关联车位" href="${ctx}/work/parkinggarage/select?single=true&search_EQ_isEnabled=1" lookupGroup="parkingGarageGroup">查找带回</a> <span class="info">(选择关联车位)</span>
 					</label><span for="parkingGarageGroup_name" generated="true" style="display: none" class="error"></span>
 					</td>
-				</tr>
-				<tr>
 					<td class="fieldName"><label>使用状态:</label></td>
 					<td class="fieldInput"><label><form:radiobutton path="vm.isEnabled" value="false" validate="{required:true}" /> <s:message code="parkinggarage.isenabled.false" /> </label> <label> <form:radiobutton path="vm.isEnabled" value="true" />
 							<s:message code="parkinggarage.isenabled.true" />
+				</tr>
+				<tr>
 					</label> <span style="display: none" class="error" generated="true" for="isEnabled"></span></td>
 					<td class="fieldName"><label>余位判断:</label></td>
 					<td class="fieldInput">
-						<label><input name="surplusDetections" type="checkbox" value="1" 
+						<label><input name="surplusDetection" type="checkbox" value="1" 
 							<c:if test="${fn:contains(vm.surplusDetection,'1')}"> checked="checked" </c:if>
 							validate="{required:true}" />超声波</label>
-						<label><input name="surplusDetections" type="checkbox" value="2" 
+						<label><input name="surplusDetection" type="checkbox" value="2" 
 							<c:if test="${fn:contains(vm.surplusDetection,'2')}"> checked="checked" </c:if>
 							validate="{required:true}" />地锁开关</label>
 					</td>

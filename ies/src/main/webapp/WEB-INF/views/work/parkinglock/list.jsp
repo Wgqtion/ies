@@ -9,16 +9,10 @@
 				<li><label>所属片区:</label> <input type="text" value="${param['search_LIKE_parkingGarage.parkingLotArea.name']}" name="search_LIKE_parkingGarage.parkingLotArea.name" /></li>
 				<li><label>区域编号:</label> <input type="text" value="${param.search_LIKE_ipAddress}" name="search_LIKE_ipAddress" /></li>
 				<li><label>地锁编号:</label> <input type="text" value="${param.search_LIKE_lockNum}" name="search_LIKE_lockNum" /></li>
-				<li><label>设备编号:</label> <input type="text" value="${param.search_LIKE_deviceNum}" name="search_LIKE_deviceNum" /></li>
 				<li><label>使用状态:</label> 
 				<select class="combox" name="search_EQ_isEnabled" selectedValue="${param['search_EQ_isEnabled']}"  dataUrl="${ctx}/static/js/data/parkinglock_isEnabled.json">
 					  <vsc:headoption></vsc:headoption>
 				</select>
-				</li>
-				<li><label>是否异常:</label> 
-					<select class="combox" name="search_EQ_isOk" selectedValue="${param['search_EQ_isOk']}"  dataUrl="${ctx}/static/js/data/parkinglock_isOk.json">
-						  <vsc:headoption></vsc:headoption>
-					</select>
 				</li>
 				<li><label>开关状态:</label> 
 					<select class="combox" name="search_EQ_isCarOn" selectedValue="${param['search_EQ_isCarOn']}"  dataUrl="${ctx}/static/js/data/parkinglock_isCarOn.json">
@@ -57,11 +51,9 @@
 				<th>所属片区</th>
 				<th <vsc:orderField name="ipAddress"/>>区域编号</th>
 				<th <vsc:orderField name="lockNum"/>>地锁编号</th>
-				<th <vsc:orderField name="deviceNum"/>>设备编号</th>
 				<th <vsc:orderField name="isEnabled"/>>使用状态</th>
 				<th>关联车位</th>
 				<th <vsc:orderField name="isCarOn"/>>是否有车</th>
-				<th <vsc:orderField name="isOk"/>>是否异常</th>
 				<th <vsc:orderField name="isOnline"/>>是否在线</th>
 				<th <vsc:orderField name="isOpen"/>>开关状态</th>
 				<th <vsc:orderField name="logUpdateTime"/>>最后上报时间</th>
@@ -75,11 +67,9 @@
 					<td>${varitem.parkingGarage.parkingLotArea.name}</td>
 					<td>${varitem.ipAddress}</td>
 					<td><a href="${ctx}/work/parkinglock/view/${varitem.id}" target="dialog" title="查看地锁信息" rel="parkinglock_view">${varitem.lockNum} </a></td>
-					<td><a href="${ctx}/work/parkinglock/view/${varitem.id}" target="dialog" title="查看地锁信息" rel="parkinglock_view">${varitem.deviceNum} </a></td>
 					<td><s:message code="parkinglock.isenabled.${varitem.isEnabled}" /></td>
 					<td><a href="${ctx}/work/parkinggarage/view/${varitem.parkingGarage.id}" target="dialog" title="查看停车位" rel="parkinggarage_view">${varitem.parkingGarage.name} </a></td>
 					<td><s:message code="parkinglock.isCarOn.${varitem.isCarOn}" /></td>
-					<td><s:message code="parkinglock.isOk.${varitem.isOk}" /></td>
 					<td><s:message code="parkinglock.isOnline.${varitem.isOnline}" /></td>
 					<td><s:message code="parkinglock.isOpen.${varitem.isOpen}" /></td>
 					<td><fmt:formatDate value='${ varitem.logUpdateTime}' pattern='yyyy-MM-dd HH:mm:ss' /></td>

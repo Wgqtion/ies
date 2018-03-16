@@ -11,27 +11,23 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.vsc.constants.Constants;
-import com.vsc.modules.entity.IdEntity;
+import com.vsc.modules.entity.BasicEntity;
 
 /**
- * 
- * @author jerry
+ * 地锁实体类
+ * @author XiangXiaoLin
  *
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "parking_lock")
-public class ParkingLock extends IdEntity {
+public class ParkingLock extends BasicEntity {
 
 	private java.lang.String lockNum;
-	private java.lang.String deviceNum;
 	private java.lang.String ipAddress;
-	private java.util.Date createTime;
 	private Boolean isEnabled = true;
 	private ParkingGarage parkingGarage;
 	private Boolean isCarOn = false;
 	private java.util.Date isCarOnTime;
-	private Boolean isOk = true;
-	private java.util.Date isOkTime;
 	private Boolean isOnline = false;
 	private java.util.Date isOnlineTime;
 	private Boolean isOpen;
@@ -116,18 +112,6 @@ public class ParkingLock extends IdEntity {
 	/**
 	 * @return
 	 */
-	@Column(name = "DEVICE_NUM")
-	public java.lang.String getDeviceNum() {
-		return this.deviceNum;
-	}
-
-	public void setDeviceNum(java.lang.String value) {
-		this.deviceNum = value;
-	}
-
-	/**
-	 * @return
-	 */
 	@Column(name = "IP_ADDRESS")
 	public java.lang.String getIpAddress() {
 		return this.ipAddress;
@@ -135,18 +119,6 @@ public class ParkingLock extends IdEntity {
 
 	public void setIpAddress(java.lang.String value) {
 		this.ipAddress = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "CREATE_TIME")
-	public java.util.Date getCreateTime() {
-		return this.createTime;
-	}
-
-	public void setCreateTime(java.util.Date value) {
-		this.createTime = value;
 	}
 
 	/**
@@ -196,30 +168,6 @@ public class ParkingLock extends IdEntity {
 
 	public void setIsCarOnTime(java.util.Date value) {
 		this.isCarOnTime = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "IS_OK")
-	public Boolean getIsOk() {
-		return this.isOk;
-	}
-
-	public void setIsOk(Boolean value) {
-		this.isOk = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "IS_OK_TIME")
-	public java.util.Date getIsOkTime() {
-		return this.isOkTime;
-	}
-
-	public void setIsOkTime(java.util.Date value) {
-		this.isOkTime = value;
 	}
 
 	/**
