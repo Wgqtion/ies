@@ -128,7 +128,7 @@
 							<li><a>地锁管理</a>
 							<ul>
 								<li><a title="地锁信息" href="${ctx}/work/parkinglock" target="navTab" rel="work_parkinglock">地锁信息</a></li>
-								<li><a title="地锁使用统计" href="${ctx}/work/parkinglockoperationevent" target="navTab" rel="work_parkinglockoperationevent">使用统计</a></li>
+								<li><a title="地锁使用统计" href="${ctx}/work/parkinglockoperationevent?isHome=true" target="navTab" rel="work_parkinglockoperationevent">使用统计</a></li>
 							</ul>
 							</li>
 						</ul>

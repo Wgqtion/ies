@@ -15,7 +15,7 @@ import com.vsc.modules.entity.IdEntity;
 
 /**
  * 
- * @author jerry
+ * @author XiangXiaoLin
  *
  */
 @Entity

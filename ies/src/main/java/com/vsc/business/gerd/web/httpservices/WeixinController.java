@@ -92,7 +92,7 @@ public class WeixinController extends HttpServiceBaseController {
     @Autowired
     private ParkingGarageService parkingGarageService;
 
-    //上锁
+    //地锁
     @Autowired
     private ParkingLockService parkingLockService;
 

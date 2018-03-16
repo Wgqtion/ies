@@ -13,8 +13,8 @@ import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
 
 /**
- * 
- * @author jerry
+ * 地锁操作记录实体类
+ * @author XiangXiaoLin
  *
  */
 @Entity
@@ -39,12 +39,8 @@ public class ParkingLockOperationEvent extends IdEntity {
 	private ParkingLock parkingLock;
 	private java.util.Date reportedTime;
 	private java.util.Date createTime;
-	private java.lang.String message;
-	private java.lang.String lockNum;
-	private java.lang.String deviceNum;
-	private java.lang.String ipAddress;
-	private java.lang.String resultType;
 	private User user;
+	private WxUser wxUser;
 	
 	private Integer status=0;
 
@@ -124,66 +120,6 @@ public class ParkingLockOperationEvent extends IdEntity {
 	/**
 	 * @return
 	 */
-	@Column(name = "MESSAGE")
-	public java.lang.String getMessage() {
-		return this.message;
-	}
-
-	public void setMessage(java.lang.String value) {
-		this.message = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "LOCK_NUM")
-	public java.lang.String getLockNum() {
-		return this.lockNum;
-	}
-
-	public void setLockNum(java.lang.String value) {
-		this.lockNum = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "DEVICE_NUM")
-	public java.lang.String getDeviceNum() {
-		return this.deviceNum;
-	}
-
-	public void setDeviceNum(java.lang.String value) {
-		this.deviceNum = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "IP_ADDRESS")
-	public java.lang.String getIpAddress() {
-		return this.ipAddress;
-	}
-
-	public void setIpAddress(java.lang.String value) {
-		this.ipAddress = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "RESULT_TYPE")
-	public java.lang.String getResultType() {
-		return this.resultType;
-	}
-
-	public void setResultType(java.lang.String value) {
-		this.resultType = value;
-	}
-
-	/**
-	 * @return
-	 */
 	@ManyToOne
 	@JoinColumn(name = "USER_ID")
 	public User getUser() {
@@ -192,6 +128,20 @@ public class ParkingLockOperationEvent extends IdEntity {
 
 	public void setUser(User value) {
 		this.user = value;
+	}
+	
+	
+	/**
+	 * @return
+	 */
+	@ManyToOne
+	@JoinColumn(name = "WX_USER_ID")
+	public WxUser getWxUser() {
+		return wxUser;
+	}
+
+	public void setWxUser(WxUser wxUser) {
+		this.wxUser = wxUser;
 	}
 
 	@Override

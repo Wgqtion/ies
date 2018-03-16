@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.service.work.ParkingLockOperationEventService;
 import com.vsc.util.HexUtils;
@@ -45,8 +46,8 @@ public class TcpClientHandler extends ChannelInboundHandlerAdapter {
     		String lockNum=HexUtils.HexToDec(str, 12,16);
     		Integer state=Integer.valueOf(HexUtils.HexToDec(str, 16,18));//1正常，2失败
     		Map<String, Object> filterParams=new HashMap<String, Object>();
-    		filterParams.put("EQ_ipAddress",lockArea);
-    		filterParams.put("EQ_lockNum",lockNum);
+    		ParkingLock parkingLock=parkingLockOperationEventService.getParkingLockByCode(lockArea,lockNum);
+    		filterParams.put("EQ_parkingLock",parkingLock.getId());
     		filterParams.put("EQ_status",0);
     		List<ParkingLockOperationEvent> ploes=parkingLockOperationEventService.findAll(filterParams, "createTime","DESC");
     		if(ploes!=null){

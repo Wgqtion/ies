@@ -40,25 +40,24 @@
 		<thead>
 			<tr>
 				<th width="40" align="center">序号</th>
+				<th>区域编号</th>
+				<th>地锁编号</th>
 				<th <vsc:orderField name="eventType"/>>操作类型</th>
 				<th <vsc:orderField name="sourceType"/>>来源</th>
-				<th>地锁编号</th>
-				<th <vsc:orderField name="reportedTime"/>>操作时间</th>
-				<th <vsc:orderField name="resultType"/>>操作结果</th>
 				<th>操作人</th>
-
+				<th <vsc:orderField name="reportedTime"/>>操作时间</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${page.content}" var="varitem" varStatus="varindex">
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
-					<td><a href="${ctx}/work/parkinglockoperationevent/view/${varitem.id}" target="dialog" title="查看操作日志" rel="parkinglockoperationevent_view"><s:message code="parkinglockoperationevent.eventtype.${varitem.eventType}"/></a></td>
-					<td><s:message code="parkinglockoperationevent.sourcetype.${varitem.sourceType}"/></td>
+					<td> ${varitem.parkingLock.ipAddress} </td>
 					<td><a href="${ctx}/work/parkinglock/view/${varitem.parkingLock.id}" target="dialog" title="查看地锁"> ${varitem.parkingLock.lockNum} </a></td>
+					<td><s:message code="parkinglockoperationevent.eventtype.${varitem.eventType}"/></a></td>
+					<td><s:message code="parkinglockoperationevent.sourcetype.${varitem.sourceType}"/></td>
+					<td><c:if test="${varitem.sourceType eq 1}">${varitem.user.name}</c:if><c:if test="${varitem.sourceType eq 2}">${varitem.wxUser.name}</c:if></td>
 					<td><fmt:formatDate value='${ varitem.reportedTime}' pattern='yyyy-MM-dd HH:mm' /></td>
-					<td>${varitem.resultType}</td>
-					<td>${varitem.user.name}</td>
 				</tr>
 			</c:forEach>
 		</tbody>

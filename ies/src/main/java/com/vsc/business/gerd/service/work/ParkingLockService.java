@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
-import com.vsc.business.core.repository.security.UserDao;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.repository.work.ParkingLockDao;
@@ -44,9 +43,10 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	@Autowired
 	private ParkingLockDao parkingLockDao;
 
-	@Autowired
-	private UserDao userDao;
-
+	//微信用户
+    @Autowired
+    private WxUserService wxUserService;
+	
 	@Autowired
 	private ParkingLockOperationEventService parkingLockOperationEventService;
 
@@ -154,23 +154,20 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		String[] lockNums=lockNumVl.split(",");
 		String[] ipAddresss=ipAddressVl.split(",");
 		for(int i=0;i<ids.length;i++){
-			
+			ParkingLock lock=vl.get(i);
 			String lockNum=lockNums[i];
 			String ipAddress=ipAddresss[i];
 			
 			Date now = CoreUtils.nowtime();
 			ParkingLockOperationEvent lockEvent = new ParkingLockOperationEvent();
-			lockEvent.setCreateTime(now);
 			lockEvent.setReportedTime(now);
 			lockEvent.setEventType(Integer.valueOf(state));
-			lockEvent.setMessage("下发["+state+"]指令");
 			lockEvent.setSourceType(sourceType);
-			lockEvent.setIpAddress(ipAddress);
-			lockEvent.setLockNum(lockNum);
 			lockEvent.setStatus(0);
-			lockEvent.setResultType("1");
+			lockEvent.setParkingLock(lock);
 			if(userId!=null){
-			lockEvent.setUser(userDao.findOne(userId));}
+				lockEvent.setWxUser(wxUserService.getObjectById(userId));
+			}
 			//lockEvent.setParkingLock(vm);
 
 
