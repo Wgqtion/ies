@@ -8,7 +8,19 @@ public class ReportView<T> {
 	private String selectType;
 	private String value;
 	private T entity;
+	/**
+	 * 公司code
+	 */
+	private String companyCode;
 	
+	
+	
+	public String getCompanyCode() {
+		return companyCode;
+	}
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
+	}
 	public String getValue() {
 		return value;
 	}
