@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/inc/include.inc.jsp"%> 
-<vsc:pagerForm action="#rel#" id="pagerForm" cacheName="selectAuthorityids"></vsc:pagerForm> 
+<vsc:pagerForm action="#rel#" id="pagerForm"></vsc:pagerForm> 
 <div class="pageHeader">
-	<form rel="pagerForm" method="post" action="${ctx}/sys/authority/select" onsubmit="return dwzSearch(this, 'dialog');">
+	<form rel="pagerForm" method="post" action="${ctx}/sys/resource/select" onsubmit="return dwzSearch(this, 'dialog');">
 		<div class="searchBar">
 			<ul class="searchContent">
-				<li><label>授权名称：</label> <input class="textInput" name="search_LIKE_displayName" value="${param.search_LIKE_displayName}" type="text"></li>
+				<li><label>资源标识：</label> <input class="textInput" name="search_LIKE_value" value="${param.search_LIKE_value}" type="text"></li>
 			</ul>
 			<div class="subBar">
 				<ul>
@@ -19,14 +19,14 @@
 					<li>
 						<div class="button">
 							<div class="buttonContent">
-								<button type="button" multLookup="selectAuthorityids" warn="请选择资源">选择</button>
+								<button type="button" multLookup="ids" warn="请选择资源">选择</button>
 							</div>
 						</div>
 					</li>
 					<li>
 						<div class="button">
 							<div class="buttonContent">
-								<button type="button" onclick="javascript:$.bringBack({id:'', displayName:'',name:''})">清空</button>
+								<button type="button" onclick="javascript:$.bringBack({id:'', value:'',position:''})">清空</button>
 							</div>
 						</div>
 					</li>
@@ -40,18 +40,16 @@
 		<thead>
 			<tr>
 				<th width="30"><input type="checkbox" class="checkboxCtrl" group="ids" /></th>
-				<th <vsc:orderField name="displayName"/>>授权名称</th>
-				<th <vsc:orderField name="name"/>>授权KEY</th>
-				<th>资源分配</th>
+				<th <vsc:orderField name="value"/>>资源标志</th>
+				<th <vsc:orderField name="position"/>>排序</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${page.content}" var="item" varStatus="index">
 				<tr>
-					<td><input <vsc:defaultIfIndexOfParameterValues cacheName="selectAuthorityids" objectToFind="{id:'${item.id}', displayName:'${item.displayName}',name:'${item.name}'}"  yesStr="checked=\"checked\""/> onclick="javascript:pagePass(this,'pagerForm','selectAuthorityids')" type="checkbox" name="ids" value="{id:'${item.id}', displayName:'${item.displayName}',name:'${item.name}'}" /></td>
-					<td>${item.displayName}</td>
-					<td>${item.name}</td> 
-					<td><vsc:fetchElementPropertyToString propertyName="value" list="${item.resourceList}"></vsc:fetchElementPropertyToString></td> 
+					<td><input type="checkbox" name="ids" value="{id:'${item.id}', value:'${item.value}',position:'${item.position}'}" /></td>
+					<td>${item.value}</td>
+					<td>${item.position}</td> 
 				</tr>
 			</c:forEach>
 		</tbody>
