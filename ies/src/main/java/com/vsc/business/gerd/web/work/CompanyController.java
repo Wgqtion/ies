@@ -33,6 +33,7 @@ public class CompanyController extends BaseController {
 
 	@Autowired
 	private CompanyService companyService;
+	
 	public static final String PATH = "work/company";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";

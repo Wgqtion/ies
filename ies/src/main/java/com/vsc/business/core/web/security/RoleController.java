@@ -1,5 +1,7 @@
 package com.vsc.business.core.web.security;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -35,14 +37,24 @@ public class RoleController extends BaseController {
 		model.addAttribute("page", page);
 		return "sys/role/list";
 	}
-
-	@RequestMapping(value = "select")
-	public String select(Model model, ServletRequest request) {
-		PageRequest pageRequest = this.getPageRequest("id", "asc");
-		Map<String, Object> searchParams = this.getSearchRequest();
-		Page<Role> page = roleService.findPage(searchParams, pageRequest);
-		model.addAttribute("page", page);
+	
+	@RequestMapping(value = "select/{companyId}", method = RequestMethod.GET)
+	public String select(@PathVariable("companyId") Long companyId, Model model, ServletRequest request) {
+		List<Role> list = roleService.getAllList();
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_companyList.id",companyId);
+		searchParams.put("EQ_companyList.isDelete",0);
+		List<Role> roles =roleService.findList(searchParams);
+		model.addAttribute("list", list);
+		model.addAttribute("roles", roles);
+		model.addAttribute("companyId", companyId);
 		return "sys/role/select";
+	}
+	
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	public ModelAndView save(Long companyId,String codes) {
+		this.roleService.save(companyId, codes);
+		return this.ajaxDoneSuccess("保存成功");
 	}
 
 	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
@@ -59,8 +71,8 @@ public class RoleController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid Role role, @RequestParam(value = "authority.id", required = false) Long[] ids) {
-		roleService.save(role, ids);
+	public ModelAndView create(@Valid Role role) {
+		roleService.save(role);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
@@ -72,9 +84,8 @@ public class RoleController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Role role,
-			@RequestParam(value = "authority.id", required = false) Long[] ids) {
-		roleService.save(role, ids);
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Role role) {
+		roleService.save(role);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 

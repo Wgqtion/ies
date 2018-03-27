@@ -74,13 +74,13 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		List<String> roles = Lists.newArrayList();
 		List<String> permissions = Lists.newArrayList();
-		for (Iterator<Role> iterator = user.getRoleList().iterator(); iterator.hasNext();) {
+		for (Iterator<Role> iterator = user.getCompany().getRoleList().iterator(); iterator.hasNext();) {
 			Role role = iterator.next();
 			roles.add(role.getName());
 
 			for (Iterator<Authority> iterator2 = role.getAuthorityList().iterator(); iterator2.hasNext();) {
 				Authority authority = iterator2.next();
-				permissions.add(authority.getName());
+				permissions.add(authority.getCode());
 			}
 		}
 

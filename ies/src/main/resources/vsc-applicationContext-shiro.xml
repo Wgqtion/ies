@@ -47,12 +47,12 @@
 				/login/ajax = anon				
 				/logout = logout
 				/static/** = anon 
-				/index=authc,permsany
+				/index=authc
 				/sys/**=authc,permsany
 				/attach/up=authc,permsany
 				/httpservices/** = anon 
 				/work/parkingorder/** = anon 
-				/** = authc  
+				/** = authc,permsany
 	        </value>  
 	    </property>
 	</bean>

@@ -1,4 +1,4 @@
-<%-- 开发模式 js 源码文件 --%>
+<%-- å¼åæ¨¡å¼ js æºç æä»¶ --%>
 <script src="${ctx}/static/js/jquery/1.7.2/jquery.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/jquery/jquery.cookie.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/jquery/jquery.metadata.js" type="text/javascript"></script>
@@ -41,12 +41,18 @@
 <script src="${ctx}/static/js/dwz/dwz.print.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/dwz/vsc.select.comboxSelectRemoteData.js" type="text/javascript"></script>
 
+<!-- echarts -->
 <script src="${ctx}/static/js/echarts/echarts.common.min.js" type="text/javascript"></script>
  
  
+<!-- zTree树 -->
+<link rel="stylesheet" href="${ctx}/static/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="${ctx}/static/js/zTree/jquery.ztree.core.min.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/zTree/jquery.ztree.excheck.min.js"></script>
+ 
 <%--dwz.scrollCenter.js
     dwz.util.number.js
-未引入 --%>
+æªå¼å¥ --%>
 <script src="${ctx}/static/js/jquery-countdown/countDown.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/dwz/dwz.regional.zh.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/vsc/vsc.fastjson.js" type="text/javascript"></script>
@@ -56,7 +62,7 @@
 <script src="${ctx}/static/js/jquery-autocomplete/jquery.autocomplete.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/skippr/jquery.skippr.min.js" type="text/javascript"></script>
 
-<%-- 部署模式 js 压缩文件 
+<%-- é¨ç½²æ¨¡å¼ js åç¼©æä»¶ 
 <script src="${ctx}/static/js/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/jquery/jquery.cookie.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/jquery/jquery.metadata.min.js" type="text/javascript"></script>

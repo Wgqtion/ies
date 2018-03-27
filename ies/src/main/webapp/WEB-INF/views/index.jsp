@@ -74,7 +74,7 @@
 			<div class="headerNav">
 				<a class="logo" href="#">标志</a>
 				<ul class="nav">
-					<li><a href="javascript:void(0)">您好,<shiro:principal property="name"/></a></li>
+					<li>您好,<shiro:principal property="name"/></li>
 					<li><a title="重置密码" href="${ctx}/sys/user/reset/<shiro:principal property="id" />" target="dialog" rel="sys_user_reset">重置密码</a></li>
 					<li><a href="${ctx}/logout">安全退出</a></li>
 				</ul>
@@ -93,134 +93,42 @@
 					<h2>主菜单</h2>
 					<div>收缩</div>
 				</div>
-				<div class="accordion" fillSpace="sidebar">
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>场库管理
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-							<li><a href="${ctx}/work/parkinglot" title="停车场信息" target="navTab" rel="work_parkinglot">停车场信息</a></li>
-							<li><a href="${ctx}/work/parkinglotarea" title="片区信息" target="navTab" rel="work_parkinglotarea">片区信息</a></li>
-							<li><a href="${ctx}/work/parkinggarage" title="车位信息" target="navTab" rel="work_parkinggarage">车位信息</a></li>
-							<li><a href="${ctx}/work/passages" title="通道信息" target="navTab" rel="work_passages">通道信息</a></li>
-						</ul>
-					</div>
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>用户管理
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-							<li><a href="${ctx}/sys/user" target="navTab" rel="sys_user">后台用户</a></li>
-							<li><a href="${ctx}/work/wxUser" title="微信用户" target="navTab" rel="work_wxUser">微信用户</a></li>
-						</ul>
-					</div>
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>设备管理
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-							<li><a>地锁管理</a>
-							<ul>
-								<li><a title="地锁信息" href="${ctx}/work/parkinglock" target="navTab" rel="work_parkinglock">地锁信息</a></li>
-								<li><a title="地锁使用统计" href="${ctx}/work/parkinglockoperationevent?isHome=true" target="navTab" rel="work_parkinglockoperationevent">使用统计</a></li>
+				
+				<!-- 菜单 -->
+				<div class="accordion">
+					<!-- 1级菜单 -->
+					<c:forEach items="${resources1}" var="resource1">
+						<div class="accordionHeader">
+							<h2>
+								<span>Folder</span>${resource1.name}
+							</h2>
+						</div>
+						<div class="accordionContent">
+							<ul class="tree treeFolder">
+								<c:forEach items="${resources2}" var="resource2">
+									<c:if test="${resource2.parent.code eq resource1.code}">
+										<li><a>${resource2.name}</a>
+											<ul>
+												<c:forEach items="${resources3}" var="resource3">
+													<c:if test="${resource3.parent.code eq resource2.code}">
+														<li><a href="${ctx}${resource3.value}" title="${resource3.name}" target="navTab" rel="${resource3.code}">${resource3.name}</a></li>
+													</c:if>
+												</c:forEach>
+											</ul>
+										</li>
+									</c:if>
+								</c:forEach>
+								<c:forEach items="${resources3}" var="resource3">
+									<c:if test="${resource3.parent.code eq resource1.code}">
+										<li><a href="${ctx}${resource3.value}" title="${resource3.name}" target="navTab" rel="${resource3.code}">${resource3.name}</a></li>
+									</c:if>
+								</c:forEach>
 							</ul>
-							</li>
-						</ul>
-						<ul class="tree treeFolder">
-							<li><a>充电桩管理</a>
-							<ul>
-								<li><a title="充电桩平台" href="https://www.teld.cn/" target="navTab" rel="telaidian">充电桩平台</a></li>
-							</ul>
-							</li>
-						</ul>
-					</div> 
-					
-					
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>车辆管理
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-							<li><a title="车辆信息" href="${ctx}/work/car" target="navTab" rel="work_car">车辆信息</a></li>
-						</ul>
-					</div>
-					
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>订单管理
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-							<li><a title="停车记录单" href="${ctx}/work/parkingorder?isHome=true" target="navTab" rel="work_parkingorder">停车记录单</a></li>
-							<li><a title="预约订单" href="${ctx}/work/yuding" target="navTab" rel="work_yuding">预约订单</a></li>
-						</ul>
-					</div>
-					
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>数据报表
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-							<li><a title="车位状态查询" href="${ctx}/work/report/parkingGarageStatus" target="navTab" rel="work_report_parkingGarageStatus">车位状态查询</a></li>
-						</ul>
-					</div> 
-					
-					
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>图形报表
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-							<li><a>停车场图表</a>
-							<ul>
-								<li><a title="余位统计" href="${ctx}/work/chart/parkingSurplusTotalView" target="navTab" rel="work_chart_parkingSurplusTotalView">余位统计</a></li>
-								<li><a title="进出次数" href="${ctx}/work/chart/parkingInOutTotalView" target="navTab" rel="work_chart_parkingInOutTotalView">进出次数</a></li>
-								<li><a title="收费统计" href="${ctx}/work/chart/parkingChargeTotalView" target="navTab" rel="work_chart_parkingChargeTotalView">收费统计</a></li>
-							</ul>
-							</li>
-						</ul>
-					</div> 
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>基础设置
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-							<li><a href="${ctx}/work/org" target="navTab" rel="work_org">小程序权限</a></li>
-						</ul>
-					</div>
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>系统管理
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-							<li><a href="${ctx}/work/company" target="navTab" rel="work_company">公司管理</a></li>
-							<li><a>权限管理</a>
-								<ul>
-									<li><a href="${ctx}/sys/role" target="navTab" rel="sys_role">角色管理</a></li>
-									<li><a href="${ctx}/sys/authority" target="navTab" rel="sys_authority">授权管理</a></li>
-									<li><a href="${ctx}/sys/resource" target="navTab" rel="sys_resource">资源管理</a></li>
-								</ul></li>
-						</ul>
-					</div>
-
+						</div>
+					</c:forEach>
 				</div>
+				
+				
 			</div>
 		</div>
 		<div id="container">

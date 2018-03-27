@@ -5,8 +5,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -38,7 +36,6 @@ public class User extends BasicEntity {
     private Company company;
 
     private List<Attach> attachs = Lists.newArrayList();
-    private List<Role> roleList = Lists.newArrayList();
     /**
      * 公司code
      */
@@ -104,18 +101,6 @@ public class User extends BasicEntity {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @ManyToMany
-    @JoinTable(name = Constants.TABLE_PREFIX + "user_role", joinColumns = {
-        @JoinColumn(name = "user_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "role_id")})
-    public List<Role> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
     }
 
     @OneToMany(mappedBy = "user")

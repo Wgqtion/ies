@@ -1,6 +1,9 @@
 package com.vsc.business.core.service.security;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,57 +12,71 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springside.modules.utils.Collections3;
 
-import com.vsc.business.core.entity.security.Resource;
-import com.vsc.business.core.repository.security.ResourceDao;
+import com.vsc.business.core.entity.security.Authority;
+import com.vsc.business.core.entity.security.Role;
+import com.vsc.business.core.repository.security.AuthorityDao;
 import com.vsc.modules.service.BaseService;
 
+/**
+ * 数据权限逻辑操作
+ * @author XiangXiaoLin
+ *
+ */
 @Service
 @Transactional
-public class ResourceService extends BaseService<Resource> {
-	private static Logger logger = LoggerFactory.getLogger(ResourceService.class);
+public class AuthorityService extends BaseService<Authority> {
+	private static Logger logger = LoggerFactory.getLogger(AuthorityService.class);
 
-	private ResourceDao resourceDao;
+	private AuthorityDao authorityDao;
+	
+
+	@Autowired
+	private RoleService roleService;
 	
 	@Autowired
-	public void setResourceDao(ResourceDao resourceDao) {
-		this.resourceDao = resourceDao;
+	public void setAuthorityDao(AuthorityDao authorityDao) {
+		this.authorityDao = authorityDao;
 	}
 	
 	@Override
-	public PagingAndSortingRepository<Resource, Long> getPagingAndSortingRepositoryDao() {
-		return this.resourceDao;
+	public PagingAndSortingRepository<Authority, Long> getPagingAndSortingRepositoryDao() {
+		return this.authorityDao;
 	}
 
 	@Override
-	public JpaSpecificationExecutor<Resource> getJpaSpecificationExecutorDao() {
-		return this.resourceDao;
+	public JpaSpecificationExecutor<Authority> getJpaSpecificationExecutorDao() {
+		return this.authorityDao;
 	}
 	
 	/**
-	 * 刷新系统中所有配置好的RequestMapping
-	 * 如果配置的RequestMapping地址已经存在，更新数据库记录，不存在就创建新记录.
-	 * 不会删除urls中不存在的记录
-	 * @param urls 所有url资源
+	 * 根据用户id，类型查询菜单资源
+	 * parentCode，sort排序
+	 * @param userId 用户id
+	 * @param resourceType 类型
+	 * @return 菜单资源
 	 */
-	public void resetRequestMappingResource(Collection<String> urls){
-		if(Collections3.isNotEmpty(urls)){
-			//this.resourceDao.deleteAll();
-			//this.resourceDao.flush();
-			double n=0;
-			for (String value : urls) {
-				Resource entity=this.findUniqueBy("value", value);
-				if(entity==null){
-					entity=new Resource();
-				}
-				entity.setPosition(Double.valueOf(++n));
-				entity.setResourceType("url");
-				entity.setValue(value);	
-				
-				this.resourceDao.save(entity);
-			} 
-		} 
+	public List<Authority> getMenus(Long userId,Integer resourceType){
+		Map<String, Object> filterParams = new HashMap<String, Object>();
+		filterParams.put("EQ_roleList.companyList.users.id", userId);
+		filterParams.put("EQ_roleList.companyList.isDelete", 0);
+		filterParams.put("EQ_resourceType", resourceType);
+		return findAll(filterParams,"parentCode,sort","ASC,ASC");
 	}
-
+	
+	/**
+	 * 保存角色的权限集合
+	 * @param roleId
+	 * @param codes
+	 */
+	public void save(Long roleId,String codes){
+		Role role=roleService.getObjectById(roleId);
+		String[] Acodes=codes.split(",");
+		List<Authority> authorityList=new ArrayList<Authority>();
+		for(String code:Acodes){
+			authorityList.add(this.findUniqueBy("code", code));
+		}
+		role.setAuthorityList(authorityList);
+		this.roleService.save(role);
+	}
 }

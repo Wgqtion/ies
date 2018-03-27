@@ -1,60 +1,62 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<%@ include file="/WEB-INF/inc/include.inc.jsp"%> 
-<vsc:pagerForm action="#rel#" id="pagerForm"></vsc:pagerForm> 
-<div class="pageHeader">
-	<form rel="pagerForm" method="post" action="${ctx}/sys/resource/select" onsubmit="return dwzSearch(this, 'dialog');">
-		<div class="searchBar">
-			<ul class="searchContent">
-				<li><label>资源标识：</label> <input class="textInput" name="search_LIKE_value" value="${param.search_LIKE_value}" type="text"></li>
-			</ul>
-			<div class="subBar">
-				<ul>
-					<li>
-						<div class="buttonActive">
-							<div class="buttonContent">
-								<button type="submit">查询</button>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="button">
-							<div class="buttonContent">
-								<button type="button" multLookup="ids" warn="请选择资源">选择</button>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="button">
-							<div class="buttonContent">
-								<button type="button" onclick="javascript:$.bringBack({id:'', value:'',position:''})">清空</button>
-							</div>
-						</div>
-					</li>
-				</ul>
-			</div>
+<%@ include file="/WEB-INF/inc/include.inc.jsp"%>
+
+	
+<SCRIPT type="text/javascript">
+	var setting = {
+		check: {
+			enable: true
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		}
+	};
+
+	var zNodes =[
+	   <c:forEach items="${list}" var="entity" varStatus="index">
+	   		{ id:'${entity.code}', pId:'${entity.parentCode}', name:'${entity.name}'<c:forEach items="${authoritys}" var="authority"><c:if test="${authority.id eq entity.id}">,checked:true</c:if></c:forEach>}<c:if test="${!index.last}">,</c:if>
+	   </c:forEach>
+	];
+	
+	$(document).ready(function(){
+		$.fn.zTree.init($("#authorityTree"), setting, zNodes);
+	});
+	//保存
+	function save(){
+		var treeObj=$.fn.zTree.getZTreeObj("authorityTree"),  
+        nodes=treeObj.getCheckedNodes(true),  
+        codes="";  
+        for(var i=0;i<nodes.length;i++){  
+        	codes+=nodes[i].id + ",";
+        }
+        var roleId='${roleId}';
+        $.ajax({
+       	  type: 'POST',
+       	  url: "${ctx}/sys/authority/save",
+       	  data: {"roleId":roleId,"codes":codes},
+     	  success : function(result) {
+     		  alert(result.message);
+	       	  if (result.statusCode == "200") {
+	       	  	  $("#cancel").click();
+	       	  }
+    	  },
+    	  error:function(msg){
+        	 alert(msg);
+      	  },
+      	dataType:"json"
+       	});
+	}
+</SCRIPT>
+<div class="content_wrap">
+	<div class="zTreeDemoBackground">
+		<ul id="authorityTree" class="ztree"></ul>
+	</div>
+	<div class="buttonActive" style="margin-left: 20px;">
+		<div class="buttonContent">
+			<button type="button" onclick="save();">保存</button>
+			<button id="cancel" type="button" style="display: none;" class="close">取消</button>
 		</div>
-	</form>
-</div>
-<div class="pageContent">
-	<table class="table" layoutH="118" targetType="dialog" width="100%">
-		<thead>
-			<tr>
-				<th width="30"><input type="checkbox" class="checkboxCtrl" group="ids" /></th>
-				<th <vsc:orderField name="value"/>>资源标志</th>
-				<th <vsc:orderField name="position"/>>排序</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${page.content}" var="item" varStatus="index">
-				<tr>
-					<td><input type="checkbox" name="ids" value="{id:'${item.id}', value:'${item.value}',position:'${item.position}'}" /></td>
-					<td>${item.value}</td>
-					<td>${item.position}</td> 
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table> 
-	<div class="panelBar">
-	<vsc:pagination page="${page}" targetType="dialog" numPerPageOnchange="dwzPageBreak({targetType:'dialog', data:{numPerPage:this.value}})"></vsc:pagination>	 
 	</div>
 </div>
