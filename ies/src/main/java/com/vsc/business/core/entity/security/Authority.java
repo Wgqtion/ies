@@ -41,10 +41,39 @@ public class Authority extends IdEntity implements Serializable{
 	 */
 	private Integer sort;
 	private String code;
+	/**
+	 * 是否本地打开，是则加项目前缀
+	 */
+	private Boolean isLocal;
+	/**
+	 * 打开位置
+	 */
+	private String urlTarget;
+	
+	
 	private List<Role> roleList= Lists.newArrayList();
 
 	private List<Authority> children=Lists.newArrayList();
 	
+	
+	@Column(name = "URL_TARGET")
+	public String getUrlTarget() {
+		return urlTarget;
+	}
+
+	public void setUrlTarget(String urlTarget) {
+		this.urlTarget = urlTarget;
+	}
+
+	@Column(name = "IS_LOCAL")
+	public Boolean getIsLocal() {
+		return isLocal;
+	}
+
+	public void setIsLocal(Boolean isLocal) {
+		this.isLocal = isLocal;
+	}
+
 	@Column(name = "PARENT_CODE")
 	public String getParentCode() {
 		return parentCode;

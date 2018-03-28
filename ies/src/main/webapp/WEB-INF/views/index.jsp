@@ -111,7 +111,7 @@
 											<ul>
 												<c:forEach items="${resources3}" var="resource3">
 													<c:if test="${resource3.parent.code eq resource2.code}">
-														<li><a href="${ctx}${resource3.value}" title="${resource3.name}" target="navTab" rel="${resource3.code}">${resource3.name}</a></li>
+														<li><a href="<c:if test="${resource3.isLocal}">${ctx}</c:if><c:if test="${!resource3.isLocal}">//</c:if>${resource3.value}" title="${resource3.name}" target="${resource3.urlTarget}" rel="${resource3.code}">${resource3.name}</a></li>
 													</c:if>
 												</c:forEach>
 											</ul>
@@ -120,7 +120,7 @@
 								</c:forEach>
 								<c:forEach items="${resources3}" var="resource3">
 									<c:if test="${resource3.parent.code eq resource1.code}">
-										<li><a href="${ctx}${resource3.value}" title="${resource3.name}" target="navTab" rel="${resource3.code}">${resource3.name}</a></li>
+										<li><a href="<c:if test="${resource3.isLocal}">${ctx}</c:if><c:if test="${!resource3.isLocal}">//</c:if>${resource3.value}" title="${resource3.name}" target="${resource3.urlTarget}" rel="${resource3.code}">${resource3.name}</a></li>
 									</c:if>
 								</c:forEach>
 							</ul>
