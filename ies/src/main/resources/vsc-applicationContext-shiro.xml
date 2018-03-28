@@ -32,13 +32,19 @@
 	
 	<!-- Shiro Filter -->
 	<!-- 定制过滤器 -->
-	<bean id="permsany" class="com.vsc.modules.shiro.CustomPermissionsAuthorizationFilter" lazy-init="false"/>
+	<bean id="perms" class="com.vsc.modules.shiro.CustomPermissionsAuthorizationFilter" lazy-init="true"/>
 	<!-- 加入定制的过滤配置 -->
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+	<bean id="shiroFilter" class="com.vsc.modules.shiro.ShiroPermissionFactory" depends-on="authorityDao,companyDao">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login" />
 		<property name="successUrl" value="/" />
 		<property name="unauthorizedUrl" value="/login/unauthorized"></property>
+		<property name="filters">    
+           <map>    
+               <entry key="perms" value-ref="perms"/>  
+           </map>    
+       </property>
+		
 		<property name="filterChainDefinitions">  
 	        <value>  
 	            /login = anon
@@ -48,11 +54,8 @@
 				/logout = logout
 				/static/** = anon 
 				/index=authc
-				/sys/**=authc,permsany
-				/attach/up=authc,permsany
 				/httpservices/** = anon 
 				/work/parkingorder/** = anon 
-				/** = authc,permsany
 	        </value>  
 	    </property>
 	</bean>
