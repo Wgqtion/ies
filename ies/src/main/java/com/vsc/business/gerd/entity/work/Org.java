@@ -75,7 +75,7 @@ public class Org extends BasicEntity implements Serializable{
 	
 	
 	@ManyToMany
-	@JoinTable(name = Constants.TABLE_PREFIX+"org_user", joinColumns = { @JoinColumn(name = "org_code",referencedColumnName="code") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
+	@JoinTable(name = Constants.TABLE_PREFIX+"org_user", joinColumns = { @JoinColumn(name = "org_code",referencedColumnName="code") }, inverseJoinColumns = { @JoinColumn(name = "WEIXIN_ID",referencedColumnName="WEIXIN_ID") })
 	public List<WxUser> getUsers() {
 		return users;
 	}
