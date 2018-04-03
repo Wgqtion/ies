@@ -6,7 +6,7 @@
 <!-- 停车场余位统计 -->
 <select id="chart.parkingSurplusTotal.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
 	SELECT
-		PLNAME AS name,SUM(STATUS) AS surplustotal
+		PLNAME AS name,SUM(1-STATUS) AS surplustotal
 	FROM
 		(
 			SELECT

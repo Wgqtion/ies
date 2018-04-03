@@ -35,8 +35,8 @@
 				<th <vsc:orderField name="pgcode"/>>车位编号</th>	
 				<th <vsc:orderField name="xcoordinate"/>>X坐标</th>
 				<th <vsc:orderField name="ycoordinate"/>>Y坐标</th>
-				<th <vsc:orderField name="plateno"/>>车牌号</th> 		
 				<th <vsc:orderField name="iscarstatus"/>>是否有车</th> 
+				<th <vsc:orderField name="plateno"/>>车牌号</th> 		
 				<th <vsc:orderField name="intime"/>>车辆停入时间</th> 
 				
 			</tr>
@@ -51,9 +51,9 @@
 					<td>${varitem.pgcode}</td>
 					<td>${varitem.xcoordinate}</td>
 					<td>${varitem.ycoordinate}</td>
-					<td>${varitem.plateno}</td>
 					<td><s:message code="parkinggarage.iscarstatus.${varitem.iscarstatus}"/></td>
-					<td>${varitem.intime}</td>
+					<td><c:if test="${varitem.iscarstatus eq 1}">${varitem.plateno}</c:if></td>
+					<td><c:if test="${varitem.iscarstatus eq 1}">${varitem.intime}</c:if></td>
 				</tr>
 			</c:forEach>
 		</tbody>
