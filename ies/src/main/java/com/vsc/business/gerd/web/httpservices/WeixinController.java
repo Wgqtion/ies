@@ -492,9 +492,13 @@ public class WeixinController extends HttpServiceBaseController {
     @RequestMapping(value = "/yuyue/cancel")
     public ModelAndView yuyueCancel(
             @RequestParam(required = true) Long userId,
-            @RequestParam(required = true) Long orderNumber
+            @RequestParam(required = true) String orderNumber
     ) throws ParseException {
-        Yuding yuding = yudingService.getObjectById(orderNumber);
+    	if("undefined".equals(orderNumber)){
+    		 return this.ajaxDoneError("orderNumber:undefined");
+    	}
+    	Long on=Long.valueOf(orderNumber);
+        Yuding yuding = yudingService.getObjectById(on);
         if (userId != null && !userId.equals(yuding.getWxUser().getId())) {
             return this.ajaxDoneError("预约取消失败，没有权限");
         }
