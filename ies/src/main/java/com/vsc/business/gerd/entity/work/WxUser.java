@@ -1,5 +1,6 @@
 package com.vsc.business.gerd.entity.work;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -21,9 +22,13 @@ import com.vsc.modules.entity.IdEntity;
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "wx_user")
-public class WxUser extends IdEntity {
+public class WxUser extends IdEntity implements Serializable{
 
-    private String weixinId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3982556298642739617L;
+	private String weixinId;
     /**
      * 名称
      */

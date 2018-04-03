@@ -169,7 +169,7 @@ public class Yuding extends IdEntity implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "WX_USER_ID")
+    @JoinColumn(name = "WEIXIN_ID",referencedColumnName="WEIXIN_ID")
     public WxUser getWxUser() {
 		return wxUser;
 	}

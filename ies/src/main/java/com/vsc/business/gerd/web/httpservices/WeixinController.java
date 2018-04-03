@@ -727,6 +727,7 @@ public class WeixinController extends HttpServiceBaseController {
         	if(wxUser==null){
         		return this.ajaxDoneError("没有用户信息");	
         	}
+        	if(!org.getUsers().contains(wxUser))
         	org.getUsers().add(wxUser);
         	this.orgService.save(org);
             return this.ajaxDoneSuccess("添加成功");
