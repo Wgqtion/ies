@@ -255,7 +255,7 @@ public class WeixinController extends HttpServiceBaseController {
 
         //订单查询
         Map<String, Object> orderMap = new HashMap<String, Object>();
-        orderMap.put("EQ_wxUser", userId);
+        orderMap.put("EQ_wxUser.id", userId);
         orderMap.put("NOTEQ_isDelete", new Integer(1));
         List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
         if (userOrderlList == null || userOrderlList.isEmpty()) {
@@ -389,7 +389,7 @@ public class WeixinController extends HttpServiceBaseController {
         Yuding yuding = new Yuding();
         //订单查询
         Map<String, Object> orderMap = new HashMap<String, Object>();
-        orderMap.put("EQ_wxUser", userId);
+        orderMap.put("EQ_wxUser.id", userId);
         orderMap.put("NOTEQ_isDelete", new Integer(1));
         List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
         if (userOrderlList != null && !userOrderlList.isEmpty()) {
@@ -502,8 +502,9 @@ public class WeixinController extends HttpServiceBaseController {
         if (yuding.getIsDelete()) {
             return this.ajaxDoneError("已被取消");
         }
-        int i = yudingService.updateDeleteById(1, orderNumber, userId);
-        if (i != 0) {
+        yuding.setIsDelete(true);
+        yudingService.save(yuding);
+        if (yuding.getIsDelete()) {
             ParkingGarage parkingGarage
                     = yuding.getParkingGarage();
             this.parkingGarageService.save(parkingGarage);
@@ -526,7 +527,7 @@ public class WeixinController extends HttpServiceBaseController {
         String jsonstr = "\"false\"";
 
         Map<String, Object> orderMap = new HashMap<String, Object>();
-        orderMap.put("EQ_wxUser", userId);
+        orderMap.put("EQ_wxUser.id", userId);
         orderMap.put("NOTEQ_isDelete", new Integer(1));
         List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
         if (userOrderlList != null && !userOrderlList.isEmpty()) {
@@ -569,7 +570,7 @@ public class WeixinController extends HttpServiceBaseController {
             @RequestParam(required = false) Long orderId) throws Exception {
         Calendar now = Calendar.getInstance();
         Map<String, Object> orderMap = new HashMap<String, Object>();
-        orderMap.put("EQ_wxUser", userId);
+        orderMap.put("EQ_wxUser.id", userId);
         orderMap.put("NOTEQ_isDelete", new Integer(1));
         List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
         if (userOrderlList != null && !userOrderlList.isEmpty()) {
@@ -612,7 +613,7 @@ public class WeixinController extends HttpServiceBaseController {
 
         Map<String, Object> searchYuding = new HashMap<String, Object>();
         searchYuding.put("EQ_parkingGarage", parkingId);
-        searchYuding.put("NOTEQ_wxUser", userId);
+        searchYuding.put("NOTEQ_wxUser.id", userId);
         searchYuding.put("EQ_isDelete", Boolean.FALSE);
         List<Yuding> yudingParking = this.yudingService.findList(searchYuding);
         if (yudingParking != null && !yudingParking.isEmpty()) {
@@ -625,7 +626,7 @@ public class WeixinController extends HttpServiceBaseController {
 //        }
         Map<String, Object> orderUserMap = new HashMap<String, Object>();
         // 订单查询
-        orderUserMap.put("EQ_wxUser", userId);
+        orderUserMap.put("EQ_wxUser.id", userId);
         orderUserMap.put("NOTEQ_isDelete", new Integer(1));
         List<UserOrder> userOrderlList = userOrderService.findList(orderUserMap);
         if (userOrderlList != null && !userOrderlList.isEmpty()) {
@@ -701,7 +702,7 @@ public class WeixinController extends HttpServiceBaseController {
      */
     @RequestMapping(value = "/org/find")
     public ModelAndView orgFind(@RequestParam(required = true) Long userId) throws ParseException {
-    	Map<String, Object> orgParams = this.getSearchRequest();
+    	Map<String, Object> orgParams =  Maps.newHashMap();
     	orgParams.put("EQ_users.id",userId);
     	List<Org> orgs=this.orgService.findList(orgParams);
         String[] isNotIgnoreFieldNames = {"id", "name","code"};

@@ -13,15 +13,4 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface YudingDao extends BaseDao<Yuding> {
 
-//@Transactional
-@Modifying(clearAutomatically = true)
-@Query(value = "update T_YUDING t set t.IS_DELETE =?1 where t.ID = ?2 and t.WX_USER_ID = ?3",nativeQuery = true)
-int upDel(Integer isDelete, Long id, Long userId);
-
-
-List<Yuding> findByWxUserIdAndIsDelete(Long userId,Boolean isDelete);
-
-@Modifying(clearAutomatically = true)
-@Query(value = " T_YUDING t set t.IS_DELETE =?1 where t.ID = ?2 and t.WX_USER_ID = ?3",nativeQuery = true)
-List<Yuding> getByWxUser(Integer isDelete, Long userId);
 }

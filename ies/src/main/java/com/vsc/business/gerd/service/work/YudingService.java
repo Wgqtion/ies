@@ -1,5 +1,9 @@
 package com.vsc.business.gerd.service.work;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vsc.business.gerd.entity.work.Yuding;
 import com.vsc.business.gerd.repository.work.YudingDao;
 import com.vsc.modules.service.BaseService;
-import java.util.List;
 
 /**
  * 
@@ -35,13 +38,12 @@ public class YudingService extends BaseService<Yuding> {
 	public JpaSpecificationExecutor<Yuding> getJpaSpecificationExecutorDao() {
 		return this.yudingDao;
 	}
-        
-    public int updateDeleteById(int isDelete, Long id, Long userId){
-        return this.yudingDao.upDel(isDelete, id ,userId);
-    }
-    
-    public List<Yuding> findByWxUser(Long userId){
-        return this.yudingDao.findByWxUserIdAndIsDelete(userId,false);
-    }
 
+	
+	public List<Yuding> findByWxUser(Long wxUserId){
+		Map<String,Object> filterParams=new HashMap<String, Object>();
+		filterParams.put("EQ_isDelete", 0);
+		filterParams.put("EQ_wxUser.id", wxUserId);
+		return this.findList(filterParams);
+	}
 }
