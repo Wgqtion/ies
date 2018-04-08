@@ -62,7 +62,9 @@
 			
 
 			setTimeout(function (){
-				$("#homeDiv").load("${ctx}/homeView");
+				<c:forEach items="${homePage}" var="hp">
+					$("#homeDiv").load("${ctx}${hp.value}");
+				</c:forEach>
 			},1000);
 		});
 		

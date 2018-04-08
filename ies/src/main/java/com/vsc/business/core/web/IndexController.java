@@ -35,9 +35,11 @@ public class IndexController extends BaseController {
 	public String index(Model model) {
 		User user=ShiroUserUtils.GetCurrentUser();
 		//功能模块
+		List<Authority> homePage=resourceService.getMenus(user.getId(),0);
 		List<Authority> resources1=resourceService.getMenus(user.getId(),1);
 		List<Authority> resources2=resourceService.getMenus(user.getId(),2);
 		List<Authority> resources3=resourceService.getMenus(user.getId(),3);
+		model.addAttribute("homePage", homePage);
 		model.addAttribute("resources1", resources1);
 		model.addAttribute("resources2", resources2);
 		model.addAttribute("resources3", resources3);
