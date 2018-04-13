@@ -299,6 +299,8 @@ public class CoreUtils {
 		if (date == null)
 			return "";
 		switch (style) {
+		case 7:
+			return formatc.format(date);
 		case 6:
 			return formatz.format(date);
 		case 5:
@@ -320,6 +322,7 @@ public class CoreUtils {
 	public static final DateFormat formatm = new SimpleDateFormat("MM-dd HH:mm");
 	public static final DateFormat formats = new SimpleDateFormat("MM-dd");
 	public static final DateFormat formatz = new SimpleDateFormat("yyyy年MM月dd日");
+	public static final DateFormat formatc = new SimpleDateFormat("ss mm HH dd MM ? yyyy");
 	public static FilenameFilter DIR_FILE_FILTER = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
 			if (dir.isDirectory())
@@ -329,6 +332,16 @@ public class CoreUtils {
 		}
 	};
 
+	
+	/***  
+     * convert Date to cron ,eg.  "14 01 17 22 07 ? 2017"  
+     * @param date:时间点  
+     * @return  
+     */    
+    public static String getCron(java.util.Date  date){    
+        return formatDate(date,7);    
+    }  
+	
 	/**
 	 * 将" " "&" "\r" "\n" 转换为 "&amp" "&nbsp;" "" "<br/>"
 	 * @param str
