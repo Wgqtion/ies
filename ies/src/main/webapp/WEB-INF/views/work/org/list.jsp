@@ -37,6 +37,7 @@
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>    
 				<th <vsc:orderField name="name"/>>名称</th>   
 				<th <vsc:orderField name="code"/>>权限码</th>  
+				<th <vsc:orderField name="isEnabled"/>>状态</th>  
 			</tr>
 		</thead>
 		<tbody>
@@ -46,6 +47,7 @@
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>    
 					<td>${varitem.name}</td>   
 					<td>${varitem.code}</td>   
+					<td><s:message code="org.isenabled.${varitem.isEnabled}"/></td>   
 				</tr>
 			</c:forEach>
 		</tbody>

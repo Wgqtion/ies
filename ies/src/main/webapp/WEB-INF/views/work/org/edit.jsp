@@ -19,6 +19,12 @@
 					<td class="fieldInput"><label><input type="text" readonly="readonly" id="code" name="code" value="${vm.code}" validate="{required:true}" /></label><span for="code" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 				<tr>
+					<td class="fieldName"><label>状态:</label></td>
+					<td class="fieldInput"><label> <form:radiobutton path="vm.isEnabled" value="false" validate="{required:true}" /> <s:message code="org.isenabled.false" />
+					</label> <label> <form:radiobutton path="vm.isEnabled" value="true" /> <s:message code="org.isenabled.true" />
+					</label> <span style="display: none" class="error" generated="true" for="isEnabled"></span></td>
+				</tr>
+				<tr>
 					<td class="fieldName"><label>所属公司:</label></td>
 					<td class="fieldInput">
 						<label><select id="companyCode" name="companyCode" validate="{required:true}">

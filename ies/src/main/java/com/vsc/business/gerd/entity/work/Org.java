@@ -51,6 +51,20 @@ public class Org extends BasicEntity implements Serializable{
      */
     private String companyCode;
     
+    private Boolean isEnabled = true;
+    
+    /**
+     * @return
+     */
+    @Column(name = "IS_ENABLED")
+    public Boolean getIsEnabled() {
+        return this.isEnabled;
+    }
+
+    public void setIsEnabled(Boolean value) {
+        this.isEnabled = value;
+    }
+    
     /**
      * @return
      */

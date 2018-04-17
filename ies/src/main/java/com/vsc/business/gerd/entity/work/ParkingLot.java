@@ -214,6 +214,7 @@ public class ParkingLot extends BasicEntity {
             			}
             		}
             	}
+            	if(!parkingLotArea.getIsDelete())
                 vl.add(parkingLotArea);
             }
         }
