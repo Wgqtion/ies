@@ -281,12 +281,14 @@ public class WeixinController extends HttpServiceBaseController {
      */
     @RequestMapping(value = "/parkinglot/find")
     public ModelAndView parkinglotFind(@RequestParam(required = true) Long userId) throws ParseException {
-    	Map<String, Object> orgParams = this.getSearchRequest();
-    	orgParams.put("EQ_users.id",userId);
-    	orgParams.put("EQ_isEnabled",true);
+    	Map<String, Object> orgParams = new HashMap<String, Object>();
+    	orgParams.put("EQ_isEnabled",false);
     	List<Org> orgs=this.orgService.findList(orgParams);
+    	orgParams.remove("EQ_isEnabled");
+    	orgParams.put("EQ_users.id",userId);
+    	orgs.addAll(this.orgService.findList(orgParams));
     	
-        Map<String, Object> searchParams = this.getSearchRequest();
+        Map<String, Object> searchParams = new HashMap<String, Object>();
         searchParams.put("EQ_isEnabled", true);
 
         Set<ParkingLot> parkingLots =new HashSet<ParkingLot>();
@@ -333,7 +335,7 @@ public class WeixinController extends HttpServiceBaseController {
      */
     @RequestMapping(value = "/parkinglotarea/find")
     public ModelAndView parkinglotAreaFind(@RequestParam(required = true) Long parkingLotId) throws ParseException {
-        Map<String, Object> searchParams = this.getSearchRequest();
+        Map<String, Object> searchParams = new HashMap<String, Object>();
         searchParams.put("EQ_isEnabled", true);
         searchParams.put("EQ_parkingLot", parkingLotId);
         searchParams.put("ISNULL_parent", null);
@@ -357,7 +359,7 @@ public class WeixinController extends HttpServiceBaseController {
      */
     @RequestMapping(value = "/parkinggarage/find")
     public ModelAndView parkinggarage(@RequestParam(required = false) Long parkingLotAreaId) throws ParseException {
-        Map<String, Object> searchParams = this.getSearchRequest();
+        Map<String, Object> searchParams = new HashMap<String, Object>();
         searchParams.put("id", parkingLotAreaId);
         List<MapBean<String, Object>> parkingGarages = this.parkingGarageService.findIbatisQuery("t_parking_garage.surplusGarages",
         		searchParams);
