@@ -70,6 +70,7 @@ public abstract class HttpServiceBaseController extends BaseController {
 	@ExceptionHandler(Throwable.class)
 	public ModelAndView handleIOException(Throwable ex, HttpServletRequest request) {
 		logger.error("http接口调用出错", ex);
+		logger.error("request：",request.getRequestURL());
 		return this.ajaxDone500(this.getMessage("httpservices.service_runerror"), Boolean.FALSE.toString());
 	}
 }
