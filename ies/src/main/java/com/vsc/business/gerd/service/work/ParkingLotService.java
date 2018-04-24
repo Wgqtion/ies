@@ -1,12 +1,11 @@
 package com.vsc.business.gerd.service.work;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,12 +14,14 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Maps;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.repository.sys.upload.AttachDao;
 import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.repository.work.ParkingLotDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
+import com.vsc.util.CodeUtils;
 import com.vsc.util.CoreUtils;
 
 /**
@@ -31,7 +32,6 @@ import com.vsc.util.CoreUtils;
 @Service
 @Transactional
 public class ParkingLotService extends BaseService<ParkingLot> {
-	private static Logger logger = LoggerFactory.getLogger(ParkingLotService.class);
 
 	@Autowired
 	private ParkingLotDao parkingLotDao;
@@ -49,6 +49,14 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 		return this.parkingLotDao;
 	}
 	
+	/**
+	 * 获取树
+	 */
+	public List<ParkingLot> findTree() {
+		Map<String, Object> searchParams = Maps.newHashMap();
+		searchParams.put("ISNULL_parentCode", null);
+		return this.findList(searchParams);
+	}
 	
 	/**
 	 * 根据条件查询，未删除的
@@ -80,12 +88,35 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 		return super.findPage(filterParams, pageRequest);
 	}
 
-	public ParkingLot save(ParkingLot entity, Long photoAttachId) {
+	public ParkingLot save(ParkingLot entity, Long photoAttachId) throws Exception {
+		if(entity.getParent()!=null&&entity.getParent().getId()!=null){
+			ParkingLot parent=this.getObjectById(entity.getParent().getId());
+			entity.setParentCode(parent.getCode());
+			entity.setCompanyCode(parent.getCompanyCode());
+			entity.setParent(null);
+		}else{
+			entity.setParent(null);
+		}
 		User user=ShiroUserUtils.GetCurrentUser();
 		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){
 			entity.setCreateDate(now);
 			entity.setCreateUser(user);	
+			String code="";
+			boolean flag=true;
+			int i=0;
+			while(flag){
+				if(entity.getParentCode()!=null){
+					code=entity.getParentCode();
+				}
+				code=code+CodeUtils.GenerateCode(this.getMaxCode(code)+i,4);
+				ParkingLot c=getByCode(code);
+				if(c==null){
+					flag=false;
+				}
+				i++;
+			}
+			entity.setCode(code);
 		}
 		entity.setUpdateUser(user);
 		entity.setUpdateDate(now);
@@ -98,6 +129,50 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 		}
 
 		return this.parkingLotDao.save(entity);
+	}
+	
+	/**
+	 * 查询父节点下的当前最大编码
+	 * @return
+	 * @throws Exception 
+	 */
+	public int getMaxCode(String parentCode) throws Exception{
+		int i=0;
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_isDelete",0);
+		if(CoreUtils.isEmpty(parentCode)){
+			searchParams.put("ISNULL_parentCode",parentCode);	
+		}else{
+			searchParams.put("EQ_parentCode",parentCode);
+		}
+		List<ParkingLot> list=this.findAll(searchParams, "code","desc");
+		if(list!=null&&list.size()>0){
+			ParkingLot c=list.get(0);
+			String code=c.getCode();
+			if(code!=null)
+			{
+				if(parentCode!=null){
+					code=code.substring(code.indexOf(parentCode),4);
+				}
+				i=Integer.valueOf(code);	
+				if(i>9998){
+					throw new Exception("超出限制9999层");
+				}
+			}
+		}
+		return i;
+	}
+	
+	/**
+	 * 根据code查询，未删除的
+	 * @param code
+	 * @return
+	 */
+	public ParkingLot getByCode(String code){
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_isDelete",0);
+		searchParams.put("EQ_code",code);
+		return this.find(searchParams);
 	}
 	
 	public void deleteUpdateById(Long id) {

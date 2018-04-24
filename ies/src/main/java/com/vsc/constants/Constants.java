@@ -1,5 +1,6 @@
 package com.vsc.constants;
 
+import com.vsc.util.PropertiesUtil;
 import com.vsc.util.SystemSettings;
 
 public class Constants {
@@ -7,7 +8,7 @@ public class Constants {
 	 * 路径分隔符
 	 */
 	public static final char SPT = '/';
-	public static final String SYS_NAME = "上海宜事智能停车管理平台";
+	public static String SYS_NAME = "上海宜事智能停车管理平台";
 	/**
 	 * 系统表名前缀
 	 */
@@ -17,7 +18,7 @@ public class Constants {
 	/**
 	 * 附件上传存放的相对文件夹名称
 	 */
-	public static final String UPLOAD_ROOT_FOLDER = "upload";
+	public static String UPLOAD_ROOT_FOLDER = "D://ies//upload";
 
 	/**
 	 * 字符串  转  数组分隔符
@@ -54,4 +55,13 @@ public class Constants {
 	 */
 	public static final String[] IMG_TYPE = { "gif", "jpg", "png", "jpe", "jpeg" };
 
+
+	/**
+	 * 加载配置文件
+	 */
+	static{
+		Constants.SYS_NAME=PropertiesUtil.getValueByKey("system.name");
+		Constants.UPLOAD_ROOT_FOLDER=PropertiesUtil.getValueByKey("attach.upload.path");
+	}
+	
 }

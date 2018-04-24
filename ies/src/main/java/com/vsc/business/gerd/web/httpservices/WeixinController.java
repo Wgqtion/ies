@@ -37,7 +37,6 @@ import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.entity.work.ParkingLot;
-import com.vsc.business.gerd.entity.work.ParkingLotArea;
 import com.vsc.business.gerd.entity.work.UserOrder;
 import com.vsc.business.gerd.entity.work.WeixinAttest;
 import com.vsc.business.gerd.entity.work.WxUser;
@@ -47,7 +46,6 @@ import com.vsc.business.gerd.entity.work.Yuyue;
 import com.vsc.business.gerd.service.work.OrgService;
 import com.vsc.business.gerd.service.work.ParkingGarageService;
 import com.vsc.business.gerd.service.work.ParkingLockService;
-import com.vsc.business.gerd.service.work.ParkingLotAreaService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.business.gerd.service.work.UserOrderService;
 import com.vsc.business.gerd.service.work.WxUserService;
@@ -77,10 +75,6 @@ public class WeixinController extends HttpServiceBaseController {
     @Autowired
     private YudingSettingService yudingSettingService;
 
-    //片区
-    @Autowired
-    private ParkingLotAreaService parkingLotAreaService;
-
     @Autowired
     private OrgService orgService;
     
@@ -100,7 +94,7 @@ public class WeixinController extends HttpServiceBaseController {
     @Autowired
     private WxUserService wxUserService;
 
-    //停车场
+    //停车场区
     @Autowired
     ParkingLotService parkingLotService;
 

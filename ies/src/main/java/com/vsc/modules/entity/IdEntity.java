@@ -1,5 +1,7 @@
 package com.vsc.modules.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 //JPA 基类的标识
 @MappedSuperclass
-public abstract class IdEntity  {
+public abstract class IdEntity implements Serializable {
 
 	protected Long id;
 

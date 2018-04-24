@@ -6,7 +6,8 @@
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${ctx}/work/parkinglot" method="post">
 		<div class="searchBar">
 			<ul class="searchContent">
-				<li><label>停车场名称:</label> <input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /></li>
+				<input type="hidden" name="parentId" value="${parentId}" />
+				<li><label>场区名称:</label> <input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /></li>
 			</ul>
 			<div class="subBar">
 				<ul>
@@ -23,8 +24,8 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" title="添加停车场" href="${ctx}/work/parkinglot/new?navTabId=work_parkinglot" target="dialog" rel="parkinglot_new"><span>添加</span></a></li>
-			<li><a class="edit" title="编辑停车场" href="${ctx}/work/parkinglot/update/{sid}?navTabId=work_parkinglot" target="dialog" rel="parkinglot_update" warn="请选择一个记录"><span>编辑</span></a></li>
+			<li><a class="add" title="添加场区" href="${ctx}/work/parkinglot/new?navTabId=parking_lot&parentId=${parentId}" target="dialog" rel="parkinglot_new"><span>添加</span></a></li>
+			<li><a class="edit" title="编辑场区" href="${ctx}/work/parkinglot/update/{sid}?navTabId=parking_lot" target="dialog" rel="parkinglot_update" warn="请选择一个记录"><span>编辑</span></a></li>
 			<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${ctx}/work/parkinglot/delete" class="delete"><span>删除</span></a></li>
 			<li class="line">line</li>
 		 
@@ -35,7 +36,7 @@
 			<tr>
 				<th width="40" align="center">序号</th>
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-				<th <vsc:orderField name="name"/>>停车场名称</th>
+				<th <vsc:orderField name="name"/>>场区名称</th>
 				<th <vsc:orderField name="isEnabled"/>>状态</th>
 				<th <vsc:orderField name="carNumber"/>>车位数</th>
 				<th <vsc:orderField name="createDate"/>>创建时间</th> 

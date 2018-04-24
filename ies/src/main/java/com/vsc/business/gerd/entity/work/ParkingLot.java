@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -18,7 +17,7 @@ import com.vsc.constants.Constants;
 import com.vsc.modules.entity.BasicEntity;
 
 /**
- * 停车场
+ * 场区 实体类
  * @author XiangXiaoLin
  *
  */
@@ -26,6 +25,13 @@ import com.vsc.modules.entity.BasicEntity;
 @Table(name = Constants.TABLE_PREFIX + "parking_lot")
 public class ParkingLot extends BasicEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1079864856828289383L;
+	private String code;
+	private ParkingLot parent;
+	private String parentCode;
     private java.lang.String name;
     private java.lang.String baiduLatitudeLng;
     private java.lang.String baiduLatitudeLat;
@@ -36,10 +42,6 @@ public class ParkingLot extends BasicEntity {
 
     private Boolean isEnabled = true;
     
-    private Integer freeCarNum = 0;
-
-    private List<ParkingLotArea> parkingLotAreas = Lists.newArrayList();
-
     private Org org;
     
     private String orgCode;
@@ -53,6 +55,45 @@ public class ParkingLot extends BasicEntity {
      */
     private String companyCode;
     
+    private List<ParkingLot> children=Lists.newArrayList();
+    
+    @Column(name = "CODE")
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
+	@Column(name = "PARENT_CODE")
+	public String getParentCode() {
+		return parentCode;
+	}
+
+	public void setParentCode(String parentCode) {
+		this.parentCode = parentCode;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "PARENT_CODE",referencedColumnName="CODE",insertable=false,updatable=false)
+	public ParkingLot getParent() {
+		return parent;
+	}
+
+	public void setParent(ParkingLot parent) {
+		this.parent = parent;
+	}
+	
+	@OneToMany(mappedBy = "parent")
+	public List<ParkingLot> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<ParkingLot> children) {
+		this.children = children;
+	}
+	
     /**
      * @return
      */
@@ -186,48 +227,6 @@ public class ParkingLot extends BasicEntity {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    @OneToMany(mappedBy = "parkingLot")
-    public List<ParkingLotArea> getParkingLotAreas() {
-        return parkingLotAreas;
-    }
-
-    public void setParkingLotAreas(List<ParkingLotArea> parkingLotAreas) {
-        this.parkingLotAreas = parkingLotAreas;
-    }
-
-    /**
-     *
-     * @return 所有root停车区域，最顶层的区域
-     */
-    @Transient
-    public List<ParkingLotArea> getRootParkingLotAreas() {
-        List<ParkingLotArea> vl = Lists.newArrayList();
-        for (ParkingLotArea parkingLotArea : this.parkingLotAreas) {
-            if (parkingLotArea.getParent() == null) {
-            	List<ParkingLotArea> list=parkingLotArea.getChildren();
-            	if(list!=null){
-            		for(int i=0;i<list.size();i++){
-            			if(list.get(i).getIsDelete()){
-            				list.remove(i);
-            			}
-            		}
-            	}
-            	if(!parkingLotArea.getIsDelete())
-                vl.add(parkingLotArea);
-            }
-        }
-        return vl;
-
-    }
-    @Transient
-    public Integer getFreeCarNum() {
-        return freeCarNum;
-    }
-
-    public void setFreeCarNum(Integer freeCarNum) {
-        this.freeCarNum = freeCarNum;
     }
 
     @Override

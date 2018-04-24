@@ -1,9 +1,14 @@
 package com.vsc.business.core.web.sys.upload;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,11 +27,11 @@ import com.vsc.business.core.entity.sys.upload.Attach;
 import com.vsc.business.core.service.sys.upload.AttachService;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.constants.Constants;
-import com.vsc.util.CoreUtils;
 
 /**
- * 用户管理的Controller 
- * @author 付翀
+ * 附件类
+ * @author XiangXiaoLin
+ *
  */
 @Controller
 @RequestMapping(value = Constants.SPT + AttachController.PATH)
@@ -65,8 +69,7 @@ public class AttachController extends BaseController {
 			entity.setUser(this.getCurrentUser());
 
 			logger.info("上传文件开始：" + file.getOriginalFilename());
-			attachService.saveAttach(entity, file.getInputStream(),
-					CoreUtils.getStoragePath(request, entity.getDownloadPath()));
+			attachService.saveAttach(entity, file.getInputStream(),entity.getDownloadPath());
 			logger.info("上传文件结束：" + file.getOriginalFilename());
 			mav.addObject("statusCode", 200);
 			mav.addObject("message", "文件上传成功");
@@ -78,12 +81,32 @@ public class AttachController extends BaseController {
 		return mav;
 	}
 
-	@RequestMapping(value = "download/{id}", method = RequestMethod.GET)
-	public String download(@PathVariable("id") Long id, Model model) {
-		//实现下载
-		//model.addAttribute("vm", userService.getObjectById(id));
-		return "";
-	}
+	//文件下载  
+    @RequestMapping("/download/{id}")  
+    public void download(@PathVariable("id") Long id,HttpServletRequest request,HttpServletResponse response) throws IOException  
+    {  
+    	Attach attach=this.attachService.getObjectById(id);
+    	String fileName=attach.getName();
+    	String path=attach.getDownloadPath();
+        File file=new File(path);  
+        if(file.exists()){  
+            //设置MIME类型  
+            response.setContentType("application/octet-stream");              
+            //或者为response.setContentType("application/x-msdownload");  
+              
+            //设置头信息,设置文件下载时的默认文件名，同时解决中文名乱码问题  
+            response.addHeader("Content-disposition", "attachment;filename="+new String(fileName.getBytes(), "ISO-8859-1"));  
+              
+            InputStream inputStream=new FileInputStream(file);  
+            ServletOutputStream outputStream=response.getOutputStream();  
+            byte[] bs=new byte[1024];  
+            while((inputStream.read(bs)>0)){  
+                outputStream.write(bs);  
+            }  
+            outputStream.close();  
+            inputStream.close();              
+        }  
+    }
 
 	/**
 	 * 获得文件目录

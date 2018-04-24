@@ -11,11 +11,11 @@
 <div class="picUpload" style="width:${width}px;">
 	<input type="hidden" id="${uploadifyFileId}_hiddenId" name="${hiddenName}" value="${hiddenValue}">
 	<div class="pic">
-		<img width="${width}" height="${height}" id="${uploadifyFileId}_picId" src="${picPath}" onerror="javascript:this.src='${defaultPicPath}'" />
+		<img width="${width}" height="${height}" id="${uploadifyFileId}_picId" src="<c:if test='${hiddenValue !=null}'>${ctx}/attach/download/${hiddenValue}</c:if>" onerror="javascript:this.src='${defaultPicPath}'" />
 	</div>
 	<div class="b_bar">
 		<div class="b_upload">
-			<vsc:uploadify name="${uploadifyFileId}_name" onUploadSuccess="uploadifyPreviewComplete" id="${uploadifyFileId}" queueID="${uploadifyFileId}_queueID"
+			<vsc:uploadify name="${uploadifyFileId}_name" onUploadSuccess="uploadifyPreviewComplete" onUploadComplete="function reloadImg(){var id=$('#${uploadifyFileId}_hiddenId').val();var img=$('#${uploadifyFileId}_picId');if(id!=''){img.attr('src','${ctx}/attach/download/'+id+'?'+new Date());}}" id="${uploadifyFileId}" queueID="${uploadifyFileId}_queueID"
 				fileSizeLimit="8MB" fileTypeExts="*.gif;*.jpge;*.jpg;*.png"></vsc:uploadify>
 		</div>
 		<div class="b_del">
@@ -31,3 +31,6 @@
 	</div>
 	<div class="b_queue" id="${uploadifyFileId}_queueID"></div>	
 </div>
+<script>
+function reloadImg(){var id=$('#${uploadifyFileId}_hiddenId').val();var img=$('#${uploadifyFileId}_picId');if(id!=''){img.attr('src','${ctx}/attach/download/'+id+'?'+new Date());}}
+</script>

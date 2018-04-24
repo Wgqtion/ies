@@ -21,10 +21,14 @@ import com.vsc.modules.entity.BasicEntity;
 @Table(name = Constants.TABLE_PREFIX + "parking_garage")
 public class ParkingGarage extends BasicEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3874215079062066010L;
 	private java.lang.String code;
 	private java.lang.String name;//车位编号
 	private Boolean isEnabled=Boolean.TRUE;
-	private ParkingLotArea parkingLotArea;
+	private ParkingLot parkingLot;
 	private java.lang.String description;
 	private java.lang.String xcoordinate;//x坐标
 	private java.lang.String ycoordinate;//y坐标
@@ -108,13 +112,13 @@ public class ParkingGarage extends BasicEntity {
 	 * @return
 	 */
 	@ManyToOne
-	@JoinColumn(name = "PARKING_LOT_AREA_ID")
-	public ParkingLotArea getParkingLotArea() {
-		return this.parkingLotArea;
+	@JoinColumn(name = "PARKING_LOT_CODE",referencedColumnName="CODE")
+	public ParkingLot getParkingLot() {
+		return this.parkingLot;
 	}
 
-	public void setParkingLotArea(ParkingLotArea value) {
-		this.parkingLotArea = value;
+	public void setParkingLot(ParkingLot parkingLot) {
+		this.parkingLot = parkingLot;
 	}
 
 	/**

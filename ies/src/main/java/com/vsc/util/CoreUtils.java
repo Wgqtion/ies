@@ -22,8 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -354,16 +352,6 @@ public class CoreUtils {
 		str = str.replaceAll("\n", "<br/>");
 		return str;
 	}
-
-	/**
-	 * 是否开放管理员数据查看权限
-	 * @return
-	 */
-	public static boolean isOpenDataView() {
-		Subject subject = SecurityUtils.getSubject();
-		return subject.hasRole("超级管理员") || subject.hasRole("客户");
-	}
-
 	public static String createSerialNumber() {
 
 		return DateFormatUtils.format(new Date(), "yyyyMMddHHmm")
@@ -379,42 +367,30 @@ public class CoreUtils {
 	public static String getIndexStr(String str, int index){
 		return str.substring(str.length() - index,str.length());
 	}
-	
 	/**
-	 * 生成默认密码
-	 * 1、str为空：123456
-	 * 2、str位数小于6位：123456
-	 * 3、str最后一位为字母,则用小写字母表示
-	 * 4、str后六位
+	 * 是否空
+	 * null 、 “” true
+	 * “ ” 、 “a” false
 	 * @param str
 	 * @return
 	 */
-	public static String creteDefaultPwd(String str){
-		String defaltStr = "123TjcT";
-		if (null != str) {
-			if (str.length() < 6) {
-				return defaltStr;
-			}else {
-				return getIndexStr(str, 6).toLowerCase();
-			}
-		}else {
-			return defaltStr;
+	public static boolean isEmpty(String str){
+		if(str==null||str.length()==0){
+			return true;
 		}
-	};
-	
-	public static boolean getBoolean(String str){
-		
-		//离职(07)、开除(08)、解聘(081)为停用状态
-		boolean defaultBool = false;
-		if (null != str) {
-			if("081".equals(str) || "08".equals(str) || "07".equals(str)){
-				return defaultBool;
-			}else {
-				defaultBool = true;
-				return defaultBool;
-			}
-		}else {
-			return defaultBool;
+		return false;
+	}
+	/**
+	 * 是否空
+	 * null 、 “” 、 “ ” true
+	 * “a” false
+	 * @param str
+	 * @return
+	 */
+	public static boolean isBlank(String str){
+		if(str==null||str.trim().length()==0){
+			return true;
 		}
-	} 
+		return false;
+	}
 }

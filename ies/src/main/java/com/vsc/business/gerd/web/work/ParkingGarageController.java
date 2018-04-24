@@ -7,7 +7,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,9 +23,7 @@ import com.google.common.collect.Maps;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.entity.work.ParkingLot;
-import com.vsc.business.gerd.entity.work.ParkingLotArea;
 import com.vsc.business.gerd.service.work.ParkingGarageService;
-import com.vsc.business.gerd.service.work.ParkingLotAreaService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
 
@@ -41,9 +38,7 @@ public class ParkingGarageController extends BaseController {
 
 	@Autowired
 	private ParkingGarageService parkingGarageService;
-
-	@Autowired
-	private ParkingLotAreaService parkinglotareaService;
+	
 	@Autowired
 	private ParkingLotService parkingLotService;
 
@@ -72,11 +67,6 @@ public class ParkingGarageController extends BaseController {
 		Map<String, Object> searchParams = this.getSearchRequest();
 
 		String parkingLotAreaFullNameId = request.getParameter("parkingLotAreaFullName");
-		if (StringUtils.isNotBlank(parkingLotAreaFullNameId)) {
-			ParkingLotArea qfullname = this.parkinglotareaService.getObjectById(Long.valueOf(parkingLotAreaFullNameId));
-
-			searchParams.put("RLIKE_parkingLotArea.fullIndexName", qfullname.getFullIndexName());
-		}
 
 		Page<ParkingGarage> page = parkingGarageService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
@@ -94,8 +84,8 @@ public class ParkingGarageController extends BaseController {
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
 	public ModelAndView create(@Valid ParkingGarage parkingGarage,
 			@RequestParam(value = "parkinglotareaGroup.id", required = true) Long parkinglotareaId) {
-		ParkingLotArea pm = parkinglotareaService.getObjectById(parkinglotareaId);
-		parkingGarage.setParkingLotArea(pm);
+		ParkingLot pm = parkingLotService.getObjectById(parkinglotareaId);
+		parkingGarage.setParkingLot(pm);
 		parkingGarageService.save(parkingGarage);
 		return this.ajaxDoneSuccess("创建成功");
 	}
@@ -116,8 +106,8 @@ public class ParkingGarageController extends BaseController {
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingGarage parkingGarage,
 			@RequestParam(value = "parkinglotareaGroup.id", required = true) Long parkinglotareaId) {
-		ParkingLotArea pm = parkinglotareaService.getObjectById(parkinglotareaId);
-		parkingGarage.setParkingLotArea(pm);
+		ParkingLot pm = parkingLotService.getObjectById(parkinglotareaId);
+		parkingGarage.setParkingLot(pm);
 		parkingGarageService.save(parkingGarage);
 		return this.ajaxDoneSuccess("修改成功");
 	}

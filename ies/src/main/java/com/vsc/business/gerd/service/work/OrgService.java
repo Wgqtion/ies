@@ -21,7 +21,6 @@ import org.springside.modules.utils.Collections3;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.gerd.entity.work.Org;
 import com.vsc.business.gerd.entity.work.ParkingLot;
-import com.vsc.business.gerd.entity.work.ParkingLotArea;
 import com.vsc.business.gerd.repository.work.OrgDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;

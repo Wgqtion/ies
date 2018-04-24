@@ -44,6 +44,9 @@ public abstract class BaseService<T> {
 	 * @return
 	 */
 	public T getObjectById(Long id) {
+		if(id==null){
+			return null;
+		}
 		return this.getPagingAndSortingRepositoryDao().findOne(id);
 	}
 

@@ -64,6 +64,7 @@ public class LoginController extends BaseController {
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME, "登录失败，请重试.");
 			return V_PATH_LOGIN;
 		}
+		request.getSession().setAttribute("currentUser",getCurrentUser());
 		return "redirect:/index";
 	}
 

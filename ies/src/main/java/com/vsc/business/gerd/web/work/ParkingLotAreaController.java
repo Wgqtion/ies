@@ -1,31 +1,9 @@
 package com.vsc.business.gerd.web.work;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.google.common.collect.Maps;
 import com.vsc.business.core.web.BaseController;
-import com.vsc.business.gerd.entity.work.ParkingLot;
-import com.vsc.business.gerd.entity.work.ParkingLotArea;
-import com.vsc.business.gerd.service.work.ParkingLotAreaService;
-import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
 
 /**
@@ -37,12 +15,6 @@ import com.vsc.constants.Constants;
 @RequestMapping(value = Constants.SPT + ParkingLotAreaController.PATH)
 public class ParkingLotAreaController extends BaseController {
 
-	@Autowired
-	private ParkingLotAreaService parkingLotAreaService;
-
-	@Autowired
-	private ParkingLotService parkingLotService;
-
 	public static final String PATH = "work/parkinglotarea";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";
@@ -50,6 +22,9 @@ public class ParkingLotAreaController extends BaseController {
 	public static final String PATH_SEARCH = PATH + Constants.SPT + "search";
 	public static final String PATH_SELECT = PATH + Constants.SPT + "select";
 	public static final String PATH_TREE = PATH + Constants.SPT + "tree";
+	/*@Autowired
+	private ParkingLotService parkingLotService;
+
 
 	@RequestMapping(value = "")
 	public String tree(Model model, HttpServletRequest request) {
@@ -176,12 +151,12 @@ public class ParkingLotAreaController extends BaseController {
 		return true;
 	}
 
-	/**
+	*//**
 	   * 判断当前栏目与下级栏目中是否包含指定id的对象
 	   * @param Catalog 需要查找的栏目
 	   * @param newid  需要查找的 ID
 	   * @return 包含返回 true 不存在 返回false
-	   */
+	   *//*
 	private boolean checkSelParkingLotArea2(List<ParkingLotArea> catalogs, Long newid) {
 		for (ParkingLotArea c : catalogs) {
 			if (newid.equals(c.getId())) {
@@ -194,6 +169,6 @@ public class ParkingLotAreaController extends BaseController {
 			}
 		}
 		return false;
-	}
+	}*/
 
 }

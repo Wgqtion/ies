@@ -37,7 +37,7 @@
 				</tr>
 				<tr>
 					<td class="fieldName" valign="top">图片:</td>
-					<td class="fieldInput" colspan="3"><img style="max-width:650px" src="${vm.photoAttach.downloadPath}"/> 
+					<td class="fieldInput" colspan="3"><img style="max-width:650px" src="<c:if test="${not empty vm.photoAttach}">${ctx}/attach/download/${vm.photoAttach.id}</c:if>"/> 
 					</td>
 				</tr>
 				
