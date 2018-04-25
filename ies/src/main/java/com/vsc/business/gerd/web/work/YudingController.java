@@ -47,7 +47,7 @@ public class YudingController extends BaseController {
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
 		User user=ShiroUserUtils.GetCurrentUser();
-		searchParams.put("RLIKE_parkingGarage.parkingLotArea.parkingLot.companyCode", user.getCompany().getCode());
+		searchParams.put("RLIKE_parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
 		Page<Yuding> page = yudingService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 

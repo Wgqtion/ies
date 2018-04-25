@@ -21,6 +21,10 @@ import com.vsc.modules.entity.IdEntity;
 @Table(name = Constants.TABLE_PREFIX + "PARKING_LOCK_OPERATION_EVENT")
 public class ParkingLockOperationEvent extends IdEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8051121348721241729L;
 	public static int EVENTTYPE_OPEN = 0;
 	public static int EVENTTYPE_CLOSE = 1;
 	public static int EVENTTYPE_FOREVER_OPEN = 2;

@@ -3,8 +3,6 @@ package com.vsc.business.gerd.service.work;
 import java.util.Date;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +27,6 @@ import com.vsc.util.CoreUtils;
 @Service
 @Transactional
 public class ParkingLockOperationEventService extends BaseService<ParkingLockOperationEvent>{
-	private static Logger logger = LoggerFactory.getLogger(ParkingLockOperationEventService.class);
   
 	@Autowired
 	private ParkingLockOperationEventDao parkingLockOperationEventDao;
@@ -58,7 +55,7 @@ public class ParkingLockOperationEventService extends BaseService<ParkingLockOpe
 	@Override
 	public Page<ParkingLockOperationEvent> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
 		User user=ShiroUserUtils.GetCurrentUser();
-		filterParams.put("RLIKE_parkingLock.parkingGarage.parkingLotArea.parkingLot.companyCode", user.getCompany().getCode());
+		filterParams.put("RLIKE_parkingLock.parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
 		return super.findPage(filterParams, pageRequest);
 	}
 	

@@ -41,9 +41,10 @@
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th>会员名</th>
 				<th>车牌号</th>	
-				<th>预约停车区</th>			
-				<th <vsc:orderField name="yuyueTime"/>>预约时间</th>				 
-				<th <vsc:orderField name="createTime"/>>申请时间</th> 				 
+				<th>场区名称</th>		
+				<th>车位名称</th>			
+				<th <vsc:orderField name="yuyueTime"/>>预约时间</th>	 
+				<th <vsc:orderField name="isDelete"/>>是否删除</th> 
 			</tr>
 		</thead>
 		<tbody>
@@ -53,10 +54,10 @@
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>
 					<td>${varitem.wxUser.name}</td>
 					<td>${varitem.carNo}</td>
-					<td>${varitem.parkingGarage.parkingLotArea.fullIndexName}</td>
+					<td>${varitem.parkingGarage.parkingLot.name}</td>
+					<td>${varitem.parkingGarage.name}</td>
 					<td><fmt:formatDate value='${varitem.yuyueTime}' pattern='yyyy-MM-dd HH:mm' /></td>
-					<td><fmt:formatDate value='${ varitem.createTime}' pattern='yyyy-MM-dd HH:mm' /></td>
-					 
+					<td>${varitem.isDelete}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
