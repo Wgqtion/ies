@@ -5,10 +5,7 @@
 	<form rel="pagerForm" method="post" action="${ctx}/work/parkinggarage/select" onsubmit="return dwzSearch(this, 'dialog');">
 		<div class="searchBar">
 			<ul class="searchContent">
-				<li><label>停车场:</label> <input type="text" value="${param['search_LIKE_parkingLotArea.parkingLot.name']}" name="search_LIKE_parkingLotArea.parkingLot.name" /></li>
-				<li><label>停车片区:</label> <input type="text" value="${param['search_LIKE_parkingLotArea.name']}" name="search_LIKE_parkingLotArea.name" /></li>
-				<li><label>停车位名称:</label> <input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /></li>
-				<li><label>停车位编码:</label> <input type="text" value="${param.search_LIKE_code}" name="search_LIKE_code" /></li>
+				<li><label>车位名称:</label> <input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /></li>
 			</ul>
 			<div class="subBar">
 				<ul>
@@ -35,11 +32,9 @@
 	<table class="table" layoutH="108" targetType="dialog" width="100%">
 		<thead>
 			<tr>
-				<th width="30" align="center"></th>
+				<th width="30" align="center"></th>			
 				<th <vsc:orderField name="name"/>>车位名称</th>		
-				<th <vsc:orderField name="code"/>>车位编码</th>				
-				<th>停车片区</th>
-				<th>停车场</th>
+				<th>场区名称</th>	
 				<th <vsc:orderField name="isEnabled"/>>状态</th>
 			</tr>
 		</thead>
@@ -48,9 +43,7 @@
 				<tr>
 					<td><a title="查找带回" href="javascript:$.bringBack({id:'${item.id}', name:'${item.name}'})" class="btnSelect">选择</a></td>
 					<td><a href="${ctx}/work/parkinggarage/view/${item.id}" target="dialog" title="查看停车位" rel="parkinggarage_view">${item.name}</a></td>
-					<td>${item.code}</td>
-					<td>${item.parkingLotArea.name}</td>
-					<td>${item.parkingLotArea.parkingLot.name}</td>
+					<td>${item.parkingLot.name}</td>
 					<td><s:message code="parkinggarage.isenabled.${item.isEnabled}"/></td>			
 					 
 				</tr>

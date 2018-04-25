@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,14 +22,17 @@ import com.vsc.modules.entity.BasicEntity;
 @Table(name = Constants.TABLE_PREFIX + "parking_lock")
 public class ParkingLock extends BasicEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2340178890670270784L;
+	private String code;
 	private java.lang.String lockNum;
 	private java.lang.String ipAddress;
 	private Boolean isEnabled = true;
 	private ParkingGarage parkingGarage;
 	private Boolean isCarOn = false;
-	private java.util.Date isCarOnTime;
 	private Boolean isOnline = false;
-	private java.util.Date isOnlineTime;
 	private Boolean isOpen;
 	private Integer isForeverOpenClose = 0;
 
@@ -49,6 +52,20 @@ public class ParkingLock extends BasicEntity {
 	 * 日志最后更新时间
 	 */
 	private Date logUpdateTime;
+	
+	/**
+	 * @return
+	 */
+	@Column(name = "CODE")
+	public java.lang.String getCode() {
+		return this.code;
+	}
+
+	public void setCode(java.lang.String value) {
+		this.code = value;
+	}
+	
+	
 	/**
 	 * @return 日志最后更新时间
 	 */
@@ -136,8 +153,8 @@ public class ParkingLock extends BasicEntity {
 	/**
 	 * @return
 	 */
-	@ManyToOne
-	@JoinColumn(name = "PARKING_GARAGE_ID")
+	@OneToOne
+	@JoinColumn(name = "PARKING_GARAGE_CODE",referencedColumnName="CODE")
 	public ParkingGarage getParkingGarage() {
 		return this.parkingGarage;
 	}
@@ -161,18 +178,6 @@ public class ParkingLock extends BasicEntity {
 	/**
 	 * @return
 	 */
-	@Column(name = "IS_CAR_ON_TIME")
-	public java.util.Date getIsCarOnTime() {
-		return this.isCarOnTime;
-	}
-
-	public void setIsCarOnTime(java.util.Date value) {
-		this.isCarOnTime = value;
-	}
-
-	/**
-	 * @return
-	 */
 	@Column(name = "IS_ONLINE")
 	public Boolean getIsOnline() {
 		return this.isOnline;
@@ -180,18 +185,6 @@ public class ParkingLock extends BasicEntity {
 
 	public void setIsOnline(Boolean value) {
 		this.isOnline = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "IS_ONLINE_TIME")
-	public java.util.Date getIsOnlineTime() {
-		return this.isOnlineTime;
-	}
-
-	public void setIsOnlineTime(java.util.Date value) {
-		this.isOnlineTime = value;
 	}
 
 	/**

@@ -9,28 +9,28 @@
 		<div class="pageFormContent" layoutH="56">
 			<table class="formTable">
 				<tr>
-					<td class="fieldName"><label>区域编号:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>区域编号:</label></td>
 					<td class="fieldInput"><label><input type="text" id="ipAddress" name="ipAddress" value="${vm.ipAddress}" validate="{required:true}" /></label><span for="ipAddress" generated="true" style="display: none" class="error"></span></td>
-					<td class="fieldName"><label>地锁编号:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>地锁编号:</label></td>
 					<td class="fieldInput"><label><input type="text" id="lockNum" name="lockNum" value="${vm.lockNum}" validate="{required:true}" /></label><span for="lockNum" generated="true" style="display: none" class="error"></span></td>
 
 				</tr>
 				<tr>
-					<td class="fieldName"><label>关联车位:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>关联车位:</label></td>
 					<td class="fieldInput">
 					<label>
 					<input name="parkingGarageGroup.id" value="${vm.parkingGarage.id}" type="hidden" />
 					<input validate="{required:true}" readonly="readonly" id="parkingGarageGroup_name" name="parkingGarageGroup.name" value="${vm.parkingGarage.name}" type="text"/> 
-					<a class="btnLook" rel="parkinglock_parkingGarage_select" title="选择关联车位" href="${ctx}/work/parkinggarage/select?single=true&search_EQ_isEnabled=1" lookupGroup="parkingGarageGroup">查找带回</a> <span class="info">(选择关联车位)</span>
+					<a class="btnLook" rel="parkinglock_parkingGarage_select" title="选择关联车位" href="${ctx}/work/parkinggarage/select?single=true" lookupGroup="parkingGarageGroup">查找带回</a> <span class="info">(选择关联车位)</span>
 					</label><span for="parkingGarageGroup_name" generated="true" style="display: none" class="error"></span>
 					</td>
-					<td class="fieldName"><label>使用状态:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>使用状态:</label></td>
 					<td class="fieldInput"><label><form:radiobutton path="vm.isEnabled" value="false" validate="{required:true}" /> <s:message code="parkinggarage.isenabled.false" /> </label> <label> <form:radiobutton path="vm.isEnabled" value="true" />
 							<s:message code="parkinggarage.isenabled.true" />
+					</label> <span style="display: none" class="error" generated="true" for="isEnabled"></span></td>
 				</tr>
 				<tr>
-					</label> <span style="display: none" class="error" generated="true" for="isEnabled"></span></td>
-					<td class="fieldName"><label>余位判断:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>余位判断:</label></td>
 					<td class="fieldInput">
 						<label><input name="surplusDetection" type="checkbox" value="1" 
 							<c:if test="${fn:contains(vm.surplusDetection,'1')}"> checked="checked" </c:if>

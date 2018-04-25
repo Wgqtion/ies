@@ -25,8 +25,8 @@ import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.constants.Constants;
 
 /**
- * 
- * @author jerry
+ * 地锁视图
+ * @author XiangXiaoLin
  *
  */
 @Controller

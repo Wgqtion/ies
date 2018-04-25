@@ -4,8 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -39,26 +39,17 @@ public class ParkingGarage extends BasicEntity {
      */
     private java.lang.String itudeLat;
 
-	
-	private ParkingLock parkingLock=new ParkingLock();
-	
-	@Transient
+    private ParkingLock parkingLock;
+    
+    
+    @OneToOne
+    @JoinColumn(name = "PARKING_LOCK_CODE",referencedColumnName="CODE")
 	public ParkingLock getParkingLock() {
 		return parkingLock;
 	}
 
 	public void setParkingLock(ParkingLock parkingLock) {
 		this.parkingLock = parkingLock;
-	}
-	
-	@Transient
-	public Boolean getIsCarOn() {
-		return parkingLock.getIsCarOn();
-	}
-	
-	@Transient
-	public Boolean getIsOpen() {
-		return parkingLock.getIsOpen();
 	}
 
 	@Column(name = "ITUDE_LONG")

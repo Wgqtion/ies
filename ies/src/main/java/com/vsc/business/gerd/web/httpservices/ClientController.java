@@ -206,49 +206,31 @@ public class ClientController extends HttpServiceBaseController {
 			}
 			
 			Boolean isOnline=false;
-			Date onlineTime=null;
-			Date carOnTime=null;
 			
 			//下线
 			if(eventType==68){
 			}
 			//上线
 			else if(eventType==51){
-				onlineTime=parkingLockEventLog.getReportedTime();
 				isOnline=true;
 			}
 			//心跳包
 			else if(eventType==49){
 				isOnline=true;
-				if(parkingLock.getIsOnlineTime()==null){
-					onlineTime=parkingLockEventLog.getReportedTime();
-				}else{
-					onlineTime=parkingLock.getIsOnlineTime();	
-				}
 			}
 			//事件类型
 			else if(eventType==85){
 				isOnline=parkingLock.getIsOnline();
-				onlineTime=parkingLock.getIsOnlineTime();
 			}
 			
 			if(eventType!=68){
-				if(parkingLockEventLog.getIsCarOn()){
-					if(parkingLock.getIsCarOnTime()==null){
-						carOnTime=parkingLockEventLog.getReportedTime();
-					}else{
-						carOnTime=parkingLock.getIsCarOnTime();
-					}	
-				}
 				parkingLock.setIsCarOn(parkingLockEventLog.getIsCarOn());
 				parkingLock.setIsForeverOpenClose(parkingLockEventLog.getIsForeverOpenClose());
 				parkingLock.setIsOpen(parkingLockEventLog.getIsOpen());
-				parkingLock.setIsCarOnTime(carOnTime);
 				parkingLock.setPower(parkingLockEventLog.getPower());
 				parkingLock.setMcOpen(parkingLockEventLog.getMcOpen());
 			}
 			parkingLock.setIsOnline(isOnline);
-			parkingLock.setIsOnlineTime(onlineTime);
 			parkingLock.setLogUpdateTime(curTime);
 			this.parkingLockService.save(parkingLock);
 		}

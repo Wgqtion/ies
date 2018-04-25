@@ -15,24 +15,24 @@
 				<tr>
 					<td align="right">使用状态:</td>
 					<td align="left"><s:message code="parkinggarage.isenabled.${vm.isEnabled}" /></td>
-					<td align="right">永久状态:</td>
-					<td align="left">${vm.isForeverOpenClose}</td>
+					<td align="right">最后上报时间:</td>
+					<td align="left"><fmt:formatDate value='${ vm.logUpdateTime}' pattern='yyyy-MM-dd HH:mm:ss' /></td>
 				</tr>
 				<tr>
 					<td align="right">所属停车片区:</td>
-					<td align="left">${vm.parkingGarage.parkingLotArea.name}</td>
+					<td align="left">${vm.parkingGarage.parkingLot.name}</td>
 					<td align="right">关联车位:</td>
 					<td align="left">${vm.parkingGarage.name}</td>
 				</tr>
 				<tr>
 					<td align="right">在线状态:</td>
-					<td align="left">${vm.isOnline}</td>
+					<td align="left"><s:message code="parkinglock.isOpen.${vm.isOnline}" /></td>
 					<td align="right">是否有车:</td>
-					<td align="left">${vm.isCarOn}</td>
+					<td align="left"><s:message code="parkinglock.isOpen.${vm.isCarOn}" /></td>
 				</tr>				
 				<tr>
 					<td align="right">开关状态:</td>
-					<td align="left">${vm.isOpen}</td>
+					<td align="left"><s:message code="parkinglock.isOpen.${vm.isOpen}" /></td>
 					<td align="right">余位判断:</td>
 					<td align="left">
 						<input disabled="disabled" name="surplusDetections" type="checkbox" value="1" 

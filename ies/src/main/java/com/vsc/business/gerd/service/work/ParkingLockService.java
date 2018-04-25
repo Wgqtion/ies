@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
+import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.repository.work.ParkingLockDao;
@@ -25,6 +26,7 @@ import com.vsc.modules.entity.MapBean;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.modules.tcp.TcpClient;
+import com.vsc.util.CodeUtils;
 import com.vsc.util.CoreUtils;
 import com.vsc.util.HexUtils;
 
@@ -43,6 +45,9 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	@Autowired
 	private ParkingLockDao parkingLockDao;
 
+	@Autowired
+	private ParkingGarageService parkingGarageService;
+	
 	//微信用户
     @Autowired
     private WxUserService wxUserService;
@@ -87,7 +92,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	@Override
 	public List<ParkingLock> findList(Map<String, Object> filterParams) {
 		User user=ShiroUserUtils.GetCurrentUser();
-		filterParams.put("RLIKE_parkingGarage.parkingLotArea.parkingLot.companyCode", user.getCompany().getCode());
+		filterParams.put("RLIKE_parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0);
 		return super.findList(filterParams);
 	}
@@ -106,7 +111,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	@Override
 	public Page<ParkingLock> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
 		User user=ShiroUserUtils.GetCurrentUser();
-		filterParams.put("RLIKE_parkingGarage.parkingLotArea.parkingLot.companyCode", user.getCompany().getCode());
+		filterParams.put("RLIKE_parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
 		return super.findPage(filterParams, pageRequest);
 	}
@@ -127,18 +132,68 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	}
 	
 	public ParkingLock save(ParkingLock entity) {
+		if(entity.getParkingGarage()!=null&&entity.getParkingGarage().getId()!=null){
+			ParkingGarage parkingGarage=parkingGarageService.getObjectById(entity.getParkingGarage().getId());
+			entity.setParkingGarage(parkingGarage);
+		}else{
+			entity.setParkingGarage(null);
+		}
+		
+		
 		User user=ShiroUserUtils.GetCurrentUser();
 		if(user!=null){
 			Date now=CoreUtils.nowtime();
 			if(entity.getId()==null){
 				entity.setCreateDate(now);
 				entity.setCreateUser(user);	
+				
+				String code=null;
+				boolean flag=true;
+				int i=0;
+				while(flag){
+					code=CodeUtils.GenerateCode(this.getMaxCode()+i,5);
+					ParkingLock p=getByCode(code);
+					if(p==null){
+						flag=false;
+					}
+					i++;
+				}
+				entity.setCode(code);
 			}
 			entity.setUpdateUser(user);
 			entity.setUpdateDate(now);
 			
 		}
 		return this.parkingLockDao.save(entity);
+	}
+	
+	/**
+	 * 根据code查询，未删除的
+	 * @param code
+	 * @return
+	 */
+	public ParkingLock getByCode(String code){
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_isDelete",0);
+		searchParams.put("EQ_code",code);
+		return this.find(searchParams);
+	}
+	
+	/**
+	 * 查询当前最大编码
+	 * @return
+	 */
+	public int getMaxCode(){
+		int i=0;
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_isDelete",0);
+		List<ParkingLock> list=this.findAll(searchParams, "code","desc");
+		if(list!=null&&list.size()>0){
+			ParkingLock c=list.get(0);
+			if(c.getCode()!=null)
+			i=Integer.valueOf(c.getCode());
+		}
+		return i;
 	}
 	
 	@Transactional(propagation=Propagation.NOT_SUPPORTED) 

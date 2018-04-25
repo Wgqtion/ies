@@ -1,7 +1,5 @@
 package com.vsc.business.gerd.entity.work;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -22,9 +20,8 @@ import com.vsc.modules.entity.BasicEntity;
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX +"parking_passages")
-public class ParkingPassages extends BasicEntity implements Serializable{
+public class ParkingPassages extends BasicEntity{
 
-	 
      /**
 	 * 
 	 */

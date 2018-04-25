@@ -112,21 +112,6 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 
 		return this.parkingGarageDao.save(entity);
 	}
-	
-	public void deleteUpdateById(Long id) {
-		ParkingGarage entity=getObjectById(id);
-		entity.setIsDelete(true);
-		save(entity);
-	}
-
-	public void deleteUpdateByIds(Long[] ids) {
-		if (ArrayUtils.isNotEmpty(ids)) {
-			for (int i = 0; i < ids.length; i++) {
-				deleteUpdateById(ids[i]);
-			}
-		}
-	}
-	
 	/**
 	 * 根据code查询，未删除的
 	 * @param code
@@ -155,4 +140,18 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 		}
 		return i;
 	}
+	public void deleteUpdateById(Long id) {
+		ParkingGarage entity=getObjectById(id);
+		entity.setIsDelete(true);
+		save(entity);
+	}
+
+	public void deleteUpdateByIds(Long[] ids) {
+		if (ArrayUtils.isNotEmpty(ids)) {
+			for (int i = 0; i < ids.length; i++) {
+				deleteUpdateById(ids[i]);
+			}
+		}
+	}
+	
 }
