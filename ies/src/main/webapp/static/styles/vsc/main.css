@@ -1,4 +1,14 @@
 
+ul.editZtree{
+    background: none repeat scroll 0 0 #f0f6e4;
+    border: 1px solid #617775;
+    height: 200px;
+    margin-top: 10px;
+    overflow-x: auto;
+    overflow-y: scroll;
+    width: 300px;
+}
+
 .buttoA{
 margin-left: 10px;border:1px #ccc solid;padding-top:5px;padding-bottom:2px;padding-left:5px;padding-right:5px;
 }

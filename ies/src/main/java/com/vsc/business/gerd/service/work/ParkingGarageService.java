@@ -35,6 +35,10 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	@Autowired
 	private ParkingGarageDao parkingGarageDao;
 
+	@Autowired
+	private ParkingLotService parkingLotService;
+	
+	
 	@Override
 	public PagingAndSortingRepository<ParkingGarage, Long> getPagingAndSortingRepositoryDao() {
 		return this.parkingGarageDao;
@@ -44,9 +48,6 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	public JpaSpecificationExecutor<ParkingGarage> getJpaSpecificationExecutorDao() {
 		return this.parkingGarageDao;
 	}
-	
-	@Autowired
-	private ParkingLotService parkingLotService;
 	
 	/**
 	 * 根据条件查询，未删除的

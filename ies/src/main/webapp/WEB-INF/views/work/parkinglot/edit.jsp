@@ -3,73 +3,20 @@
 <%@ include file="/WEB-INF/inc/include.inc.jsp"%>
 
 <SCRIPT type="text/javascript">
-	//选择树
-	var setting = {
-		data: {
-			simpleData: {
-				enable: true
-			}
-		},
-		callback: {
-			onClick: onClick	//点击时触发
-		}
-	};
-	var zNodes =[
+	var ParkingLotzNodes =[
    	   <c:forEach items="${parkingLotTree}" var="entity" varStatus="index">
    	   		{ id:'${entity.id}', pId:'${entity.parent.id}', name:'${entity.name}'}<c:if test="${!index.last}">,</c:if>
    	   </c:forEach>
    	];
    	
-   	$(document).ready(function(){
-   		$.fn.zTree.init($("#selectParkingLotTree"), setting, zNodes);
-   		var zTree = $.fn.zTree.getZTreeObj("selectParkingLotTree");
-   		var node = zTree.getNodeByParam("id", "${parent.id}");
-   		zTree.selectNode(node);
+	$(document).ready(function(){
+   		GenerateSelectZTree("ParkingLot",ParkingLotzNodes,"parent","${parkingLot.id}",companyHide);
+   		companyHide();
+   		
+   		$("#clearBtnId").bind("click",function(){
+   			$("#companyTr").show();
+   		});
    	});
-	
-	//显示树菜单
-	function showMenu() {
-		var cityObj = $("#parentName");
-		var cityOffset = $("#parentName").position();
-		$("#menuContent").css({left:cityOffset.left + "px", top:cityOffset.top + cityObj.outerHeight() + "px"}).slideDown("fast");
-		
-		$(".pageContent").bind("mousedown", onBodyDown);	//body绑定鼠标按下事件
-	}
-	
-	//隐藏树菜单
-	function hideMenu() {
-		$("#menuContent").fadeOut("fast");	//隐藏树菜单
-		$(".pageContent").unbind("mousedown", onBodyDown);	//body解除鼠标按下事件
-	}
-	
-	//body绑定鼠标按下事件
-	function onBodyDown(event) {
-		if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
-			hideMenu();
-		}
-	}
-	
-	//点击时触发
-	function onClick(e, treeId, treeNode) {
-		var zTree = $.fn.zTree.getZTreeObj("selectParkingLotTree"),
-		nodes = zTree.getSelectedNodes();
-		$("#parentId").val(nodes[0].id);	//
-		$("#parentName").val(nodes[0].name);
-		$("#menuContent").fadeOut("fast");	//隐藏树菜单
-		
-		
-		companyHide();
-	}
-	//清空树
-	function clearBtn(){
-		$("#parentId").val('');
-		$("#parentName").val('');
-		$("#companyTr").show();
-	}
-	
-	$(function(){
-		companyHide();
-	});
 	//隐藏公司
 	function companyHide(){
 		var parentId=$("#parentId").val();
@@ -79,18 +26,7 @@
 	}
 	
 </SCRIPT>
-<style>
-ul.editZtree{
-    background: none repeat scroll 0 0 #f0f6e4;
-    border: 1px solid #617775;
-    height: 200px;
-    margin-top: 10px;
-    overflow-x: auto;
-    overflow-y: scroll;
-    width: 300px;
-}
-</style>
-<div class="pageContent">
+<div id="contentParkingLot" class="pageContent">
 	<form method="post" action="${ctx}/work/parkinglot/${action}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<input type="hidden" id="id" name="id" value="${id}">
 		<vsc:token tokenName="work.parkinglot.create"></vsc:token>
@@ -112,9 +48,9 @@ ul.editZtree{
 						<input type="hidden" name="parent.id" id="parentId" value="${parent.id}">
 						<input  id="parentName" value="${parent.name }" readonly="readonly"/>
 						<c:if test="${empty id}">
-						<a class="btnLook" title="选择上级场区" href="#" onclick="showMenu();"></a>
+						<a class="btnLook" title="选择上级场区" href="#" onclick="showMenu(this,'ParkingLot');"></a>
 						<span class="info">选择</span>
-						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearBtn();' />
+						<input id="clearBtnId" type='button' style="margin-left: 5px;" value='清空' onclick='clearBtn("parent");' />
 						</c:if>
 					</td>
 				</tr> 
@@ -133,12 +69,12 @@ ul.editZtree{
 				</c:if>
 				<tr>
 					<td class="fieldName"><span class="required">*</span>纬度坐标:</td>
-					<td class="fieldInput"><label><input type="text" id="itudeLong" name="itudeLong" value="${vm.itudeLong}" validate="{required:true}" /></label><span for="baiduLatitudeLng" generated="true"
+					<td class="fieldInput"><label><input type="text" id="itudeLong" name="itudeLong" value="${vm.itudeLong}" validate="{required:true}" /></label><span for="itudeLong" generated="true"
 						style="display: none" class="error"></span></td> 
 				</tr> 
 				<tr>
 					<td class="fieldName"><span class="required">*</span>经度坐标:</td>
-					<td class="fieldInput"><label><input type="text" id="itudeLat" name="itudeLat" value="${vm.itudeLat}" validate="{required:true}" /></label><span for="baiduLatitudeLat" generated="true"
+					<td class="fieldInput"><label><input type="text" id="itudeLat" name="itudeLat" value="${vm.itudeLat}" validate="{required:true}" /></label><span for="itudeLat" generated="true"
 						style="display: none" class="error"></span></td>
 				</tr> 
 				<tr>
@@ -178,7 +114,7 @@ ul.editZtree{
 		</div>
 	</form>
 </div>
-<div id="menuContent" class="menuContent" style="display: none;position: absolute;">
+<div id="selectParkingLotContent" class="menuContent" style="display: none;position: absolute;">
    <ul id="selectParkingLotTree" class="ztree editZtree" style="margin-top:0; width:200px;"></ul>
 </div>
 

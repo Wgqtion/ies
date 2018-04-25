@@ -50,7 +50,7 @@ public class ParkingOrder extends IdEntity implements Serializable {
 	/**
 	 * 进去通道 查询用
 	 */
-	private Passages inPassages;
+	private ParkingPassages inPassages;
 
 	/**
 	 * 出去相机IP
@@ -71,7 +71,7 @@ public class ParkingOrder extends IdEntity implements Serializable {
 	/**
 	 * 出去通道 查询用
 	 */
-	private Passages outPassages;
+	private ParkingPassages outPassages;
 
 	/**
 	 * 收费时间
@@ -216,11 +216,11 @@ public class ParkingOrder extends IdEntity implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "IN_SCHOOL_DOOR_NAME",referencedColumnName ="CODE",insertable=false,updatable=false)
-	public Passages getInPassages() {
+	public ParkingPassages getInPassages() {
 		return inPassages;
 	}
 
-	public void setInPassages(Passages inPassages) {
+	public void setInPassages(ParkingPassages inPassages) {
 		this.inPassages = inPassages;
 	}
 
@@ -235,11 +235,11 @@ public class ParkingOrder extends IdEntity implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "OUT_SCHOOL_DOOR_NAME",referencedColumnName ="CODE",insertable=false,updatable=false)
-	public Passages getOutPassages() {
+	public ParkingPassages getOutPassages() {
 		return outPassages;
 	}
 
-	public void setOutPassages(Passages outPassages) {
+	public void setOutPassages(ParkingPassages outPassages) {
 		this.outPassages = outPassages;
 	}
 

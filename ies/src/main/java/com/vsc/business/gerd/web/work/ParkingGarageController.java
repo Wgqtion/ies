@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.common.collect.Maps;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.entity.work.ParkingLot;
@@ -79,8 +78,7 @@ public class ParkingGarageController extends BaseController {
 		model.addAttribute("vm", new ParkingGarage());
 		model.addAttribute("action", BaseController.CREATE);
 		model.addAttribute("parkingLot",this.parkingLotService.getObjectById(parkingLotId));
-		Map<String, Object> searchParams = Maps.newHashMap();
-		model.addAttribute("parkingLotTree",this.parkingLotService.findList(searchParams));
+		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
 		return PATH_EDIT;
 	}
 

@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,8 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
-import com.vsc.business.gerd.entity.work.Passages;
-import com.vsc.business.gerd.repository.work.PassagesDao;
+import com.vsc.business.gerd.entity.work.ParkingLot;
+import com.vsc.business.gerd.entity.work.ParkingPassages;
+import com.vsc.business.gerd.repository.work.ParkingPassagesDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.util.CodeUtils;
@@ -31,29 +30,29 @@ import com.vsc.util.CoreUtils;
  */
 @Service
 @Transactional
-public class PassagesService extends BaseService<Passages>{
-	private static Logger logger = LoggerFactory.getLogger(PassagesService.class);
+public class ParkingPassagesService extends BaseService<ParkingPassages>{
   
 	@Autowired
-	private PassagesDao passagesDao;
+	private ParkingPassagesDao parkingPassagesDao;
 
-    
+	@Autowired
+	private ParkingLotService parkingLotService;
   	
 	@Override
-	public PagingAndSortingRepository<Passages, Long> getPagingAndSortingRepositoryDao() {
-		return this.passagesDao;
+	public PagingAndSortingRepository<ParkingPassages, Long> getPagingAndSortingRepositoryDao() {
+		return this.parkingPassagesDao;
 	}
 
 	@Override
-	public JpaSpecificationExecutor<Passages> getJpaSpecificationExecutorDao() {
-		return this.passagesDao;
+	public JpaSpecificationExecutor<ParkingPassages> getJpaSpecificationExecutorDao() {
+		return this.parkingPassagesDao;
 	}
 	
 	/**
 	 * 根据条件查询，未删除的
 	 */
 	@Override
-	public List<Passages> findList(Map<String, Object> filterParams) {
+	public List<ParkingPassages> findList(Map<String, Object> filterParams) {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0);
@@ -63,7 +62,7 @@ public class PassagesService extends BaseService<Passages>{
 	/**
 	 * 根据条件查询，未删除的
 	 */
-	public List<Passages> findAllList(Map<String, Object> filterParams) {
+	public List<ParkingPassages> findAllList(Map<String, Object> filterParams) {
 		filterParams.put("EQ_isDelete", 0);
 		return super.findList(filterParams);
 	}
@@ -72,14 +71,22 @@ public class PassagesService extends BaseService<Passages>{
 	 * 根据条件查询，未删除，like 用户公司code%
 	 */
 	@Override
-	public Page<Passages> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
+	public Page<ParkingPassages> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
 		return super.findPage(filterParams, pageRequest);
 	}
 
-	public Passages save(Passages entity) {
+	public ParkingPassages save(ParkingPassages entity) {
+		if(entity.getParkingLot()!=null&&entity.getParkingLot().getId()!=null){
+			ParkingLot parkingLot=parkingLotService.getObjectById(entity.getParkingLot().getId());
+			entity.setParkingLot(parkingLot);
+		}else{
+			entity.setParkingLot(null);
+		}
+		
+		
 		User user=ShiroUserUtils.GetCurrentUser();
 		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){
@@ -90,7 +97,7 @@ public class PassagesService extends BaseService<Passages>{
 			int i=0;
 			while(flag){
 				code=CodeUtils.GenerateCode((this.getMaxCode()+i),5);
-				Passages p=getByCode(code);
+				ParkingPassages p=getByCode(code);
 				if(p==null){
 					flag=false;
 				}
@@ -101,11 +108,11 @@ public class PassagesService extends BaseService<Passages>{
 		entity.setUpdateUser(user);
 		entity.setUpdateDate(now);
 
-		return this.passagesDao.save(entity);
+		return this.parkingPassagesDao.save(entity);
 	}
 	
 	public void deleteUpdateById(Long id) {
-		Passages entity=getObjectById(id);
+		ParkingPassages entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}
@@ -123,7 +130,7 @@ public class PassagesService extends BaseService<Passages>{
 	 * @param code
 	 * @return
 	 */
-	public Passages getByCode(String code){
+	public ParkingPassages getByCode(String code){
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_isDelete",0);
 		searchParams.put("EQ_code",code);
@@ -138,9 +145,9 @@ public class PassagesService extends BaseService<Passages>{
 		int i=0;
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_isDelete",0);
-		List<Passages> list=this.findAll(searchParams, "code","desc");
+		List<ParkingPassages> list=this.findAll(searchParams, "code","desc");
 		if(list!=null&&list.size()>0){
-			Passages c=list.get(0);
+			ParkingPassages c=list.get(0);
 			if(c.getCode()!=null)
 			i=Integer.valueOf(c.getCode());
 		}

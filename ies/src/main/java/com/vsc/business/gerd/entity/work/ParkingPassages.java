@@ -16,13 +16,13 @@ import com.vsc.modules.entity.BasicEntity;
  
 
 /**
- * 通道实体类
+ * 出入口实体类
  * @author XiangXiaoLin
  *
  */
 @Entity
-@Table(name = Constants.TABLE_PREFIX +"passages")
-public class Passages extends BasicEntity implements Serializable{
+@Table(name = Constants.TABLE_PREFIX +"parking_passages")
+public class ParkingPassages extends BasicEntity implements Serializable{
 
 	 
      /**
@@ -32,26 +32,52 @@ public class Passages extends BasicEntity implements Serializable{
 	private ParkingLot parkingLot;
      private java.lang.String name;
      /**
-      * 通道编号
+      * 出入口编号
       */
      private String code;
-     private java.lang.String xcoordinate;
-     private java.lang.String ycoordinate;
+     /**
+      * 纬度坐标
+      */
+     private java.lang.String itudeLong;
+     /**
+      * 经度坐标
+      */
+     private java.lang.String itudeLat;
+
      private Boolean isEnabled;
      private java.lang.String mark;
 	 
 
-     
-    @ManyToOne
- 	@JoinColumn(name = "PARKINGLOT_ID")
-	public ParkingLot getParkingLot() {
-		return parkingLot;
+     /**
+ 	 * @return
+ 	 */
+ 	@ManyToOne
+ 	@JoinColumn(name = "PARKING_LOT_CODE",referencedColumnName="CODE")
+ 	public ParkingLot getParkingLot() {
+ 		return this.parkingLot;
+ 	}
+
+ 	public void setParkingLot(ParkingLot parkingLot) {
+ 		this.parkingLot = parkingLot;
+ 	}
+ 	
+	@Column(name = "ITUDE_LONG")
+    public java.lang.String getItudeLong() {
+		return itudeLong;
 	}
 
-	public void setParkingLot(ParkingLot parkingLot) {
-		this.parkingLot = parkingLot;
+	public void setItudeLong(java.lang.String itudeLong) {
+		this.itudeLong = itudeLong;
+	}
+	@Column(name = "ITUDE_LAT")
+	public java.lang.String getItudeLat() {
+		return itudeLat;
 	}
 
+	public void setItudeLat(java.lang.String itudeLat) {
+		this.itudeLat = itudeLat;
+	}
+ 
 	/**
 	 * @return
 	 */
@@ -75,33 +101,6 @@ public class Passages extends BasicEntity implements Serializable{
 	public void setName(java.lang.String value) {
 		this.name = value;
 	}
-	
-	
-	/**
-	 * @return
-	 */
-	@Column(name = "XCOORDINATE" )
-	public java.lang.String getXcoordinate() {
-		return this.xcoordinate;
-	}
-	
-	public void setXcoordinate(java.lang.String value) {
-		this.xcoordinate = value;
-	}
-	
-	
-	/**
-	 * @return
-	 */
-	@Column(name = "YCOORDINATE" )
-	public java.lang.String getYcoordinate() {
-		return this.ycoordinate;
-	}
-	
-	public void setYcoordinate(java.lang.String value) {
-		this.ycoordinate = value;
-	}
-	
 	
 	/**
 	 * @return

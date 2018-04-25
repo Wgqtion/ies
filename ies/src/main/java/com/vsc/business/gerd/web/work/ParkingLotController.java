@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.common.collect.Maps;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.service.work.CompanyService;
