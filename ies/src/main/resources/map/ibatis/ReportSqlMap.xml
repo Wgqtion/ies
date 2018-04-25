@@ -10,18 +10,16 @@
 	(
 		SELECT
 			PL.NAME AS PLNAME,
-			PLA.NAME AS PLANAME,
 			PG.NAME AS PGNAME,
 			PG.CODE AS PGCODE,
-			PG.XCOORDINATE,
-			PG.YCOORDINATE,
+			PG.ITUDE_LONG AS ITUDELONG,
+			PG.ITUDE_LAT AS ITUDELAT,
 			PV.PLATE_NO AS PLATENO,
 			PV.IN_TIME AS INTIME,
 			PV.STATUS AS iscarstatus
 		FROM
 			T_PARKING_GARAGE PG
-		INNER JOIN T_PARKING_LOT_AREA PLA ON PG.PARKING_LOT_AREA_ID = PLA.ID
-		INNER JOIN T_PARKING_LOT PL ON PLA.PARKING_LOT_ID = PL.ID 
+		INNER JOIN T_PARKING_LOT PL ON PG.PARKING_LOT_CODE = PL.CODE 
 		INNER JOIN (
 			SELECT 
 						PARKING_CODE,
@@ -35,7 +33,6 @@
 		) PV ON PG.CODE = PV.PARKING_CODE
 		WHERE 
 			PG.IS_DELETE=0
-			AND PLA.IS_DELETE=0
 			AND PL.IS_DELETE=0
 			AND PL.COMPANY_CODE LIKE CONCAT(#companyCode#,'%')
 	) SurplusTotal
@@ -50,11 +47,8 @@
 	<isNotEmpty    property="entity.code">
 		AND PGCODE  LIKE CONCAT('%',#entity.code#,'%')
 	</isNotEmpty>
-	<isNotEmpty    property="entity.parkingLotArea.name">
-		AND PLANAME  LIKE CONCAT('%',#entity.parkingLotArea.name#,'%')
-	</isNotEmpty>
-	<isNotEmpty    property="entity.parkingLotArea.parkingLot.name">
-		AND PLNAME  LIKE CONCAT('%',#entity.parkingLotArea.parkingLot.name#,'%')
+	<isNotEmpty    property="entity.parkingLot.name">
+		AND PLNAME  LIKE CONCAT('%',#entity.parkingLot.name#,'%')
 	</isNotEmpty>
 </select> 
 	
