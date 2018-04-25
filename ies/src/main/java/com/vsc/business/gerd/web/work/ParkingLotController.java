@@ -68,7 +68,8 @@ public class ParkingLotController extends BaseController {
 			model.addAttribute("companyId", companyId);
 		}
 		if(parentId!=null){
-			searchParams.put("EQ_parent.id",parentId);
+			ParkingLot parent=this.parkingLotService.getObjectById(parentId);
+			searchParams.put("RLIKE_parentCode",parent.getCode());
 			model.addAttribute("parentId", parentId);
 		}
 		Page<ParkingLot> page = parkingLotService.findPage(searchParams, pageRequest);
@@ -83,8 +84,7 @@ public class ParkingLotController extends BaseController {
 		model.addAttribute("action", BaseController.CREATE);
 		model.addAttribute("parent",this.parkingLotService.getObjectById(parentId));
 		model.addAttribute("companyList",companyService.getList());
-		Map<String, Object> searchParams = Maps.newHashMap();
-		model.addAttribute("parkingLotTree",this.parkingLotService.findList(searchParams));
+		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
 		return PATH_EDIT;
 	}
 
@@ -101,22 +101,7 @@ public class ParkingLotController extends BaseController {
 		model.addAttribute("vm", parkingLot);
 		model.addAttribute("action", BaseController.UPDATE);
 		model.addAttribute("parent",parkingLot.getParent());
-		model.addAttribute("companyList",companyService.getList());
-		Map<String, Object> searchParams = Maps.newHashMap();
-		model.addAttribute("parkingLotTree",this.parkingLotService.findList(searchParams));
 		return PATH_EDIT;
-	}
-
-	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
-	public String view(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vm", parkingLotService.getObjectById(id));
-		return PATH_VIEW;
-	}
-	
-	@RequestMapping(value =  "imageview/{id}", method = RequestMethod.GET)
-	public String imageview(@PathVariable("id") Long id, Model model) {
-		//model.addAttribute("vm", parkingLotService.getObjectById(id));
-		return PATH_IMAGEVIEW;
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
@@ -124,6 +109,12 @@ public class ParkingLotController extends BaseController {
 			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId) throws Exception {
 		parkingLotService.save(parkingLot, photoAttachId);
 		return this.ajaxDoneSuccess("修改成功");
+	}
+
+	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
+	public String view(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("vm", parkingLotService.getObjectById(id));
+		return PATH_VIEW;
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")

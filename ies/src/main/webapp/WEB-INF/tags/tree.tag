@@ -39,15 +39,17 @@
 	%>
 	<ul <c:if test="${isRoot}">class="${className}"</c:if>>
 		<c:forEach items="${root}" var="item" varStatus="index">
-			<c:set  var="onClick" value="${fn:replace(fn:replace(fn:replace(onClickTemplet,'{id}',item[idFieldName]),'{name}',item[nameFieldName]),'{pname}',item.parent[nameFieldName])}"></c:set>
-			<li <c:if test="${curSelectid==item[idFieldName]}">class="selected"</c:if>>
-			${fn:replace(fn:replace(fn:replace(noteTemplet,'{name}',item[nameFieldName]),'{onclick}',onClick),'{id}',item[idFieldName])}
-			 <vsc:tree root="${item[childFieldName]}"
-				isRoot="false" childFieldName="${childFieldName}"
-				idFieldName="${idFieldName}" nameFieldName="${nameFieldName}"
-				noteTemplet="${noteTemplet}" pidFieldName="${pidFieldName}" 
-				onClickTemplet="${onClickTemplet}" className="${className}" curSelectid="${curSelectid}"></vsc:tree>
-			</li>
+			<c:if test="${!item.isDelete }">
+				<c:set  var="onClick" value="${fn:replace(fn:replace(fn:replace(onClickTemplet,'{id}',item[idFieldName]),'{name}',item[nameFieldName]),'{pname}',item.parent[nameFieldName])}"></c:set>
+				<li <c:if test="${curSelectid==item[idFieldName]}">class="selected"</c:if>>
+				${fn:replace(fn:replace(fn:replace(noteTemplet,'{name}',item[nameFieldName]),'{onclick}',onClick),'{id}',item[idFieldName])}
+				 <vsc:tree root="${item[childFieldName]}"
+					isRoot="false" childFieldName="${childFieldName}"
+					idFieldName="${idFieldName}" nameFieldName="${nameFieldName}"
+					noteTemplet="${noteTemplet}" pidFieldName="${pidFieldName}" 
+					onClickTemplet="${onClickTemplet}" className="${className}" curSelectid="${curSelectid}"></vsc:tree>
+				</li>
+			</c:if>
 		</c:forEach>
 	</ul> 
 </c:if>

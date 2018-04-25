@@ -38,7 +38,8 @@
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th <vsc:orderField name="name"/>>场区名称</th>
 				<th <vsc:orderField name="isEnabled"/>>状态</th>
-				<th <vsc:orderField name="carNumber"/>>车位数</th>
+				<th <vsc:orderField name="itudeLong"/>>纬度坐标</th>
+				<th <vsc:orderField name="itudeLat"/>>经度坐标</th>	
 				<th <vsc:orderField name="createDate"/>>创建时间</th> 
 				 
 			</tr>
@@ -48,9 +49,10 @@
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>
-					<td><a href="${ctx}/work/parkinglot/view/${varitem.id}" target="dialog" title="查看停车场" rel="parkinglot_view">${varitem.name}</a></td>
+					<td><a href="${ctx}/work/parkinglot/view/${varitem.id}" target="dialog" title="查看场区" rel="parkinglot_view">${varitem.name}</a></td>
 					<td><s:message code="parkinglot.isenabled.${varitem.isEnabled}"/></td>
-					<td>${varitem.carNumber}</td>
+					<td>${varitem.itudeLong}</td>
+					<td>${varitem.itudeLat}</td>
 					<td><fmt:formatDate value='${varitem.createDate}' pattern='yyyy-MM-dd HH:mm' /></td> 
 				 
 				</tr>

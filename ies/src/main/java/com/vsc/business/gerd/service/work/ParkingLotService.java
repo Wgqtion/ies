@@ -54,7 +54,6 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 	 */
 	public List<ParkingLot> findTree() {
 		Map<String, Object> searchParams = Maps.newHashMap();
-		searchParams.put("ISNULL_parentCode", null);
 		return this.findList(searchParams);
 	}
 	

@@ -21,7 +21,10 @@
    	];
    	
    	$(document).ready(function(){
-   		$.fn.zTree.init($("#selectTree"), setting, zNodes);
+   		$.fn.zTree.init($("#selectParkingLotTree"), setting, zNodes);
+   		var zTree = $.fn.zTree.getZTreeObj("selectParkingLotTree");
+   		var node = zTree.getNodeByParam("id", "${parent.id}");
+   		zTree.selectNode(node);
    	});
 	
 	//显示树菜单
@@ -48,10 +51,10 @@
 	
 	//点击时触发
 	function onClick(e, treeId, treeNode) {
-		var zTree = $.fn.zTree.getZTreeObj("selectTree"),
+		var zTree = $.fn.zTree.getZTreeObj("selectParkingLotTree"),
 		nodes = zTree.getSelectedNodes();
 		$("#parentId").val(nodes[0].id);	//
-		$("#parentName").prev().html(nodes[0].name);
+		$("#parentName").val(nodes[0].name);
 		$("#menuContent").fadeOut("fast");	//隐藏树菜单
 		
 		
@@ -60,7 +63,7 @@
 	//清空树
 	function clearBtn(){
 		$("#parentId").val('');
-		$("#parentName").prev().html('');
+		$("#parentName").val('');
 		$("#companyTr").show();
 	}
 	
@@ -77,7 +80,7 @@
 	
 </SCRIPT>
 <style>
-ul.ztree{
+ul.editZtree{
     background: none repeat scroll 0 0 #f0f6e4;
     border: 1px solid #617775;
     height: 200px;
@@ -107,10 +110,10 @@ ul.ztree{
 					<td class="fieldName">上级场区:</td>
 					<td class="fieldInput">
 						<input type="hidden" name="parent.id" id="parentId" value="${parent.id}">
-						<label>${parent.name }</label>
+						<input  id="parentName" value="${parent.name }" readonly="readonly"/>
 						<c:if test="${empty id}">
-						<a class="btnLook" id="parentName" title="选择上级场区" href="#" onclick="showMenu();"></a>
-						<span class="info">选择上级场区</span>
+						<a class="btnLook" title="选择上级场区" href="#" onclick="showMenu();"></a>
+						<span class="info">选择</span>
 						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearBtn();' />
 						</c:if>
 					</td>
@@ -129,20 +132,15 @@ ul.ztree{
 				</tr>
 				</c:if>
 				<tr>
-					<td class="fieldName"><span class="required">*</span>百度纬度坐标:</td>
-					<td class="fieldInput"><label><input type="text" id="baiduLatitudeLng" name="baiduLatitudeLng" value="${vm.baiduLatitudeLng}" validate="{required:true}" /></label><span for="baiduLatitudeLng" generated="true"
+					<td class="fieldName"><span class="required">*</span>纬度坐标:</td>
+					<td class="fieldInput"><label><input type="text" id="itudeLong" name="itudeLong" value="${vm.itudeLong}" validate="{required:true}" /></label><span for="baiduLatitudeLng" generated="true"
 						style="display: none" class="error"></span></td> 
 				</tr> 
 				<tr>
-					<td class="fieldName"><span class="required">*</span>百度经度坐标:</td>
-					<td class="fieldInput"><label><input type="text" id="baiduLatitudeLat" name="baiduLatitudeLat" value="${vm.baiduLatitudeLat}" validate="{required:true}" /></label><span for="baiduLatitudeLat" generated="true"
+					<td class="fieldName"><span class="required">*</span>经度坐标:</td>
+					<td class="fieldInput"><label><input type="text" id="itudeLat" name="itudeLat" value="${vm.itudeLat}" validate="{required:true}" /></label><span for="baiduLatitudeLat" generated="true"
 						style="display: none" class="error"></span></td>
 				</tr> 
-				<tr>
-					<td class="fieldName"><span class="required">*</span>车位数量:</td>
-					<td class="fieldInput"><label><input type="text" id="carNumber" name="carNumber" value="${vm.carNumber}" validate="{required:true}" /></label><span for="carNumber" generated="true" style="display: none" class="error"></span></td>
-				</tr>
-				
 				<tr>
 					<td class="fieldName"><span class="required">*</span>状态:</td>
 					<td class="fieldInput"><label> <form:radiobutton path="vm.isEnabled" value="false" validate="{required:true}" /> <s:message code="parkinglot.isenabled.false" />
@@ -181,7 +179,7 @@ ul.ztree{
 	</form>
 </div>
 <div id="menuContent" class="menuContent" style="display: none;position: absolute;">
-   <ul id="selectTree" class="ztree" style="margin-top:0; width:200px;"></ul>
+   <ul id="selectParkingLotTree" class="ztree editZtree" style="margin-top:0; width:200px;"></ul>
 </div>
 
 

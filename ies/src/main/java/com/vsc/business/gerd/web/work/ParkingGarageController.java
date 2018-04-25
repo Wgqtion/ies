@@ -52,66 +52,65 @@ public class ParkingGarageController extends BaseController {
 
 	@RequestMapping(value = "")
 	public String tree(Model model, HttpServletRequest request) {
-		// PageRequest pageRequest = this.getPageRequest();
-		Map<String, Object> searchParams = Maps.newHashMap();//树永远固定不接受查询条件
-		List<ParkingLot> vl = this.parkingLotService.findList(searchParams);
+		List<ParkingLot> vl = this.parkingLotService.findTree();
+		this.list(model, request,null);
 		model.addAttribute("vl", vl);
-		this.list(model, request);
 		return PATH_TREE;
 	}
 
 	@RequestMapping(value = "list")
-	public String list(Model model, HttpServletRequest request) {
-
-		PageRequest pageRequest = this.getPageRequest("id","desc");
+	public String list(Model model, HttpServletRequest request,
+			Long parkingLotId) {
+		PageRequest pageRequest = this.getPageRequest("parkingLot.code","ASC");
 		Map<String, Object> searchParams = this.getSearchRequest();
-
-		String parkingLotAreaFullNameId = request.getParameter("parkingLotAreaFullName");
-
+		if(parkingLotId!=null){
+			ParkingLot parkingLot=this.parkingLotService.getObjectById(parkingLotId);
+			searchParams.put("RLIKE_parkingLot.code",parkingLot.getCode());
+			model.addAttribute("parkingLotId", parkingLotId);
+		}
 		Page<ParkingGarage> page = parkingGarageService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
-
 		return PATH_LIST;
 	}
 
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
-	public String createForm(Model model) {
+	public String createForm(Model model,
+			Long parkingLotId) {
 		model.addAttribute("vm", new ParkingGarage());
 		model.addAttribute("action", BaseController.CREATE);
+		model.addAttribute("parkingLot",this.parkingLotService.getObjectById(parkingLotId));
+		Map<String, Object> searchParams = Maps.newHashMap();
+		model.addAttribute("parkingLotTree",this.parkingLotService.findList(searchParams));
 		return PATH_EDIT;
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid ParkingGarage parkingGarage,
-			@RequestParam(value = "parkinglotareaGroup.id", required = true) Long parkinglotareaId) {
-		ParkingLot pm = parkingLotService.getObjectById(parkinglotareaId);
-		parkingGarage.setParkingLot(pm);
+	public ModelAndView create(@Valid ParkingGarage parkingGarage) {
 		parkingGarageService.save(parkingGarage);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
 	@RequestMapping(value = BaseController.UPDATE + "/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vm", parkingGarageService.getObjectById(id));
+		ParkingGarage parkingGarage=parkingGarageService.getObjectById(id);
+		model.addAttribute("vm", parkingGarage);
+		model.addAttribute("parkingLot",parkingGarage.getParkingLot());
 		model.addAttribute("action", BaseController.UPDATE);
 		return PATH_EDIT;
 	}
+
+	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingGarage parkingGarage) {
+		parkingGarageService.save(parkingGarage);
+		return this.ajaxDoneSuccess("修改成功");
+	}
+
 
 	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
 	public String view(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("vm", parkingGarageService.getObjectById(id));
 		return PATH_VIEW;
 	}
-
-	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingGarage parkingGarage,
-			@RequestParam(value = "parkinglotareaGroup.id", required = true) Long parkinglotareaId) {
-		ParkingLot pm = parkingLotService.getObjectById(parkinglotareaId);
-		parkingGarage.setParkingLot(pm);
-		parkingGarageService.save(parkingGarage);
-		return this.ajaxDoneSuccess("修改成功");
-	}
-
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) {
 		parkingGarageService.deleteUpdateById(id);

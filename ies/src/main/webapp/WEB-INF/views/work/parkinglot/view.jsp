@@ -11,21 +11,16 @@
 					<td align="left"></td>
 				</tr> 
 				<tr>
-					<td class="fieldName">百度纬度坐标:</td>
-					<td class="fieldInput">${vm.baiduLatitudeLng}</td>
-						<td class="fieldName">百度经度坐标:</td>
-					<td class="fieldInput">${vm.baiduLatitudeLat}</td>
+					<td class="fieldName">纬度坐标:</td>
+					<td class="fieldInput">${vm.itudeLong}</td>
+						<td class="fieldName">经度坐标:</td>
+					<td class="fieldInput">${vm.itudeLat}</td>
 				</tr>				 
 				<tr>
 					<td class="fieldName">地址:</td>
-					<td class="fieldInput" colspan="3">${vm.address}</td>
-				</tr>
-				<tr>
-					<td class="fieldName">车位数量:</td>
-					<td class="fieldInput">${vm.carNumber}</td>
+					<td class="fieldInput">${vm.address}</td>
 					<td class="fieldName">状态:</td>
 					<td class="fieldInput"><s:message code="parkinglot.isenabled.${vm.isEnabled}" /></td>
-			
 				</tr>
 				 <tr>
 					<td class="fieldName" valign="top">创建时间:</td>

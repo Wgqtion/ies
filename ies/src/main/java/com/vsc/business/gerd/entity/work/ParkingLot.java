@@ -33,11 +33,17 @@ public class ParkingLot extends BasicEntity {
 	private ParkingLot parent;
 	private String parentCode;
     private java.lang.String name;
-    private java.lang.String baiduLatitudeLng;
-    private java.lang.String baiduLatitudeLat;
+    /**
+     * 纬度坐标
+     */
+    private java.lang.String itudeLong;
+    /**
+     * 经度坐标
+     */
+    private java.lang.String itudeLat;
+    
     private java.lang.String description;
     private Attach photoAttach;
-    private Integer carNumber;
     private String address;
 
     private Boolean isEnabled = true;
@@ -162,31 +168,24 @@ public class ParkingLot extends BasicEntity {
         this.isEnabled = value;
     }
 
-    /**
-     * @return
-     */
-    @Column(name = "BAIDU_LATITUDE_LNG")
-    public java.lang.String getBaiduLatitudeLng() {
-        return this.baiduLatitudeLng;
-    }
+    @Column(name = "ITUDE_LONG")
+    public java.lang.String getItudeLong() {
+		return itudeLong;
+	}
 
-    public void setBaiduLatitudeLng(java.lang.String value) {
-        this.baiduLatitudeLng = value;
-    }
+	public void setItudeLong(java.lang.String itudeLong) {
+		this.itudeLong = itudeLong;
+	}
+	@Column(name = "ITUDE_LAT")
+	public java.lang.String getItudeLat() {
+		return itudeLat;
+	}
 
-    /**
-     * @return
-     */
-    @Column(name = "BAIDU_LATITUDE_LAT")
-    public java.lang.String getBaiduLatitudeLat() {
-        return this.baiduLatitudeLat;
-    }
+	public void setItudeLat(java.lang.String itudeLat) {
+		this.itudeLat = itudeLat;
+	}
 
-    public void setBaiduLatitudeLat(java.lang.String value) {
-        this.baiduLatitudeLat = value;
-    }
-
-    /**
+	/**
      * @return
      */
     @Column(name = "DESCRIPTION")
@@ -206,18 +205,6 @@ public class ParkingLot extends BasicEntity {
 
     public void setPhotoAttach(Attach photoAttach) {
         this.photoAttach = photoAttach;
-    }
-
-    /**
-     * @return
-     */
-    @Column(name = "CAR_NUMBER")
-    public Integer getCarNumber() {
-        return this.carNumber;
-    }
-
-    public void setCarNumber(Integer value) {
-        this.carNumber = value;
     }
 
     @Column(name = "ADDRESS")

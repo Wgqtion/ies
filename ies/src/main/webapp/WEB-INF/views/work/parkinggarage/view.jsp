@@ -6,20 +6,21 @@
 		<table class="viewTable">
 			<tbody>
 				<tr>
-					<td align="right">停车位名称:</td>
+					<td align="right">车位名称:</td>
 					<td align="left">${vm.name}</td>
-					<td align="right">停车位编码:</td>
-					<td align="left">${vm.code}</td>
+					<td align="right">状态:</td>
+					<td align="left"><s:message code="parkinggarage.isenabled.${vm.isEnabled}" /></td>
+					
 				<tr>
-					<td align="right">所属停车场:</td>
-					<td align="left">${vm.parkingLotArea.parkingLot.name}</td>
-					<td align="right">所属停车区:</td>
-					<td align="left">${vm.parkingLotArea.name}</td>
+					<td align="right">场区:</td>
+					<td align="left" colspan="3">${vm.parkingLot.name}</td>
 				</tr>	
 				<tr>
-					<td align="right">状态:</td>
-					<td align="left" colspan="3"><s:message code="parkinggarage.isenabled.${vm.isEnabled}" /></td>
-				</tr>			
+					<td align="right">纬度坐标:</td>
+					<td align="left">${vm.itudeLong}</td>
+					<td align="right">经度坐标:</td>
+					<td align="left">${vm.itudeLat}</td>
+				</tr>		
 				<tr>
 					<td align="right">备注:</td>
 					<td align="left" colspan="3">${vm.description}</td>

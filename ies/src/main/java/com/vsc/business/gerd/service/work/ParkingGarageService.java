@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
+import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.repository.work.ParkingGarageDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
@@ -32,8 +31,6 @@ import com.vsc.util.CoreUtils;
 @Service
 @Transactional
 public class ParkingGarageService extends BaseService<ParkingGarage> {
-	private static Logger logger = LoggerFactory
-			.getLogger(ParkingGarageService.class);
 
 	@Autowired
 	private ParkingGarageDao parkingGarageDao;
@@ -47,6 +44,9 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	public JpaSpecificationExecutor<ParkingGarage> getJpaSpecificationExecutorDao() {
 		return this.parkingGarageDao;
 	}
+	
+	@Autowired
+	private ParkingLotService parkingLotService;
 	
 	/**
 	 * 根据条件查询，未删除的
@@ -73,12 +73,19 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	@Override
 	public Page<ParkingGarage> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
 		User user=ShiroUserUtils.GetCurrentUser();
-		filterParams.put("RLIKE_parkingLotArea.parkingLot.companyCode", user.getCompany().getCode());
+		filterParams.put("RLIKE_parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
 		return super.findPage(filterParams, pageRequest);
 	}
 
 	public ParkingGarage save(ParkingGarage entity) {
+		if(entity.getParkingLot()!=null&&entity.getParkingLot().getId()!=null){
+			ParkingLot parkingLot=parkingLotService.getObjectById(entity.getParkingLot().getId());
+			entity.setParkingLot(parkingLot);
+		}else{
+			entity.setParkingLot(null);
+		}
+		
 		User user=ShiroUserUtils.GetCurrentUser();
 		if(user!=null){
 			Date now=CoreUtils.nowtime();

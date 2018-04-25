@@ -50,10 +50,11 @@
 <script type="text/javascript" src="${ctx}/static/js/zTree/jquery.ztree.core.min.js"></script>
 <script type="text/javascript" src="${ctx}/static/js/zTree/jquery.ztree.excheck.min.js"></script>
 
- 
+<!-- 自定义js -->
+<script type="text/javascript" src="${ctx}/static/js/vsc/custom.js"></script>
 <%--dwz.scrollCenter.js
     dwz.util.number.js
-æªå¼å¥ --%>
+ --%>
 <script src="${ctx}/static/js/jquery-countdown/countDown.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/dwz/dwz.regional.zh.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/vsc/vsc.fastjson.js" type="text/javascript"></script>
@@ -62,17 +63,3 @@
 <%-- jquery autocomplete --%>
 <script src="${ctx}/static/js/jquery-autocomplete/jquery.autocomplete.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/skippr/jquery.skippr.min.js" type="text/javascript"></script>
-
-<%-- é¨ç½²æ¨¡å¼ js åç¼©æä»¶ 
-<script src="${ctx}/static/js/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/jquery/jquery.cookie.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/jquery/jquery.metadata.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/jquery-validation/1.10.0/jquery.validate.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/jquery/jquery.bgiframe.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/xheditor/xheditor-1.1.14-zh-cn.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/uploadify/scripts/jquery.uploadify.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/dwz/dwz.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/dwz/dwz.regional.zh.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/vsc/vsc.fastjson.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/js/vsc/vsc.sys.min.js" type="text/javascript"></script>
---%>

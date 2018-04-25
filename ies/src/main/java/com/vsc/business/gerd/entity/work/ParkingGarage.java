@@ -30,8 +30,14 @@ public class ParkingGarage extends BasicEntity {
 	private Boolean isEnabled=Boolean.TRUE;
 	private ParkingLot parkingLot;
 	private java.lang.String description;
-	private java.lang.String xcoordinate;//x坐标
-	private java.lang.String ycoordinate;//y坐标
+	/**
+     * 纬度坐标
+     */
+    private java.lang.String itudeLong;
+    /**
+     * 经度坐标
+     */
+    private java.lang.String itudeLat;
 
 	
 	private ParkingLock parkingLock=new ParkingLock();
@@ -55,21 +61,21 @@ public class ParkingGarage extends BasicEntity {
 		return parkingLock.getIsOpen();
 	}
 
-	@Column(name = "XCOORDINATE")
-	public java.lang.String getXcoordinate() {
-		return xcoordinate;
+	@Column(name = "ITUDE_LONG")
+    public java.lang.String getItudeLong() {
+		return itudeLong;
 	}
 
-	public void setXcoordinate(java.lang.String xcoordinate) {
-		this.xcoordinate = xcoordinate;
+	public void setItudeLong(java.lang.String itudeLong) {
+		this.itudeLong = itudeLong;
 	}
-	@Column(name = "YCOORDINATE")
-	public java.lang.String getYcoordinate() {
-		return ycoordinate;
+	@Column(name = "ITUDE_LAT")
+	public java.lang.String getItudeLat() {
+		return itudeLat;
 	}
 
-	public void setYcoordinate(java.lang.String ycoordinate) {
-		this.ycoordinate = ycoordinate;
+	public void setItudeLat(java.lang.String itudeLat) {
+		this.itudeLat = itudeLat;
 	}
  
 	/**
