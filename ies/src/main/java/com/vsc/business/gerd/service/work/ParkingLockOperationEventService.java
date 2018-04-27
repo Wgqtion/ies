@@ -69,7 +69,7 @@ public class ParkingLockOperationEventService extends BaseService<ParkingLockOpe
 		try {
 			user = ShiroUserUtils.GetCurrentUser();
 		} catch (Exception e) {
-			logger.warn(e.getMessage());
+			//logger.warn(e.getMessage());
 		}
 		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){
