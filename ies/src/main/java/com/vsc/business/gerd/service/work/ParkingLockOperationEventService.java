@@ -60,8 +60,14 @@ public class ParkingLockOperationEventService extends BaseService<ParkingLockOpe
 		return super.findPage(filterParams, pageRequest);
 	}
 	
-	public ParkingLockOperationEvent save(ParkingLockOperationEvent entity) throws Exception {
-		User user=ShiroUserUtils.GetCurrentUser();
+	public ParkingLockOperationEvent save(ParkingLockOperationEvent entity) {
+		User user=null;
+		try {
+			user = ShiroUserUtils.GetCurrentUser();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){
 			entity.setCreateTime(now);

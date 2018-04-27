@@ -82,7 +82,7 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 		return super.findPage(filterParams, pageRequest);
 	}
 
-	public ParkingGarage save(ParkingGarage entity) throws Exception {
+	public ParkingGarage save(ParkingGarage entity) {
 		if(entity.getParkingLot()!=null&&entity.getParkingLot().getId()!=null){
 			ParkingLot parkingLot=parkingLotService.getObjectById(entity.getParkingLot().getId());
 			entity.setParkingLot(parkingLot);
@@ -90,7 +90,13 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 			entity.setParkingLot(null);
 		}
 		
-		User user=ShiroUserUtils.GetCurrentUser();
+		User user=null;
+		try {
+			user = ShiroUserUtils.GetCurrentUser();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(user!=null){
 			Date now=CoreUtils.nowtime();
 			if(entity.getId()==null){

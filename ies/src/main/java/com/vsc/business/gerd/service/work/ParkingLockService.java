@@ -134,7 +134,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		}
 	}
 	
-	public ParkingLock save(ParkingLock entity) throws Exception {
+	public ParkingLock save(ParkingLock entity){
 		if(entity.getParkingGarage()!=null&&entity.getParkingGarage().getId()!=null){
 			ParkingGarage parkingGarage=parkingGarageService.getObjectById(entity.getParkingGarage().getId());
 			entity.setParkingGarage(parkingGarage);
@@ -143,7 +143,13 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		}
 		
 		
-		User user=ShiroUserUtils.GetCurrentUser();
+		User user=null;
+		try {
+			user = ShiroUserUtils.GetCurrentUser();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(user!=null){
 			Date now=CoreUtils.nowtime();
 			if(entity.getId()==null){
