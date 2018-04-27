@@ -310,6 +310,9 @@ public class WeixinController extends HttpServiceBaseController {
 				Calendar now = Calendar.getInstance();
 				String jsonstr = "\"true\"";
 				ParkingLock vl = this.parkingLockService.getByGarageId(parkingId);
+				if(vl==null){
+					return this.ajaxDoneError("无车位信息");
+				}
 				// 预约单查询
 				List<Yuding> yudings = yudingService.findByWxUser(userId);
 				if (yudings != null && !yudings.isEmpty()) {

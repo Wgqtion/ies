@@ -138,10 +138,12 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 			parkingLot.setIsLast(true);
 			parkingLots.add(parkingLot);
 		}
+		boolean flag=false;
 		for (ParkingLot p : parkingLots) {
 			SetParkingLotNum(p);
-			if(parkingLotId!=null){
+			if(parkingLotId!=null&&!flag){
 				SetParkingLocks(p,parkingLotId);
+				flag=true;
 			}
 		}
 		return parkingLots;
