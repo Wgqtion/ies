@@ -50,7 +50,7 @@ public class ParkingGarageController extends BaseController {
 	public static final String PATH_TREE = PATH + Constants.SPT + "tree";
 
 	@RequestMapping(value = "")
-	public String tree(Model model, HttpServletRequest request) {
+	public String tree(Model model, HttpServletRequest request) throws Exception {
 		List<ParkingLot> vl = this.parkingLotService.findTree();
 		this.list(model, request,null);
 		model.addAttribute("vl", vl);
@@ -59,7 +59,7 @@ public class ParkingGarageController extends BaseController {
 
 	@RequestMapping(value = "list")
 	public String list(Model model, HttpServletRequest request,
-			Long parkingLotId) {
+			Long parkingLotId) throws Exception {
 		PageRequest pageRequest = this.getPageRequest("parkingLot.code","ASC");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		if(parkingLotId!=null){
@@ -74,7 +74,7 @@ public class ParkingGarageController extends BaseController {
 
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model,
-			Long parkingLotId) {
+			Long parkingLotId) throws Exception {
 		model.addAttribute("vm", new ParkingGarage());
 		model.addAttribute("action", BaseController.CREATE);
 		model.addAttribute("parkingLot",this.parkingLotService.getObjectById(parkingLotId));
@@ -83,7 +83,7 @@ public class ParkingGarageController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid ParkingGarage parkingGarage) {
+	public ModelAndView create(@Valid ParkingGarage parkingGarage) throws Exception {
 		parkingGarageService.save(parkingGarage);
 		return this.ajaxDoneSuccess("创建成功");
 	}
@@ -98,7 +98,7 @@ public class ParkingGarageController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingGarage parkingGarage) {
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingGarage parkingGarage) throws Exception {
 		parkingGarageService.save(parkingGarage);
 		return this.ajaxDoneSuccess("修改成功");
 	}
@@ -110,19 +110,19 @@ public class ParkingGarageController extends BaseController {
 		return PATH_VIEW;
 	}
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
-	public ModelAndView delete(@PathVariable("id") Long id) {
+	public ModelAndView delete(@PathVariable("id") Long id) throws Exception {
 		parkingGarageService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
-	public ModelAndView deleteBatch(@RequestParam Long[] ids) {
+	public ModelAndView deleteBatch(@RequestParam Long[] ids) throws Exception {
 		parkingGarageService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = "select")
-	public String select(Model model, ServletRequest request) {
+	public String select(Model model, ServletRequest request) throws Exception {
 		PageRequest pageRequest = this.getPageRequest("name", "asc");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<ParkingGarage> page = parkingGarageService.findPage(searchParams, pageRequest);

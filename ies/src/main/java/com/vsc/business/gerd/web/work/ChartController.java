@@ -41,9 +41,10 @@ public class ChartController extends BaseController {
 
 	/**
 	 * 停车场余位统计图表 页面
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingSurplusTotalView")
-	public String parkingSurplusTotalView(Model model, ReportView reportView, HttpServletRequest request) {
+	public String parkingSurplusTotalView(Model model, ReportView reportView, HttpServletRequest request) throws Exception {
 		Date now = new Date();
 		reportView.setStartDate(DateFormatUtils.format(now, "yyyy-MM-dd"));
 		reportView.setEndDate(reportView.getStartDate());
@@ -58,10 +59,11 @@ public class ChartController extends BaseController {
 	
 	/**
 	 * 停车场余位统计图表 数据
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingSurplusTotalData")
 	@ResponseBody
-	public Map<String, Object> parkingSurplusTotalData(ReportView reportView, HttpServletRequest request) {
+	public Map<String, Object> parkingSurplusTotalData(ReportView reportView, HttpServletRequest request) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		reportView.setCompanyCode(user.getCompanyCode());
 		List<MapBean<String, Object>> lm = this.parkingLotService.findIbatisQuery("chart.parkingSurplusTotal.total", reportView);
@@ -73,9 +75,10 @@ public class ChartController extends BaseController {
 	
 	/**
 	 * 停车场进出次数统计图表 页面
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingInOutTotalView")
-	public String parkingInOutTotalView(Model model, ReportView reportView, HttpServletRequest request) {
+	public String parkingInOutTotalView(Model model, ReportView reportView, HttpServletRequest request) throws Exception {
 		Date now = new Date();
 		reportView.setStartDate(DateFormatUtils.format(now, "yyyy-MM-dd"));
 		reportView.setEndDate(reportView.getStartDate());
@@ -91,10 +94,11 @@ public class ChartController extends BaseController {
 
 	/**
 	 * 停车场进出次数统计图表 数据
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingInOutTotalData")
 	@ResponseBody
-	public Map<String, Object> parkingInOutTotalData(ReportView reportView, HttpServletRequest request) {
+	public Map<String, Object> parkingInOutTotalData(ReportView reportView, HttpServletRequest request) throws Exception {
 		reportView.setSelectType("PL");
 		if (StringUtils.isNotBlank(reportView.getSelectId())) {
 			reportView.setSelectType("PAS");
@@ -110,9 +114,10 @@ public class ChartController extends BaseController {
 
 	/**
 	 * 停车场收费统计图表 页面
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingChargeTotalView")
-	public String parkingChargeTotalView(Model model, ReportView reportView, HttpServletRequest request) {
+	public String parkingChargeTotalView(Model model, ReportView reportView, HttpServletRequest request) throws Exception {
 		Date now = new Date();
 		reportView.setStartDate(DateFormatUtils.format(now, "yyyy-MM-dd"));
 		reportView.setEndDate(reportView.getStartDate());
@@ -128,10 +133,11 @@ public class ChartController extends BaseController {
 
 	/**
 	 * 停车场收费统计图表 数据
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingChargeTotalData")
 	@ResponseBody
-	public Map<String, Object> parkingChargeTotalData(ReportView reportView, HttpServletRequest request) {
+	public Map<String, Object> parkingChargeTotalData(ReportView reportView, HttpServletRequest request) throws Exception {
 		reportView.setSelectType("PL");
 		if (StringUtils.isNotBlank(reportView.getSelectId())) {
 			reportView.setSelectType("PAS");

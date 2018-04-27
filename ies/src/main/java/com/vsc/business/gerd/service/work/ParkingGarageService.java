@@ -51,9 +51,10 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	
 	/**
 	 * 根据条件查询，未删除的
+	 * @throws Exception 
 	 */
 	@Override
-	public List<ParkingGarage> findList(Map<String, Object> filterParams) {
+	public List<ParkingGarage> findList(Map<String, Object> filterParams) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_parkingLotArea.parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0);
@@ -62,24 +63,26 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	
 	/**
 	 * 根据条件查询，未删除的
+	 * @throws Exception 
 	 */
-	public List<ParkingGarage> findAllList(Map<String, Object> filterParams) {
+	public List<ParkingGarage> findAllList(Map<String, Object> filterParams) throws Exception {
 		filterParams.put("EQ_isDelete", 0);
 		return super.findList(filterParams);
 	}
 
 	/**
 	 * 根据条件查询，未删除，like 用户公司code%
+	 * @throws Exception 
 	 */
 	@Override
-	public Page<ParkingGarage> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
+	public Page<ParkingGarage> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
 		return super.findPage(filterParams, pageRequest);
 	}
 
-	public ParkingGarage save(ParkingGarage entity) {
+	public ParkingGarage save(ParkingGarage entity) throws Exception {
 		if(entity.getParkingLot()!=null&&entity.getParkingLot().getId()!=null){
 			ParkingLot parkingLot=parkingLotService.getObjectById(entity.getParkingLot().getId());
 			entity.setParkingLot(parkingLot);
@@ -140,13 +143,13 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 		}
 		return i;
 	}
-	public void deleteUpdateById(Long id) {
+	public void deleteUpdateById(Long id) throws Exception {
 		ParkingGarage entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}
 
-	public void deleteUpdateByIds(Long[] ids) {
+	public void deleteUpdateByIds(Long[] ids) throws Exception {
 		if (ArrayUtils.isNotEmpty(ids)) {
 			for (int i = 0; i < ids.length; i++) {
 				deleteUpdateById(ids[i]);

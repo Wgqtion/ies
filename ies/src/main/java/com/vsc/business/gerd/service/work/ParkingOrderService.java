@@ -55,8 +55,9 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 	 * 1.进入控制
 	 * 
 	 * @param parkingOrder
+	 * @throws Exception 
 	 */
-	public void inParkingOrder(ParkingOrder parkingOrder) {
+	public void inParkingOrder(ParkingOrder parkingOrder) throws Exception {
 
 		if (StringUtils.isBlank(parkingOrder.getCarNo())) {
 			// 如果车牌空
@@ -80,8 +81,9 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 
 	/**
 	 * 2.支付控制
+	 * @throws Exception 
 	 */
-	public void payParkingOrder(ParkingOrder parkingOrder) {
+	public void payParkingOrder(ParkingOrder parkingOrder) throws Exception {
 		// 直接保存标志
 		boolean flag = true;
 		if (!(StringUtils.isBlank(parkingOrder.getCarNo())||"无车牌".equals(parkingOrder.getCarNo()))) {
@@ -117,8 +119,9 @@ public class ParkingOrderService extends BaseService<ParkingOrder> {
 	
 	/**
 	 * 3.出去控制
+	 * @throws Exception 
 	 */
-	public void outParkingOrder(ParkingOrder parkingOrder) {
+	public void outParkingOrder(ParkingOrder parkingOrder) throws Exception {
 		// 直接保存标志
 		boolean flag = true;
 		if (!(StringUtils.isBlank(parkingOrder.getCarNo())||"无车牌".equals(parkingOrder.getCarNo()))) {

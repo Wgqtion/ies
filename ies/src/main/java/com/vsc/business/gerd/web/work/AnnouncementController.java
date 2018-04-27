@@ -42,7 +42,7 @@ public class AnnouncementController extends BaseController {
 	public static final String PATH_SEARCH = PATH + Constants.SPT + "search";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request) {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
@@ -61,7 +61,7 @@ public class AnnouncementController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid Announcement announcement, @RequestParam("user.id") Long[] uids) {
+	public ModelAndView create(@Valid Announcement announcement, @RequestParam("user.id") Long[] uids) throws Exception {
 		User user = this.getCurrentUser();
 		announcement.setCreateTime(CoreUtils.nowtime());
 		announcement.setCreateUser(user);
@@ -84,7 +84,7 @@ public class AnnouncementController extends BaseController {
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Announcement announcement,
-			@RequestParam("user.id") Long[] uids) {
+			@RequestParam("user.id") Long[] uids) throws Exception {
 		announcementService.save(announcement, uids,  this.getCurrentShiroUser().id);
 		return this.ajaxDoneSuccess("修改成功");
 	}
@@ -96,7 +96,7 @@ public class AnnouncementController extends BaseController {
 	}
 
 	@RequestMapping(value = "destroy", method = RequestMethod.POST)
-	public ModelAndView destroyBatch(@RequestParam java.lang.Long[] ids) {
+	public ModelAndView destroyBatch(@RequestParam java.lang.Long[] ids) throws Exception {
 		announcementService.destroyByIds(ids);
 		return this.ajaxDoneSuccess("撤销成功");
 	}

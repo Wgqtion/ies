@@ -24,12 +24,13 @@ public class ShiroUserUtils {
 	/**
 	 * 返回当前用户
 	 * @return
+	 * @throws Exception 
 	 */
-	public static User GetCurrentUser(){
+	public static User GetCurrentUser() throws Exception{
 		ShiroUser shiroUser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		if (shiroUser != null && shiroUser.id != null) {
 			return userService.getObjectById(shiroUser.id);
 		}
-		return null;
+		throw new Exception("无用户信息，请重新登录");
 	}
 }

@@ -2,8 +2,10 @@ package com.vsc.business.gerd.service.work;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Maps;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.repository.sys.upload.AttachDao;
+import com.vsc.business.gerd.entity.work.Org;
+import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.repository.work.ParkingLotDao;
 import com.vsc.modules.service.BaseService;
@@ -38,6 +42,12 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 	
 	@Autowired
 	private AttachDao attachDao;
+	
+	@Autowired
+	private OrgService orgService;
+	
+	@Autowired
+	private ParkingLockService parkingLockService;
 
 	@Override
 	public PagingAndSortingRepository<ParkingLot, Long> getPagingAndSortingRepositoryDao() {
@@ -51,17 +61,19 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 	
 	/**
 	 * 获取树
+	 * @throws Exception 
 	 */
-	public List<ParkingLot> findTree() {
+	public List<ParkingLot> findTree() throws Exception {
 		Map<String, Object> searchParams = Maps.newHashMap();
 		return this.findList(searchParams);
 	}
 	
 	/**
 	 * 根据条件查询，未删除的
+	 * @throws Exception 
 	 */
 	@Override
-	public List<ParkingLot> findList(Map<String, Object> filterParams) {
+	public List<ParkingLot> findList(Map<String, Object> filterParams) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0);
@@ -70,21 +82,111 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 	
 	/**
 	 * 根据条件查询，未删除的
+	 * @throws Exception 
 	 */
-	public List<ParkingLot> findAllList(Map<String, Object> filterParams) {
+	public List<ParkingLot> findAllList(Map<String, Object> filterParams) throws Exception {
 		filterParams.put("EQ_isDelete", 0);
 		return super.findList(filterParams);
 	}
 
 	/**
 	 * 根据条件查询，未删除，like 用户公司code%
+	 * @throws Exception 
 	 */
 	@Override
-	public Page<ParkingLot> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
+	public Page<ParkingLot> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
 		return super.findPage(filterParams, pageRequest);
+	}
+	/**
+	 * 小程序查询场区及地锁车位
+	 * @param userId
+	 * @param parkingLotId
+	 * @return
+	 * @throws Exception 
+	 */
+	public Set<ParkingLot> findParkingLots(Long userId,Long parkingLotId) throws Exception{
+		Map<String, Object> orgParams = new HashMap<String, Object>();
+		orgParams.put("EQ_isEnabled", false);
+		List<Org> orgs = this.orgService.findList(orgParams);
+		orgParams.remove("EQ_isEnabled");
+		orgParams.put("EQ_users.id", userId);
+		orgs.addAll(this.orgService.findList(orgParams));
+
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_isEnabled", true);
+		if(parkingLotId==null){
+			searchParams.put("ISNULL_parent", null);	
+		}else{
+			searchParams.put("EQ_parent.id", parkingLotId);
+		}
+		Set<ParkingLot> parkingLots = new LinkedHashSet<ParkingLot>();
+		searchParams.put("ISNULL_orgCode", null);
+		parkingLots.addAll(this.findAllList(searchParams));
+		searchParams.remove("ISNULL_orgCode");
+		if (orgs != null) {
+			searchParams.put("EQ_org.isDelete", 0);
+			for (Org org : orgs) {
+				searchParams.put("EQ_org.code", org.getCode());
+				parkingLots.addAll(this.findAllList(searchParams));
+			}
+		}
+		if(parkingLotId!=null&&parkingLots.size()==0){
+			ParkingLot parkingLot=this.getObjectById(parkingLotId);
+			parkingLot.setIsLast(true);
+			parkingLots.add(parkingLot);
+		}
+		for (ParkingLot p : parkingLots) {
+			SetParkingLotNum(p);
+			if(parkingLotId!=null){
+				SetParkingLocks(p);
+			}
+		}
+		return parkingLots;
+	}
+	
+	/**
+	 * set可用地锁车位
+	 * @param parkingLot
+	 * @throws Exception 
+	 */
+	private void SetParkingLocks(ParkingLot parkingLot) throws Exception{
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("EQ_parkingGarage.parkingLot.id",parkingLot.getParent().getId());
+		params.put("EQ_isEnabled", true);
+		List<ParkingLock> parkingLocks = this.parkingLockService.findAllList(params);
+		for (int i=0;i<parkingLocks.size();i++) {
+			if (!parkingLocks.get(i).getIsSurplus()) {
+				parkingLocks.remove(i);
+			}
+		}
+		parkingLot.setParkingLocks(parkingLocks);
+	}
+
+
+	/**
+	 * set余位数及车位数
+	 * 
+	 * @param parkingLot
+	 * @throws Exception 
+	 */
+	private void SetParkingLotNum(ParkingLot parkingLot) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("RLIKE_parkingGarage.parkingLot.code", parkingLot.getCode());
+		params.put("EQ_isEnabled", true);
+		List<ParkingLock> parkingLocks = this.parkingLockService.findAllList(params);
+		if (parkingLocks != null) {
+			parkingLot.setGarageNum(parkingLocks.size());
+		}
+		int surplusNum=0;
+		for (ParkingLock parkingLock : parkingLocks) {
+			if (parkingLock.getIsSurplus()) {
+				surplusNum++;
+			}
+		}
+		parkingLot.setSurplusNum(surplusNum);
 	}
 
 	public ParkingLot save(ParkingLot entity, Long photoAttachId) throws Exception {
@@ -174,13 +276,13 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 		return this.find(searchParams);
 	}
 	
-	public void deleteUpdateById(Long id) {
+	public void deleteUpdateById(Long id) throws Exception {
 		ParkingLot entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}
 
-	public void deleteUpdateByIds(Long[] ids) {
+	public void deleteUpdateByIds(Long[] ids) throws Exception {
 		if (ArrayUtils.isNotEmpty(ids)) {
 			for (int i = 0; i < ids.length; i++) {
 				deleteUpdateById(ids[i]);

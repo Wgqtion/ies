@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -29,8 +27,6 @@ import com.vsc.util.CoreUtils;
 @Service
 @Transactional
 public class WxUserService extends BaseService<WxUser> {
-	private static Logger logger = LoggerFactory
-			.getLogger(WxUserService.class);
 
 	@Autowired
 	private WxUserDao wxUserDao;
@@ -57,20 +53,20 @@ public class WxUserService extends BaseService<WxUser> {
 		return find(searchParams);
 	}
 	
-	public WxUser save(WxUser entity,String[] codes) {
+	public WxUser save(WxUser entity,String[] codes) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		entity.setUpdateUser(user);
 		entity.setUpdateDate(CoreUtils.nowtime());
 		return super.save(entity);
 	}
 
-	public void deleteUpdateById(Long id) {
+	public void deleteUpdateById(Long id) throws Exception {
 		WxUser entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}
 
-	public void deleteUpdateByIds(Long[] ids) {
+	public void deleteUpdateByIds(Long[] ids) throws Exception {
 		if (ArrayUtils.isNotEmpty(ids)) {
 			for (int i = 0; i < ids.length; i++) {
 				deleteUpdateById(ids[i]);
@@ -78,7 +74,7 @@ public class WxUserService extends BaseService<WxUser> {
 		}
 	}
 
-	public void deleteUpdateByIds(List<Long> ids) {
+	public void deleteUpdateByIds(List<Long> ids) throws Exception {
 		if (Collections3.isNotEmpty(ids)) {
 			for (Long id : ids) {
 				if (id != null) {

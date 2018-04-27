@@ -28,7 +28,7 @@ public class AuthorityController extends BaseController {
 
 
 	@RequestMapping(value = "select/{roleId}", method = RequestMethod.GET)
-	public String select(@PathVariable("roleId") Long roleId, Model model, ServletRequest request) {
+	public String select(@PathVariable("roleId") Long roleId, Model model, ServletRequest request) throws Exception {
 		List<Authority> list = authorityService.findAll(new HashMap<String, Object>(),"parentCode,sort", "asc,asc");
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_roleList.id",roleId);
@@ -40,7 +40,7 @@ public class AuthorityController extends BaseController {
 	}
 
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(Long roleId,String codes) {
+	public ModelAndView save(Long roleId,String codes) throws Exception {
 		this.authorityService.save(roleId, codes);
 		return this.ajaxDoneSuccess("保存成功");
 	}

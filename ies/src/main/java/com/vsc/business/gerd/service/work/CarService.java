@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,8 +26,6 @@ import com.vsc.modules.shiro.ShiroUserUtils;
 @Service
 @Transactional
 public class CarService extends BaseService<Car> {
-	private static Logger logger = LoggerFactory
-			.getLogger(CarService.class);
 
 	@Autowired
 	private CarDao carDao;
@@ -46,9 +42,10 @@ public class CarService extends BaseService<Car> {
 	
 	/**
 	 * 根据条件查询，未删除的
+	 * @throws Exception 
 	 */
 	@Override
-	public List<Car> findList(Map<String, Object> filterParams) {
+	public List<Car> findList(Map<String, Object> filterParams) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0);
@@ -57,22 +54,23 @@ public class CarService extends BaseService<Car> {
 	
 	/**
 	 * 根据条件查询，未删除，like 用户公司code%
+	 * @throws Exception 
 	 */
 	@Override
-	public Page<Car> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
+	public Page<Car> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
 		return super.findPage(filterParams, pageRequest);
 	}
 
-	public void deleteUpdateById(Long id) {
+	public void deleteUpdateById(Long id) throws Exception {
 		Car entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}
 
-	public void deleteUpdateByIds(Long[] ids) {
+	public void deleteUpdateByIds(Long[] ids) throws Exception {
 		if (ArrayUtils.isNotEmpty(ids)) {
 			for (int i = 0; i < ids.length; i++) {
 				deleteUpdateById(ids[i]);

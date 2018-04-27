@@ -37,7 +37,7 @@ public class ReportController extends BaseController {
 	public String parkingGarageStatus(Model model,
 			ReportView<ParkingGarage> reportView,
 			ParkingGarage parkingGarage,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws Exception {
 		reportView.setEntity(parkingGarage);
 		User user=ShiroUserUtils.GetCurrentUser();
 		reportView.setCompanyCode(user.getCompanyCode());

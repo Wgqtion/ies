@@ -68,8 +68,9 @@ public class AuthorityService extends BaseService<Authority> {
 	 * 保存角色的权限集合
 	 * @param roleId
 	 * @param codes
+	 * @throws Exception 
 	 */
-	public void save(Long roleId,String codes){
+	public void save(Long roleId,String codes) throws Exception{
 		Role role=roleService.getObjectById(roleId);
 		String[] Acodes=codes.split(",");
 		List<Authority> authorityList=new ArrayList<Authority>();

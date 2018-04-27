@@ -32,7 +32,7 @@ public class IndexController extends BaseController {
 	
 	
 	@RequestMapping(value = "/index")
-	public String index(Model model) {
+	public String index(Model model) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		//功能模块
 		List<Authority> homePage=resourceService.getMenus(user.getId(),0);
@@ -53,9 +53,10 @@ public class IndexController extends BaseController {
 
 	/**
 	 * 首页
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/homeView")
-	public String homeView(Model model, ReportView reportView, HttpServletRequest request) {
+	public String homeView(Model model, ReportView reportView, HttpServletRequest request) throws Exception {
 		Date now = new Date();
 		reportView.setStartDate(DateFormatUtils.format(now, "yyyy-MM-dd"));
 		reportView.setEndDate(reportView.getStartDate());

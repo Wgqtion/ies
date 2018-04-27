@@ -46,7 +46,7 @@ public class AttachController extends BaseController {
 
 	@RequestMapping(value = "up", method = RequestMethod.POST)
 	public ModelAndView create(@RequestParam("vfile") MultipartFile file, HttpServletRequest request)
-			throws IOException {
+			throws Exception {
 		ModelAndView mav = new ModelAndView("upload/uploadDone");
 		if (!file.isEmpty()) {
 			Attach entity = new Attach();

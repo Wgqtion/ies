@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -18,13 +16,12 @@ import com.vsc.modules.service.BaseService;
 
 /**
  * 
- * @author jerry
+ * @author XiangXiaoLin
  *
  */
 @Service
 @Transactional
 public class YudingService extends BaseService<Yuding> {
-	private static Logger logger = LoggerFactory.getLogger(YudingService.class);
 
 	@Autowired
 	private YudingDao yudingDao;
@@ -44,6 +41,12 @@ public class YudingService extends BaseService<Yuding> {
 		Map<String,Object> filterParams=new HashMap<String, Object>();
 		filterParams.put("EQ_isDelete", 0);
 		filterParams.put("EQ_wxUser.id", wxUserId);
-		return this.findList(filterParams);
+		try {
+			return this.findList(filterParams);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

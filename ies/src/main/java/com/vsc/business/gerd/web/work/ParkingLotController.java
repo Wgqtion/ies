@@ -49,7 +49,7 @@ public class ParkingLotController extends BaseController {
 	public static final String PATH_TREE = PATH + Constants.SPT + "tree";
 	
 	@RequestMapping(value = "")
-	public String tree(Model model, HttpServletRequest request) {
+	public String tree(Model model, HttpServletRequest request) throws Exception {
 		List<ParkingLot> vl = this.parkingLotService.findTree();
 		this.list(model, request,null,null);
 		model.addAttribute("vl", vl);
@@ -58,7 +58,7 @@ public class ParkingLotController extends BaseController {
 	
 	@RequestMapping(value = "list")
 	public String list(Model model, HttpServletRequest request,
-			Long companyId,Long parentId) {
+			Long companyId,Long parentId) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
@@ -78,7 +78,7 @@ public class ParkingLotController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
-	public String createForm(Model model,Long parentId) {
+	public String createForm(Model model,Long parentId) throws Exception {
 		model.addAttribute("vm", new ParkingLot());
 		model.addAttribute("action", BaseController.CREATE);
 		model.addAttribute("parent",this.parkingLotService.getObjectById(parentId));
@@ -117,19 +117,19 @@ public class ParkingLotController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
-	public ModelAndView delete(@PathVariable("id") Long id) {
+	public ModelAndView delete(@PathVariable("id") Long id) throws Exception {
 		parkingLotService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
-	public ModelAndView deleteBatch(@RequestParam Long[] ids) {
+	public ModelAndView deleteBatch(@RequestParam Long[] ids) throws Exception {
 		parkingLotService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 	
 	@RequestMapping(value = "orgAuthority")
-	public String orgAuthority(Model model, ServletRequest request) {
+	public String orgAuthority(Model model, ServletRequest request) throws Exception {
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<ParkingLot> page = parkingLotService.findPage(searchParams, pageRequest);

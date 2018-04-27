@@ -46,7 +46,7 @@ public class OrgController extends BaseController {
 	public static final String PATH_SELECT = PATH + Constants.SPT + "select";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request) {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
@@ -57,7 +57,7 @@ public class OrgController extends BaseController {
 	}
 	
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
-	public String createForm(Model model) {
+	public String createForm(Model model) throws Exception {
 		Org org=new Org();
 		String code=null;
 		boolean flag=true;
@@ -77,13 +77,13 @@ public class OrgController extends BaseController {
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
 	public ModelAndView create(@Valid Org org,
-			@RequestParam(value = "parkingLots.id", required = false) String[] ids) {
+			@RequestParam(value = "parkingLots.id", required = false) String[] ids) throws Exception {
 		orgService.save(org,ids);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
 	@RequestMapping(value = BaseController.UPDATE + "/{id}", method = RequestMethod.GET)
-	public String updateForm(@PathVariable("id") java.lang.Long id, Model model) {
+	public String updateForm(@PathVariable("id") java.lang.Long id, Model model) throws Exception {
 		model.addAttribute("vm", orgService.getObjectById(id));
 		model.addAttribute("action", BaseController.UPDATE);
 		model.addAttribute("companyList",companyService.getList());
@@ -92,19 +92,19 @@ public class OrgController extends BaseController {
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Org org,
-			@RequestParam(value = "parkingLots.id", required = false) String[] ids) {
+			@RequestParam(value = "parkingLots.id", required = false) String[] ids) throws Exception {
 		orgService.save(org,ids);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
-	public ModelAndView delete(@PathVariable("id") java.lang.Long id) {
+	public ModelAndView delete(@PathVariable("id") java.lang.Long id) throws Exception {
 		orgService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
-	public ModelAndView deleteBatch(@RequestParam java.lang.Long[] ids) {
+	public ModelAndView deleteBatch(@RequestParam java.lang.Long[] ids) throws Exception {
 		orgService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}

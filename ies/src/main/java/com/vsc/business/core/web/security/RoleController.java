@@ -30,7 +30,7 @@ public class RoleController extends BaseController {
 	private RoleService roleService;
 
 	@RequestMapping(value = "")
-	public String list(Model model, ServletRequest request) {
+	public String list(Model model, ServletRequest request) throws Exception {
 		PageRequest pageRequest = this.getPageRequest("id","asc");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<Role> page = roleService.findPage(searchParams, pageRequest);
@@ -39,7 +39,7 @@ public class RoleController extends BaseController {
 	}
 	
 	@RequestMapping(value = "select/{companyId}", method = RequestMethod.GET)
-	public String select(@PathVariable("companyId") Long companyId, Model model, ServletRequest request) {
+	public String select(@PathVariable("companyId") Long companyId, Model model, ServletRequest request) throws Exception {
 		List<Role> list = roleService.getAllList();
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_companyList.id",companyId);
@@ -52,7 +52,7 @@ public class RoleController extends BaseController {
 	}
 	
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(Long companyId,String codes) {
+	public ModelAndView save(Long companyId,String codes) throws Exception {
 		this.roleService.save(companyId, codes);
 		return this.ajaxDoneSuccess("保存成功");
 	}
@@ -71,7 +71,7 @@ public class RoleController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid Role role) {
+	public ModelAndView create(@Valid Role role) throws Exception {
 		roleService.save(role);
 		return this.ajaxDoneSuccess("创建成功");
 	}
@@ -84,7 +84,7 @@ public class RoleController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Role role) {
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Role role) throws Exception {
 		roleService.save(role);
 		return this.ajaxDoneSuccess("修改成功");
 	}

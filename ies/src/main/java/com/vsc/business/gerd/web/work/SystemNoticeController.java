@@ -40,7 +40,7 @@ public class SystemNoticeController extends BaseController {
 	public static final String PATH_MINE = PATH + Constants.SPT + "mine";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request) {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest("sendTime", "DESC");
 		Map<String, Object> searchParams = this.getSearchRequest();
@@ -52,7 +52,7 @@ public class SystemNoticeController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
-	public String view(@PathVariable("id") java.lang.Long id, Model model) {
+	public String view(@PathVariable("id") java.lang.Long id, Model model) throws Exception {
 		SystemNotice vm = systemNoticeService.getObjectById(id);
 		if (!vm.getIsRead()) {
 			vm.setIsRead(Boolean.TRUE);
@@ -72,7 +72,7 @@ public class SystemNoticeController extends BaseController {
 	}
 
 	@RequestMapping(value = "mine")
-	public String mine(Model model, HttpServletRequest request) {
+	public String mine(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest("sendTime", "DESC");
 		Map<String, Object> searchParams = this.getSearchRequest();

@@ -33,7 +33,7 @@ public class UserService extends BaseService<User> {
 		return this.userDao;
 	}
 
-	public User save(User entity, Long photoAttachId) {
+	public User save(User entity, Long photoAttachId) throws Exception {
 
 		User user=ShiroUserUtils.GetCurrentUser();
 		Date now=CoreUtils.nowtime();
@@ -49,13 +49,13 @@ public class UserService extends BaseService<User> {
 
 	}
 	
-	public void deleteUpdateById(Long id) {
+	public void deleteUpdateById(Long id) throws Exception {
 		User entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}
 
-	public void deleteUpdateByIds(Long[] ids) {
+	public void deleteUpdateByIds(Long[] ids) throws Exception {
 		if (ArrayUtils.isNotEmpty(ids)) {
 			for (int i = 0; i < ids.length; i++) {
 				deleteUpdateById(ids[i]);

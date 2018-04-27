@@ -88,9 +88,10 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	
 	/**
 	 * 根据条件查询，未删除的
+	 * @throws Exception 
 	 */
 	@Override
-	public List<ParkingLock> findList(Map<String, Object> filterParams) {
+	public List<ParkingLock> findList(Map<String, Object> filterParams) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0);
@@ -99,17 +100,19 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	
 	/**
 	 * 根据条件查询，未删除的
+	 * @throws Exception 
 	 */
-	public List<ParkingLock> findAllList(Map<String, Object> filterParams) {
+	public List<ParkingLock> findAllList(Map<String, Object> filterParams) throws Exception {
 		filterParams.put("EQ_isDelete", 0);
 		return super.findList(filterParams);
 	}
 
 	/**
 	 * 根据条件查询，未删除，like 用户公司code%
+	 * @throws Exception 
 	 */
 	@Override
-	public Page<ParkingLock> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
+	public Page<ParkingLock> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
@@ -117,13 +120,13 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	}
 	
 	
-	public void deleteUpdateById(Long id) {
+	public void deleteUpdateById(Long id) throws Exception {
 		ParkingLock entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}
 
-	public void deleteUpdateByIds(Long[] ids) {
+	public void deleteUpdateByIds(Long[] ids) throws Exception {
 		if (ArrayUtils.isNotEmpty(ids)) {
 			for (int i = 0; i < ids.length; i++) {
 				deleteUpdateById(ids[i]);
@@ -131,7 +134,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		}
 	}
 	
-	public ParkingLock save(ParkingLock entity) {
+	public ParkingLock save(ParkingLock entity) throws Exception {
 		if(entity.getParkingGarage()!=null&&entity.getParkingGarage().getId()!=null){
 			ParkingGarage parkingGarage=parkingGarageService.getObjectById(entity.getParkingGarage().getId());
 			entity.setParkingGarage(parkingGarage);
@@ -197,7 +200,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	}
 	
 	@Transactional(propagation=Propagation.NOT_SUPPORTED) 
-	public String reverse(Long[] ids,String state, Long userId, int sourceType){
+	public String reverse(Long[] ids,String state, Long userId, int sourceType) throws Exception{
 		String message=new String();
 		
 		

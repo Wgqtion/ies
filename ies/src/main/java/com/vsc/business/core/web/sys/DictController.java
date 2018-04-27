@@ -43,7 +43,7 @@ public class DictController extends BaseController {
 	public static final String PATH_TYPELIST = PATH + "typelist";
 
 	@RequestMapping(value = "")
-	public String list(Model model) {
+	public String list(Model model) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
@@ -60,7 +60,7 @@ public class DictController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid Dict dict) {
+	public ModelAndView create(@Valid Dict dict) throws Exception {
 		dictService.save(dict);
 		return this.ajaxDoneSuccess("创建成功");
 	}
@@ -73,7 +73,7 @@ public class DictController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Dict dict) {
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Dict dict) throws Exception {
 		dictService.save(dict);
 		return this.ajaxDoneSuccess("修改成功");
 	}

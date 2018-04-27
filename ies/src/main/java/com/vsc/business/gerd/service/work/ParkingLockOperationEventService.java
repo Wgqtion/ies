@@ -51,15 +51,16 @@ public class ParkingLockOperationEventService extends BaseService<ParkingLockOpe
 	
 	/**
 	 * 根据条件查询，未删除，like 用户公司code%
+	 * @throws Exception 
 	 */
 	@Override
-	public Page<ParkingLockOperationEvent> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
+	public Page<ParkingLockOperationEvent> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_parkingLock.parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
 		return super.findPage(filterParams, pageRequest);
 	}
 	
-	public ParkingLockOperationEvent save(ParkingLockOperationEvent entity) {
+	public ParkingLockOperationEvent save(ParkingLockOperationEvent entity) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){

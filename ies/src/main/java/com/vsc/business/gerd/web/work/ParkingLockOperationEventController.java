@@ -35,7 +35,7 @@ public class ParkingLockOperationEventController extends BaseController {
 	public static final String PATH_VIEW = PATH + Constants.SPT+"view";
 	
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request,boolean isHome) {
+	public String list(Model model, HttpServletRequest request,boolean isHome) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		if(isHome){

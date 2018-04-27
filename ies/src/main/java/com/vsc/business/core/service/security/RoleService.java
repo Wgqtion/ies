@@ -46,8 +46,9 @@ public class RoleService extends BaseService<Role> {
 	 * 保存公司的角色集合
 	 * @param companyId
 	 * @param codes
+	 * @throws Exception 
 	 */
-	public void save(Long companyId,String codes){
+	public void save(Long companyId,String codes) throws Exception{
 		Company company=companyService.getObjectById(companyId);
 		String[] Rcodes=codes.split(",");
 		List<Role> roleList=new ArrayList<Role>();

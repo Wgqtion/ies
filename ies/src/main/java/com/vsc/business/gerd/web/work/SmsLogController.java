@@ -39,7 +39,7 @@ public class SmsLogController extends BaseController {
 	public static final String PATH_SEARCH = PATH + Constants.SPT+"search";
 	
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request) {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();

@@ -49,7 +49,7 @@ public class UserController extends BaseController {
 	private CompanyService companyService;
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request) {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest("id", "asc");
 		Map<String, Object> searchParams = this.getSearchRequest();
@@ -63,7 +63,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = "select")
-	public String select(Model model, ServletRequest request) {
+	public String select(Model model, ServletRequest request) throws Exception {
 		PageRequest pageRequest = this.getPageRequest("name", "asc");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<User> page = userService.findPage(searchParams, pageRequest);
@@ -72,7 +72,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
-	public String createForm(Model model) {
+	public String createForm(Model model) throws Exception {
 		model.addAttribute("vm", new User());
 		model.addAttribute("action", BaseController.CREATE);
 		model.addAttribute("companyList",companyService.getList());
@@ -82,7 +82,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
 	public ModelAndView create(@Valid User user,
 			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId
-			) {
+			) throws Exception {
 		user.setPassword(user.getPlainPassword());
 		user.setCompany(companyService.getByCode(user.getCompanyCode()));
 		userService.save(user, photoAttachId);
@@ -90,7 +90,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE + "/{id}", method = RequestMethod.GET)
-	public String updateForm(@PathVariable("id") Long id, Model model) {
+	public String updateForm(@PathVariable("id") Long id, Model model) throws Exception {
 		model.addAttribute("vm", userService.getObjectById(id));
 		model.addAttribute("action", BaseController.UPDATE);
 		model.addAttribute("companyList",companyService.getList());
@@ -105,7 +105,7 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") User user,
-			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId) {
+			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId) throws Exception {
 		//user.setPassword(MD5Util.MD5(user.getPlainPassword())); 
 		user.setCompany(companyService.getByCode(user.getCompanyCode()));
 		userService.save(user, photoAttachId);
@@ -131,7 +131,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = "reset", method = RequestMethod.POST)
-	public ModelAndView reset(@RequestParam("id") Long id, @RequestParam("plainPassword") String plainPassword) {
+	public ModelAndView reset(@RequestParam("id") Long id, @RequestParam("plainPassword") String plainPassword) throws Exception {
 		User user = userService.getObjectById(id);
 		if (user == null) {
 			return this.ajaxDoneError("用户不存在");
@@ -142,13 +142,13 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
-	public ModelAndView delete(@PathVariable("id") Long id) {
+	public ModelAndView delete(@PathVariable("id") Long id) throws Exception {
 		userService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
-	public ModelAndView deleteBatch(@RequestParam Long[] ids) {
+	public ModelAndView deleteBatch(@RequestParam Long[] ids) throws Exception {
 		userService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}

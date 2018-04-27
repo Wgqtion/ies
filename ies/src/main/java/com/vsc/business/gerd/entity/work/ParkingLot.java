@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -63,7 +64,54 @@ public class ParkingLot extends BasicEntity {
     
     private List<ParkingLot> children=Lists.newArrayList();
     
-    @Column(name = "CODE")
+    
+    /*
+     * 非持久字段
+     */
+    //车位总数
+    private int garageNum;
+    //可用余位数
+    private int surplusNum;
+    //可用地锁列表
+    private List<ParkingLock> parkingLocks=Lists.newArrayList();
+    private boolean isLast;
+    
+    @Transient
+    public boolean getIsLast() {
+		return isLast;
+	}
+
+	public void setIsLast(boolean isLast) {
+		this.isLast = isLast;
+	}
+
+	@Transient
+    public List<ParkingLock> getParkingLocks() {
+		return parkingLocks;
+	}
+
+	public void setParkingLocks(List<ParkingLock> parkingLocks) {
+		this.parkingLocks = parkingLocks;
+	}
+
+	@Transient
+    public int getGarageNum() {
+		return garageNum;
+	}
+
+	public void setGarageNum(int garageNum) {
+		this.garageNum = garageNum;
+	}
+	@Transient
+	public int getSurplusNum() {
+		return surplusNum;
+	}
+
+	public void setSurplusNum(int surplusNum) {
+		this.surplusNum = surplusNum;
+	}
+
+	@Column(name = "CODE")
 	public String getCode() {
 		return code;
 	}

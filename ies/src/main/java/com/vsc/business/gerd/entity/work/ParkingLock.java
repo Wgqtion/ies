@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -33,7 +34,7 @@ public class ParkingLock extends BasicEntity {
 	private ParkingGarage parkingGarage;
 	private Boolean isCarOn = false;
 	private Boolean isOnline = false;
-	private Boolean isOpen;
+	private Boolean isOpen = false;
 	private Integer isForeverOpenClose = 0;
 
 	private java.lang.String description;
@@ -52,6 +53,31 @@ public class ParkingLock extends BasicEntity {
 	 * 日志最后更新时间
 	 */
 	private Date logUpdateTime;
+
+
+	/**
+	 * 是否剩余，是否可用的意思
+	 */
+	@Transient
+	public boolean getIsSurplus(){
+		if(surplusDetection!=null){
+			if("1,2".equals(surplusDetection)){
+				if(isCarOn||isOpen){
+					return false;
+				}
+			}else if(surplusDetection.contains("1")){
+				if(isCarOn){
+					return false;
+				}
+			}else if(surplusDetection.contains("2")){
+				if(isOpen){
+					return false;
+				}
+			}	
+		}
+		return true;
+	}
+	
 	
 	/**
 	 * @return
@@ -207,6 +233,10 @@ public class ParkingLock extends BasicEntity {
 		return this.description;
 	}
 
+	public void setDescription(java.lang.String value) {
+		this.description = value;
+	}
+
 	@Column(name = "IS_FOREVER_OPEN_CLOSE")
 	public Integer getIsForeverOpenClose() {
 		return isForeverOpenClose;
@@ -214,10 +244,6 @@ public class ParkingLock extends BasicEntity {
 
 	public void setIsForeverOpenClose(Integer isForeverOpenClose) {
 		this.isForeverOpenClose = isForeverOpenClose;
-	}
-
-	public void setDescription(java.lang.String value) {
-		this.description = value;
 	}
 
 	@Override

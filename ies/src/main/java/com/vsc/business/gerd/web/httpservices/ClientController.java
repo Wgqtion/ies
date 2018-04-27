@@ -55,13 +55,14 @@ public class ClientController extends HttpServiceBaseController {
 	}
 
 	/**
-	 * 车辆进入接口 *
+	 * 车辆进入接口 
+	 * @throws Exception *
 	 * 
 	 */
 	@RequestMapping(value = "order/parkingIn")
 	public ModelAndView parkingIn(@Valid InParkingOrderValidate validate,BindingResult result,
 			ParkingOrder parkingOrder,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws Exception {
 		if(result.hasErrors()){
 			StringBuffer sb=new StringBuffer();
             for (FieldError fieldError : result.getFieldErrors()) {
@@ -112,11 +113,12 @@ public class ClientController extends HttpServiceBaseController {
 	 * 车辆支付接口 *
 	 * 
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "order/parkingPay")
 	public ModelAndView parkingPay(@Valid PayParkingOrderValidate validate,BindingResult result,
 			ParkingOrder parkingOrder,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws Exception {
 		if(result.hasErrors()){
 			StringBuffer sb=new StringBuffer();
             for (FieldError fieldError : result.getFieldErrors()) {
@@ -138,9 +140,10 @@ public class ClientController extends HttpServiceBaseController {
 	 * 全视频上报接口
 	 * 
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parking/parkingVideo")
-	public ModelAndView service2(@Valid ParkingVideo parkingVideo, HttpServletRequest request) {
+	public ModelAndView service2(@Valid ParkingVideo parkingVideo, HttpServletRequest request) throws Exception {
 		if (parkingVideo != null) {
 			parkingVideo.setCreateTime(new Date());
 			parkingVideoService.save(parkingVideo);
@@ -154,6 +157,7 @@ public class ClientController extends HttpServiceBaseController {
 	 * 地锁上报接口
 	 * 
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "locked/event/new")
 	public ModelAndView service5(
@@ -163,7 +167,7 @@ public class ClientController extends HttpServiceBaseController {
 			@RequestParam(required = true) int mcOpen,
 			@RequestParam(required = true) int lockArea,
 			@RequestParam(required = false) Date reportedTime,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws Exception {
 
 		Date curTime=new Date();
 		

@@ -37,7 +37,7 @@ public class ParkingOrderController extends BaseController {
 	public static final String PATH_SEARCH = PATH + Constants.SPT + "search";
 
 	@RequestMapping(value = "")
-	public String list(Model model,boolean isHome, HttpServletRequest request) {
+	public String list(Model model,boolean isHome, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = null;
 		if(isHome){
@@ -53,7 +53,7 @@ public class ParkingOrderController extends BaseController {
 	}
 	
 	@RequestMapping(value = "test")
-	public String test(Model model,boolean isHome, HttpServletRequest request) {
+	public String test(Model model,boolean isHome, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = null;
 		if(isHome){

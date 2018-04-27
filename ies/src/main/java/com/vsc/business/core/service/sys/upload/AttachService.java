@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.sys.upload.Attach;
 import com.vsc.business.core.repository.sys.upload.AttachDao;
-import com.vsc.modules.repository.BaseDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.service.ServiceException;
 
@@ -45,8 +44,9 @@ public class AttachService extends BaseService<Attach> {
 	 * @param srcfile       原始附件文件
 	 * @param savePath  保存的系统文件绝对地址
 	 * @return
+	 * @throws Exception 
 	 */
-	public  Attach saveAttach(Attach entity,InputStream srcfile, String savePath){
+	public  Attach saveAttach(Attach entity,InputStream srcfile, String savePath) throws Exception{
 		this.saveFile(srcfile,savePath);
 		return this.save(entity);
 	}

@@ -40,7 +40,7 @@ public class WxUserController extends BaseController {
 	public static final String PATH_SELECT = PATH + Constants.SPT + "select";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request) {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
@@ -61,19 +61,19 @@ public class WxUserController extends BaseController {
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") WxUser org,
-			@RequestParam(value = "parkingLots.code", required = false) String[] codes) {
+			@RequestParam(value = "parkingLots.code", required = false) String[] codes) throws Exception {
 		wxUserService.save(org,codes);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
-	public ModelAndView delete(@PathVariable("id") java.lang.Long id) {
+	public ModelAndView delete(@PathVariable("id") java.lang.Long id) throws Exception {
 		wxUserService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
-	public ModelAndView deleteBatch(@RequestParam java.lang.Long[] ids) {
+	public ModelAndView deleteBatch(@RequestParam java.lang.Long[] ids) throws Exception {
 		wxUserService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}

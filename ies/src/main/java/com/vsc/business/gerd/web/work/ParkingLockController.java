@@ -44,7 +44,7 @@ public class ParkingLockController extends BaseController {
 	public static final String PATH_OPEN = PATH + Constants.SPT + "open";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request) {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
@@ -64,7 +64,7 @@ public class ParkingLockController extends BaseController {
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
 	public ModelAndView create(@Valid ParkingLock parkingLock,
-			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId) {
+			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId) throws Exception {
 		ParkingGarage pg=new ParkingGarage();
 		pg.setId(parkingGarageId);
 		parkingLock.setParkingGarage(pg);
@@ -88,7 +88,7 @@ public class ParkingLockController extends BaseController {
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingLock parkingLock,
 			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId,
-			String surplusDetection) {
+			String surplusDetection) throws Exception {
 		ParkingGarage pg=new ParkingGarage();
 		pg.setId(parkingGarageId);
 		parkingLock.setParkingGarage(pg);
@@ -97,13 +97,13 @@ public class ParkingLockController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
-	public ModelAndView delete(@PathVariable("id") Long id) {
+	public ModelAndView delete(@PathVariable("id") Long id) throws Exception {
 		parkingLockService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = "reverse", method = RequestMethod.POST)
-	public ModelAndView reverseBatch(@RequestParam Long[] ids,@RequestParam(value = "state", required = true) String state) {
+	public ModelAndView reverseBatch(@RequestParam Long[] ids,@RequestParam(value = "state", required = true) String state) throws Exception {
 		if(ids!=null&&ids.length>0){		
 			String message=this.parkingLockService.reverse(ids, state, this.getCurrentShiroUser().id,
 					ParkingLockOperationEvent.SOURCETYPE_PC);
@@ -116,7 +116,7 @@ public class ParkingLockController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
-	public ModelAndView deleteBatch(@RequestParam Long[] ids) {
+	public ModelAndView deleteBatch(@RequestParam Long[] ids) throws Exception {
 		parkingLockService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}

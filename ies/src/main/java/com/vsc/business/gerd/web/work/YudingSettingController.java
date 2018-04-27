@@ -41,7 +41,7 @@ public class YudingSettingController extends BaseController {
 	public static final String PATH_SEARCH = PATH + Constants.SPT + "search";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request) {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
@@ -75,7 +75,7 @@ public class YudingSettingController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") YudingSetting yudingSetting) {
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") YudingSetting yudingSetting) throws Exception {
 		yudingSettingService.save(yudingSetting);
 		return this.ajaxDoneSuccess("保存成功");
 	}

@@ -83,7 +83,7 @@ public abstract class BaseService<T> {
 		return this.getPagingAndSortingRepositoryDao().exists(id);
 	}
 
-	public T save(T entity) {
+	public T save(T entity) throws Exception {
 		return this.getPagingAndSortingRepositoryDao().save(entity);
 	}
 
@@ -125,8 +125,9 @@ public abstract class BaseService<T> {
 	 * 获取摸个查询条件的所有数据
 	 * @param filterParams 查询条件
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<T> findList(Map<String, Object> filterParams) {
+	public List<T> findList(Map<String, Object> filterParams) throws Exception {
 		return this.findAll(filterParams, null);
 	}
 	
@@ -167,8 +168,9 @@ public abstract class BaseService<T> {
 	 * @param filterParams 查询条件
 	 * @param pageRequest  分页参数(包括排序)
 	 * @return
+	 * @throws Exception 
 	 */
-	public Page<T> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
+	public Page<T> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
 		Specification<T> spec = buildSpecification(filterParams);
 		return this.getJpaSpecificationExecutorDao().findAll(spec, pageRequest);
 	}

@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,8 +32,6 @@ import com.vsc.util.CoreUtils;
 @Service
 @Transactional
 public class OrgService extends BaseService<Org> {
-	private static Logger logger = LoggerFactory
-			.getLogger(OrgService.class);
 
 	@Autowired
 	private OrgDao orgDao;
@@ -55,18 +51,26 @@ public class OrgService extends BaseService<Org> {
 	
 	/**
 	 * 根据条件查询，未删除的
+	 * @throws Exception 
 	 */
 	@Override
 	public List<Org> findList(Map<String, Object> filterParams) {
 		filterParams.put("EQ_isDelete", 0);
-		return super.findList(filterParams);
+		try {
+			return super.findList(filterParams);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
 	 * 根据条件查询，未删除，like 用户公司code%
+	 * @throws Exception 
 	 */
 	@Override
-	public Page<Org> findPage(Map<String, Object> filterParams, PageRequest pageRequest) {
+	public Page<Org> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
@@ -86,7 +90,7 @@ public class OrgService extends BaseService<Org> {
 		return find(searchParams);
 	}
 	
-	public Org save(Org entity,String[] ids) {
+	public Org save(Org entity,String[] ids) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){
@@ -106,14 +110,14 @@ public class OrgService extends BaseService<Org> {
 		return super.save(entity);
 	}
 
-	public void deleteUpdateById(Long id) {
+	public void deleteUpdateById(Long id) throws Exception {
 		Org entity=getObjectById(id);
 		entity.setIsDelete(true);
 		entity.setParkingLots(null);
 		save(entity);
 	}
 
-	public void deleteUpdateByIds(Long[] ids) {
+	public void deleteUpdateByIds(Long[] ids) throws Exception {
 		if (ArrayUtils.isNotEmpty(ids)) {
 			for (int i = 0; i < ids.length; i++) {
 				deleteUpdateById(ids[i]);
@@ -121,7 +125,7 @@ public class OrgService extends BaseService<Org> {
 		}
 	}
 
-	public void deleteUpdateByIds(List<Long> ids) {
+	public void deleteUpdateByIds(List<Long> ids) throws Exception {
 		if (Collections3.isNotEmpty(ids)) {
 			for (Long id : ids) {
 				if (id != null) {

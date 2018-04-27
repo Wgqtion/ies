@@ -26,7 +26,7 @@ public class SysLogController extends BaseController{
 	private SysLogService sysLogService;
 	
 	@RequestMapping(value = "")
-	public String list(Model model, ServletRequest request) {
+	public String list(Model model, ServletRequest request) throws Exception {
 		PageRequest pageRequest = this.getPageRequest("createTime","desc");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<SysLog> page = sysLogService.findPage(searchParams, pageRequest);

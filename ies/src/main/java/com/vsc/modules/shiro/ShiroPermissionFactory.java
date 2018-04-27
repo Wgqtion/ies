@@ -1,5 +1,6 @@
 package com.vsc.modules.shiro;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,13 @@ public class ShiroPermissionFactory extends ShiroFilterFactoryBean {
         //数据库动态权限  
         Map<String,Object> filterParams=new HashMap<String, Object>();
         filterParams.put("EQ_resourceType", 3);
-        List<Authority> permissions = authorityService.findList(filterParams);
+        List<Authority> permissions=new ArrayList<Authority>();
+		try {
+			permissions = authorityService.findList(filterParams);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         for(Authority po : permissions){  
             //字符串拼接权限  
         	String url=po.getValue();

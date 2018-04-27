@@ -53,8 +53,9 @@ public class CompanyService extends BaseService<Company> {
 	/**
 	 * 未删除的
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<Company> getList(){
+	public List<Company> getList() throws Exception{
 		Map<String, Object> filterParams = new HashMap<String, Object>();
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_code", user.getCompany().getCode());
@@ -75,7 +76,7 @@ public class CompanyService extends BaseService<Company> {
 	}
 	
 	@Override
-	public Company save(Company entity) {
+	public Company save(Company entity) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){
@@ -116,13 +117,13 @@ public class CompanyService extends BaseService<Company> {
 		return i;
 	}
 	
-	public void deleteUpdateById(Long id) {
+	public void deleteUpdateById(Long id) throws Exception {
 		Company entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}
 
-	public void deleteUpdateByIds(Long[] ids) {
+	public void deleteUpdateByIds(Long[] ids) throws Exception {
 		if (ArrayUtils.isNotEmpty(ids)) {
 			for (int i = 0; i < ids.length; i++) {
 				deleteUpdateById(ids[i]);
@@ -130,7 +131,7 @@ public class CompanyService extends BaseService<Company> {
 		}
 	}
 
-	public void deleteUpdateByIds(List<Long> ids) {
+	public void deleteUpdateByIds(List<Long> ids) throws Exception {
 		if (Collections3.isNotEmpty(ids)) {
 			for (Long id : ids) {
 				if (id != null) {
