@@ -47,7 +47,7 @@ public class TcpClientHandler extends ChannelInboundHandlerAdapter {
     		Integer state=Integer.valueOf(HexUtils.HexToDec(str, 16,18));//1正常，2失败
     		Map<String, Object> filterParams=new HashMap<String, Object>();
     		ParkingLock parkingLock=parkingLockOperationEventService.getParkingLockByCode(lockArea,lockNum);
-    		filterParams.put("EQ_parkingLock",parkingLock.getId());
+    		filterParams.put("EQ_parkingLock.id",parkingLock.getId());
     		filterParams.put("EQ_status",0);
     		List<ParkingLockOperationEvent> ploes=parkingLockOperationEventService.findAll(filterParams, "createTime","DESC");
     		if(ploes!=null){

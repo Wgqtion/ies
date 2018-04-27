@@ -81,7 +81,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	 */
 	public ParkingLock getByGarageId(Long parkingGarageId){
 		Map<String, Object> orderMap = new HashMap<String, Object>();
-        orderMap.put("EQ_parkingGarage", parkingGarageId);
+        orderMap.put("EQ_parkingGarage.id", parkingGarageId);
         orderMap.put("EQ_isDelete",0);
         return find(orderMap);
 	}
@@ -147,8 +147,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		try {
 			user = ShiroUserUtils.GetCurrentUser();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		if(user!=null){
 			Date now=CoreUtils.nowtime();
@@ -206,7 +205,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	}
 	
 	@Transactional(propagation=Propagation.NOT_SUPPORTED) 
-	public String reverse(Long[] ids,String state, Long userId, int sourceType) throws Exception{
+	public String reverse(Long[] ids,String state, Long userId, int sourceType){
 		String message=new String();
 		
 		

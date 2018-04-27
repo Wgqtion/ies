@@ -322,7 +322,7 @@ public class WeixinController extends HttpServiceBaseController {
 				}
 
 				Map<String, Object> searchYuding = new HashMap<String, Object>();
-				searchYuding.put("EQ_parkingGarage", parkingId);
+				searchYuding.put("EQ_parkingGarage.id", parkingId);
 				searchYuding.put("NOTEQ_wxUser.id", userId);
 				searchYuding.put("EQ_isDelete", Boolean.FALSE);
 				List<Yuding> yudingParking = this.yudingService.findList(searchYuding);
@@ -347,7 +347,7 @@ public class WeixinController extends HttpServiceBaseController {
 				} else {
 					Map<String, Object> orderParkingMap = new HashMap<String, Object>();
 					// 订单查询
-					orderParkingMap.put("EQ_parkingGarage", parkingId);
+					orderParkingMap.put("EQ_parkingGarage.id", parkingId);
 					orderParkingMap.put("EQ_isDelete", new Integer(0));
 					List<UserOrder> orderParkingList = userOrderService.findList(orderParkingMap);
 					for (UserOrder userOrder : orderParkingList) {
@@ -356,11 +356,9 @@ public class WeixinController extends HttpServiceBaseController {
 							return this.ajaxDoneError("该车位已被占用");
 						}
 					}
-					if (vl != null) {
-						String message = locked(vl, "02", userId);
-						if (message.length() > 0) {
-							return this.ajaxDoneError(message.toString());
-						}
+					String message = locked(vl, "02", userId);
+					if (message.length() > 0) {
+						return this.ajaxDoneError(message.toString());
 					}
 					// 创建订单
 					UserOrder userOrder = new UserOrder();
@@ -384,7 +382,7 @@ public class WeixinController extends HttpServiceBaseController {
 				}
 				// 订单查询
 				Map<String, Object> orderParking = new HashMap<String, Object>();
-				orderParking.put("EQ_parkingGarage", parkingId);
+				orderParking.put("EQ_parkingGarage.id", parkingId);
 				orderParking.put("EQ_isDelete", new Integer(0));
 				List<UserOrder> orderParkingList = userOrderService.findList(orderParking);
 				if (orderParkingList != null && !orderParkingList.isEmpty()) {
@@ -398,7 +396,7 @@ public class WeixinController extends HttpServiceBaseController {
 				}
 				// 判断是否别人预约
 				Map<String, Object> searchYuding = new HashMap<String, Object>();
-				searchYuding.put("EQ_parkingGarage", parkingId);
+				searchYuding.put("EQ_parkingGarage.id", parkingId);
 				searchYuding.put("NOTEQ_wxUser.id", userId);
 				searchYuding.put("EQ_isDelete", Boolean.FALSE);
 				List<Yuding> yudingParking = this.yudingService.findList(searchYuding);
@@ -599,7 +597,7 @@ public class WeixinController extends HttpServiceBaseController {
 	}
 
 	// 开关锁
-	private String locked(ParkingLock vl, String state, Long userId) throws Exception {
+	private String locked(ParkingLock vl, String state, Long userId) {
 		return this.parkingLockService.reverse(new Long[] { vl.getId() }, state, userId,
 				ParkingLockOperationEvent.SOURCETYPE_PHONE);
 	}
