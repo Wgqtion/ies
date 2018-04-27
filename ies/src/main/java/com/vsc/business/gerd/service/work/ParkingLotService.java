@@ -20,7 +20,6 @@ import com.google.common.collect.Maps;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.core.repository.sys.upload.AttachDao;
 import com.vsc.business.gerd.entity.work.Org;
-import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.repository.work.ParkingLotDao;
 import com.vsc.modules.service.BaseService;
@@ -138,57 +137,12 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 			parkingLot.setIsLast(true);
 			parkingLots.add(parkingLot);
 		}
-		boolean flag=false;
+		int i=0;
 		for (ParkingLot p : parkingLots) {
-			SetParkingLotNum(p);
-			if(parkingLotId!=null&&!flag){
-				SetParkingLocks(p,parkingLotId);
-				flag=true;
-			}
+			this.parkingLockService.findParkingLocks(p,parkingLotId,i,userId);
+			i++;
 		}
 		return parkingLots;
-	}
-	
-	/**
-	 * set可用地锁车位
-	 * @param parkingLot
-	 * @throws Exception 
-	 */
-	private void SetParkingLocks(ParkingLot parkingLot,Long parkingLotId) throws Exception{
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("EQ_parkingGarage.parkingLot.id",parkingLotId);
-		params.put("EQ_isEnabled", true);
-		List<ParkingLock> parkingLocks = this.parkingLockService.findAllList(params);
-		for (int i=0;i<parkingLocks.size();i++) {
-			if (!parkingLocks.get(i).getIsSurplus()) {
-				parkingLocks.remove(i);
-			}
-		}
-		parkingLot.setParkingLocks(parkingLocks);
-	}
-
-
-	/**
-	 * set余位数及车位数
-	 * 
-	 * @param parkingLot
-	 * @throws Exception 
-	 */
-	private void SetParkingLotNum(ParkingLot parkingLot) throws Exception {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("RLIKE_parkingGarage.parkingLot.code", parkingLot.getCode());
-		params.put("EQ_isEnabled", true);
-		List<ParkingLock> parkingLocks = this.parkingLockService.findAllList(params);
-		if (parkingLocks != null) {
-			parkingLot.setGarageNum(parkingLocks.size());
-		}
-		int surplusNum=0;
-		for (ParkingLock parkingLock : parkingLocks) {
-			if (parkingLock.getIsSurplus()) {
-				surplusNum++;
-			}
-		}
-		parkingLot.setSurplusNum(surplusNum);
 	}
 
 	public ParkingLot save(ParkingLot entity, Long photoAttachId) throws Exception {

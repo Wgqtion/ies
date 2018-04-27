@@ -179,7 +179,7 @@ public class Yuding extends IdEntity implements Serializable {
 	}
 
     @ManyToOne
-    @JoinColumn(name = "PARKING_GARAGE_CODE")
+    @JoinColumn(name = "PARKING_GARAGE_CODE",referencedColumnName="CODE")
     public ParkingGarage getParkingGarage() {
         return parkingGarage;
     }

@@ -23,7 +23,11 @@ import com.vsc.modules.entity.IdEntity;
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "user_order")
 public class UserOrder extends IdEntity{
-    private Integer carType;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3043351569484558846L;
+	private Integer carType;
     private java.util.Date outTime;
     private java.lang.String orderNumber;
     private WxUser wxUser;
@@ -71,7 +75,7 @@ public class UserOrder extends IdEntity{
     }
 
     @ManyToOne
-    @JoinColumn(name = "PARKING_GARAGE_ID")
+    @JoinColumn(name = "PARKING_GARAGE_CODE",referencedColumnName="CODE")
     public ParkingGarage getParkingGarage() {
         return parkingGarage;
     }

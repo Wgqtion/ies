@@ -40,9 +40,8 @@ public class ParkingGarage extends BasicEntity {
     private java.lang.String itudeLat;
 
     private ParkingLock parkingLock;
-    
-    
-    @OneToOne
+
+	@OneToOne
     @JoinColumn(name = "PARKING_LOCK_CODE",referencedColumnName="CODE")
 	public ParkingLock getParkingLock() {
 		return parkingLock;

@@ -198,19 +198,40 @@ public class WeixinController extends HttpServiceBaseController {
 	}
 
 	/**
-	 * 预约查询
-	 *
-	 * @param userId
-	 *            用户ID
-	 * @return
-	 * @throws java.text.ParseException
+	 * 订单查询
+	 * @throws Exception 
 	 */
-	@RequestMapping(value = "/yuyue/info")
-	public ModelAndView yuyueInfo(@RequestParam(required = true) Long userId) throws ParseException {
+	@RequestMapping(value = "/order/info")
+	public ModelAndView orderInfo(@RequestParam(required = true) Long userId) throws Exception {
 
+		// 订单查询
+		Map<String, Object> orderMap = new HashMap<String, Object>();
+		orderMap.put("EQ_wxUser.id", userId);
+		orderMap.put("NOTEQ_isDelete", new Integer(1));
+		List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
+		//预约单查询
 		List<Yuyue> yuyues = new ArrayList<Yuyue>();
 		List<YudingSetting> vl = yudingSettingService.getAllList();
 		List<Yuding> yudings = yudingService.findByWxUser(userId);
+		
+		if (userOrderlList.isEmpty()&&yudings.isEmpty()) {
+			return this.ajaxDoneError("没有订单信息");
+		}
+		if(userOrderlList!=null&&userOrderlList.size()>0){
+			for (UserOrder userOrder : userOrderlList) {
+				// 查询地锁状态
+				ParkingLock parkingLock = this.parkingLockService.getByGarageId(userOrder.getParkingGarage().getId());
+				userOrder.getParkingGarage().setParkingLock(parkingLock);
+
+			}
+			String[] isNotIgnoreFieldNames = { "id", "createTime","isDelete", "parkingGarage","id","name", 
+					"description"};
+			String jsonstr = JSONUtil.toJSONString(userOrderlList, isNotIgnoreFieldNames, false, featureNames);
+			return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
+		}
+		
+		
+		
 		for (Yuding yuding : yudings) {
 			Yuyue yuyue = new Yuyue();
 			yuyue.setWxUserId(yuding.getWxUser().getId());
@@ -231,44 +252,8 @@ public class WeixinController extends HttpServiceBaseController {
 
 			yuyues.add(yuyue);
 		}
-		if (yuyues.isEmpty()) {
-			return this.ajaxDoneError("没有预约信息");
-		}
-		String[] isNotIgnoreFieldNames = { "orderNumber", "userId", "carNumber", "isEnabled", "parkingGarage", "name",
-				"yuyueTime", "createTime", "description", "xcoordinate", "ycoordinate", "yudingSetting", "lockedCost",
-				"lockedHourCost", "shoufei", "cardType", "id", "isCarOn" };
+		String[] isNotIgnoreFieldNames = { "orderNumber","isDelete", "parkingGarage","id","name","yuyueTime", "createTime", "description"};
 		String jsonstr = JSONUtil.toJSONString(yuyues, isNotIgnoreFieldNames, false, featureNames);
-		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
-	}
-
-	/**
-	 * 订单查询
-	 *
-	 * @param userId
-	 *            用户ID
-	 * @return
-	 * @throws Exception 
-	 */
-	@RequestMapping(value = "/order/info")
-	public ModelAndView orderInfo(@RequestParam(required = true) Long userId) throws Exception {
-
-		// 订单查询
-		Map<String, Object> orderMap = new HashMap<String, Object>();
-		orderMap.put("EQ_wxUser.id", userId);
-		orderMap.put("NOTEQ_isDelete", new Integer(1));
-		List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
-		if (userOrderlList == null || userOrderlList.isEmpty()) {
-			return this.ajaxDoneError("没有订单信息");
-		}
-		for (UserOrder userOrder : userOrderlList) {
-			// 查询地锁状态
-			ParkingLock parkingLock = this.parkingLockService.getByGarageId(userOrder.getParkingGarage().getId());
-			userOrder.getParkingGarage().setParkingLock(parkingLock);
-
-		}
-		String[] isNotIgnoreFieldNames = { "id", "createTime", "outTime", "wxUser", "name", "parkingGarage",
-				"description", "isDelete", "isCarOn", "isOpen" };
-		String jsonstr = JSONUtil.toJSONString(userOrderlList, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 	
@@ -503,6 +488,9 @@ public class WeixinController extends HttpServiceBaseController {
 		}
 		Long on = Long.valueOf(orderNumber);
 		Yuding yuding = yudingService.getObjectById(on);
+		if(yuding==null){
+			return this.ajaxDoneError("预约取消失败，没有找到预约信息");
+		}
 		if (userId != null && !userId.equals(yuding.getWxUser().getId())) {
 			return this.ajaxDoneError("预约取消失败，没有权限");
 		}
@@ -512,12 +500,7 @@ public class WeixinController extends HttpServiceBaseController {
 		}
 		yuding.setIsDelete(true);
 		yudingService.save(yuding);
-		if (yuding.getIsDelete()) {
-			ParkingGarage parkingGarage = yuding.getParkingGarage();
-			this.parkingGarageService.save(parkingGarage);
-			return this.ajaxDoneSuccess("成功取消");
-		}
-		return this.ajaxDoneError("预约取消失败，没有找到预约信息");
+		return this.ajaxDoneSuccess("成功取消");
 	}
 
 	/**
