@@ -141,7 +141,7 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 		for (ParkingLot p : parkingLots) {
 			SetParkingLotNum(p);
 			if(parkingLotId!=null){
-				SetParkingLocks(p);
+				SetParkingLocks(p,parkingLotId);
 			}
 		}
 		return parkingLots;
@@ -152,9 +152,9 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 	 * @param parkingLot
 	 * @throws Exception 
 	 */
-	private void SetParkingLocks(ParkingLot parkingLot) throws Exception{
+	private void SetParkingLocks(ParkingLot parkingLot,Long parkingLotId) throws Exception{
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("EQ_parkingGarage.parkingLot.id",parkingLot.getParent().getId());
+		params.put("EQ_parkingGarage.parkingLot.id",parkingLotId);
 		params.put("EQ_isEnabled", true);
 		List<ParkingLock> parkingLocks = this.parkingLockService.findAllList(params);
 		for (int i=0;i<parkingLocks.size();i++) {
