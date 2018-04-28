@@ -150,10 +150,8 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 			ParkingLot parent=this.getObjectById(entity.getParent().getId());
 			entity.setParentCode(parent.getCode());
 			entity.setCompanyCode(parent.getCompanyCode());
-			entity.setParent(null);
-		}else{
-			entity.setParent(null);
 		}
+		entity.setParent(null);
 		User user=ShiroUserUtils.GetCurrentUser();
 		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){

@@ -89,11 +89,12 @@ public class ParkingGarageController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE + "/{id}", method = RequestMethod.GET)
-	public String updateForm(@PathVariable("id") Long id, Model model) {
+	public String updateForm(@PathVariable("id") Long id, Model model) throws Exception {
 		ParkingGarage parkingGarage=parkingGarageService.getObjectById(id);
 		model.addAttribute("vm", parkingGarage);
-		model.addAttribute("parkingLot",parkingGarage.getParkingLot());
 		model.addAttribute("action", BaseController.UPDATE);
+		model.addAttribute("parkingLot",parkingGarage.getParkingLot());
+		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
 		return PATH_EDIT;
 	}
 

@@ -29,6 +29,7 @@ public class ParkingGarage extends BasicEntity {
 	private java.lang.String name;//车位编号
 	private Boolean isEnabled=Boolean.TRUE;
 	private ParkingLot parkingLot;
+	private String parkingLotCode;
 	private java.lang.String description;
 	/**
      * 纬度坐标
@@ -40,6 +41,19 @@ public class ParkingGarage extends BasicEntity {
     private java.lang.String itudeLat;
 
     private ParkingLock parkingLock;
+
+    
+    /**
+     * @return
+     */
+    @Column(name = "PARKING_LOT_CODE")
+	public String getParkingLotCode() {
+		return parkingLotCode;
+	}
+
+	public void setParkingLotCode(String parkingLotCode) {
+		this.parkingLotCode = parkingLotCode;
+	}
 
 	@OneToOne
     @JoinColumn(name = "PARKING_LOCK_CODE",referencedColumnName="CODE")
@@ -108,7 +122,7 @@ public class ParkingGarage extends BasicEntity {
 	 * @return
 	 */
 	@ManyToOne
-	@JoinColumn(name = "PARKING_LOT_CODE",referencedColumnName="CODE")
+	@JoinColumn(name = "PARKING_LOT_CODE",referencedColumnName="CODE",insertable=false,updatable=false)
 	public ParkingLot getParkingLot() {
 		return this.parkingLot;
 	}

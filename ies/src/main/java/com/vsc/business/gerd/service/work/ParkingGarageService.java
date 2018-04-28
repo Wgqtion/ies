@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
-import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.repository.work.ParkingGarageDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
@@ -83,19 +82,12 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	}
 
 	public ParkingGarage save(ParkingGarage entity) {
-		if(entity.getParkingLot()!=null&&entity.getParkingLot().getId()!=null){
-			ParkingLot parkingLot=parkingLotService.getObjectById(entity.getParkingLot().getId());
-			entity.setParkingLot(parkingLot);
-		}else{
-			entity.setParkingLot(null);
-		}
-		
+		entity.setParkingLot(null);
 		User user=null;
 		try {
 			user = ShiroUserUtils.GetCurrentUser();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		if(user!=null){
 			Date now=CoreUtils.nowtime();

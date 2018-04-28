@@ -4,11 +4,11 @@
 <SCRIPT type="text/javascript">
    	var nodesParkingGarage=[
 				<c:forEach items="${parkingLotTree}" var="entity" varStatus="index">
-						{ id:'${entity.id}', pId:'${entity.parent.id}', name:'${entity.name}'}<c:if test="${!index.last}">,</c:if>
+						{ id:'${entity.code}', pId:'${entity.parent.code}', name:'${entity.name}'}<c:if test="${!index.last}">,</c:if>
 				</c:forEach>
    	];
    	$(document).ready(function(){
-   		GenerateSelectZTree("ParkingGarage",nodesParkingGarage,"parkingLot","${parkingLot.id}");
+   		GenerateSelectZTree("ParkingGarage",nodesParkingGarage,"parkingLot","${parkingLot.code}");
    	});
 	
 </SCRIPT>
@@ -22,13 +22,11 @@
 				<tr>
 					<td class="fieldName"><span class="required">*</span>场区:</td>
 					<td class="fieldInput" colspan="3">
-						<input id="parkingLotId" name="parkingLot.id" value="${parkingLot.id}" type="hidden" />
+						<input id="parkingLotId" name="parkingLotCode" value="${parkingLot.code}" type="hidden" />
 						<label><input validate="{required:true}" id="parkingLotName" value="${parkingLot.name}" readonly="readonly"/></label>
-						<c:if test="${empty id}">
 						<a class="btnLook" title="选择场区" href="#" onclick="showMenu(this,'ParkingGarage');"></a>
 						<span class="info">选择</span>
 						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearBtn("parkingLot");' />
-						</c:if>
 					</td>
 				</tr>
 				<tr>

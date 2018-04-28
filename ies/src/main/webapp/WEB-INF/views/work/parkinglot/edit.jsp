@@ -10,18 +10,20 @@
    	];
    	
 	$(document).ready(function(){
-   		GenerateSelectZTree("ParkingLot",ParkingLotzNodes,"parent","${parkingLot.id}",companyHide);
-   		companyHide();
+   		GenerateSelectZTree("ParkingLot",ParkingLotzNodes,"parent","${parkingLot.id}",companyDisabled);
+   		companyDisabled();
    		
    		$("#clearBtnId").bind("click",function(){
-   			$("#companyTr").show();
+   			$("#companyCode").attr("disabled",false);
+   			$("#companyCode").attr("validate","{required:true}");
    		});
    	});
 	//隐藏公司
-	function companyHide(){
+	function companyDisabled(){
 		var parentId=$("#parentId").val();
 		if(parentId!=''){
-			$("#companyTr").hide();
+			$("#companyCode").attr("disabled",true);
+			$("#companyCode").attr("validate","{required:false}");
 		}
 	}
 	
@@ -55,7 +57,7 @@
 					</td>
 				</tr> 
 				<c:if test="${empty id}">
-				<tr id="companyTr">
+				<tr>
 					<td class="fieldName"><span class="required">*</span>所属公司:</td>
 					<td class="fieldInput">
 						<select id="companyCode" name="companyCode" validate="{required:true}">
