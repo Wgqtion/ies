@@ -33,9 +33,6 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 
 	@Autowired
 	private ParkingGarageDao parkingGarageDao;
-
-	@Autowired
-	private ParkingLotService parkingLotService;
 	
 	
 	@Override
@@ -132,7 +129,6 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	public int getMaxCode(){
 		int i=0;
 		Map<String, Object> searchParams = new HashMap<String, Object>();
-		searchParams.put("EQ_isDelete",0);
 		List<ParkingGarage> list=this.findAll(searchParams, "code","desc");
 		if(list!=null&&list.size()>0){
 			ParkingGarage c=list.get(0);

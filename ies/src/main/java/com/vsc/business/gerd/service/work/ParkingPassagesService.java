@@ -147,7 +147,6 @@ public class ParkingPassagesService extends BaseService<ParkingPassages>{
 	public int getMaxCode(){
 		int i=0;
 		Map<String, Object> searchParams = new HashMap<String, Object>();
-		searchParams.put("EQ_isDelete",0);
 		List<ParkingPassages> list=this.findAll(searchParams, "code","desc");
 		if(list!=null&&list.size()>0){
 			ParkingPassages c=list.get(0);

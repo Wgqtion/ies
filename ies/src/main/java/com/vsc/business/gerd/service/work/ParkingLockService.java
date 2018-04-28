@@ -209,7 +209,6 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	public int getMaxCode() {
 		int i = 0;
 		Map<String, Object> searchParams = new HashMap<String, Object>();
-		searchParams.put("EQ_isDelete", 0);
 		List<ParkingLock> list = this.findAll(searchParams, "code", "desc");
 		if (list != null && list.size() > 0) {
 			ParkingLock c = list.get(0);

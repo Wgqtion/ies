@@ -194,7 +194,6 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 	public int getMaxCode(String parentCode) throws Exception{
 		int i=0;
 		Map<String, Object> searchParams = new HashMap<String, Object>();
-		searchParams.put("EQ_isDelete",0);
 		if(CoreUtils.isEmpty(parentCode)){
 			searchParams.put("ISNULL_parentCode",parentCode);	
 		}else{
