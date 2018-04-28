@@ -38,22 +38,22 @@ public class RoleController extends BaseController {
 		return "sys/role/list";
 	}
 	
-	@RequestMapping(value = "select/{companyId}", method = RequestMethod.GET)
-	public String select(@PathVariable("companyId") Long companyId, Model model, ServletRequest request) throws Exception {
+	@RequestMapping(value = "select/{userId}", method = RequestMethod.GET)
+	public String select(@PathVariable("userId") Long userId, Model model, ServletRequest request) throws Exception {
 		List<Role> list = roleService.getAllList();
 		Map<String, Object> searchParams = new HashMap<String, Object>();
-		searchParams.put("EQ_companyList.id",companyId);
-		searchParams.put("EQ_companyList.isDelete",0);
+		searchParams.put("EQ_userList.id",userId);
+		searchParams.put("EQ_userList.isDelete",0);
 		List<Role> roles =roleService.findList(searchParams);
 		model.addAttribute("list", list);
 		model.addAttribute("roles", roles);
-		model.addAttribute("companyId", companyId);
+		model.addAttribute("userId", userId);
 		return "sys/role/select";
 	}
 	
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(Long companyId,String codes) throws Exception {
-		this.roleService.save(companyId, codes);
+	public ModelAndView save(Long userId,String codes) throws Exception {
+		this.roleService.save(userId, codes);
 		return this.ajaxDoneSuccess("保存成功");
 	}
 

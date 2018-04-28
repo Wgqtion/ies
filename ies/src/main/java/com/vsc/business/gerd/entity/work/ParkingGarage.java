@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -40,8 +39,6 @@ public class ParkingGarage extends BasicEntity {
      */
     private java.lang.String itudeLat;
 
-    private ParkingLock parkingLock;
-
     
     /**
      * @return
@@ -55,15 +52,6 @@ public class ParkingGarage extends BasicEntity {
 		this.parkingLotCode = parkingLotCode;
 	}
 
-	@OneToOne
-    @JoinColumn(name = "PARKING_LOCK_CODE",referencedColumnName="CODE")
-	public ParkingLock getParkingLock() {
-		return parkingLock;
-	}
-
-	public void setParkingLock(ParkingLock parkingLock) {
-		this.parkingLock = parkingLock;
-	}
 
 	@Column(name = "ITUDE_LONG")
     public java.lang.String getItudeLong() {

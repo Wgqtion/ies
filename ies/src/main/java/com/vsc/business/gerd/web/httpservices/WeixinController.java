@@ -218,12 +218,6 @@ public class WeixinController extends HttpServiceBaseController {
 			return this.ajaxDoneError("没有订单信息");
 		}
 		if(userOrderlList!=null&&userOrderlList.size()>0){
-			for (UserOrder userOrder : userOrderlList) {
-				// 查询地锁状态
-				ParkingLock parkingLock = this.parkingLockService.getByGarageId(userOrder.getParkingGarage().getId());
-				userOrder.getParkingGarage().setParkingLock(parkingLock);
-
-			}
 			String[] isNotIgnoreFieldNames = { "id", "createTime","isDelete", "parkingGarage","id","name", 
 					"description"};
 			String jsonstr = JSONUtil.toJSONString(userOrderlList, isNotIgnoreFieldNames, false, featureNames);
@@ -246,9 +240,6 @@ public class WeixinController extends HttpServiceBaseController {
 				yuyue.setYudingSetting(vl.get(0));
 			}
 			yuyue.setShoufei(new Double(0));
-			// 查询地锁状态
-			ParkingLock parkingLock = this.parkingLockService.getByGarageId(yuding.getParkingGarage().getId());
-			yuyue.getParkingGarage().setParkingLock(parkingLock);
 
 			yuyues.add(yuyue);
 		}

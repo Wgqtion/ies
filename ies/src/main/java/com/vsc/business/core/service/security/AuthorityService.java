@@ -58,8 +58,8 @@ public class AuthorityService extends BaseService<Authority> {
 	 */
 	public List<Authority> getMenus(Long userId,Integer resourceType){
 		Map<String, Object> filterParams = new HashMap<String, Object>();
-		filterParams.put("EQ_roleList.companyList.users.id", userId);
-		filterParams.put("EQ_roleList.companyList.isDelete", 0);
+		filterParams.put("EQ_roleList.userList.id", userId);
+		filterParams.put("EQ_roleList.userList.isDelete", 0);
 		filterParams.put("EQ_resourceType", resourceType);
 		return findAll(filterParams,"parentCode,sort","ASC,ASC");
 	}

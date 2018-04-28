@@ -29,11 +29,11 @@
         for(var i=0;i<nodes.length;i++){  
         	codes+=nodes[i].id + ",";
         }
-        var companyId='${companyId}';
+        var userId='${userId}';
         $.ajax({
        	  type: 'POST',
        	  url: "${ctx}/sys/role/save",
-       	  data: {"companyId":companyId,"codes":codes},
+       	  data: {"userId":userId,"codes":codes},
      	  success : function(result) {
      		  alert(result.message);
 	       	  if (result.statusCode == "200") {

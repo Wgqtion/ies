@@ -5,14 +5,10 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.google.common.collect.Lists;
-import com.vsc.business.core.entity.security.Role;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.BasicEntity;
@@ -47,8 +43,6 @@ public class Company extends BasicEntity implements Serializable{
 	 * 地址
 	 */
 	private String address;
-	
-    private List<Role> roleList = Lists.newArrayList();
 
     private List<User> users= Lists.newArrayList();
     
@@ -61,18 +55,6 @@ public class Company extends BasicEntity implements Serializable{
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
-
-	@ManyToMany
-    @JoinTable(name = Constants.TABLE_PREFIX + "company_role", joinColumns = {
-        @JoinColumn(name = "COMPANY_CODE",referencedColumnName="CODE")}, inverseJoinColumns = {
-        @JoinColumn(name = "ROLE_CODE",referencedColumnName="CODE")})
-    public List<Role> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
-    }
 	@Column(name = "NAME")
 	public String getName() {
 		return name;

@@ -74,7 +74,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		List<String> roles = Lists.newArrayList();
 		List<String> permissions = Lists.newArrayList();
-		for (Iterator<Role> iterator = user.getCompany().getRoleList().iterator(); iterator.hasNext();) {
+		for (Iterator<Role> iterator = user.getRoleList().iterator(); iterator.hasNext();) {
 			Role role = iterator.next();
 			roles.add(role.getName());
 

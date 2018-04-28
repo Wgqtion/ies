@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -24,7 +26,11 @@ import com.vsc.modules.entity.BasicEntity;
 @Table(name = Constants.TABLE_PREFIX + "user")
 public class User extends BasicEntity {
 
-    private String loginName;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7938051566638631777L;
+	private String loginName;
     private String name;
     private String plainPassword;
     private String password;
@@ -36,6 +42,23 @@ public class User extends BasicEntity {
     private Company company;
 
     private List<Attach> attachs = Lists.newArrayList();
+    
+
+    private List<Role> roleList = Lists.newArrayList();
+
+
+	@ManyToMany
+    @JoinTable(name = Constants.TABLE_PREFIX + "user_role", joinColumns = {
+        @JoinColumn(name = "USER_ID",referencedColumnName="ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "ROLE_CODE",referencedColumnName="CODE")})
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
+    
     /**
      * 公司code
      */

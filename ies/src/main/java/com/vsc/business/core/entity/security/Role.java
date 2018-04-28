@@ -11,14 +11,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.google.common.collect.Lists;
-import com.vsc.business.gerd.entity.work.Company;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
 
 @Entity
-@Table(name = Constants.TABLE_PREFIX+"role")
-public class Role extends IdEntity implements Serializable{
-	
+@Table(name = Constants.TABLE_PREFIX + "role")
+public class Role extends IdEntity implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -27,10 +26,8 @@ public class Role extends IdEntity implements Serializable{
 	private String name;
 
 	private List<Authority> authorityList = Lists.newArrayList();
-	private List<Company> companyList = Lists.newArrayList();
+	private List<User> userList = Lists.newArrayList();
 
-	
-	
 	@Column(name = "code")
 	public String getCode() {
 		return code;
@@ -50,7 +47,9 @@ public class Role extends IdEntity implements Serializable{
 	}
 
 	@ManyToMany
-	@JoinTable(name = Constants.TABLE_PREFIX+"role_authority", joinColumns = { @JoinColumn(name = "ROLE_CODE",referencedColumnName="CODE") }, inverseJoinColumns = { @JoinColumn(name = "AUTHORITY_CODE",referencedColumnName="CODE") })
+	@JoinTable(name = Constants.TABLE_PREFIX + "role_authority", joinColumns = {
+			@JoinColumn(name = "ROLE_CODE", referencedColumnName = "CODE") }, inverseJoinColumns = {
+					@JoinColumn(name = "AUTHORITY_CODE", referencedColumnName = "CODE") })
 	public List<Authority> getAuthorityList() {
 		return authorityList;
 	}
@@ -58,15 +57,17 @@ public class Role extends IdEntity implements Serializable{
 	public void setAuthorityList(List<Authority> authorityList) {
 		this.authorityList = authorityList;
 	}
-	
 
 	@ManyToMany
-	@JoinTable(name = Constants.TABLE_PREFIX+"company_role", joinColumns = { @JoinColumn(name = "ROLE_CODE",referencedColumnName="CODE") }, inverseJoinColumns = { @JoinColumn(name = "COMPANY_CODE",referencedColumnName="CODE") })
-	public List<Company> getCompanyList() {
-		return companyList;
+	@JoinTable(name = Constants.TABLE_PREFIX + "user_role", joinColumns = {
+			@JoinColumn(name = "ROLE_CODE", referencedColumnName = "CODE") }, inverseJoinColumns = {
+					@JoinColumn(name = "USER_ID", referencedColumnName = "ID") })
+	public List<User> getUserList() {
+		return userList;
 	}
 
-	public void setCompanyList(List<Company> companyList) {
-		this.companyList = companyList;
+	public void setUserList(List<User> userList) {
+		this.userList = userList;
 	}
+
 }
