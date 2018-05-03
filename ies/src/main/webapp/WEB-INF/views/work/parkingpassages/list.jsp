@@ -7,7 +7,7 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				   
-				<li><label>出入口名称:</label> 
+				<li><label>进出口名称:</label> 
 					<input type="text" value="${param.search_LIKE_name}" name="search_LIKE_name" /> </li>   
 				<li><div class="buttonActive">
 					<div class="buttonContent">
@@ -34,7 +34,7 @@
 				<th width="40" align="center">序号</th>
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>    
 				<th>场区名称</th>   
-				<th <vsc:orderField name="name"/>>出入口名称</th>
+				<th <vsc:orderField name="name"/>>进出口名称</th>
 				<th <vsc:orderField name="itudeLong"/>>纬度坐标</th>   
 				<th <vsc:orderField name="itudeLat"/>>经度坐标</th>   
 				<th <vsc:orderField name="isEnabled"/>>状态</th>   

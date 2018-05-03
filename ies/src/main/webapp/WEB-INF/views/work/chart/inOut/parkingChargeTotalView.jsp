@@ -13,7 +13,7 @@ $(function () {
             formatter: '{b}</br>{a}:{c}元'
         },
         title: {
-            text: '停车场收费统计图表',
+            text: '进出口收费统计图表',
             x:'center',
             top:10
         },
@@ -110,6 +110,8 @@ function parkingChargeTotalData(){
 						<option value="${lotArea.id}">${lotArea.name}</option>
 					</c:forEach>
 				</select></td>
+				<td align="right" width="50">分组:</td>
+				<td><input type="radio" id="passagesRadio" name="selectType" value="1" checked="checked" /><label for="passagesRadio">进出口</label><input type="radio" id="memberRadio" name="selectType" value="0" /><label for="memberRadio">收费员</label></td>
 				<td width="50"><button type="button" onclick="parkingChargeTotalData();">统计</button></td>
 			</tr>
 		</table>

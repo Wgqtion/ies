@@ -10,7 +10,7 @@
 					<td align="left">${vm.parkingLot.name}</td>
 				</tr>
 				<tr>
-					<td  align="right">出入口名称:</td>
+					<td  align="right">进出口名称:</td>
 					<td align="left">${vm.name}</td>
 				</tr>
 				<tr>

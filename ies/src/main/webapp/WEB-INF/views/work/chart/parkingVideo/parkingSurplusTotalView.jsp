@@ -12,7 +12,7 @@ $(function() {
 			formatter : '{b}</br>{a}:{c}位'
 		},
 		title : {
-			text : '停车场余位统计图表',
+			text : '全视频余位统计图表',
 			x : 'center',
 			top : 10
 		},

@@ -3,7 +3,7 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap> 
 	
-<!-- 停车场余位统计 -->
+<!-- 全视频余位统计 -->
 <select id="chart.parkingSurplusTotal.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
 	SELECT
 		PLNAME AS name,SUM(1-STATUS) AS surplustotal
@@ -39,7 +39,7 @@
 </select>
 	
 	
-	<!-- 停车场进出次数统计-->
+	<!-- 进出口次数统计-->
 	<select id="chart.parkingInOutTotal.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
 		SELECT 
 			PT.$selectType$NAME AS name,INCAR.innum,OUTCAR.outnum
@@ -69,10 +69,10 @@
 				AND PL.IS_DELETE=0
 				AND PL.COMPANY_CODE LIKE CONCAT(#companyCode#,'%')
 				<isNotEmpty    property="startDate">
-				AND <![CDATA[DATE_FORMAT(PO.IN_TIME,'yyyy-MM-dd') >= #startDate#]]>
+				AND <![CDATA[DATE_FORMAT(PO.IN_TIME,'%Y-%m-%d') >= #startDate#]]>
 				</isNotEmpty>
 				<isNotEmpty    property="endDate">
-				AND <![CDATA[DATE_FORMAT(PO.IN_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
+				AND <![CDATA[DATE_FORMAT(PO.IN_TIME,'%Y-%m-%d') <= #endDate#]]>			 
 				</isNotEmpty>
 			GROUP BY 
 				$selectType$.ID
@@ -90,10 +90,10 @@
 				AND PL.IS_DELETE=0
 				AND PL.COMPANY_CODE LIKE CONCAT(#companyCode#,'%')
 				<isNotEmpty    property="startDate">
-				AND <![CDATA[DATE_FORMAT(PO.OUT_TIME,'yyyy-MM-dd') >= #startDate#]]>
+				AND <![CDATA[DATE_FORMAT(PO.OUT_TIME,'%Y-%m-%d') >= #startDate#]]>
 				</isNotEmpty>
 				<isNotEmpty    property="endDate">
-				AND <![CDATA[DATE_FORMAT(PO.OUT_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
+				AND <![CDATA[DATE_FORMAT(PO.OUT_TIME,'%Y-%m-%d') <= #endDate#]]>			 
 				</isNotEmpty>
 			GROUP BY 
 				$selectType$.ID
@@ -108,81 +108,32 @@
 		ORDER BY PT.$selectType$NAME
 	</select>
 	
-	<!-- 停车场收费统计-->
+	<!-- 进出口收费统计-->
 	<select id="chart.parkingChargeTotal.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
 	
-		SELECT 
-			PT.$selectType$NAME AS name,
-			SUM(ysPayAmount) AS yspayamount,
-			SUM(ssPayAmount) AS sspayamount
+	
+		SELECT
+			$selectType$ AS name,
+			SUM(PO.YS_PAY_AMOUNT) AS yspayamount,
+			SUM(PO.SS_PAY_AMOUNT) AS sspayamount
 		FROM
-		(
-			SELECT 
-				SUM(YS_PAY_AMOUNT) AS ysPayAmount,
-				SUM(SS_PAY_AMOUNT) AS ssPayAmount,
-				IFNULL($selectType$.ID,-1) AS $selectType$ID,
-				IFNULL($selectType$.NAME,'未分配') AS $selectType$NAME
-			FROM 
-				T_PARKING_ORDER PO
-			INNER JOIN T_PARKING_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS.CODE
-			INNER JOIN T_PARKING_LOT PL ON PL.CODE=PAS.PARKING_LOT_CODE  
-			WHERE 
-				PAS.IS_DELETE=0
-				AND PL.IS_DELETE=0
-				AND PL.COMPANY_CODE LIKE CONCAT(#companyCode#,'%')
-				AND (IN_SCHOOL_DOOR_NAME IS NOT NULL OR (OUT_SCHOOL_DOOR_NAME IS NOT NULL AND IN_SCHOOL_DOOR_NAME IS NULL))
-				
-				<isNotEmpty    property="selectId">
-				AND PL.ID=#selectId#
-				</isNotEmpty>
-				
-				<isNotEmpty    property="startDate">
-				AND <![CDATA[DATE_FORMAT(PO.PAY_TIME,'yyyy-MM-dd') >= #startDate#]]>
-				</isNotEmpty>
-				<isNotEmpty    property="endDate">
-				AND <![CDATA[DATE_FORMAT(PO.PAY_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
-				</isNotEmpty>
-			GROUP BY 
-				IFNULL($selectType$.ID,-1),
-				IFNULL($selectType$.NAME,'未分配')
-				
-				
-				
-			UNION ALL
-			
-			
-			SELECT 
-				SUM(YS_PAY_AMOUNT) AS ysPayAmount,
-				SUM(SS_PAY_AMOUNT) AS ssPayAmount,
-				IFNULL($selectType$.ID,-1) AS $selectType$ID,
-				IFNULL($selectType$.NAME,'未分配') AS $selectType$NAME
-			FROM 
-				T_PARKING_ORDER PO
-			INNER JOIN T_PARKING_PASSAGES PAS ON PO.IN_SCHOOL_DOOR_NAME=PAS.CODE
-			INNER JOIN T_PARKING_LOT PL ON PL.CODE=PAS.PARKING_LOT_CODE  
-			WHERE 
-				PAS.IS_DELETE=0
-				AND PL.IS_DELETE=0
-				AND PL.COMPANY_CODE LIKE CONCAT(#companyCode#,'%')
-				AND (IN_SCHOOL_DOOR_NAME IS NULL AND OUT_SCHOOL_DOOR_NAME IS NULL)
-				
-				<isNotEmpty    property="selectId">
-				AND PL.ID=#selectId#
-				</isNotEmpty>
-				
-				<isNotEmpty    property="startDate">
-				AND <![CDATA[DATE_FORMAT(PO.PAY_TIME,'yyyy-MM-dd') >= #startDate#]]>
-				</isNotEmpty>
-				<isNotEmpty    property="endDate">
-				AND <![CDATA[DATE_FORMAT(PO.PAY_TIME,'yyyy-MM-dd') <= #endDate#]]>			 
-				</isNotEmpty>
-			GROUP BY 
-				IFNULL($selectType$.ID,-1),
-				IFNULL($selectType$.NAME,'未分配')
-		)  PT 
-		GROUP BY 
-				PT.$selectType$ID,PT.$selectType$NAME
-		ORDER BY PT.$selectType$ID DESC
+			T_PARKING_ORDER PO
+		INNER JOIN T_PARKING_PASSAGES PAS ON PO.OUT_SCHOOL_DOOR_NAME = PAS. CODE
+		INNER JOIN T_PARKING_LOT PL ON PL. CODE = PAS.PARKING_LOT_CODE
+		WHERE
+			PAS.IS_DELETE = 0
+			AND PL.IS_DELETE = 0
+			<isNotEmpty    property="selectId">
+			AND PL.ID=#selectId#
+			</isNotEmpty>
+			<isNotEmpty    property="startDate">
+			AND <![CDATA[LEFT(PO.PAY_TIME,10) >= #startDate#]]>
+			</isNotEmpty>
+			<isNotEmpty    property="endDate">
+			AND <![CDATA[LEFT(PO.PAY_TIME,10) <= #endDate#]]>			 
+			</isNotEmpty>
+		GROUP BY
+			$selectType$
 	</select>
 	
 </sqlMap>

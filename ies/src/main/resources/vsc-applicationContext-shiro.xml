@@ -55,7 +55,6 @@
 				/static/** = anon 
 				/index=authc
 				/httpservices/** = anon 
-				/work/parkingorder/** = anon 
 	        </value>  
 	    </property>
 	</bean>

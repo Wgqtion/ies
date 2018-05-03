@@ -25,7 +25,7 @@ import com.vsc.constants.Constants;
 
  
 /**
- * 出入口 视图控制
+ * 进出口 视图控制
  * @author XiangXiaoLin
  *
  */

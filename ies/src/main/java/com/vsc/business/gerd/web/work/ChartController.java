@@ -40,7 +40,7 @@ public class ChartController extends BaseController {
 	private ParkingLotService parkingLotService;
 
 	/**
-	 * 停车场余位统计图表 页面
+	 * 全视频余位统计图表 页面
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingSurplusTotalView")
@@ -54,11 +54,11 @@ public class ChartController extends BaseController {
 
 		model.addAttribute("reportView", reportView);
 		model.addAttribute("lotAreaList", lotAreaList);
-		return PATH + Constants.SPT + "parkingSurplusTotalView";
+		return PATH + Constants.SPT + "parkingVideo/parkingSurplusTotalView";
 	}
 	
 	/**
-	 * 停车场余位统计图表 数据
+	 * 全视频余位统计图表 数据
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingSurplusTotalData")
@@ -74,7 +74,7 @@ public class ChartController extends BaseController {
 	}
 	
 	/**
-	 * 停车场进出次数统计图表 页面
+	 * 进出口次数统计图表 页面
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingInOutTotalView")
@@ -89,11 +89,11 @@ public class ChartController extends BaseController {
 
 		model.addAttribute("reportView", reportView);
 		model.addAttribute("lotAreaList", lotAreaList);
-		return PATH + Constants.SPT + "parkingInOutTotalView";
+		return PATH + Constants.SPT + "inOut/parkingInOutTotalView";
 	}
 
 	/**
-	 * 停车场进出次数统计图表 数据
+	 * 进出口次数统计图表 数据
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingInOutTotalData")
@@ -113,7 +113,7 @@ public class ChartController extends BaseController {
 	}
 
 	/**
-	 * 停车场收费统计图表 页面
+	 * 进出口收费统计图表 页面
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingChargeTotalView")
@@ -128,19 +128,20 @@ public class ChartController extends BaseController {
 
 		model.addAttribute("reportView", reportView);
 		model.addAttribute("lotAreaList", lotAreaList);
-		return PATH + Constants.SPT + "parkingChargeTotalView";
+		return PATH + Constants.SPT + "inOut/parkingChargeTotalView";
 	}
 
 	/**
-	 * 停车场收费统计图表 数据
+	 * 进出口收费统计图表 数据
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "parkingChargeTotalData")
 	@ResponseBody
 	public Map<String, Object> parkingChargeTotalData(ReportView reportView, HttpServletRequest request) throws Exception {
-		reportView.setSelectType("PL");
-		if (StringUtils.isNotBlank(reportView.getSelectId())) {
-			reportView.setSelectType("PAS");
+		if("1".equals(reportView.getSelectType())){
+			reportView.setSelectType("PAS.`NAME`");
+		}else{
+			reportView.setSelectType("PO.`MEMBER_NAME`");
 		}
 		User user=ShiroUserUtils.GetCurrentUser();
 		reportView.setCompanyCode(user.getCompanyCode());

@@ -17,7 +17,7 @@ import com.vsc.business.gerd.repository.work.ParkingOrderDao;
 import com.vsc.modules.service.BaseService;
 
 /**
- * 停车单控制
+ * 进出口记录 控制
  * @author XiangXiaoLin
  *
  */

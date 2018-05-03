@@ -15,7 +15,7 @@ import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
 
 /**
- * 停车单实体
+ * 进出口记录实体
  * @author XiangXiaoLin
  *
  */

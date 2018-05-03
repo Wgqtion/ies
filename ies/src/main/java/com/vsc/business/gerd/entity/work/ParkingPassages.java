@@ -14,7 +14,7 @@ import com.vsc.modules.entity.BasicEntity;
  
 
 /**
- * 出入口实体类
+ * 进出口实体类
  * @author XiangXiaoLin
  *
  */
@@ -29,7 +29,7 @@ public class ParkingPassages extends BasicEntity{
 	private ParkingLot parkingLot;
      private java.lang.String name;
      /**
-      * 出入口编号
+      * 进出口编号
       */
      private String code;
      /**

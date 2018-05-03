@@ -5,7 +5,7 @@ import com.vsc.modules.repository.BaseDao;
 
 /**
  * 
- * @author jerry
+ * @author XiangXiaoLin
  *
  */
 public interface ParkingOrderDao extends BaseDao<ParkingOrder> {

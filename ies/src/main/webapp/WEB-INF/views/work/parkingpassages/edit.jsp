@@ -34,7 +34,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="fieldName"><label><span class="required">*</span>出入口名称:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>进出口名称:</label></td>
 					<td class="fieldInput"><label><input type="text" id="name" name="name" value="${vm.name}" validate="{required:true}" /></label><span for="name" generated="true" style="display: none" class="error"></span></td>
 					<td class="fieldName"><label><span class="required">*</span>是否启用:</label></td>
 					<td class="fieldInput">
