@@ -79,7 +79,6 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	}
 
 	public ParkingGarage save(ParkingGarage entity) {
-		entity.setParkingLot(null);
 		User user=null;
 		try {
 			user = ShiroUserUtils.GetCurrentUser();

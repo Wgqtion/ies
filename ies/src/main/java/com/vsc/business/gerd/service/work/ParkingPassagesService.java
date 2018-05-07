@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
-import com.vsc.business.gerd.entity.work.ParkingLot;
 import com.vsc.business.gerd.entity.work.ParkingPassages;
 import com.vsc.business.gerd.repository.work.ParkingPassagesDao;
 import com.vsc.modules.service.BaseService;
@@ -34,9 +33,6 @@ public class ParkingPassagesService extends BaseService<ParkingPassages>{
   
 	@Autowired
 	private ParkingPassagesDao parkingPassagesDao;
-
-	@Autowired
-	private ParkingLotService parkingLotService;
   	
 	@Override
 	public PagingAndSortingRepository<ParkingPassages, Long> getPagingAndSortingRepositoryDao() {
@@ -82,13 +78,6 @@ public class ParkingPassagesService extends BaseService<ParkingPassages>{
 	}
 
 	public ParkingPassages save(ParkingPassages entity) throws Exception {
-		if(entity.getParkingLot()!=null&&entity.getParkingLot().getId()!=null){
-			ParkingLot parkingLot=parkingLotService.getObjectById(entity.getParkingLot().getId());
-			entity.setParkingLot(parkingLot);
-		}else{
-			entity.setParkingLot(null);
-		}
-		
 		
 		User user=ShiroUserUtils.GetCurrentUser();
 		Date now=CoreUtils.nowtime();

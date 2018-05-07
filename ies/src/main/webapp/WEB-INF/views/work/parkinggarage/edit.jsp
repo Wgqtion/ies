@@ -8,7 +8,7 @@
 				</c:forEach>
    	];
    	$(document).ready(function(){
-   		GenerateSelectZTree("ParkingGarage",nodesParkingGarage,"parkingLot","${parkingLot.code}");
+   		GenerateSelectZTree("ParkingGarage",nodesParkingGarage,"parkingLotParkingGarage","${parkingLot.code}");
    	});
 	
 </SCRIPT>
@@ -22,11 +22,11 @@
 				<tr>
 					<td class="fieldName"><span class="required">*</span>场区:</td>
 					<td class="fieldInput" colspan="3">
-						<input id="parkingLotId" name="parkingLotCode" value="${parkingLot.code}" type="hidden" />
-						<label><input validate="{required:true}" id="parkingLotName" value="${parkingLot.name}" readonly="readonly"/></label>
+						<input id="parkingLotParkingGarageId" name="parkingLotCode" value="${parkingLot.code}" type="hidden" />
+						<label><input validate="{required:true}" id="parkingLotParkingGarageName" value="${parkingLot.name}" readonly="readonly"/></label>
 						<a class="btnLook" title="选择场区" href="#" onclick="showMenu(this,'ParkingGarage');"></a>
 						<span class="info">选择</span>
-						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearBtn("parkingLot");' />
+						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearBtn("parkingLotParkingGarage");' />
 					</td>
 				</tr>
 				<tr>

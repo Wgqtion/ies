@@ -1,4 +1,6 @@
-
+.dateIco{
+	background:url("../../js/My97DatePicker/skin/datePicker.gif") no-repeat scroll right center transparent; 
+}
 ul.editZtree{
     background: none repeat scroll 0 0 #f0f6e4;
     border: 1px solid #617775;

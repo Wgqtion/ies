@@ -393,4 +393,18 @@ public class CoreUtils {
 		}
 		return false;
 	}
+	/**
+	 * 获取当前星期
+	 * @return
+	 */
+	public static int getCurrentWeek(){
+		Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if(w==0){
+        	w=7;
+        }
+        return w;
+	}
 }

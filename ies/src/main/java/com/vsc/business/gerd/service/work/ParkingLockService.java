@@ -360,6 +360,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	public void findParkingLocks(ParkingLot parkingLot, Long parkingLotId, int index, Long userId) throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("RLIKE_parkingGarage.parkingLot.code", parkingLot.getCode());
+		params.put("EQ_parkingGarage.isDelete", false);
 		params.put("EQ_isEnabled", true);
 		params.put("EQ_isOnline", true);
 		List<ParkingLock> parkingLocks = this.findAllList(params);

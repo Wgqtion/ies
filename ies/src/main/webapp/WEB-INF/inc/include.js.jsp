@@ -1,4 +1,4 @@
-<%-- å¼åæ¨¡å¼ js æºç æä»¶ --%>
+
 <script src="${ctx}/static/js/jquery/1.7.2/jquery.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/jquery/jquery.cookie.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/jquery/jquery.metadata.js" type="text/javascript"></script>
@@ -50,8 +50,13 @@
 <script type="text/javascript" src="${ctx}/static/js/zTree/jquery.ztree.core.min.js"></script>
 <script type="text/javascript" src="${ctx}/static/js/zTree/jquery.ztree.excheck.min.js"></script>
 
+<!-- My97DatePicker -->
+<script type="text/javascript" src="${ctx}/static/js/My97DatePicker/WdatePicker.js"></script>
+
+
 <!-- 自定义js -->
 <script type="text/javascript" src="${ctx}/static/js/vsc/custom.js"></script>
+
 <%--dwz.scrollCenter.js
     dwz.util.number.js
  --%>

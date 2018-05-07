@@ -34,8 +34,8 @@
 			<tr>
 				<th width="40" align="center">序号</th>
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-				<th>场区名称</th>
 				<th <vsc:orderField name="name"/>>车位名称</th> 	
+				<th>场区名称</th>
 				<th <vsc:orderField name="itudeLong"/>>维度坐标</th>
 				<th <vsc:orderField name="itudeLat"/>>经度坐标</th>	
 				<th <vsc:orderField name="isEnabled"/>>状态</th> 
@@ -47,8 +47,8 @@
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id}" type="checkbox"></td>
-					<td><a href="${ctx}/work/parkinglot/view/${varitem.parkingLot.id}" target="dialog" title="查看场区" rel="parkinglot_view">${varitem.parkingLot.name}</a></td>
 					<td><a href="${ctx}/work/parkinggarage/view/${varitem.id}" target="dialog" title="查看停车位" rel="parkinggarage_view">${varitem.name}</a></td>
+					<td><a href="${ctx}/work/parkinglot/view/${varitem.parkingLot.id}" target="dialog" title="查看场区" rel="parkinglot_view">${varitem.parkingLot.name}</a></td>
 					<td>${varitem.itudeLong}</td>
 					<td>${varitem.itudeLat}</td>
 					<td><s:message code="parkinggarage.isenabled.${varitem.isEnabled}"/></td>		

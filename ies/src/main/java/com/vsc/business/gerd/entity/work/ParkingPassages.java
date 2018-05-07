@@ -27,6 +27,7 @@ public class ParkingPassages extends BasicEntity{
 	 */
 	private static final long serialVersionUID = 9067534546355004129L;
 	private ParkingLot parkingLot;
+	private String parkingLotCode;
      private java.lang.String name;
      /**
       * 进出口编号
@@ -46,10 +47,21 @@ public class ParkingPassages extends BasicEntity{
 	 
 
      /**
+      * @return
+      */
+     @Column(name = "PARKING_LOT_CODE")
+ 	public String getParkingLotCode() {
+ 		return parkingLotCode;
+ 	}
+
+ 	public void setParkingLotCode(String parkingLotCode) {
+ 		this.parkingLotCode = parkingLotCode;
+ 	}
+ 	/**
  	 * @return
  	 */
  	@ManyToOne
- 	@JoinColumn(name = "PARKING_LOT_CODE",referencedColumnName="CODE")
+ 	@JoinColumn(name = "PARKING_LOT_CODE",referencedColumnName="CODE",insertable=false,updatable=false)
  	public ParkingLot getParkingLot() {
  		return this.parkingLot;
  	}

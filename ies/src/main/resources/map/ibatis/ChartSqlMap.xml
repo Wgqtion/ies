@@ -123,6 +123,7 @@
 		WHERE
 			PAS.IS_DELETE = 0
 			AND PL.IS_DELETE = 0
+			AND PL.COMPANY_CODE LIKE CONCAT(#companyCode#,'%')
 			<isNotEmpty    property="selectId">
 			AND PL.ID=#selectId#
 			</isNotEmpty>

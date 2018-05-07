@@ -113,8 +113,8 @@
 
 /* ----------------------------------------------------------------- Form */
 /* TextInput */
-.textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
-textarea.focus, textarea.required, textarea.error, textarea.readonly, textarea.disabled { background:url(./images/form/input_bg.png) no-repeat scroll;}
+/* .textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
+textarea.focus, textarea.required, textarea.error, textarea.readonly, textarea.disabled { background:url(./images/form/input_bg.png) no-repeat scroll;} */
 
 .textInput, .textArea { border-color:#a2bac0 #99bbe8 #99bbe8 #a2bac0; background-color:#FFF;}
 input.required, textarea.required { border-color:#a2bac0 #99bbe8 #99bbe8 #a2bac0; background-color:#FFF;}

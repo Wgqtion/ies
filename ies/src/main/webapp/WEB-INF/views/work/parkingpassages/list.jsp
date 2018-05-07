@@ -45,8 +45,8 @@
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>    
-					<td>${varitem.parkingLot.name}</td>   
-					<td><a href="${ctx}/work/parkingpassages/view/${varitem.id}" target="dialog" title="查看"> ${varitem.name}</a></td>   
+					<td>${varitem.parkingLot.name}</td>      
+					<td><a href="${ctx}/work/parkingpassages/view/${varitem.id}" target="dialog" title="查看"> ${varitem.name}</a></td>
 					<td>${varitem.itudeLong}</td>   
 					<td>${varitem.itudeLat}</td>   
 					<td><s:message code="parkingpassages.isenabled.${varitem.isEnabled}"/></td>   
