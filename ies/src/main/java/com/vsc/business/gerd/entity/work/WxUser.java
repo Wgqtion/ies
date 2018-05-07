@@ -16,7 +16,7 @@ import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
 
 /**
- * 微信小程序用户实体类
+ * 小程序用户实体类
  * @author XiangXiaoLin
  *
  */

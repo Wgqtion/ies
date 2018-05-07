@@ -1,8 +1,6 @@
 package com.vsc.business.gerd.service.work;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,101 +15,65 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springside.modules.utils.Collections3;
 
 import com.vsc.business.core.entity.security.User;
-import com.vsc.business.gerd.entity.work.Org;
-import com.vsc.business.gerd.entity.work.ParkingLot;
-import com.vsc.business.gerd.repository.work.OrgDao;
+import com.vsc.business.gerd.entity.work.ParkingParam;
+import com.vsc.business.gerd.repository.work.ParkingParamDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.util.CoreUtils;
 
 /**
- * 用户分组逻辑操作
+ * 停车参数逻辑操作
  * @author XiangXiaoLin
  *
  */
 @Service
 @Transactional
-public class OrgService extends BaseService<Org> {
+public class ParkingParamService extends BaseService<ParkingParam> {
 
 	@Autowired
-	private OrgDao orgDao;
-	
-	@Autowired
-	private ParkingLotService parkingLotService;
+	private ParkingParamDao parkingParamDao;
 
 	@Override
-	public PagingAndSortingRepository<Org, Long> getPagingAndSortingRepositoryDao() {
-		return this.orgDao;
+	public PagingAndSortingRepository<ParkingParam, Long> getPagingAndSortingRepositoryDao() {
+		return this.parkingParamDao;
 	}
 
 	@Override
-	public JpaSpecificationExecutor<Org> getJpaSpecificationExecutorDao() {
-		return this.orgDao;
+	public JpaSpecificationExecutor<ParkingParam> getJpaSpecificationExecutorDao() {
+		return this.parkingParamDao;
 	}
 	
-	/**
-	 * 根据条件查询，未删除的
-	 * @throws Exception 
-	 */
-	@Override
-	public List<Org> findList(Map<String, Object> filterParams) {
-		filterParams.put("EQ_isDelete", 0);
-		try {
-			return super.findList(filterParams);
-		} catch (Exception e) {
-		}
-		return null;
-	}
 
 	/**
 	 * 根据条件查询，未删除，like 用户公司code%
 	 * @throws Exception 
 	 */
 	@Override
-	public Page<Org> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
+	public Page<ParkingParam> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
-		filterParams.put("RLIKE_companyCode", user.getCompany().getCode());
+		filterParams.put("RLIKE_parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
 		return super.findPage(filterParams, pageRequest);
 	}
-
 	
-	/**
-	 * 根据编码查询权限 ，未删除的
-	 * @param code
-	 * @return
-	 */
-	public Org getByCode(String code){
-		Map<String, Object> searchParams = new HashMap<String,Object>();
-		searchParams.put("EQ_isDelete",0);
-		searchParams.put("EQ_code", code);
-		return find(searchParams);
-	}
-	
-	public Org save(Org entity,String[] ids) throws Exception {
+	public ParkingParam save(ParkingParam entity) throws Exception {
+		
 		User user=ShiroUserUtils.GetCurrentUser();
 		Date now=CoreUtils.nowtime();
 		if(entity.getId()==null){
 			entity.setCreateDate(now);
-			entity.setCreateUser(user);
+			entity.setCreateUser(user);	
 		}
 		entity.setUpdateUser(user);
 		entity.setUpdateDate(now);
-		if(ids!=null){
-			List<ParkingLot> list=new ArrayList<ParkingLot>();
-			for(String id:ids){
-				ParkingLot parkingLot=parkingLotService.findUniqueBy("id",id);
-				list.add(parkingLot);
-			}
-			entity.setParkingLots(list);
-		}
+
 		return super.save(entity);
 	}
+	
 
 	public void deleteUpdateById(Long id) throws Exception {
-		Org entity=getObjectById(id);
+		ParkingParam entity=getObjectById(id);
 		entity.setIsDelete(true);
-		entity.setParkingLots(null);
 		save(entity);
 	}
 

@@ -78,12 +78,11 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 		return super.findPage(filterParams, pageRequest);
 	}
 
-	public ParkingGarage save(ParkingGarage entity) {
+	public ParkingGarage save(ParkingGarage entity) throws Exception {
 		User user=null;
 		try {
 			user = ShiroUserUtils.GetCurrentUser();
 		} catch (Exception e) {
-			//e.printStackTrace();
 		}
 		if(user!=null){
 			Date now=CoreUtils.nowtime();
@@ -107,7 +106,7 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 			entity.setUpdateDate(now);
 		}
 
-		return this.parkingGarageDao.save(entity);
+		return super.save(entity);
 	}
 	/**
 	 * 根据code查询，未删除的

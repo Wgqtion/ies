@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -32,8 +30,6 @@ import com.vsc.util.CoreUtils;
 @Service
 @Transactional
 public class CompanyService extends BaseService<Company> {
-	private static Logger logger = LoggerFactory
-			.getLogger(CompanyService.class);
 
 	@Autowired
 	private CompanyDao companyDao;

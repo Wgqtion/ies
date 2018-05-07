@@ -100,7 +100,7 @@ public class ParkingPassagesService extends BaseService<ParkingPassages>{
 		entity.setUpdateUser(user);
 		entity.setUpdateDate(now);
 
-		return this.parkingPassagesDao.save(entity);
+		return super.save(entity);
 	}
 	
 	public void deleteUpdateById(Long id) throws Exception {

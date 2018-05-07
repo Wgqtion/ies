@@ -1,8 +1,6 @@
 package com.vsc.business.gerd.service.work;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -15,13 +13,12 @@ import com.vsc.modules.service.BaseService;
 
 /**
  * 
- * @author jerry
+ * @author XiangXiaoLin
  *
  */
 @Service
 @Transactional
 public class UserOrderService extends BaseService<UserOrder> {
-	private static Logger logger = LoggerFactory.getLogger(UserOrderService.class);
 
 	@Autowired
 	private UserOrderDao userOrderDao;

@@ -67,7 +67,7 @@ public class ReserveTimeService extends BaseService<ReserveTime> {
 		entity.setUpdateUser(user);
 		entity.setUpdateDate(now);
 
-		return this.reserveTimeDao.save(entity);
+		return super.save(entity);
 	}
 
 	public void deleteUpdateById(Long id) throws Exception {

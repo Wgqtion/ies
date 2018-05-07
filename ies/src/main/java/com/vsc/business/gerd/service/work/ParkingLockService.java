@@ -148,7 +148,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		}
 	}
 
-	public ParkingLock save(ParkingLock entity) {
+	public ParkingLock save(ParkingLock entity) throws Exception {
 		if (entity.getParkingGarage() != null && entity.getParkingGarage().getId() != null) {
 			ParkingGarage parkingGarage = parkingGarageService.getObjectById(entity.getParkingGarage().getId());
 			entity.setParkingGarage(parkingGarage);
@@ -185,7 +185,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 			entity.setUpdateDate(now);
 
 		}
-		return this.parkingLockDao.save(entity);
+		return super.save(entity);
 	}
 
 	/**

@@ -20,7 +20,7 @@ import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.util.CoreUtils;
 
 /**
- * 微信用户逻辑操作
+ * 小程序用户逻辑操作
  * @author XiangXiaoLin
  *
  */

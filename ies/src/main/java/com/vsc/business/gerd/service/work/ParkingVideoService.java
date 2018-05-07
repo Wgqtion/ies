@@ -1,7 +1,5 @@
 package com.vsc.business.gerd.service.work;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -20,7 +18,6 @@ import com.vsc.modules.service.BaseService;
 @Service
 @Transactional
 public class ParkingVideoService extends BaseService<ParkingVideo> {
-	private static Logger logger = LoggerFactory.getLogger(ParkingVideoService.class);
 
 	@Autowired
 	private ParkingVideoDao parkingVideoDao;

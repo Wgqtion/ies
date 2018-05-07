@@ -183,7 +183,7 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 			entity.setPhotoAttach(null);
 		}
 
-		return this.parkingLotDao.save(entity);
+		return super.save(entity);
 	}
 	
 	/**
