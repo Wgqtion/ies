@@ -54,8 +54,8 @@ import com.vsc.util.JSONUtil;
 
 /**
  * 微信小程序接口控制类
+ * @author XiangXiaoLin
  *
- * @author wgqki
  */
 @Controller
 @RequestMapping(value = Constants.SPT + WeixinController.PATH)

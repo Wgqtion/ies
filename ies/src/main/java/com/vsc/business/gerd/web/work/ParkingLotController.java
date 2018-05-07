@@ -88,9 +88,9 @@ public class ParkingLotController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid ParkingLot parkingLot,
+	public ModelAndView create(@Valid ParkingLot entity,
 			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId) throws Exception {
-		parkingLotService.save(parkingLot, photoAttachId);
+		parkingLotService.save(entity, photoAttachId);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
@@ -104,9 +104,9 @@ public class ParkingLotController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingLot parkingLot,
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingLot entity,
 			@RequestParam(value = "photoAttachId", required = false) Long photoAttachId) throws Exception {
-		parkingLotService.save(parkingLot, photoAttachId);
+		parkingLotService.save(entity, photoAttachId);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 

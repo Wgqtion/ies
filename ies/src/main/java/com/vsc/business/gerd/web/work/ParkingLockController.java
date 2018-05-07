@@ -63,12 +63,12 @@ public class ParkingLockController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid ParkingLock parkingLock,
+	public ModelAndView create(@Valid ParkingLock entity,
 			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId) throws Exception {
 		ParkingGarage pg=new ParkingGarage();
 		pg.setId(parkingGarageId);
-		parkingLock.setParkingGarage(pg);
-		parkingLockService.save(parkingLock);
+		entity.setParkingGarage(pg);
+		parkingLockService.save(entity);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
@@ -86,13 +86,13 @@ public class ParkingLockController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingLock parkingLock,
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingLock entity,
 			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId,
 			String surplusDetection) throws Exception {
 		ParkingGarage pg=new ParkingGarage();
 		pg.setId(parkingGarageId);
-		parkingLock.setParkingGarage(pg);
-		parkingLockService.save(parkingLock);
+		entity.setParkingGarage(pg);
+		parkingLockService.save(entity);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 

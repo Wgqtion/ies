@@ -60,9 +60,9 @@ public class WxUserController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") WxUser org,
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") WxUser entity,
 			@RequestParam(value = "parkingLots.code", required = false) String[] codes) throws Exception {
-		wxUserService.save(org,codes);
+		wxUserService.save(entity,codes);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 

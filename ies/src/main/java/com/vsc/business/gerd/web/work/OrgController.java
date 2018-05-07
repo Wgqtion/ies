@@ -76,9 +76,9 @@ public class OrgController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid Org org,
+	public ModelAndView create(@Valid Org entity,
 			@RequestParam(value = "parkingLots.id", required = false) String[] ids) throws Exception {
-		orgService.save(org,ids);
+		orgService.save(entity,ids);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
@@ -91,9 +91,9 @@ public class OrgController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Org org,
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Org entity,
 			@RequestParam(value = "parkingLots.id", required = false) String[] ids) throws Exception {
-		orgService.save(org,ids);
+		orgService.save(entity,ids);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 

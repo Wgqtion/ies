@@ -27,7 +27,7 @@ import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
 
 /**
- * 
+ * 车位 视图
  * @author XiangXiaoLin
  *
  */

@@ -69,24 +69,24 @@ public class ParkingPassagesController extends BaseController {
 	}
 
 	@RequestMapping(value =  BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid ParkingPassages parkingPassages) throws Exception {
-		parkingPassagesService.save(parkingPassages);		 
+	public ModelAndView create(@Valid ParkingPassages entity) throws Exception {
+		parkingPassagesService.save(entity);		 
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
 	@RequestMapping(value =  BaseController.UPDATE+"/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") Long id, Model model) throws Exception {
-		ParkingPassages parkingPassages=parkingPassagesService.getObjectById(id);
-		model.addAttribute("vm", parkingPassages);
-		model.addAttribute("parkingLot",parkingPassages.getParkingLot());
+		ParkingPassages entity=parkingPassagesService.getObjectById(id);
+		model.addAttribute("vm", entity);
+		model.addAttribute("parkingLot",entity.getParkingLot());
 		model.addAttribute("action", BaseController.UPDATE);
 		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
 		return PATH_EDIT;
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel")ParkingPassages parkingPassages) throws Exception {
-		parkingPassagesService.save(parkingPassages);		
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel")ParkingPassages entity) throws Exception {
+		parkingPassagesService.save(entity);		
 		return this.ajaxDoneSuccess("修改成功");
 	}
 	

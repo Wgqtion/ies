@@ -54,16 +54,16 @@ public class CompanyController extends BaseController {
 	
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) {
-		Company company=new Company();
-		model.addAttribute("vm",company);
+		Company entity=new Company();
+		model.addAttribute("vm",entity);
 		model.addAttribute("action", BaseController.CREATE);
 		return PATH_EDIT;
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid Company company,
+	public ModelAndView create(@Valid Company entity,
 			@RequestParam(value = "parkingLots.code", required = false) String[] codes) throws Exception {
-		companyService.save(company);
+		companyService.save(entity);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
@@ -75,9 +75,9 @@ public class CompanyController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Company company,
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") Company entity,
 			@RequestParam(value = "parkingLots.code", required = false) String[] codes) throws Exception {
-		companyService.save(company);
+		companyService.save(entity);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 

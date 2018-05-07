@@ -18,27 +18,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
-import com.vsc.business.gerd.entity.work.ReserveTime;
+import com.vsc.business.gerd.entity.work.ParkingFee;
 import com.vsc.business.gerd.service.work.ParkingLotService;
-import com.vsc.business.gerd.service.work.ReserveTimeService;
+import com.vsc.business.gerd.service.work.ParkingFeeService;
 import com.vsc.constants.Constants;
 
 /**
- * 预约时间视图控制
+ * 收费设置视图控制
  * @author XiangXiaoLin
  *
  */
 @Controller
-@RequestMapping(value = Constants.SPT + ReserveTimeController.PATH)
-public class ReserveTimeController extends BaseController {
+@RequestMapping(value = Constants.SPT + ParkingFeeController.PATH)
+public class ParkingFeeController extends BaseController {
 
 	@Autowired
-	private ReserveTimeService reserveTimeService;
+	private ParkingFeeService parkingFeeService;
 	
 	@Autowired
 	private ParkingLotService parkingLotService;
 	
-	public static final String PATH = "work/reserveTime";
+	public static final String PATH = "work/parkingFee";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";
 	public static final String PATH_VIEW = PATH + Constants.SPT + "view";
@@ -46,11 +46,11 @@ public class ReserveTimeController extends BaseController {
 
 	@RequestMapping(value = "")
 	public String list(Model model, HttpServletRequest request,
-			ReserveTime entity) throws Exception {
+			ParkingFee entity) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
-		Page<ReserveTime> page = reserveTimeService.findPage(searchParams, pageRequest);
+		Page<ParkingFee> page = parkingFeeService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 		model.addAttribute("entity",entity);
 		return PATH_LIST;
@@ -58,7 +58,7 @@ public class ReserveTimeController extends BaseController {
 	
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) throws Exception {
-		ReserveTime entity=new ReserveTime();
+		ParkingFee entity=new ParkingFee();
 		model.addAttribute("vm",entity);
 		model.addAttribute("action", BaseController.CREATE);
 		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
@@ -66,14 +66,14 @@ public class ReserveTimeController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid ReserveTime entity) throws Exception {
-		reserveTimeService.save(entity);
+	public ModelAndView create(@Valid ParkingFee entity) throws Exception {
+		parkingFeeService.save(entity);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
 	@RequestMapping(value = BaseController.UPDATE + "/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") java.lang.Long id, Model model) throws Exception {
-		ReserveTime entity= reserveTimeService.getObjectById(id);
+		ParkingFee entity= parkingFeeService.getObjectById(id);
 		model.addAttribute("vm",entity);
 		model.addAttribute("action", BaseController.UPDATE);
 		model.addAttribute("parkingLot",entity.getParkingLot());
@@ -82,27 +82,27 @@ public class ReserveTimeController extends BaseController {
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ReserveTime entity) throws Exception {
-		reserveTimeService.save(entity);
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingFee entity) throws Exception {
+		parkingFeeService.save(entity);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") java.lang.Long id) throws Exception {
-		reserveTimeService.deleteUpdateById(id);
+		parkingFeeService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
 	public ModelAndView deleteBatch(@RequestParam java.lang.Long[] ids) throws Exception {
-		reserveTimeService.deleteUpdateByIds(ids);
+		parkingFeeService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@ModelAttribute("preloadModel")
-	public ReserveTime getModel(@RequestParam(value = "id", required = false) java.lang.Long id) {
+	public ParkingFee getModel(@RequestParam(value = "id", required = false) java.lang.Long id) {
 		if (id != null) {
-			return reserveTimeService.getObjectById(id);
+			return parkingFeeService.getObjectById(id);
 		}
 		return null;
 	}

@@ -1,6 +1,7 @@
 package com.vsc.business.gerd.entity.work;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,23 +13,23 @@ import com.vsc.constants.Constants;
 import com.vsc.modules.entity.BasicEntity;
 
 /**
- * 预约时间实体类
+ * 收费设置 实体类
  * @author XiangXiaoLin
  *
  */
 @Entity
-@Table(name = Constants.TABLE_PREFIX + "reserve_time")
-public class ReserveTime extends BasicEntity implements Serializable{
+@Table(name = Constants.TABLE_PREFIX + "parking_fee")
+public class ParkingFee extends BasicEntity implements Serializable{
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 448501124281877054L;
+	private static final long serialVersionUID = -6689416264357311246L;
 	private ParkingLot parkingLot;
 	private String parkingLotCode;
 	
 	/**
-	 * 周
+	 * 周 
 	 * ["1","周一"],
 	["2","周二"],
 	["3","周三"],
@@ -47,7 +48,33 @@ public class ReserveTime extends BasicEntity implements Serializable{
 	 * 结束时间
 	 */
 	private String endTime;
+	/**
+	 * 类型，1预约费，2停车费
+	 */
+	private Integer type;
+	/**
+	 * 费用
+	 */
+	private BigDecimal fee;
 	
+	 @Column(name = "TYPE")
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	 @Column(name = "FEE")
+	public BigDecimal getFee() {
+		return fee;
+	}
+
+	public void setFee(BigDecimal fee) {
+		this.fee = fee;
+	}
+
 	/**
      * @return
      */
