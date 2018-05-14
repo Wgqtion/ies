@@ -310,8 +310,17 @@ public class WeixinController extends HttpServiceBaseController {
 		WxCore wxCore=new WxCore();
 		wxCore.setWeixinId(weixinId);
 		wxCore.setType(Integer.valueOf(2));
-		int status=this.wxCoreService.lock(wxCore);
-		return this.ajaxDoneSuccess(status,Constants.LOCK_MESSAGE_STATUS[status],null);
+		int status=-1;
+		String message="上锁失败";
+		try {
+			status = this.wxCoreService.lock(wxCore);
+			message=Constants.UNLOCK_MESSAGE_STATUS[status];
+		} catch (MessageException e) {
+			message=e.getMessage();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return this.ajaxDoneSuccess(status,message,null);
 	}
 	
 	/**
