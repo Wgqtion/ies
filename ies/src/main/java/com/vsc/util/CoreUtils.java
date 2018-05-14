@@ -275,7 +275,7 @@ public class CoreUtils {
 	}
 	
 	/**
-	 * 设置一天的最大时刻 23:59:59 999
+	 * 设置一天的最小时刻 00:00:00 000
 	 * @param date 需要设置的日期
 	 * @return 追加了 最大时刻的日期 23:59:59 999
 	 */
@@ -297,6 +297,8 @@ public class CoreUtils {
 		if (date == null)
 			return "";
 		switch (style) {
+		case 8:
+			return formath.format(date);
 		case 7:
 			return formatc.format(date);
 		case 6:
@@ -314,13 +316,39 @@ public class CoreUtils {
 		}
 	}
 
+	/**
+	 * yyyy-MM-dd
+	 */
 	public static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	/**
+	 * yyyyMMdd
+	 */
 	public static final DateFormat formatd = new SimpleDateFormat("yyyyMMdd");
+	/**
+	 * yyyy-MM-dd HH:mm:ss
+	 */
 	public static final DateFormat formatw = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	/**
+	 * MM-dd HH:mm
+	 */
 	public static final DateFormat formatm = new SimpleDateFormat("MM-dd HH:mm");
+	/**
+	 * HH:mm
+	 */
+	public static final DateFormat formath = new SimpleDateFormat("HH:mm");
+	/**
+	 * MM-dd
+	 */
 	public static final DateFormat formats = new SimpleDateFormat("MM-dd");
+	/**
+	 * yyyy年MM月dd日
+	 */
 	public static final DateFormat formatz = new SimpleDateFormat("yyyy年MM月dd日");
+	/**
+	 * ss mm HH dd MM ? yyyy
+	 */
 	public static final DateFormat formatc = new SimpleDateFormat("ss mm HH dd MM ? yyyy");
+	
 	public static FilenameFilter DIR_FILE_FILTER = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
 			if (dir.isDirectory())
@@ -330,6 +358,82 @@ public class CoreUtils {
 		}
 	};
 
+	/**
+     * <li>功能描述：时间相减得到天数
+     * @param beginDateStr
+     * @param endDateStr
+     * @return
+     * long 
+     * @author Administrator
+     */
+    public static long getDaySub(Date beginDate,Date endDate)
+    {
+        long day=0;
+        try
+        {
+            day=(endDate.getTime()-beginDate.getTime())/(24*60*60*1000);
+        } catch (Exception e)
+        {
+            // TODO 自动生成 catch 块
+            e.printStackTrace();
+        }   
+        return day;
+    }
+    /**
+     * 日期加天数
+     * @param date
+     * @param num
+     * @return
+     */
+    public static Date addDay(Date date,int num){
+    	Calendar cal = Calendar.getInstance();  
+        cal.setTime(date);
+        cal.add(Calendar.DATE,num);
+        return cal.getTime();
+    }
+    /**
+     * 日期加分钟
+     * @param date
+     * @param num
+     * @return
+     */
+    public static Date addMin(Date date,int num){
+    	Calendar cal = Calendar.getInstance();  
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE,num);
+        return cal.getTime();
+    }
+    /**
+     * 获取日期的小时
+     * @param date
+     * @return
+     */
+    public static int getHour(Date date){
+    	Calendar cal = Calendar.getInstance();  
+        cal.setTime(date);
+    	return cal.get(Calendar.HOUR_OF_DAY);
+    }
+    
+    /**
+     * 日期比较大小
+     * @param DATE1 大于DATE2返回1
+     * @param DATE2
+     * @return
+     */
+    public static int compare_date(Date DATE1, Date DATE2) {
+        try {
+            if (DATE1.getTime() > DATE2.getTime()) {
+                return 1;
+            } else if (DATE1.getTime() < DATE2.getTime()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return 0;
+    }
 	
 	/***  
      * convert Date to cron ,eg.  "14 01 17 22 07 ? 2017"  
@@ -400,6 +504,21 @@ public class CoreUtils {
 	public static int getCurrentWeek(){
 		Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
+
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if(w==0){
+        	w=7;
+        }
+        return w;
+	}
+	
+	/**
+	 * 获取当前星期
+	 * @return
+	 */
+	public static int getWeek(Date date){
+		Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
 
         int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
         if(w==0){

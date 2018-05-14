@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springside.modules.utils.Collections3;
 
+import com.google.common.collect.Maps;
 import com.vsc.business.core.entity.security.User;
 import com.vsc.business.gerd.entity.work.ParkingParam;
 import com.vsc.business.gerd.repository.work.ParkingParamDao;
@@ -42,7 +43,21 @@ public class ParkingParamService extends BaseService<ParkingParam> {
 	public JpaSpecificationExecutor<ParkingParam> getJpaSpecificationExecutorDao() {
 		return this.parkingParamDao;
 	}
-	
+	/**
+	 * 根据场区编号查询，未删除
+	 */
+	public ParkingParam getByParkingLotCode(String parkingLotCode){
+		Map<String, Object> filterParams=Maps.newHashMap();
+		filterParams.put("EQ_isDelete", 0);
+		filterParams.put("EQ_parkingLotCode",parkingLotCode);
+		try {
+			return super.find(filterParams);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	/**
 	 * 根据条件查询，未删除，like 用户公司code%

@@ -20,8 +20,8 @@ import com.vsc.modules.entity.IdEntity;
  *
  */
 @Entity
-@Table(name = Constants.TABLE_PREFIX + "parking_order")
-public class ParkingOrder extends IdEntity implements Serializable {
+@Table(name = Constants.TABLE_PREFIX + "parking_inOut")
+public class ParkingInOut extends IdEntity implements Serializable {
 
 	/**
 	 * 

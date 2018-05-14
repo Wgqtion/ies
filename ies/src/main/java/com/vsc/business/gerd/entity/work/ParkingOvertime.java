@@ -1,6 +1,5 @@
 package com.vsc.business.gerd.entity.work;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -19,7 +18,7 @@ import com.vsc.modules.entity.BasicEntity;
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "parking_overtime")
-public class ParkingOvertime extends BasicEntity implements Serializable{
+public class ParkingOvertime extends BasicEntity{
 	
 	
 	/**

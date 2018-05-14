@@ -3,7 +3,7 @@
 <vsc:pagerForm action="#rel#" id="pagerForm"></vsc:pagerForm>
 
 <div class="pageHeader">
-	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${ctx}/work/parkingorder" method="post">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${ctx}/work/parkingInOut" method="post">
 		<div class="searchBar">
 			<ul class="searchContent">
 

@@ -19,11 +19,11 @@ import com.vsc.business.gerd.entity.validate.work.OutParkingOrderValidate;
 import com.vsc.business.gerd.entity.validate.work.PayParkingOrderValidate;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockEventLog;
-import com.vsc.business.gerd.entity.work.ParkingOrder;
+import com.vsc.business.gerd.entity.work.ParkingInOut;
 import com.vsc.business.gerd.entity.work.ParkingVideo;
 import com.vsc.business.gerd.service.work.ParkingLockEventLogService;
 import com.vsc.business.gerd.service.work.ParkingLockService;
-import com.vsc.business.gerd.service.work.ParkingOrderService;
+import com.vsc.business.gerd.service.work.ParkingInOutService;
 import com.vsc.business.gerd.service.work.ParkingVideoService;
 import com.vsc.constants.Constants;
 
@@ -41,7 +41,7 @@ public class ClientController extends HttpServiceBaseController {
 	public static final String V_PATH = V_PATH_BASE;
 	public static final String V_PATH_INDEX = PATH_BASE + Constants.SPT + "client";
 	@Autowired
-	private ParkingOrderService parkingOrderService;
+	private ParkingInOutService parkingOrderService;
 	@Autowired
 	private ParkingLockService parkingLockService;
 	@Autowired
@@ -61,7 +61,7 @@ public class ClientController extends HttpServiceBaseController {
 	 */
 	@RequestMapping(value = "order/parkingIn")
 	public ModelAndView parkingIn(@Valid InParkingOrderValidate validate,BindingResult result,
-			ParkingOrder parkingOrder,
+			ParkingInOut parkingOrder,
 			HttpServletRequest request) throws Exception {
 		if(result.hasErrors()){
 			StringBuffer sb=new StringBuffer();
@@ -85,7 +85,7 @@ public class ClientController extends HttpServiceBaseController {
 	 */
 	@RequestMapping(value = "order/parkingOut")
 	public ModelAndView parkingOut(@Valid OutParkingOrderValidate validate,BindingResult result,
-			ParkingOrder parkingOrder,
+			ParkingInOut parkingOrder,
 			HttpServletRequest request) {
 		if(result.hasErrors()){
 			StringBuffer sb=new StringBuffer();
@@ -117,7 +117,7 @@ public class ClientController extends HttpServiceBaseController {
 	 */
 	@RequestMapping(value = "order/parkingPay")
 	public ModelAndView parkingPay(@Valid PayParkingOrderValidate validate,BindingResult result,
-			ParkingOrder parkingOrder,
+			ParkingInOut parkingOrder,
 			HttpServletRequest request) throws Exception {
 		if(result.hasErrors()){
 			StringBuffer sb=new StringBuffer();

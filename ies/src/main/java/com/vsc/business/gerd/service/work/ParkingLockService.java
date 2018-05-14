@@ -219,7 +219,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	}
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
-	public String reverse(Long[] ids, String state, Long userId, int sourceType) {
+	public String reverse(Long[] ids, String state, String weixinId, int sourceType) {
 		String message = new String();
 
 		List<ParkingLock> vl = this.findIds(ids, this.parkingLockDao);
@@ -241,8 +241,8 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 			lockEvent.setSourceType(sourceType);
 			lockEvent.setStatus(0);
 			lockEvent.setParkingLock(lock);
-			if (userId != null) {
-				lockEvent.setWxUser(wxUserService.getObjectById(userId));
+			if (weixinId != null) {
+				lockEvent.setWxUser(wxUserService.getByWeixinId(weixinId));
 			}
 			// lockEvent.setParkingLock(vm);
 
@@ -271,8 +271,8 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 			// logger.info("更新地锁开关状态：" +param2+" 更新结果:"+ resultMsg);
 
 			// 发送指令
-			ByteBuf msg = HexUtils.getByteBuf(userId.toString(), ipAddress, lockNum, state);
-			logger.info("userId：" + userId + "，区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，state：" + state);
+			ByteBuf msg = HexUtils.getByteBuf(lockEvent.getWxUser().getName(), ipAddress, lockNum, state);
+			logger.info("userName：" + lockEvent.getWxUser().getName() + "，区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，state：" + state);
 			try {
 				message = TcpClient.sendMsg(msg, parkingLockOperationEventService);
 				if (message.length() > 0) {
@@ -357,7 +357,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	/**
 	 * 查询场区在线可用地锁
 	 */
-	public void findParkingLocks(ParkingLot parkingLot, Long parkingLotId, int index, Long userId) throws Exception {
+	public void findParkingLocks(ParkingLot parkingLot, Long parkingLotId, int index, String weixinId) throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("RLIKE_parkingGarage.parkingLot.code", parkingLot.getCode());
 		params.put("EQ_parkingGarage.isDelete", false);
@@ -366,29 +366,29 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		List<ParkingLock> parkingLocks = this.findAllList(params);
 		if (parkingLocks != null) {
 			parkingLot.setGarageNum(parkingLocks.size());
-			RemoveNoSurplus(parkingLocks,userId);
+			RemoveNoSurplus(parkingLocks,weixinId);
 			parkingLot.setSurplusNum(parkingLocks.size());
 		}
 		if (parkingLotId != null && index == 0) {
 			params.remove("RLIKE_parkingGarage.parkingLot.code");
 			params.put("EQ_parkingGarage.parkingLot.id", parkingLotId);
 			parkingLocks = this.findAllList(params);
-			RemoveNoSurplus(parkingLocks,userId);
+			RemoveNoSurplus(parkingLocks,weixinId);
 			parkingLot.setParkingLocks(parkingLocks);
 		}
 	}
 	/**
 	 * 不符合余位判断的剔除
 	 */
-	private void RemoveNoSurplus(List<ParkingLock> parkingLocks,Long userId) throws Exception{
+	private void RemoveNoSurplus(List<ParkingLock> parkingLocks,String weixinId) throws Exception{
 		for (int i = 0; i < parkingLocks.size(); i++) {
 			// 解锁订单查询
 			Map<String, Object> orderMap = new HashMap<String, Object>();
-			orderMap.put("EQ_wxUser.id", userId);
+			orderMap.put("EQ_wxUser.weixinId", weixinId);
 			orderMap.put("NOTEQ_isDelete", new Integer(1));
 			List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
 			// 预约单查询
-			List<Yuding> yudings = yudingService.findByWxUser(userId);
+			List<Yuding> yudings = yudingService.findByWxUser(weixinId);
 			if (!(parkingLocks.get(i).getIsSurplus()
 					&& (userOrderlList.isEmpty() || !userOrderlList.get(0).getParkingGarage().getId()
 							.equals(parkingLocks.get(i).getParkingGarage().getId()))

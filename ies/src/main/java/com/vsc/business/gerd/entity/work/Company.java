@@ -1,6 +1,5 @@
 package com.vsc.business.gerd.entity.work;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -20,7 +19,7 @@ import com.vsc.modules.entity.BasicEntity;
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "company")
-public class Company extends BasicEntity implements Serializable{
+public class Company extends BasicEntity{
 	
 	/**
 	 * 

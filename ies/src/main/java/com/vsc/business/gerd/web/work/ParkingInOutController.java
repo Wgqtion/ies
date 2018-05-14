@@ -12,8 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.vsc.business.core.web.BaseController;
-import com.vsc.business.gerd.entity.work.ParkingOrder;
-import com.vsc.business.gerd.service.work.ParkingOrderService;
+import com.vsc.business.gerd.entity.work.ParkingInOut;
+import com.vsc.business.gerd.service.work.ParkingInOutService;
 import com.vsc.constants.Constants;
 
 /**
@@ -22,13 +22,13 @@ import com.vsc.constants.Constants;
  *
  */
 @Controller
-@RequestMapping(value = Constants.SPT + ParkingOrderController.PATH)
-public class ParkingOrderController extends BaseController {
+@RequestMapping(value = Constants.SPT + ParkingInOutController.PATH)
+public class ParkingInOutController extends BaseController {
 
 	@Autowired
-	private ParkingOrderService parkingOrderService;
+	private ParkingInOutService parkingInOutService;
 
-	public static final String PATH = "work/parkingorder";
+	public static final String PATH = "work/parkingInOut";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";
 	public static final String PATH_VIEW = PATH + Constants.SPT + "view";
@@ -44,7 +44,7 @@ public class ParkingOrderController extends BaseController {
 			pageRequest=this.getPageRequest();	
 		}
 		Map<String, Object> searchParams = this.getSearchRequest();
-		Page<ParkingOrder> page = parkingOrderService.findPage(searchParams, pageRequest);
+		Page<ParkingInOut> page = parkingInOutService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
 		return PATH_LIST;

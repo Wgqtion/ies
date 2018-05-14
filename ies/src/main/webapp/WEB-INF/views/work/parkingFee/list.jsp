@@ -37,7 +37,7 @@
 				<th>场区名称</th>
 				<th <vsc:orderField name="week"/>>周</th> 
 				<th <vsc:orderField name="startTime"/>>开始时间</th>
-				<th <vsc:orderField name="endTime"/>>开始时间</th>  
+				<th <vsc:orderField name="endTime"/>>结束时间</th>  
 				<th <vsc:orderField name="fee"/>>费用</th>   
 			</tr>
 		</thead>

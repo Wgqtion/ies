@@ -105,7 +105,7 @@ public class ParkingLockController extends BaseController {
 	@RequestMapping(value = "reverse", method = RequestMethod.POST)
 	public ModelAndView reverseBatch(@RequestParam Long[] ids,@RequestParam(value = "state", required = true) String state) throws Exception {
 		if(ids!=null&&ids.length>0){		
-			String message=this.parkingLockService.reverse(ids, state, this.getCurrentShiroUser().id,
+			String message=this.parkingLockService.reverse(ids, state, this.getCurrentShiroUser().id+"",
 					ParkingLockOperationEvent.SOURCETYPE_PC);
 			if(message.length()>0){
 				return this.ajaxDoneError(message);

@@ -1,7 +1,5 @@
 package com.vsc.business.gerd.entity.work;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,7 +16,7 @@ import com.vsc.modules.entity.BasicEntity;
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "reserve_time")
-public class ReserveTime extends BasicEntity implements Serializable{
+public class ReserveTime extends BasicEntity{
 	
 	/**
 	 * 

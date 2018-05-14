@@ -37,10 +37,10 @@ public class YudingService extends BaseService<Yuding> {
 	}
 
 	
-	public List<Yuding> findByWxUser(Long wxUserId){
+	public List<Yuding> findByWxUser(String weixinId){
 		Map<String,Object> filterParams=new HashMap<String, Object>();
 		filterParams.put("EQ_isDelete", 0);
-		filterParams.put("EQ_wxUser.id", wxUserId);
+		filterParams.put("EQ_wxUser.weixinId", weixinId);
 		try {
 			return this.findList(filterParams);
 		} catch (Exception e) {

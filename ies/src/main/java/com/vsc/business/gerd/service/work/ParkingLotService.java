@@ -106,41 +106,46 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Set<ParkingLot> findParkingLots(Long userId,Long parkingLotId) throws Exception{
-		Map<String, Object> orgParams = new HashMap<String, Object>();
-		orgParams.put("EQ_isEnabled", false);
-		List<Org> orgs = this.orgService.findList(orgParams);
-		orgParams.remove("EQ_isEnabled");
-		orgParams.put("EQ_users.id", userId);
-		orgs.addAll(this.orgService.findList(orgParams));
-
-		Map<String, Object> searchParams = new HashMap<String, Object>();
-		searchParams.put("EQ_isEnabled", true);
-		if(parkingLotId==null){
-			searchParams.put("ISNULL_parent", null);	
-		}else{
-			searchParams.put("EQ_parent.id", parkingLotId);
-		}
+	public Set<ParkingLot> findParkingLots(String weixinId,Long parkingLotId){
 		Set<ParkingLot> parkingLots = new LinkedHashSet<ParkingLot>();
-		searchParams.put("ISNULL_orgCode", null);
-		parkingLots.addAll(this.findAllList(searchParams));
-		searchParams.remove("ISNULL_orgCode");
-		if (orgs != null) {
-			searchParams.put("EQ_org.isDelete", 0);
-			for (Org org : orgs) {
-				searchParams.put("EQ_org.code", org.getCode());
-				parkingLots.addAll(this.findAllList(searchParams));
+		try {
+			Map<String, Object> orgParams = new HashMap<String, Object>();
+			orgParams.put("EQ_isEnabled", false);
+			List<Org> orgs = this.orgService.findList(orgParams);
+			orgParams.remove("EQ_isEnabled");
+			orgParams.put("EQ_users.weixinId", weixinId);
+			orgs.addAll(this.orgService.findList(orgParams));
+
+			Map<String, Object> searchParams = new HashMap<String, Object>();
+			searchParams.put("EQ_isEnabled", true);
+			if(parkingLotId==null){
+				searchParams.put("ISNULL_parent", null);	
+			}else{
+				searchParams.put("EQ_parent.id", parkingLotId);
 			}
-		}
-		if(parkingLotId!=null&&parkingLots.size()==0){
-			ParkingLot parkingLot=this.getObjectById(parkingLotId);
-			parkingLot.setIsLast(true);
-			parkingLots.add(parkingLot);
-		}
-		int i=0;
-		for (ParkingLot p : parkingLots) {
-			this.parkingLockService.findParkingLocks(p,parkingLotId,i,userId);
-			i++;
+			searchParams.put("ISNULL_orgCode", null);
+			parkingLots.addAll(this.findAllList(searchParams));
+			searchParams.remove("ISNULL_orgCode");
+			if (orgs != null) {
+				searchParams.put("EQ_org.isDelete", 0);
+				for (Org org : orgs) {
+					searchParams.put("EQ_org.code", org.getCode());
+					parkingLots.addAll(this.findAllList(searchParams));
+				}
+			}
+			if(parkingLotId!=null&&parkingLots.size()==0){
+				ParkingLot parkingLot=this.getObjectById(parkingLotId);
+				parkingLot.setIsLast(true);
+				parkingLots.add(parkingLot);
+			}
+			int i=0;
+			for (ParkingLot p : parkingLots) {
+				this.parkingLockService.findParkingLocks(p,parkingLotId,i,weixinId);
+				i++;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return parkingLots;
 	}

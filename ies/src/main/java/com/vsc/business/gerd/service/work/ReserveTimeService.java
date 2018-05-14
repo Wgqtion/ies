@@ -1,6 +1,7 @@
 package com.vsc.business.gerd.service.work;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,34 @@ public class ReserveTimeService extends BaseService<ReserveTime> {
 	public JpaSpecificationExecutor<ReserveTime> getJpaSpecificationExecutorDao() {
 		return this.reserveTimeDao;
 	}
-	
+	/**
+	 * 是否在预约时间
+	 */
+	public boolean isCanReserveTime(ReserveTime reserveTime){
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_parkingLotCode",reserveTime.getParkingLotCode()); 
+		searchParams.put("EQ_isDelete", 0); 
+		searchParams.put("EQ_week",0);
+		searchParams.put("LTE_startTime",reserveTime.getStartTime());
+		searchParams.put("GTE_endTime",reserveTime.getStartTime());
+		try {
+			List<ReserveTime> list=super.findList(searchParams);
+			if(list!=null&&list.size()>0){
+				return true;
+			}
+			searchParams.put("EQ_week",CoreUtils.getWeek(CoreUtils.formatw.parse(reserveTime.getStartTime())));
+			searchParams.put("LTE_startTime",reserveTime.getStartTime().substring(11, 16));
+			searchParams.put("GTE_endTime",reserveTime.getStartTime().substring(11, 16));
+			list=super.findList(searchParams);
+			if(list!=null&&list.size()>0){
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	/**
 	 * 根据条件查询，未删除，like 用户公司code%
