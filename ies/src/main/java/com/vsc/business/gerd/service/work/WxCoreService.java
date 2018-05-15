@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.gerd.entity.work.ParkingLock;
+import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.entity.work.ParkingParam;
 import com.vsc.business.gerd.entity.work.ReserveTime;
 import com.vsc.business.gerd.entity.work.WxCore;
@@ -152,11 +153,11 @@ public class WxCoreService extends BaseService<WxCore> {
 			e.printStackTrace();
 		}
 		
-//		String message=this.parkingLockService.reverse(new Long[] {parkingLock.getId()}, "01", wxCore.getWeixinId(),
-//				ParkingLockOperationEvent.SOURCETYPE_PHONE);
-//		if (message.length() > 0) {
-//			throw new MessageException(message);
-//		}
+		String message=this.parkingLockService.reverse(new Long[] {parkingLock.getId()}, "01", wxCore.getWeixinId(),
+				ParkingLockOperationEvent.SOURCETYPE_PHONE);
+		if (message.length() > 0) {
+			throw new MessageException(message);
+		}
 		return 0;
 	}
 
@@ -183,11 +184,11 @@ public class WxCoreService extends BaseService<WxCore> {
 			e.printStackTrace();
 		}
 		
-//		String message=this.parkingLockService.reverse(new Long[] {parkingLock.getId()}, "02", wxCore.getWeixinId(),
-//				ParkingLockOperationEvent.SOURCETYPE_PHONE);
-//		if (message.length() > 0) {
-//			throw new MessageException(message);
-//		}
+		String message=this.parkingLockService.reverse(new Long[] {parkingLock.getId()}, "02", wxCore.getWeixinId(),
+				ParkingLockOperationEvent.SOURCETYPE_PHONE);
+		if (message.length() > 0) {
+			throw new MessageException(message);
+		}
 		return 0;
 	}
 	
@@ -263,11 +264,11 @@ public class WxCoreService extends BaseService<WxCore> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		String message=this.parkingLockService.reverse(new Long[] {wc.getParkingLock().getId()}, "02", wxCore.getWeixinId(),
-//		ParkingLockOperationEvent.SOURCETYPE_PHONE);
-//		if (message.length() > 0) {
-//			throw new MessageException(message);
-//		}
+		String message=this.parkingLockService.reverse(new Long[] {wc.getParkingLock().getId()}, "02", wxCore.getWeixinId(),
+		ParkingLockOperationEvent.SOURCETYPE_PHONE);
+		if (message.length() > 0) {
+			throw new MessageException(message);
+		}
 		return 0;
 	}
 }
