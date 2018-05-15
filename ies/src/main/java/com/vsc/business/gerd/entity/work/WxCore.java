@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
@@ -61,17 +62,16 @@ public class WxCore extends IdEntity{
 	 */
 	private BigDecimal amount;
 	
-	private WxOrder wxCore;
-	
+	private WxOrder wxOrder;
 	
 	@ManyToOne
     @JoinColumn(name="WX_ORDER_CODE",referencedColumnName="CODE",insertable=false,updatable=false)
-	public WxOrder getWxCore() {
-		return wxCore;
+	public WxOrder getWxOrder() {
+		return wxOrder;
 	}
 
-	public void setWxCore(WxOrder wxCore) {
-		this.wxCore = wxCore;
+	public void setWxOrder(WxOrder wxOrder) {
+		this.wxOrder = wxOrder;
 	}
 
 	@Column(name = "IS_CANCEL")
@@ -167,5 +167,20 @@ public class WxCore extends IdEntity{
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	
+	/**
+	 * 返回类型Str
+	 */
+	@Transient
+	public String getTypeStr(){
+		if(type==null){
+			return "";
+		}else if(type==1){
+			return "预约";
+		}else if(type==2){
+			return "停车";
+		}
+		return "";
 	}
 }

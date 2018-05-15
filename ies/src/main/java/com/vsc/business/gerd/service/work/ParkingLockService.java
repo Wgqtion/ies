@@ -241,7 +241,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 			lockEvent.setSourceType(sourceType);
 			lockEvent.setStatus(0);
 			lockEvent.setParkingLock(lock);
-			if (weixinId != null) {
+			if (sourceType==ParkingLockOperationEvent.SOURCETYPE_PHONE) {
 				lockEvent.setWxUser(wxUserService.getByWeixinId(weixinId));
 			}
 			// lockEvent.setParkingLock(vm);
@@ -271,8 +271,12 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 			// logger.info("更新地锁开关状态：" +param2+" 更新结果:"+ resultMsg);
 
 			// 发送指令
-			ByteBuf msg = HexUtils.getByteBuf(lockEvent.getWxUser().getName(), ipAddress, lockNum, state);
-			logger.info("userName：" + lockEvent.getWxUser().getName() + "，区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，state：" + state);
+			String userId=weixinId;
+			if(sourceType==ParkingLockOperationEvent.SOURCETYPE_PHONE){
+				userId=lockEvent.getWxUser().getId()+"";
+			}
+			ByteBuf msg = HexUtils.getByteBuf(userId, ipAddress, lockNum, state);
+			logger.info("userId：" + userId + "，区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，state：" + state+"，sources:"+sourceType);
 			try {
 				message = TcpClient.sendMsg(msg, parkingLockOperationEventService);
 				if (message.length() > 0) {

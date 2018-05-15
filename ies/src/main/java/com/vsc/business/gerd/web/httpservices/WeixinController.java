@@ -268,7 +268,7 @@ public class WeixinController extends HttpServiceBaseController {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				return this.ajaxDoneSuccess(status,message,null);
+				return this.ajaxDone(status,message,null);
 			}else{
 				/*
 				 * 解锁逻辑
@@ -284,7 +284,7 @@ public class WeixinController extends HttpServiceBaseController {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				return this.ajaxDoneSuccess(status,message,null);
+				return this.ajaxDone(status,message,null);
 			}
 		}
 	}
@@ -299,7 +299,7 @@ public class WeixinController extends HttpServiceBaseController {
 		wxCore.setIsCancel(true);
 		wxCore.setType(Integer.valueOf(1));
 		int status=this.wxCoreService.cancelReserve(wxCore);
-		return this.ajaxDoneSuccess(status,Constants.CANCEL_RESERVE_MESSAGE_STATUS[status],null);
+		return this.ajaxDone(status,Constants.CANCEL_RESERVE_MESSAGE_STATUS[status],null);
 	}
 	
 	/**
@@ -314,24 +314,58 @@ public class WeixinController extends HttpServiceBaseController {
 		String message="上锁失败";
 		try {
 			status = this.wxCoreService.lock(wxCore);
-			message=Constants.UNLOCK_MESSAGE_STATUS[status];
+			message=Constants.LOCK_MESSAGE_STATUS[status];
 		} catch (MessageException e) {
 			message=e.getMessage();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return this.ajaxDoneSuccess(status,message,null);
+		return this.ajaxDone(status,message,null);
 	}
 	
 	/**
 	 * 支付订单
 	 */
-	@RequestMapping(value = "/payOrder")
-	public ModelAndView payOrder(@RequestParam(required = true) String weixinId){
+	@RequestMapping(value = "/pay")
+	public ModelAndView pay(@RequestParam(required = true) String weixinId){
 		WxOrder wxOrder=new WxOrder();
 		wxOrder.setWeixinId(weixinId);
 		int status=this.wxOrderService.payOrder(wxOrder);
-		return this.ajaxDoneSuccess(status,Constants.PAY_MESSAGE_STATUS[status],null);
+		return this.ajaxDone(status,Constants.PAY_MESSAGE_STATUS[status],null);
+	}
+	
+	/**
+	 * core查询，预约与停车使用中的core
+	 */
+	@RequestMapping(value = "/core")
+	public ModelAndView core(@RequestParam(required = true) String weixinId) throws Exception {
+
+		WxCore entity=new WxCore();
+		entity.setWeixinId(weixinId);
+		WxCore wxCore=this.wxCoreService.findBy(entity);
+		if(wxCore==null){
+			return this.ajaxDone(1, null, null);
+		}
+		String[] isNotIgnoreFieldNames = {"type", "parkingLockCode","startTime","parkingLock","parkingGarage","name"};
+		String jsonstr = JSONUtil.toJSONString(wxCore, isNotIgnoreFieldNames, false, featureNames);
+		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
+	}
+	
+	/**
+	 * 订单查询
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/order")
+	public ModelAndView order(@RequestParam(required = true) String weixinId) throws Exception {
+
+		// 订单查询
+		WxOrder wxOrder=this.wxOrderService.getByWeixinId(weixinId);
+		if(wxOrder==null){
+			return this.ajaxDone(1, null, null);
+		}
+		String[] isNotIgnoreFieldNames = { "code","totalFee","wxCores","type","typeStr","amount","startTime","endTime","parkingLock","parkingGarage","name"};
+		String jsonstr = JSONUtil.toJSONString(wxOrder, isNotIgnoreFieldNames, false, featureNames);
+		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
 	}
 	
 	/**
