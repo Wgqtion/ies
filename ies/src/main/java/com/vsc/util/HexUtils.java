@@ -1,5 +1,7 @@
 package com.vsc.util;
 
+import com.vsc.modules.tcp.entity.CRC16M;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -121,31 +123,29 @@ public class HexUtils {
 	}
 
 	/**
-	 * 获取ByteBuf
-	 * 
-	 * @param userId
-	 * @param ipAddress
-	 * @param lockNum
-	 * @param state
-	 * @return
+	 * 获取ByteBuf，服务器使用
 	 */
-	public static ByteBuf getByteBuf(String userId, String ipAddress, String lockNum, String state) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(HexUtils.DecToHex(userId, 8));
-		sb.append(HexUtils.DecToHex(ipAddress, 4));
-		sb.append(HexUtils.DecToHex(lockNum, 4));
-		sb.append(HexUtils.DecToHex(state, 2));
-		sb.append(HexUtils.DecToHex(0x0D, 2));
-		sb.append(HexUtils.DecToHex(0x0A, 2));
-		int[] msg = HexUtils.HexString2Int(sb.toString());
-		byte[] bytes = new byte[msg.length];
-		for (int i = 0; i < msg.length; i++) {
-			bytes[i] = (byte) msg[i];
+	public static ByteBuf getClientByteBuf(String ipAddress, String lockNum, String state) {
+		int[] data = new int[11];
+		data[0] = 0x7F;
+		data[1] = 0x7F;
+		data[2] = Integer.valueOf(HexUtils.HexToDec(ipAddress, 0, 2));
+		data[3] = Integer.valueOf(HexUtils.HexToDec(ipAddress, 2, 4));
+		data[4] = Integer.valueOf(HexUtils.HexToDec(lockNum, 0, 2));
+		data[5] = Integer.valueOf(HexUtils.HexToDec(lockNum, 2, 4));
+		data[6] = Integer.valueOf(HexUtils.HexToDec(state, 0, 2));
+		data[9] = 0x0D;
+		data[10] = 0x0A;
+		CRC16M.fillCRC(data, 7);
+		byte[] bytes = new byte[data.length];
+		for (int i = 0; i < data.length; i++) {
+			bytes[i] = (byte) data[i];
 		}
 		ByteBuf buf = Unpooled.buffer(bytes.length);
 		buf.writeBytes(bytes);
 		return buf;
 	}
+	
 	/**
 	 * 字节转16进制
 	 * @param bytes

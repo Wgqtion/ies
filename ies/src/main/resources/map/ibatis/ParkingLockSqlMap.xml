@@ -31,26 +31,6 @@
 		<include refid="surplusNumWhere"/>
 	</select>
 	
-	<!-- 查询地锁操作日志状态 -->
-	<select id="t_parking_operation_event.getStatus" resultClass="mapBean" parameterClass="map" >
-		SELECT
-			EVENT_STATUS AS status
-		FROM
-			T_PARKING_LOCK_OPERATION_EVENT
-		WHERE
-			ID = #id#
-	</select> 
-	
-	<!-- 查询地锁状态 -->
-	<select id="t_parking_lock.get" resultClass="mapBean" parameterClass="map" >
-		select 
-			* 
-		FROM 
-			T_PARKING_LOCK
-		WHERE 
-			id=#id# 
-	</select> 
-	
 	<!-- 查询地锁余位车位信息-->
 	<select id="t_parking_garage.surplusGarages" resultClass="mapBean" parameterClass="map" >
 		SELECT

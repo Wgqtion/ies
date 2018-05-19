@@ -25,33 +25,27 @@ public class ParkingLockOperationEvent extends IdEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -8051121348721241729L;
-	public static int EVENTTYPE_OPEN = 0;
-	public static int EVENTTYPE_CLOSE = 1;
-	public static int EVENTTYPE_FOREVER_OPEN = 2;
-	public static int EVENTTYPE_FOREVER_CLOSE = 3;
-	public static int EVENTTYPE_FOREVER_NONE = 4;
+	
 	
 	public static int SOURCETYPE_PC=1;
 	public static int SOURCETYPE_PHONE=2;
-	
-	//ISFOREVEROPENCLOSE转换为EVENTTYPE_FOREVER_OPEN常量的数组
-	public static int[] EVENTTYPE_ISFOREVEROPENCLOSE={EVENTTYPE_FOREVER_NONE,EVENTTYPE_FOREVER_OPEN,EVENTTYPE_FOREVER_CLOSE};
-	public static int[] EVENTTYPE_OPENCLOSE={EVENTTYPE_OPEN,EVENTTYPE_CLOSE};
 
-	private Integer eventType;
+	private String eventType;
 	private Integer sourceType;
 	private ParkingLock parkingLock;
-	private java.util.Date reportedTime;
 	private java.util.Date createTime;
 	private User user;
 	private WxUser wxUser;
 	
+	/**
+	 * 新增状态0，2离线，3已经是要控制的状态，1轮询成功
+	 */
 	private Integer status=0;
 
 	/**
 	 * @return
 	 */
-	@Column(name = "EVENT_STATUS")
+	@Column(name = "STATUS")
 	public Integer getStatus() {
 		return status;
 	}
@@ -64,11 +58,11 @@ public class ParkingLockOperationEvent extends IdEntity {
 	 * @return
 	 */
 	@Column(name = "EVENT_TYPE")
-	public Integer getEventType() {
+	public String getEventType() {
 		return this.eventType;
 	}
 
-	public void setEventType(Integer value) {
+	public void setEventType(String value) {
 		this.eventType = value;
 	}
 
@@ -88,25 +82,13 @@ public class ParkingLockOperationEvent extends IdEntity {
 	 * @return
 	 */
 	@ManyToOne
-	@JoinColumn(name = "PARKING_LOCK_ID")
+	@JoinColumn(name = "PARKING_LOCK_CODE",referencedColumnName="CODE")
 	public ParkingLock getParkingLock() {
 		return this.parkingLock;
 	}
 
 	public void setParkingLock(ParkingLock value) {
 		this.parkingLock = value;
-	}
-
-	/**
-	 * @return
-	 */
-	@Column(name = "REPORTED_TIME")
-	public java.util.Date getReportedTime() {
-		return this.reportedTime;
-	}
-
-	public void setReportedTime(java.util.Date value) {
-		this.reportedTime = value;
 	}
 
 	/**

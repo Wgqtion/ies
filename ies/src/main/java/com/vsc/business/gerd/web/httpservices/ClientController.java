@@ -11,18 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.gerd.entity.validate.work.InParkingOrderValidate;
 import com.vsc.business.gerd.entity.validate.work.OutParkingOrderValidate;
 import com.vsc.business.gerd.entity.validate.work.PayParkingOrderValidate;
-import com.vsc.business.gerd.entity.work.ParkingLock;
-import com.vsc.business.gerd.entity.work.ParkingLockEventLog;
 import com.vsc.business.gerd.entity.work.ParkingInOut;
 import com.vsc.business.gerd.entity.work.ParkingVideo;
-import com.vsc.business.gerd.service.work.ParkingLockEventLogService;
-import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.business.gerd.service.work.ParkingInOutService;
 import com.vsc.business.gerd.service.work.ParkingVideoService;
 import com.vsc.constants.Constants;
@@ -40,12 +35,10 @@ public class ClientController extends HttpServiceBaseController {
 	// 视图地址映射
 	public static final String V_PATH = V_PATH_BASE;
 	public static final String V_PATH_INDEX = PATH_BASE + Constants.SPT + "client";
+	
 	@Autowired
 	private ParkingInOutService parkingOrderService;
-	@Autowired
-	private ParkingLockService parkingLockService;
-	@Autowired
-	private ParkingLockEventLogService parkingLockEventLogService;
+	
 	@Autowired
 	private ParkingVideoService parkingVideoService;
 
@@ -152,102 +145,4 @@ public class ClientController extends HttpServiceBaseController {
 		String jsonstr = "\"true\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
-	
-	/**
-	 * 地锁上报接口
-	 * 
-	 * @return
-	 * @throws Exception 
-	 */
-	@RequestMapping(value = "locked/event/new")
-	public ModelAndView service5(
-			@RequestParam(required = true) String lockNum,
-			@RequestParam(required = true) int eventType,
-			@RequestParam(required = true) int state,
-			@RequestParam(required = true) int mcOpen,
-			@RequestParam(required = true) int lockArea,
-			@RequestParam(required = false) Date reportedTime,
-			HttpServletRequest request) throws Exception {
-
-		Date curTime=new Date();
-		
-		ParkingLockEventLog parkingLockEventLog = new ParkingLockEventLog();
-		parkingLockEventLog.setCreateTime(curTime);
-		parkingLockEventLog.setEventType(eventType);
-		parkingLockEventLog.setLockNum(lockNum);
-		parkingLockEventLog.setState(state);
-		if (null != reportedTime) {
-			parkingLockEventLog.setReportedTime(reportedTime);
-		} else {
-			parkingLockEventLog.setReportedTime(curTime);
-		}
-
-		parkingLockEventLog.setMcOpen(mcOpen);
-		parkingLockEventLog.setSourceType(3);
-		parkingLockEventLog.setDeviceNum(lockNum);
-		parkingLockEventLog.setIpAddress(lockArea+"");
-		
-		
-		//查询地锁信息
-		
-        ParkingLock parkingLock =parkingLockService.getByCode(lockArea+"",lockNum);
-        
-		boolean isSave=false;
-		if(eventType!=34){
-			isSave=true;
-		}
-		if(parkingLock!=null&&isSave){
-			//是否保存日志
-			boolean flag=parkingLock.getIsOpen()==parkingLockEventLog.getIsOpen()
-						&&parkingLock.getIsCarOn()==parkingLockEventLog.getIsCarOn()
-						&&parkingLock.getIsForeverOpenClose()==parkingLockEventLog.getIsForeverOpenClose()
-						&&parkingLockEventLog.getMcOpen().equals(parkingLock.getMcOpen())
-						&&parkingLock.getPower()!=null&&parkingLockEventLog.getPower()==parkingLock.getPower().doubleValue();
-			if((flag&&eventType==68&&parkingLock.getIsOnline()==false)
-					||(flag&&eventType==51&&parkingLock.getIsOnline()==true)
-					||(flag&&eventType==49)){
-				isSave=false;
-			}
-			
-			Boolean isOnline=false;
-			
-			//下线
-			if(eventType==68){
-			}
-			//上线
-			else if(eventType==51){
-				isOnline=true;
-			}
-			//心跳包
-			else if(eventType==49){
-				isOnline=true;
-			}
-			//事件类型
-			else if(eventType==85){
-				isOnline=parkingLock.getIsOnline();
-			}
-			
-			if(eventType!=68){
-				parkingLock.setIsCarOn(parkingLockEventLog.getIsCarOn());
-				parkingLock.setIsForeverOpenClose(parkingLockEventLog.getIsForeverOpenClose());
-				parkingLock.setIsOpen(parkingLockEventLog.getIsOpen());
-				parkingLock.setPower(parkingLockEventLog.getPower());
-				parkingLock.setMcOpen(parkingLockEventLog.getMcOpen());
-			}
-			parkingLock.setIsOnline(isOnline);
-			parkingLock.setLogUpdateTime(curTime);
-			this.parkingLockService.save(parkingLock);
-		}
-		parkingLockEventLog.setParkingLock(parkingLock);
-		
-		//保存地锁日志
-		if(isSave){
-			this.parkingLockEventLogService.save(parkingLockEventLog);	
-		}	
-
-		String jsonstr = "\"true\"";
-		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
-	}
-
-
 }

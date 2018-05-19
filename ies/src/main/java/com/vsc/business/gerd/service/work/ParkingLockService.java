@@ -5,16 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
+
 import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
@@ -22,18 +23,19 @@ import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.entity.work.ParkingLot;
-import com.vsc.business.gerd.entity.work.UserOrder;
-import com.vsc.business.gerd.entity.work.Yuding;
+import com.vsc.business.gerd.entity.work.WxCore;
 import com.vsc.business.gerd.repository.work.ParkingLockDao;
-import com.vsc.modules.entity.MapBean;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
-import com.vsc.modules.tcp.TcpClient;
+import com.vsc.modules.tcp.core.ClientMap;
 import com.vsc.util.CodeUtils;
 import com.vsc.util.CoreUtils;
 import com.vsc.util.HexUtils;
+import com.vsc.util.Log4jUtils;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.channel.ChannelHandlerContext;
 
 /**
  * 地锁逻辑操作
@@ -44,7 +46,6 @@ import io.netty.buffer.ByteBuf;
 @Service
 @Transactional
 public class ParkingLockService extends BaseService<ParkingLock> {
-	private static Logger logger = LoggerFactory.getLogger(ParkingLockService.class);
 
 	@Autowired
 	private ParkingLockDao parkingLockDao;
@@ -52,21 +53,22 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	@Autowired
 	private ParkingGarageService parkingGarageService;
 
-	// 预约
-	@Autowired
-	private YudingService yudingService;
-
-	// 用户订单
-	@Autowired
-	UserOrderService userOrderService;
-
 	// 微信用户
 	@Autowired
 	private WxUserService wxUserService;
 
 	@Autowired
 	private ParkingLockOperationEventService parkingLockOperationEventService;
+	
+	@Autowired
+	private WxCoreService wxCoreService;
 
+	 private EntityManagerFactory entityManagerFactory;  
+    @PersistenceUnit  
+    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {  
+        this.entityManagerFactory = entityManagerFactory;  
+    } 
+	
 	@Override
 	public PagingAndSortingRepository<ParkingLock, Long> getPagingAndSortingRepositoryDao() {
 		return this.parkingLockDao;
@@ -156,38 +158,44 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 			entity.setParkingGarage(null);
 		}
 
-		User user = null;
-		try {
-			user = ShiroUserUtils.GetCurrentUser();
-		} catch (Exception e) {
-			// logger.warn(e.getMessage());
-		}
-		if (user != null) {
-			Date now = CoreUtils.nowtime();
-			if (entity.getId() == null) {
-				entity.setCreateDate(now);
-				entity.setCreateUser(user);
+		User user =ShiroUserUtils.GetCurrentUser();
+		Date now = CoreUtils.nowtime();
+		if (entity.getId() == null) {
+			entity.setCreateDate(now);
+			entity.setCreateUser(user);
 
-				String code = null;
-				boolean flag = true;
-				int i = 0;
-				while (flag) {
-					code = CodeUtils.GenerateCode(this.getMaxCode() + i, 5);
-					ParkingLock p = getByCode(code);
-					if (p == null) {
-						flag = false;
-					}
-					i++;
+			String code = null;
+			boolean flag = true;
+			int i = 0;
+			while (flag) {
+				code = CodeUtils.GenerateCode(this.getMaxCode() + i, 5);
+				ParkingLock p = getByCode(code);
+				if (p == null) {
+					flag = false;
 				}
-				entity.setCode(code);
+				i++;
 			}
-			entity.setUpdateUser(user);
-			entity.setUpdateDate(now);
-
+			entity.setCode(code);
 		}
+		entity.setUpdateUser(user);
+		entity.setUpdateDate(now);
 		return super.save(entity);
 	}
 
+	/**
+	 * 更新，super.save
+	 */
+	public ParkingLock update(ParkingLock entity){
+		try {
+			super.save(entity);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+		
+	
 	/**
 	 * 根据code查询，未删除的
 	 * 
@@ -218,150 +226,94 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		return i;
 	}
 
-	@Transactional(propagation = Propagation.NOT_SUPPORTED)
-	public String reverse(Long[] ids, String state, String weixinId, int sourceType) {
+	/**
+	 * 发送地锁控制指令
+	 */
+	public String reverse(Long id, String state, String weixinId, int sourceType){
 		String message = new String();
+		ParkingLock lock=getObjectById(id);
+		
+		String lockNum = lock.getLockNum();
+		String ipAddress = lock.getIpAddress();
 
-		List<ParkingLock> vl = this.findIds(ids, this.parkingLockDao);
-
-		String lockNumVl = CoreUtils.fetchElementPropertyToString(vl, "lockNum", ",");// 地锁编号
-		String ipAddressVl = CoreUtils.fetchElementPropertyToString(vl, "ipAddress", ",");// 地锁区域编号
-
-		String[] lockNums = lockNumVl.split(",");
-		String[] ipAddresss = ipAddressVl.split(",");
-		for (int i = 0; i < ids.length; i++) {
-			ParkingLock lock = vl.get(i);
-			String lockNum = lockNums[i];
-			String ipAddress = ipAddresss[i];
-
-			Date now = CoreUtils.nowtime();
-			ParkingLockOperationEvent lockEvent = new ParkingLockOperationEvent();
-			lockEvent.setReportedTime(now);
-			lockEvent.setEventType(Integer.valueOf(state));
-			lockEvent.setSourceType(sourceType);
-			lockEvent.setStatus(0);
-			lockEvent.setParkingLock(lock);
-			if (sourceType==ParkingLockOperationEvent.SOURCETYPE_PHONE) {
-				lockEvent.setWxUser(wxUserService.getByWeixinId(weixinId));
-			}
-			// lockEvent.setParkingLock(vm);
-
-			ParkingLock oldLock = vl.get(i);
-			// 判断当前地锁在线状态
-			if (!oldLock.getIsOnline()) {
-				lockEvent.setStatus(2);// 当前地锁离线
-				parkingLockOperationEventService.save(lockEvent);
-				message = "区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，地锁状态不在线，请稍后再试";
-				return message;
-			}
-			// 判断当前地锁状态 true 02开启 false 01关闭
-			if ((oldLock.getIsOpen() && "02".equals(state)) || ((!oldLock.getIsOpen()) && "01".equals(state))) {
-				lockEvent.setStatus(3);// 当前状态已经是要控制的状态
-				parkingLockOperationEventService.save(lockEvent);
-				return message;
-			}
-
-			parkingLockOperationEventService.save(lockEvent);
-
-			// 更新-start
-			// String param2 = "lockArea=" + ipAddressVl +
-			// "&lockNum="+lockNumVl+"&eventType="+state;
-			// String resultMsg = HttpRequestUtil.sendSocketGet("reverse",
-			// param2,"utf-8");
-			// logger.info("更新地锁开关状态：" +param2+" 更新结果:"+ resultMsg);
-
-			// 发送指令
-			String userId=weixinId;
-			if(sourceType==ParkingLockOperationEvent.SOURCETYPE_PHONE){
-				userId=lockEvent.getWxUser().getId()+"";
-			}
-			ByteBuf msg = HexUtils.getByteBuf(userId, ipAddress, lockNum, state);
-			logger.info("userId：" + userId + "，区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，state：" + state+"，sources:"+sourceType);
-			try {
-				message = TcpClient.sendMsg(msg, parkingLockOperationEventService);
-				if (message.length() > 0) {
-					return message.toString();
-				}
-				Map<String, Object> filters = new HashMap<String, Object>();
-				filters.put("id", lockEvent.getId());
-				message = "区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，指令请求超时，请重试";
-				for (int j = 0; j < 10; j++) {
-					Thread.sleep(500);
-					List<MapBean<String, Object>> ploeList = this.parkingLockOperationEventService
-							.findIbatisQuery("t_parking_operation_event.getStatus", filters);
-					if (ploeList == null) {
-						message = "区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，系统操作日志异常";
-						return message;
-					}
-					Integer status = null;
-					if (ploeList != null) {
-						status = (Integer) ploeList.get(0).get("status");
-					}
-					if (status == null) {
-						message = "区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，系统操作日志异常";
-						return message;
-					}
-					if (status.intValue() == 2) {
-						message = "区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，地锁数据错误";
-						return message;
-					}
-					if (status.intValue() == 3) {
-						message = "区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，地锁已断开连接，请稍后再试";
-						return message;
-					}
-					if (status.intValue() == 1) {
-						message = "";
-						break;
-					}
-				}
-
-				// 判断地锁事件
-				if (message.length() == 0) {
-					Map<String, Object> filterParams = new HashMap<String, Object>();
-					filterParams.put("id", ids[i]);
-					message = "区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，指令请求超时，请重试";
-					for (int j = 0; j < 60; j++) {
-						Thread.sleep(500);
-						ParkingLock pl = this.findUniqueBy("id", ids[i]);
-						List<MapBean<String, Object>> parkingLocks = this.findIbatisQuery("t_parking_lock.get",
-								filterParams);
-						if (parkingLocks != null && parkingLocks.size() > 0) {
-							MapBean<String, Object> parkingLock = parkingLocks.get(0);
-							Integer isOpen = (Integer) parkingLock.get("IS_OPEN");
-							if (isOpen == null) {
-								message = "区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，地锁查询出错";
-								continue;
-							}
-							if ("1".equals(isOpen.toString()) && "02".equals(state)) {
-								message = "";
-								break;
-							} else if ("0".equals(isOpen.toString()) && "01".equals(state)) {
-								message = "";
-								break;
-							}
-						} else {
-							message = "区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，地锁查询出错";
-							continue;
-						}
-					}
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				logger.error(e.getMessage());
-				message = "区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，系统发生异常";
-				return message;
-			}
-
-			// 更新-end
+		ParkingLockOperationEvent lockEvent = new ParkingLockOperationEvent();
+		lockEvent.setEventType(state);
+		lockEvent.setSourceType(sourceType);
+		lockEvent.setStatus(0);
+		lockEvent.setParkingLock(lock);
+		
+		String head="区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，";
+		
+		if (sourceType == ParkingLockOperationEvent.SOURCETYPE_PHONE) {
+			lockEvent.setWxUser(wxUserService.getByWeixinId(weixinId));
+			head="";
 		}
 
+		// 判断当前地锁在线状态
+		if (!lock.getIsOnline()) {
+			lockEvent.setStatus(2);// 当前地锁离线
+			parkingLockOperationEventService.save(lockEvent);
+			message = head+"地锁状态不在线，请稍后再试";
+			return message;
+		}
+		// 判断当前地锁状态 true 02开启 false 01关闭
+		if ((lock.getIsOpen() && "02".equals(state)) || ((!lock.getIsOpen()) && "01".equals(state))) {
+			lockEvent.setStatus(3);// 当前状态已经是要控制的状态
+			parkingLockOperationEventService.save(lockEvent);
+			return message;
+		}
+
+		// 发送指令
+		ChannelHandlerContext ctx=ClientMap.lockMap.get(ipAddress);
+		if(ctx==null){
+			message = head+"地锁已断开连接，请稍后再试";
+			return message;
+		}
+		ByteBuf msg = HexUtils.getClientByteBuf(ipAddress, lockNum, state);
+		Log4jUtils.tcpLog.info("区域编号：" + ipAddress + "，地锁编号：" + lockNum + "，state：" + state
+				+ "，sources:" + sourceType+",bytes:"+ByteBufUtil.hexDump(msg));
+		ctx.channel().writeAndFlush(msg);
+		Map<String, Object> filters = new HashMap<String, Object>();
+		filters.put("id", lockEvent.getId());
+		message = head+"地锁请求超时，请重试";
+		Map<String, Object> filterParams = new HashMap<String, Object>();
+		filterParams.put("id",id);
+		for (int j = 0; j < 10; j++) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+ 			ParkingLock pl=entityManager.find(ParkingLock.class,lock.getId());
+ 			entityManager.close();
+ 			if ((pl.getIsOpen() && "02".equals(state))
+					||(!pl.getIsOpen() && "01".equals(state))) {
+				message = "";
+				lockEvent.setStatus(1);
+				break;
+			}
+		}
+		parkingLockOperationEventService.save(lockEvent);
 		return message;
+	}
+	/**
+	 * 批量发送指令
+	 */
+	public String reverse(Long[] ids, String state, String weixinId, int sourceType) {
+		StringBuffer sb=new StringBuffer();
+		for (int i = 0; i < ids.length; i++) {
+			sb.append(reverse(ids[i], state, weixinId, sourceType));
+		}
+		return sb.toString();
 	}
 
 	/**
 	 * 查询场区在线可用地锁
 	 */
-	public void findParkingLocks(ParkingLot parkingLot, Long parkingLotId, int index, String weixinId) throws Exception {
+	public void findParkingLocks(ParkingLot parkingLot, Long parkingLotId, int index, String weixinId)
+			throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("RLIKE_parkingGarage.parkingLot.code", parkingLot.getCode());
 		params.put("EQ_parkingGarage.isDelete", false);
@@ -370,34 +322,28 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		List<ParkingLock> parkingLocks = this.findAllList(params);
 		if (parkingLocks != null) {
 			parkingLot.setGarageNum(parkingLocks.size());
-			RemoveNoSurplus(parkingLocks,weixinId);
+			RemoveNoSurplus(parkingLocks, weixinId);
 			parkingLot.setSurplusNum(parkingLocks.size());
 		}
 		if (parkingLotId != null && index == 0) {
 			params.remove("RLIKE_parkingGarage.parkingLot.code");
 			params.put("EQ_parkingGarage.parkingLot.id", parkingLotId);
 			parkingLocks = this.findAllList(params);
-			RemoveNoSurplus(parkingLocks,weixinId);
+			RemoveNoSurplus(parkingLocks, weixinId);
 			parkingLot.setParkingLocks(parkingLocks);
 		}
 	}
+
 	/**
 	 * 不符合余位判断的剔除
 	 */
-	private void RemoveNoSurplus(List<ParkingLock> parkingLocks,String weixinId) throws Exception{
+	private void RemoveNoSurplus(List<ParkingLock> parkingLocks, String weixinId) throws Exception {
 		for (int i = 0; i < parkingLocks.size(); i++) {
-			// 解锁订单查询
-			Map<String, Object> orderMap = new HashMap<String, Object>();
-			orderMap.put("EQ_wxUser.weixinId", weixinId);
-			orderMap.put("NOTEQ_isDelete", new Integer(1));
-			List<UserOrder> userOrderlList = userOrderService.findList(orderMap);
-			// 预约单查询
-			List<Yuding> yudings = yudingService.findByWxUser(weixinId);
-			if (!(parkingLocks.get(i).getIsSurplus()
-					&& (userOrderlList.isEmpty() || !userOrderlList.get(0).getParkingGarage().getId()
-							.equals(parkingLocks.get(i).getParkingGarage().getId()))
-					&& (yudings.isEmpty() || !yudings.get(0).getParkingGarage().getId()
-							.equals(parkingLocks.get(i).getParkingGarage().getId())))) {
+			WxCore wxCore=new WxCore();
+			wxCore.setWeixinId(weixinId);
+			wxCore.setParkingLockCode(parkingLocks.get(i).getCode());
+			int status=wxCoreService.getCoreStatus(wxCore);
+			if(status!=0){
 				parkingLocks.remove(i);
 			}
 		}

@@ -35,7 +35,6 @@ public class ParkingLock extends BasicEntity {
 	private Boolean isCarOn = false;
 	private Boolean isOnline = false;
 	private Boolean isOpen = false;
-	private Integer isForeverOpenClose = 0;
 
 	private java.lang.String description;
 
@@ -44,7 +43,6 @@ public class ParkingLock extends BasicEntity {
 	 */
 	private Double power; 
 	
-	private Integer mcOpen;
 	/**
 	 * 余位判断
 	 */
@@ -53,7 +51,6 @@ public class ParkingLock extends BasicEntity {
 	 * 日志最后更新时间
 	 */
 	private Date logUpdateTime;
-
 
 	/**
 	 * 是否剩余，是否可用的意思
@@ -114,18 +111,6 @@ public class ParkingLock extends BasicEntity {
 
 	public void setSurplusDetection(String surplusDetection) {
 		this.surplusDetection = surplusDetection;
-	}
-
-	/**
-	 * @return 
-	 */
-	@Column(name = "MCOPEN")
-	public Integer getMcOpen() {
-		return mcOpen;
-	}
-
-	public void setMcOpen(Integer mcOpen) {
-		this.mcOpen = mcOpen;
 	}
 
 	/**
@@ -235,15 +220,6 @@ public class ParkingLock extends BasicEntity {
 
 	public void setDescription(java.lang.String value) {
 		this.description = value;
-	}
-
-	@Column(name = "IS_FOREVER_OPEN_CLOSE")
-	public Integer getIsForeverOpenClose() {
-		return isForeverOpenClose;
-	}
-
-	public void setIsForeverOpenClose(Integer isForeverOpenClose) {
-		this.isForeverOpenClose = isForeverOpenClose;
 	}
 
 	@Override

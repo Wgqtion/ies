@@ -46,9 +46,7 @@ public class HttpRequestUtil {
 	public static String sendGet(String url, String param) {
 		String result = "";
 		String resultStr = "";
-		String stateStr = "";
 		BufferedReader in = null;
-		int stateCode = 5500;
 		try {
 			String urlNameString = URLPATH + url + "?" + param;
 			URL realUrl = new URL(urlNameString);
@@ -64,8 +62,6 @@ public class HttpRequestUtil {
 			// 建立实际的连接
 			connection.connect();
 			System.out.println("connection.getResponseCode():" + connection.getResponseCode());
-			stateCode = connection.getResponseCode();
-			stateStr = connection.getResponseMessage();
 			// 获取所有响应头字段
 			Map<String, List<String>> map = connection.getHeaderFields();
 			// 遍历所有的响应头字段
@@ -215,7 +211,6 @@ public class HttpRequestUtil {
 	public static Map<String,Object> sendPost(String url, String param) {
 		Map<String,Object> result = new HashMap<String, Object>();
 		String resultStr = "";
-		String stateStr = "";
 		BufferedReader in = null;
 		int stateCode = 5500;
 		PrintWriter out = null;

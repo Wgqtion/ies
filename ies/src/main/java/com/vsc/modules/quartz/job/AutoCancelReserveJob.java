@@ -8,7 +8,13 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-public class MyJob implements Job {
+/**
+ * 超时自动取消预约
+ * @author XiangXiaoLin
+ *
+ */
+public class AutoCancelReserveJob implements Job {
+	
 	@Override 
     public void execute(JobExecutionContext context) throws JobExecutionException { 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"); 

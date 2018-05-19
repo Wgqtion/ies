@@ -89,7 +89,7 @@ public class WxCoreService extends BaseService<WxCore> {
 		}
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_weixinId", wxCore.getWeixinId());
-		searchParams.put("EQ_status",wxCore.getStatus());
+		searchParams.put("EQ_status",1);
 		WxCore wc = this.find(searchParams);
 		if (wc != null) {
 			return 2;
@@ -264,7 +264,7 @@ public class WxCoreService extends BaseService<WxCore> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String message=this.parkingLockService.reverse(new Long[] {wc.getParkingLock().getId()}, "02", wxCore.getWeixinId(),
+		String message=this.parkingLockService.reverse(new Long[] {wc.getParkingLock().getId()}, "01", wxCore.getWeixinId(),
 		ParkingLockOperationEvent.SOURCETYPE_PHONE);
 		if (message.length() > 0) {
 			throw new MessageException(message);

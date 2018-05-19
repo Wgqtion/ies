@@ -14,7 +14,7 @@ import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 
-import com.vsc.modules.quartz.job.MyJob;
+import com.vsc.modules.quartz.job.AutoCancelReserveJob;
 
 /**
  * 功能:封装了 Quartz 2.2 动态添加、修改和删除定时任务时间的方法 
@@ -163,6 +163,6 @@ public class QuartzManager {
 	}
 	
 	public static void main(String[] args) {
-		addJob("1","1","1","1","00 49 10 12 4 ? 2018",MyJob.class);
+		addJob("1","1","1","1","00 49 10 12 4 ? 2018",AutoCancelReserveJob.class);
 	}
 }
