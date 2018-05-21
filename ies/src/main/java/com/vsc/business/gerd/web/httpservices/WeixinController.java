@@ -36,8 +36,6 @@ import com.vsc.business.gerd.entity.work.WxOrder;
 import com.vsc.business.gerd.entity.work.WxUser;
 import com.vsc.business.gerd.service.work.OrgService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
-import com.vsc.business.gerd.service.work.ParkingParamService;
-import com.vsc.business.gerd.service.work.ReserveTimeService;
 import com.vsc.business.gerd.service.work.WxCoreService;
 import com.vsc.business.gerd.service.work.WxOrderService;
 import com.vsc.business.gerd.service.work.WxUserService;
@@ -71,12 +69,6 @@ public class WeixinController extends HttpServiceBaseController {
 	// 停车场区
 	@Autowired
 	private ParkingLotService parkingLotService;
-
-	@Autowired
-	private ParkingParamService parkingParamService;
-	
-	@Autowired
-	private ReserveTimeService reserveTimeService;
 	
 	@Autowired
 	private WxCoreService wxCoreService;
@@ -312,7 +304,7 @@ public class WeixinController extends HttpServiceBaseController {
 		if(wxCore==null){
 			return this.ajaxDone(1, null, null);
 		}
-		String[] isNotIgnoreFieldNames = {"type", "parkingLockCode","startTime","parkingLock","parkingGarage","name"};
+		String[] isNotIgnoreFieldNames = {"type","typeStr", "parkingLockCode","startTime","parkingLock","parkingGarage","name"};
 		String jsonstr = JSONUtil.toJSONString(wxCore, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
 	}
