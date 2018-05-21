@@ -20,7 +20,7 @@ import com.vsc.modules.entity.IdEntity;
  *
  */
 @Entity
-@Table(name = Constants.TABLE_PREFIX + "parking_inOut")
+@Table(name = Constants.TABLE_PREFIX + "parking_in_out")
 public class ParkingInOut extends IdEntity implements Serializable {
 
 	/**

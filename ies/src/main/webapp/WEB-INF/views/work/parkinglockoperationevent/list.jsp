@@ -45,7 +45,7 @@
 				<th <vsc:orderField name="eventType"/>>操作类型</th>
 				<th <vsc:orderField name="sourceType"/>>来源</th>
 				<th>操作人</th>
-				<th <vsc:orderField name="reportedTime"/>>操作时间</th>
+				<th <vsc:orderField name="createTime"/>>操作时间</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -57,7 +57,7 @@
 					<td><s:message code="parkinglockoperationevent.eventtype.${varitem.eventType}"/></a></td>
 					<td><s:message code="parkinglockoperationevent.sourcetype.${varitem.sourceType}"/></td>
 					<td><c:if test="${varitem.sourceType eq 1}">${varitem.user.name}</c:if><c:if test="${varitem.sourceType eq 2}">${varitem.wxUser.name}</c:if></td>
-					<td><fmt:formatDate value='${ varitem.reportedTime}' pattern='yyyy-MM-dd HH:mm' /></td>
+					<td><fmt:formatDate value='${ varitem.createTime}' pattern='yyyy-MM-dd HH:mm' /></td>
 				</tr>
 			</c:forEach>
 		</tbody>

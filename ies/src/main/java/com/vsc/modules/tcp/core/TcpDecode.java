@@ -48,7 +48,7 @@ public class TcpDecode extends LengthFieldBasedFrameDecoder {
 				red=in.readByte();
 				reds[f]=red;
 				//开头错误数据
-				if(f>0&&reds[0]!=127&&reds[1]!=127){
+				if(reds[0]!=127&&reds[1]!=127){
 					Log4jUtils.tcpLog.error("headError:"+Arrays.toString(reds));
 					reds=new byte[13];
 					f=0;

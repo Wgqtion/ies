@@ -215,6 +215,7 @@ public class WxCoreService extends BaseService<WxCore> {
 			}
 			Date startDate = CoreUtils.addMin(wc.getStartTime(), freeReserveMin);
 			if (CoreUtils.compare_date(startDate, wc.getEndTime()) != -1) {
+				wc.setIsFree(true);
 				super.save(wc);
 				return 2;
 			}
@@ -252,6 +253,7 @@ public class WxCoreService extends BaseService<WxCore> {
 			}
 			Date startDate = CoreUtils.addMin(wc.getStartTime(), freeParkingMin);
 			if (CoreUtils.compare_date(startDate, wc.getEndTime()) != -1) {
+				wc.setIsFree(true);
 				super.save(wc);
 				return 2;
 			}

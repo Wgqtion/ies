@@ -57,6 +57,12 @@ public class WxCore extends IdEntity{
 	 * 是否点击取消预约
 	 */
 	private Boolean isCancel=false;
+	
+	/**
+	 * 是否免费
+	 */
+	private Boolean isFree=false;
+	
 	/**
 	 * 总价
 	 */
@@ -81,6 +87,15 @@ public class WxCore extends IdEntity{
 
 	public void setIsCancel(Boolean isCancel) {
 		this.isCancel = isCancel;
+	}
+
+	@Column(name = "IS_FREE")
+	public Boolean getIsFree() {
+		return isFree;
+	}
+
+	public void setIsFree(Boolean isFree) {
+		this.isFree = isFree;
 	}
 
 	@Column(name = "AMOUNT")
