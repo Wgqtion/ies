@@ -6,15 +6,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vsc.business.core.entity.security.User;
 import com.vsc.business.gerd.entity.work.WxCore;
 import com.vsc.business.gerd.entity.work.WxOrder;
 import com.vsc.business.gerd.repository.work.WxOrderDao;
 import com.vsc.modules.service.BaseService;
+import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.util.CodeUtils;
 
 /**
@@ -38,6 +42,17 @@ public class WxOrderService extends BaseService<WxOrder> {
 	public JpaSpecificationExecutor<WxOrder> getJpaSpecificationExecutorDao() {
 		return this.wxOrderDao;
 	}
+	
+	/**
+	 * 根据条件查询，未删除，like 用户公司code%
+	 */
+	@Override
+	public Page<WxOrder> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
+		User user=ShiroUserUtils.GetCurrentUser();
+		filterParams.put("RLIKE_wxCores.parkingLock.parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
+		return super.findPage(filterParams, pageRequest);
+	}
+	
 	/**
 	 * 根据weixinId查询状态0的订单
 	 */

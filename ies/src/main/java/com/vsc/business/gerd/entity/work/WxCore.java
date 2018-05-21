@@ -64,7 +64,7 @@ public class WxCore extends IdEntity{
 	private Boolean isFree=false;
 	
 	/**
-	 * 总价
+	 * 费用
 	 */
 	private BigDecimal amount;
 	

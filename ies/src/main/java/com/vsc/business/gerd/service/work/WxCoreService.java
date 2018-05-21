@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vsc.business.core.entity.security.User;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.entity.work.ParkingParam;
@@ -20,6 +23,7 @@ import com.vsc.business.gerd.entity.work.WxOrder;
 import com.vsc.business.gerd.repository.work.WxCoreDao;
 import com.vsc.modules.entity.MessageException;
 import com.vsc.modules.service.BaseService;
+import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.util.CoreUtils;
 
 /**
@@ -58,6 +62,16 @@ public class WxCoreService extends BaseService<WxCore> {
 	@Override
 	public JpaSpecificationExecutor<WxCore> getJpaSpecificationExecutorDao() {
 		return this.wxCoreDao;
+	}
+	
+	/**
+	 * 根据条件查询，未删除，like 用户公司code%
+	 */
+	@Override
+	public Page<WxCore> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
+		User user=ShiroUserUtils.GetCurrentUser();
+		filterParams.put("RLIKE_parkingLock.parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
+		return super.findPage(filterParams, pageRequest);
 	}
 
 	/**

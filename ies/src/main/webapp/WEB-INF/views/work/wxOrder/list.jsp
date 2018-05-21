@@ -53,8 +53,8 @@
 					<td>${varitem.wxUser.name} </a></td>
 					<td>${varitem.totalFee}</td>
 					<td><s:message code="wxOrder.status.${varitem.status}"/></td>
-					<td><fmt:formatDate value='${ varitem.createTime}' pattern='yyyy-MM-dd HH:mm' /></td>
-					<td><fmt:formatDate value='${ varitem.payTime}' pattern='yyyy-MM-dd HH:mm' /></td>
+					<td><fmt:formatDate value='${ varitem.createTime}' pattern='yyyy-MM-dd HH:mm:ss' /></td>
+					<td><fmt:formatDate value='${ varitem.payTime}' pattern='yyyy-MM-dd HH:mm:ss' /></td>
 					<td><a title="查询明细" target="dialog" rel="wxOrder_view" href="${ctx}/work/wxOrder/view/${varitem.id}" class="btnInfo">查看</a></td>
 				</tr>
 			</c:forEach>
