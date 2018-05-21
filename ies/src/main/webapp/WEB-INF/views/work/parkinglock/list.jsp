@@ -65,7 +65,7 @@
 					<td><input name="ids" value="${varitem.id }" type="checkbox"></td>
 					<td>${varitem.parkingGarage.parkingLot.name}</td>
 					<td>${varitem.ipAddress}</td>
-					<td><a href="${ctx}/work/parkinglock/view/${varitem.id}" target="dialog" title="查看地锁信息" rel="parkinglock_view">${varitem.lockNum} </a></td>
+					<td><a href="${ctx}/work/parkinglock/view/${varitem.id}" target="dialog" title="查看地锁信息" rel="parkinglock__view">${varitem.lockNum} </a></td>
 					<td><s:message code="parkinglock.isenabled.${varitem.isEnabled}" /></td>
 					<td><a href="${ctx}/work/parkinggarage/view/${varitem.parkingGarage.id}" target="dialog" title="查看停车位" rel="parkinggarage_view">${varitem.parkingGarage.name} </a></td>
 					<td><s:message code="parkinglock.isCarOn.${varitem.isCarOn}" /></td>

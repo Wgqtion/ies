@@ -40,8 +40,8 @@
 		<thead>
 			<tr>
 				<th width="40" align="center">序号</th>
-				<th>区域编号</th>
-				<th>地锁编号</th>
+				<th <vsc:orderField name="ipAddress"/>>区域编号</th>
+				<th <vsc:orderField name="lockNum"/>>地锁编号</th>
 				<th <vsc:orderField name="eventType"/>>操作类型</th>
 				<th <vsc:orderField name="sourceType"/>>来源</th>
 				<th>操作人</th>
