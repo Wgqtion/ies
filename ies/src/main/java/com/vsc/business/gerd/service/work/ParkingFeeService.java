@@ -61,17 +61,11 @@ public class ParkingFeeService extends BaseService<ParkingFee> {
 			Date endDate = wxCore.getEndTime();
 
 			Map<String, Object> searchParams = new HashMap<String, Object>();
-			/*
-			 * 1.指定日期内，开始大于等于开始，结束小于等于结束
-			 */
+			
 			searchParams.put("EQ_parkingLotCode", wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
 			searchParams.put("EQ_isDelete", 0);
 			searchParams.put("EQ_type", wxCore.getType());
 			searchParams.put("EQ_week", 0);
-			//暂时不做指定日期费用设置
-//			searchParams.put("GTE_startTime", parkingFee.getStartTime());
-//			searchParams.put("LTE_endTime", parkingFee.getEndTime());
-//			list.addAll(super.findList(searchParams));
 
 			/*
 			 *  2.查询所有week时间范围内的费用设置

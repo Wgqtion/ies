@@ -22,6 +22,8 @@ import com.vsc.business.gerd.entity.work.WxCore;
 import com.vsc.business.gerd.entity.work.WxOrder;
 import com.vsc.business.gerd.repository.work.WxCoreDao;
 import com.vsc.modules.entity.MessageException;
+import com.vsc.modules.quartz.job.ReserveCancelJob;
+import com.vsc.modules.quartz.manager.QuartzManager;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.util.CoreUtils;
@@ -50,7 +52,7 @@ public class WxCoreService extends BaseService<WxCore> {
 
 	@Autowired
 	private ParkingFeeService parkingFeeService;
-	
+
 	@Autowired
 	private WxOrderService wxOrderService;
 
@@ -63,13 +65,13 @@ public class WxCoreService extends BaseService<WxCore> {
 	public JpaSpecificationExecutor<WxCore> getJpaSpecificationExecutorDao() {
 		return this.wxCoreDao;
 	}
-	
+
 	/**
 	 * 根据条件查询，未删除，like 用户公司code%
 	 */
 	@Override
 	public Page<WxCore> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
-		User user=ShiroUserUtils.GetCurrentUser();
+		User user = ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_parkingLock.parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
 		return super.findPage(filterParams, pageRequest);
 	}
@@ -92,18 +94,18 @@ public class WxCoreService extends BaseService<WxCore> {
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * 查询使用状态
 	 */
-	public int getCoreStatus(WxCore wxCore){
-		WxOrder wxOrder=this.wxOrderService.getByWeixinId(wxCore.getWeixinId());
+	public int getCoreStatus(WxCore wxCore) {
+		WxOrder wxOrder = this.wxOrderService.getByWeixinId(wxCore.getWeixinId());
 		if (wxOrder != null) {
 			return 1;
 		}
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_weixinId", wxCore.getWeixinId());
-		searchParams.put("EQ_status",1);
+		searchParams.put("EQ_status", 1);
 		WxCore wc = this.find(searchParams);
 		if (wc != null) {
 			return 2;
@@ -116,19 +118,20 @@ public class WxCoreService extends BaseService<WxCore> {
 		}
 		return 0;
 	}
-	
+
 	/**
-	 * 查询使用中的记录，status=1，weixinId 
+	 * 查询使用中的记录，status=1，weixinId
+	 * 
 	 * @param wxCore
 	 * @return
 	 */
-	public WxCore findBy(WxCore wxCore){
+	public WxCore findBy(WxCore wxCore) {
 		Map<String, Object> searchParams = new HashMap<String, Object>();
-		searchParams.put("EQ_status",1);
+		searchParams.put("EQ_status", 1);
 		searchParams.put("EQ_weixinId", wxCore.getWeixinId());
 		return this.find(searchParams);
 	}
-	
+
 	/**
 	 * 预约操作
 	 */
@@ -136,8 +139,8 @@ public class WxCoreService extends BaseService<WxCore> {
 		ParkingLock parkingLock = this.parkingLockService.getByCode(wxCore.getParkingLockCode());
 
 		// 查询使用记录
-		int status=getCoreStatus(wxCore);
-		if(status!=0){
+		int status = getCoreStatus(wxCore);
+		if (status != 0) {
 			return status;
 		}
 
@@ -155,8 +158,15 @@ public class WxCoreService extends BaseService<WxCore> {
 				.getByParkingLotCode(parkingLock.getParkingGarage().getParkingLotCode());
 		if (parkingParam != null) {
 			int reserveNum = getReserveNum(wxCore);
-			if (reserveNum >= parkingParam.getCancelNum()) {
+			if (reserveNum >= parkingParam.getCancelNum()&&parkingParam.getCancelNum()>0) {
 				return 5;
+			}
+			// 预约保留时间
+			Integer reserveMin = parkingParam.getReserveMin();
+			if(reserveMin>0){
+				QuartzManager.addJob(wxCore.getWeixinId(), wxCore.getWeixinId(),wxCore.getWeixinId(),
+						wxCore.getWeixinId(), CoreUtils.getCron(CoreUtils.addMin(new Date(), reserveMin)),
+						ReserveCancelJob.class, wxCore.getWeixinId());	
 			}
 		}
 
@@ -166,30 +176,28 @@ public class WxCoreService extends BaseService<WxCore> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		String message=this.parkingLockService.reverse(new Long[] {parkingLock.getId()}, "01", wxCore.getWeixinId(),
-				ParkingLockOperationEvent.SOURCETYPE_PHONE);
-		if (message.length() > 0) {
-			throw new MessageException(message);
-		}
+
+//		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "01", wxCore.getWeixinId(),
+//				ParkingLockOperationEvent.SOURCETYPE_PHONE);
+//		if (message.length() > 0) {
+//			throw new MessageException(message);
+//		}
 		return 0;
 	}
 
-	
 	/**
 	 * 解锁操作
 	 */
 	public int unlock(WxCore wxCore) throws MessageException {
 		ParkingLock parkingLock = this.parkingLockService.getByCode(wxCore.getParkingLockCode());
 		wxCore.setType(Integer.valueOf(1));
-		int reserveStatus=cancelReserve(wxCore);
+		int reserveStatus = cancelReserve(wxCore);
 		wxCore.setType(Integer.valueOf(2));
 		// 查询使用记录
-		int status=getCoreStatus(wxCore);
-		if((status==1&&reserveStatus==1)||(status!=0&&reserveStatus!=0)){
+		int status = getCoreStatus(wxCore);
+		if ((status == 1 && reserveStatus == 1) || (status != 0 && reserveStatus != 0)) {
 			return status;
 		}
-
 
 		try {
 			super.save(wxCore);
@@ -197,27 +205,30 @@ public class WxCoreService extends BaseService<WxCore> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		String message=this.parkingLockService.reverse(new Long[] {parkingLock.getId()}, "02", wxCore.getWeixinId(),
-				ParkingLockOperationEvent.SOURCETYPE_PHONE);
-		if (message.length() > 0) {
-			throw new MessageException(message);
-		}
+
+//		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "02", wxCore.getWeixinId(),
+//				ParkingLockOperationEvent.SOURCETYPE_PHONE);
+//		if (message.length() > 0) {
+//			throw new MessageException(message);
+//		}
 		return 0;
 	}
-	
+
 	/**
 	 * 取消预约
 	 */
 	public int cancelReserve(WxCore wxCore) {
 		try {
+			QuartzManager.delJob(wxCore.getWeixinId(), wxCore.getWeixinId(),wxCore.getWeixinId(),
+					wxCore.getWeixinId());
 			// 查询记录
-			WxCore wc=findBy(wxCore);
-			if(wc==null){
+			WxCore wc = findBy(wxCore);
+			if (wc == null) {
 				return 1;
 			}
 			wc.setStatus(0);
 			wc.setIsCancel(wxCore.getIsCancel());
+			wc.setIsSystemCancel(wxCore.getIsSystemCancel());
 			wc.setEndTime(new Date());
 			// 查询参数
 			ParkingParam parkingParam = this.parkingParamService
@@ -244,15 +255,15 @@ public class WxCoreService extends BaseService<WxCore> {
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * 上锁操作
 	 */
 	public int lock(WxCore wxCore) throws MessageException {
 		// 查询记录
-		WxCore wc=findBy(wxCore);
+		WxCore wc = findBy(wxCore);
 		try {
-			if(wc==null){
+			if (wc == null) {
 				return 1;
 			}
 			wc.setStatus(0);
@@ -269,8 +280,8 @@ public class WxCoreService extends BaseService<WxCore> {
 			if (CoreUtils.compare_date(startDate, wc.getEndTime()) != -1) {
 				wc.setIsFree(true);
 				super.save(wc);
-				String message=this.parkingLockService.reverse(new Long[] {wc.getParkingLock().getId()}, "01", wxCore.getWeixinId(),
-				ParkingLockOperationEvent.SOURCETYPE_PHONE);
+				String message = this.parkingLockService.reverse(new Long[] { wc.getParkingLock().getId() }, "01",
+						wxCore.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
 				if (message.length() > 0) {
 					throw new MessageException(message);
 				}
@@ -285,11 +296,11 @@ public class WxCoreService extends BaseService<WxCore> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String message=this.parkingLockService.reverse(new Long[] {wc.getParkingLock().getId()}, "01", wxCore.getWeixinId(),
-		ParkingLockOperationEvent.SOURCETYPE_PHONE);
-		if (message.length() > 0) {
-			throw new MessageException(message);
-		}
+//		String message = this.parkingLockService.reverse(new Long[] { wc.getParkingLock().getId() }, "01",
+//				wxCore.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
+//		if (message.length() > 0) {
+//			throw new MessageException(message);
+//		}
 		return 0;
 	}
 }

@@ -49,7 +49,7 @@
 			<c:forEach items="${page.content}" var="varitem" varStatus="varindex">
 				<tr target="sid" rel="${varitem.id}">
 					<td align="center">${varindex.count+(page.number * page.size)}</td>
-					<td>${varitem.code} </td>
+					<td><a title="查询明细" target="dialog" rel="wxOrder_view" href="${ctx}/work/wxOrder/view/${varitem.id}">${varitem.code}</a></td>
 					<td>${varitem.wxUser.name} </a></td>
 					<td>${varitem.totalFee}</td>
 					<td><s:message code="wxOrder.status.${varitem.status}"/></td>

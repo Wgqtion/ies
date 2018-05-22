@@ -20,6 +20,11 @@ public class Log4jUtils {
 	 */
 	public static Logger tcpHandler = Logger.getLogger("tcpHandler");
 	
+	/**
+	 * 预约超时取消日志
+	 */
+	public static Logger reserveCancel = Logger.getLogger("reserveCancel");
+	
 	static{
 		Properties props=new Properties();  
         try {  

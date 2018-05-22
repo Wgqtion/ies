@@ -59,6 +59,11 @@ public class WxCore extends IdEntity{
 	private Boolean isCancel=false;
 	
 	/**
+	 * 是否系统自动取消
+	 */
+	private Boolean isSystemCancel=false;
+	
+	/**
 	 * 是否免费
 	 */
 	private Boolean isFree=false;
@@ -87,6 +92,15 @@ public class WxCore extends IdEntity{
 
 	public void setIsCancel(Boolean isCancel) {
 		this.isCancel = isCancel;
+	}
+
+	@Column(name = "IS_SYSTEM_CANCEL")
+	public Boolean getIsSystemCancel() {
+		return isSystemCancel;
+	}
+
+	public void setIsSystemCancel(Boolean isSystemCancel) {
+		this.isSystemCancel = isSystemCancel;
 	}
 
 	@Column(name = "IS_FREE")

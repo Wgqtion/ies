@@ -37,6 +37,13 @@
 		<property name="arguments" ref="parkingLockEventLogService"/>
 	</bean>
 	
+	<!-- ReserveCancelJob依赖的dao都需要用depends-on声明 -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" 
+			depends-on="parkingLockDao,parkingGarageDao,wxUserDao,wxCoreDao,parkingLockOperationEventDao,parkingParamDao,reserveTimeDao,parkingFeeDao,wxOrderDao">
+		<property name="staticMethod" value="com.vsc.modules.quartz.job.ReserveCancelJob.setWxCoreService"/>
+		<property name="arguments" ref="wxCoreService"/>
+	</bean>
+	
 	<!-- Shiro Filter -->
 	<!-- 定制过滤器 -->
 	<bean id="perms" class="com.vsc.modules.shiro.CustomPermissionsAuthorizationFilter" lazy-init="true"/>
