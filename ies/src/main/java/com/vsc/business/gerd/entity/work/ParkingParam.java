@@ -30,14 +30,37 @@ public class ParkingParam extends BasicEntity{
 	 * 预约保留分钟
 	 */
 	private Integer reserveMin;
+	
 	/**
 	 * 预约免费分钟
 	 */
 	private Integer freeReserveMin;
+	
 	/**
 	 * 停车免费分钟
 	 */
 	private Integer freeParkingMin;
+	
+	/**
+	 * 最高预约费
+	 */
+	private Integer maxReserveFee;
+	
+	/**
+	 * 最高停车费
+	 */
+	private Integer maxParkingFee;
+	
+	/**
+	 * 预约优惠分钟
+	 */
+	private Integer privilegeReserveMin;
+	
+	/**
+	 * 停车优惠分钟
+	 */
+	private Integer privilegeParkingMin;
+	
 	/**
 	 * 预约取消次数，上限后不可预约
 	 */
@@ -80,6 +103,42 @@ public class ParkingParam extends BasicEntity{
 		this.cancelNum = cancelNum;
 	}
 
+	@Column(name = "PRIVILEGE_RESERVE_MIN")
+	public Integer getPrivilegeReserveMin() {
+		return privilegeReserveMin;
+	}
+
+	public void setPrivilegeReserveMin(Integer privilegeReserveMin) {
+		this.privilegeReserveMin = privilegeReserveMin;
+	}
+
+	@Column(name = "PRIVILEGE_PARKING_MIN")
+	public Integer getPrivilegeParkingMin() {
+		return privilegeParkingMin;
+	}
+
+	public void setPrivilegeParkingMin(Integer privilegeParkingMin) {
+		this.privilegeParkingMin = privilegeParkingMin;
+	}
+
+	@Column(name = "MAX_RESERVE_FEE")
+	public Integer getMaxReserveFee() {
+		return maxReserveFee;
+	}
+
+	public void setMaxReserveFee(Integer maxReserveFee) {
+		this.maxReserveFee = maxReserveFee;
+	}
+
+	@Column(name = "MAX_PARKING_FEE")
+	public Integer getMaxParkingFee() {
+		return maxParkingFee;
+	}
+
+	public void setMaxParkingFee(Integer maxParkingFee) {
+		this.maxParkingFee = maxParkingFee;
+	}
+
 	/**
      * @return
      */
@@ -91,6 +150,7 @@ public class ParkingParam extends BasicEntity{
 	public void setParkingLotCode(String parkingLotCode) {
 		this.parkingLotCode = parkingLotCode;
 	}
+	
 	/**
 	 * @return
 	 */

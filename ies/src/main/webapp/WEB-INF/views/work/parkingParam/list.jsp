@@ -35,6 +35,10 @@
 				<th <vsc:orderField name="cancelNum"/>>预约取消次数上限</th>
 				<th <vsc:orderField name="freeReserveMin"/>>预约免费分钟</th>
 				<th <vsc:orderField name="freeParkingMin"/>>停车免费分钟</th>
+				<th <vsc:orderField name="privilegeReserveMin"/>>预约优惠分钟</th>
+				<th <vsc:orderField name="privilegeParkingMin"/>>停车优惠分钟</th>
+				<th <vsc:orderField name="maxReserveFee"/>>预约上限费用</th>
+				<th <vsc:orderField name="maxParkingFee"/>>停车上限费用</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -46,7 +50,11 @@
 					<td>${varitem.reserveMin}</td>  
 					<td>${varitem.cancelNum}</td>  
 					<td>${varitem.freeReserveMin}</td>  
-					<td>${varitem.freeParkingMin}</td>  
+					<td>${varitem.freeParkingMin}</td> 
+					<td>${varitem.privilegeReserveMin}</td>  
+					<td>${varitem.privilegeParkingMin}</td>  
+					<td>${varitem.maxReserveFee}</td>  
+					<td>${varitem.maxParkingFee}</td>  
 				</tr>
 			</c:forEach>
 		</tbody>

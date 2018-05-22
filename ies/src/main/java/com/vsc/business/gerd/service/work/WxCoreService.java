@@ -158,15 +158,15 @@ public class WxCoreService extends BaseService<WxCore> {
 				.getByParkingLotCode(parkingLock.getParkingGarage().getParkingLotCode());
 		if (parkingParam != null) {
 			int reserveNum = getReserveNum(wxCore);
-			if (reserveNum >= parkingParam.getCancelNum()&&parkingParam.getCancelNum()>0) {
+			if (reserveNum >= parkingParam.getCancelNum() && parkingParam.getCancelNum() > 0) {
 				return 5;
 			}
 			// 预约保留时间
 			Integer reserveMin = parkingParam.getReserveMin();
-			if(reserveMin>0){
-				QuartzManager.addJob(wxCore.getWeixinId(), wxCore.getWeixinId(),wxCore.getWeixinId(),
+			if (reserveMin > 0) {
+				QuartzManager.addJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
 						wxCore.getWeixinId(), CoreUtils.getCron(CoreUtils.addMin(new Date(), reserveMin)),
-						ReserveCancelJob.class, wxCore.getWeixinId());	
+						ReserveCancelJob.class, wxCore.getWeixinId());
 			}
 		}
 
@@ -219,7 +219,7 @@ public class WxCoreService extends BaseService<WxCore> {
 	 */
 	public int cancelReserve(WxCore wxCore) {
 		try {
-			QuartzManager.delJob(wxCore.getWeixinId(), wxCore.getWeixinId(),wxCore.getWeixinId(),
+			QuartzManager.delJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
 					wxCore.getWeixinId());
 			// 查询记录
 			WxCore wc = findBy(wxCore);
@@ -246,6 +246,10 @@ public class WxCoreService extends BaseService<WxCore> {
 			}
 			// 收费计算
 			BigDecimal fee = this.parkingFeeService.calculateFee(wc);
+			if (parkingParam != null && fee != null && parkingParam.getMaxReserveFee() != null
+					&& fee.intValue() > parkingParam.getMaxReserveFee().intValue()) {
+				fee=new BigDecimal(parkingParam.getMaxReserveFee());
+			}
 			wc.setAmount(fee);
 			super.save(wc);
 			wxOrderService.save(wc);
@@ -289,6 +293,10 @@ public class WxCoreService extends BaseService<WxCore> {
 			}
 			// 收费计算
 			BigDecimal fee = this.parkingFeeService.calculateFee(wc);
+			if (parkingParam != null && fee != null && parkingParam.getMaxParkingFee() != null
+					&& fee.intValue() > parkingParam.getMaxParkingFee().intValue()) {
+				fee=new BigDecimal(parkingParam.getMaxParkingFee());
+			}
 			wc.setAmount(fee);
 			super.save(wc);
 			wxOrderService.save(wc);

@@ -75,6 +75,52 @@ public class WxCore extends IdEntity{
 	
 	private WxOrder wxOrder;
 	
+	/**
+	 * 非持久化，开始计费时间
+	 */
+	private Date startFeeTime;
+	
+	/**
+	 * 免费时间
+	 */
+	private Date freeTime;
+	
+	/**
+	 * 超时自动取消时间
+	 */
+	private Date cancelTime;
+	
+	
+	@Transient
+	public Date getStartFeeTime() {
+		if(startFeeTime==null){
+			return startTime;
+		}
+		return startFeeTime;
+	}
+
+	public void setStartFeeTime(Date startFeeTime) {
+		this.startFeeTime = startFeeTime;
+	}
+
+	@Transient
+	public Date getCancelTime() {
+		return cancelTime;
+	}
+
+	public void setCancelTime(Date cancelTime) {
+		this.cancelTime = cancelTime;
+	}
+	
+	@Transient
+	public Date getFreeTime() {
+		return freeTime;
+	}
+
+	public void setFreeTime(Date freeTime) {
+		this.freeTime = freeTime;
+	}
+
 	@ManyToOne
     @JoinColumn(name="WX_ORDER_CODE",referencedColumnName="CODE",insertable=false,updatable=false)
 	public WxOrder getWxOrder() {

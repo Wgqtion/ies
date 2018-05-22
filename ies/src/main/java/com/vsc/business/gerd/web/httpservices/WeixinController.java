@@ -30,17 +30,20 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.vsc.business.gerd.entity.work.Org;
 import com.vsc.business.gerd.entity.work.ParkingLot;
+import com.vsc.business.gerd.entity.work.ParkingParam;
 import com.vsc.business.gerd.entity.work.WeixinAttest;
 import com.vsc.business.gerd.entity.work.WxCore;
 import com.vsc.business.gerd.entity.work.WxOrder;
 import com.vsc.business.gerd.entity.work.WxUser;
 import com.vsc.business.gerd.service.work.OrgService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
+import com.vsc.business.gerd.service.work.ParkingParamService;
 import com.vsc.business.gerd.service.work.WxCoreService;
 import com.vsc.business.gerd.service.work.WxOrderService;
 import com.vsc.business.gerd.service.work.WxUserService;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.MessageException;
+import com.vsc.util.CoreUtils;
 import com.vsc.util.JSONUtil;
 
 /**
@@ -75,9 +78,12 @@ public class WeixinController extends HttpServiceBaseController {
 	
 	@Autowired
 	private WxOrderService wxOrderService;
+	
+	@Autowired
+	private ParkingParamService parkingParamService;
 
-	static Map locks = new HashMap();
-	static List lockKeys = new ArrayList();
+	static Map<Object,Object> locks = new HashMap<Object,Object>();
+	static List<Object> lockKeys = new ArrayList<Object>();
 	static {
 		for (int i = 0; i < 10000; i++) {
 			Object lockKey = new Object();
@@ -304,7 +310,28 @@ public class WeixinController extends HttpServiceBaseController {
 		if(wxCore==null){
 			return this.ajaxDone(1, null, null);
 		}
-		String[] isNotIgnoreFieldNames = {"type","typeStr", "parkingLockCode","startTime","parkingLock","parkingGarage","name"};
+		Integer freeMin=0;
+		Integer privilegeMin=0;
+		ParkingParam parkingParam=parkingParamService.getByParkingLotCode(wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
+		if(parkingParam!=null){
+			if(wxCore.getType()==1){
+				freeMin=parkingParam.getFreeReserveMin();
+				privilegeMin=parkingParam.getPrivilegeReserveMin();
+				if(parkingParam.getReserveMin()!=null&&parkingParam.getReserveMin()>0){
+					wxCore.setCancelTime(CoreUtils.addMin(wxCore.getStartTime(), parkingParam.getReserveMin()));	
+				}
+			}else if(wxCore.getType()==2){
+				freeMin=parkingParam.getFreeParkingMin();
+				privilegeMin=parkingParam.getPrivilegeParkingMin();
+			}
+		}
+		if(freeMin!=null&&freeMin>0){
+			wxCore.setFreeTime(CoreUtils.addMin(wxCore.getStartTime(), freeMin));		
+		}
+		if(privilegeMin!=null&&privilegeMin>0){
+			wxCore.setStartFeeTime(CoreUtils.addMin(wxCore.getStartTime(), privilegeMin));
+		}
+		String[] isNotIgnoreFieldNames = {"type","typeStr","startFeeTime","freeTime","cancelTime", "parkingLockCode","startTime","parkingLock","parkingGarage","name"};
 		String jsonstr = JSONUtil.toJSONString(wxCore, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
 	}

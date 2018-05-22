@@ -63,6 +63,38 @@
 						<span for="freeParkingMin" generated="true" style="display: none" class="error"></span>
 					</td>
 				</tr>
+				<tr>
+					<td class="fieldName"><label><span class="required">*</span>预约优惠分钟:</label></td>
+					<td class="fieldInput">
+						<label>
+						<input type="text" id="privilegeReserveMin" value="${vm.privilegeReserveMin}" name="privilegeReserveMin" validate="{required:true,digits:true}" />
+						</label>
+						<span for="privilegeReserveMin" generated="true" style="display: none" class="error"></span>
+					</td>
+					<td class="fieldName"><label><span class="required">*</span>停车优惠分钟:</label></td>
+					<td class="fieldInput">
+						<label>
+						<input type="text" id="privilegeParkingMin" value="${vm.privilegeParkingMin}" name="privilegeParkingMin" validate="{required:true,digits:true}" />
+						</label>
+						<span for="privilegeParkingMin" generated="true" style="display: none" class="error"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="fieldName"><label><span class="required">*</span>预约上限费用:</label></td>
+					<td class="fieldInput">
+						<label>
+						<input type="text" id="maxReserveFee" value="${vm.maxReserveFee}" name="maxReserveFee" validate="{required:true,number:true}" />
+						</label>
+						<span for="maxReserveFee" generated="true" style="display: none" class="error"></span>
+					</td>
+					<td class="fieldName"><label><span class="required">*</span>停车上限费用:</label></td>
+					<td class="fieldInput">
+						<label>
+						<input type="text" id="maxParkingFee" value="${vm.maxParkingFee}" name="maxParkingFee" validate="{required:true,number:true}" />
+						</label>
+						<span for="maxParkingFee" generated="true" style="display: none" class="error"></span>
+					</td>
+				</tr>
 			</table>
 		</div>
 		<div class="formBar">

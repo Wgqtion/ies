@@ -278,7 +278,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		message = head+"地锁请求超时，请重试";
 		Map<String, Object> filterParams = new HashMap<String, Object>();
 		filterParams.put("id",id);
-		for (int j = 0; j < 10; j++) {
+		for (int j = 0; j < 15; j++) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
