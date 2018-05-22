@@ -269,6 +269,11 @@ public class WxCoreService extends BaseService<WxCore> {
 			if (CoreUtils.compare_date(startDate, wc.getEndTime()) != -1) {
 				wc.setIsFree(true);
 				super.save(wc);
+				String message=this.parkingLockService.reverse(new Long[] {wc.getParkingLock().getId()}, "01", wxCore.getWeixinId(),
+				ParkingLockOperationEvent.SOURCETYPE_PHONE);
+				if (message.length() > 0) {
+					throw new MessageException(message);
+				}
 				return 2;
 			}
 			// 收费计算

@@ -343,7 +343,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 			wxCore.setWeixinId(weixinId);
 			wxCore.setParkingLockCode(parkingLocks.get(i).getCode());
 			int status=wxCoreService.getCoreStatus(wxCore);
-			if(status!=0){
+			if(status!=0||!parkingLocks.get(i).getIsSurplus()){
 				parkingLocks.remove(i);
 			}
 		}
