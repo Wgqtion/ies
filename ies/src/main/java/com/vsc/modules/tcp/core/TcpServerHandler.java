@@ -1,7 +1,5 @@
 package com.vsc.modules.tcp.core;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vsc.business.gerd.service.work.ParkingLockEventLogService;
@@ -43,28 +41,20 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 		Log4jUtils.tcpHandler.info("不活跃的用户:" + ctx.channel().remoteAddress());
 	}
 
+	
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		try {
-			List<TcpMsg> tcpMsgs = null;
-			if (msg instanceof List) {
-				tcpMsgs = (List<TcpMsg>) msg;
+			TcpMsg tcpMsg = (TcpMsg) msg;
+			ClientMap.lockMap.put(tcpMsg.getIpAddress(), ctx);
+			if (tcpMsg.getFlagCRC()) {
+				this.parkingLockEventLogService.tcpUpload(tcpMsg);
 			} else {
-				Log4jUtils.tcpLog.warn("非解析器数据");
+				Log4jUtils.tcpError.info("CRCError:" + tcpMsg.getHexMsg());
 			}
-			if (tcpMsgs != null) {
-				for (TcpMsg tcpMsg : tcpMsgs) {
-					ClientMap.lockMap.put(tcpMsg.getIpAddress(), ctx);
-					if (tcpMsg.getFlagCRC()) {
-						this.parkingLockEventLogService.tcpUpload(tcpMsg);
-					} else {
-						Log4jUtils.tcpLog.error("CRCError:" + tcpMsg.getHexMsg());
-					}
-				}
-			}
-		} catch (Exception exception) {
-			Log4jUtils.tcpLog.error("exception:" + this.getClass() + ",Message:" + exception.getMessage());
-		} finally {
+		}catch(Exception e){
+			Log4jUtils.tcpError.info("exception:" + this.getClass() + ",Message:" + e.getMessage());
+		}finally {
 			ReferenceCountUtil.release(msg);
 		}
 	}
@@ -72,7 +62,7 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) { // (4)
 		// 当出现异常就关闭连接
-		Log4jUtils.tcpHandler.error("异常断开连接的用户:" + ctx.channel().remoteAddress() + ",Message:" + cause.getMessage());
+		Log4jUtils.tcpError.info("异常断开连接的用户:" + ctx.channel().remoteAddress() + ",Message:" + cause.getMessage());
 		ctx.close();
 	}
 }

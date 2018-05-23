@@ -39,17 +39,16 @@ public class TcpServer {
 			b.childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(new TcpDecode(Integer.MAX_VALUE, 0,0, 0,0,false));  
+					ch.pipeline().addLast(new TcpDecode());  
 					ch.pipeline().addLast(new TcpServerHandler());
 				}
 			});
 			b.childOption(ChannelOption.SO_KEEPALIVE, true);
-
 			ChannelFuture f=b.bind(IP, PORT).sync();
 			Log4jUtils.tcpLog.info("TCP服务器已启动,IP:"+IP+",PORT:"+PORT);
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {
-			Log4jUtils.tcpLog.error("exception:"+TcpServer.class + ",Message:" + e.getMessage());
+			Log4jUtils.tcpError.info("exception:"+TcpServer.class + ",Message:" + e.getMessage());
 		}finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();

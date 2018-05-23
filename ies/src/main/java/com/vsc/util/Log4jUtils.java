@@ -21,6 +21,11 @@ public class Log4jUtils {
 	public static Logger tcpHandler = Logger.getLogger("tcpHandler");
 	
 	/**
+	 * tcpError日志
+	 */
+	public static Logger tcpError = Logger.getLogger("tcpError");
+	
+	/**
 	 * 预约超时取消日志
 	 */
 	public static Logger reserveCancel = Logger.getLogger("reserveCancel");
