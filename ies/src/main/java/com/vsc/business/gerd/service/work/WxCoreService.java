@@ -177,11 +177,11 @@ public class WxCoreService extends BaseService<WxCore> {
 			e.printStackTrace();
 		}
 
-//		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "01", wxCore.getWeixinId(),
-//				ParkingLockOperationEvent.SOURCETYPE_PHONE);
-//		if (message.length() > 0) {
-//			throw new MessageException(message);
-//		}
+		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "01", wxCore.getWeixinId(),
+				ParkingLockOperationEvent.SOURCETYPE_PHONE);
+		if (message.length() > 0) {
+			throw new MessageException(message);
+		}
 		return 0;
 	}
 
@@ -206,11 +206,11 @@ public class WxCoreService extends BaseService<WxCore> {
 			e.printStackTrace();
 		}
 
-//		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "02", wxCore.getWeixinId(),
-//				ParkingLockOperationEvent.SOURCETYPE_PHONE);
-//		if (message.length() > 0) {
-//			throw new MessageException(message);
-//		}
+		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "02", wxCore.getWeixinId(),
+				ParkingLockOperationEvent.SOURCETYPE_PHONE);
+		if (message.length() > 0) {
+			throw new MessageException(message);
+		}
 		return 0;
 	}
 
@@ -304,11 +304,11 @@ public class WxCoreService extends BaseService<WxCore> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		String message = this.parkingLockService.reverse(new Long[] { wc.getParkingLock().getId() }, "01",
-//				wxCore.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
-//		if (message.length() > 0) {
-//			throw new MessageException(message);
-//		}
+		String message = this.parkingLockService.reverse(new Long[] { wc.getParkingLock().getId() }, "01",
+				wxCore.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
+		if (message.length() > 0) {
+			throw new MessageException(message);
+		}
 		return 0;
 	}
 }

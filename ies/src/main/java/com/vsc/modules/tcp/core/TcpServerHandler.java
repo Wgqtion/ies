@@ -1,5 +1,7 @@
 package com.vsc.modules.tcp.core;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vsc.business.gerd.service.work.ParkingLockEventLogService;
@@ -45,13 +47,11 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		try {
-			TcpMsg tcpMsg = (TcpMsg) msg;
-			ClientMap.lockMap.put(tcpMsg.getIpAddress(), ctx);
-			if (tcpMsg.getFlagCRC()) {
-				this.parkingLockEventLogService.tcpUpload(tcpMsg);
-			} else {
-				Log4jUtils.tcpError.info("CRCError:" + tcpMsg.getHexMsg());
+			List<TcpMsg> tcpMsgs = (List<TcpMsg>) msg;
+			if(tcpMsgs!=null&&tcpMsgs.size()>0){
+				ClientMap.lockMap.put(tcpMsgs.get(0).getIpAddress(), ctx);
 			}
+			this.parkingLockEventLogService.tcpUpload(tcpMsgs);
 		}catch(Exception e){
 			Log4jUtils.tcpError.info("exception:" + this.getClass() + ",Message:" + e.getMessage());
 		}finally {

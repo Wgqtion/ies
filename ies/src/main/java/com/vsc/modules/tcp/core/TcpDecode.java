@@ -1,5 +1,6 @@
 package com.vsc.modules.tcp.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class TcpDecode extends ByteToMessageDecoder {
 	
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+		List<TcpMsg> tcpMsgs=new ArrayList<TcpMsg>();
         byte[] reds=new byte[13];
 		byte red=0;
 		int f=0;
@@ -39,7 +41,7 @@ public class TcpDecode extends ByteToMessageDecoder {
 			//正常开头与结尾数据
 			if(f==12&&reds[f-1]==13&&reds[f]==10){
 				TcpMsg tcpMsg=new TcpMsg(reds);
-				out.add(tcpMsg);
+				tcpMsgs.add(tcpMsg);
 				Log4jUtils.tcpDecode.info("ok:"+tcpMsg.getHexMsg());
 				reds=new byte[13];
 				f=0;
@@ -54,5 +56,6 @@ public class TcpDecode extends ByteToMessageDecoder {
 			}
 			f++;
 		}
+		out.add(tcpMsgs);
 	}
 }
