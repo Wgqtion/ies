@@ -29,7 +29,8 @@ import com.vsc.constants.Constants;
 
 /**
  * 用户管理的Controller 
- * @author 付翀
+ * @author XiangXiaoLin
+ *
  */
 @Controller
 @RequestMapping(value = Constants.SPT + UserController.PATH)
@@ -53,9 +54,6 @@ public class UserController extends BaseController {
 
 		PageRequest pageRequest = this.getPageRequest("id", "asc");
 		Map<String, Object> searchParams = this.getSearchRequest();
-		searchParams.put("EQ_isDelete", 0);
-		User user=this.getCurrentUser();
-		searchParams.put("RLIKE_company.code", user.getCompany().getCode());
 		Page<User> page = userService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
@@ -64,7 +62,7 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = "select")
 	public String select(Model model, ServletRequest request) throws Exception {
-		PageRequest pageRequest = this.getPageRequest("name", "asc");
+		PageRequest pageRequest = this.getPageRequest("id", "asc");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<User> page = userService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);

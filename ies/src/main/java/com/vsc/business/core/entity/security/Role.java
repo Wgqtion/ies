@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.common.collect.Lists;
@@ -25,9 +26,22 @@ public class Role extends IdEntity implements Serializable {
 	private String code;
 	private String name;
 
+	private User createUser;
+	
 	private List<Authority> authorityList = Lists.newArrayList();
 	private List<User> userList = Lists.newArrayList();
 
+	
+	@ManyToOne
+    @JoinColumn(name = "CREATE_USER")
+	public User getCreateUser() {
+		return createUser;
+	}
+	public void setCreateUser(User createUser) {
+		this.createUser = createUser;
+	}
+	
+	
 	@Column(name = "code")
 	public String getCode() {
 		return code;

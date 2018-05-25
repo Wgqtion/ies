@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,19 @@ public class CompanyService extends BaseService<Company> {
 	public JpaSpecificationExecutor<Company> getJpaSpecificationExecutorDao() {
 		return this.companyDao;
 	}
+	
+	/**
+	 * 根据条件查询，未删除，like 用户公司code%
+	 * @throws Exception 
+	 */
+	@Override
+	public Page<Company> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
+		User user=ShiroUserUtils.GetCurrentUser();
+		filterParams.put("RLIKE_code", user.getCompany().getCode());
+		filterParams.put("EQ_isDelete", 0); 
+		return super.findPage(filterParams, pageRequest);
+	}
+	
 	/**
 	 * 未删除的
 	 * @return

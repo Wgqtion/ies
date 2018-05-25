@@ -19,10 +19,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.common.collect.Maps;
 import com.vsc.business.core.entity.security.Role;
 import com.vsc.business.core.service.security.RoleService;
 import com.vsc.business.core.web.BaseController;
 
+/**
+ * 
+ * @author XiangXiaoLin
+ *
+ */
 @Controller
 @RequestMapping(value = "/sys/role")
 public class RoleController extends BaseController {
@@ -40,7 +46,8 @@ public class RoleController extends BaseController {
 	
 	@RequestMapping(value = "select/{userId}", method = RequestMethod.GET)
 	public String select(@PathVariable("userId") Long userId, Model model, ServletRequest request) throws Exception {
-		List<Role> list = roleService.getAllList();
+		Map<String, Object> filterParams=Maps.newHashMap();
+		List<Role> list = roleService.findList(filterParams);
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_userList.id",userId);
 		searchParams.put("EQ_userList.isDelete",0);

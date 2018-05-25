@@ -22,8 +22,6 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li><a rel="sys_role_new"  title="添加角色" class="add" href="${ctx}/sys/role/new" target="dialog"><span>添加</span></a></li>
-			<li><a rel="sys_role_update" title="编辑角色" class="edit" href="${ctx}/sys/role/update/{sid}" target="dialog" warn="请选择一条记录"><span>编辑</span></a></li>
-			<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${ctx}/sys/role/delete" class="delete"><span>删除</span></a></li>
 			<li><a rel="sys_authority_select" title="分配权限资源" class="icon" href="${ctx}/sys/authority/select/{sid}" target="dialog" warn="请选择一条记录"><span>分配权限资源</span></a></li>
 		</ul>
 	</div>
@@ -49,6 +47,7 @@
 					${item.name}
 					</td>
 					<td> 
+						<a title="编辑" rel="sys_role_update" target="dialog" href="${ctx}/sys/role/update/${item.id}" class="btnEdit">编辑</a>
 						<a title="删除${item.name}" target="ajaxTodo" href="${ctx}/sys/role/delete/${item.id}" class="btnDel">删除</a>
 					</td>
 				</tr>

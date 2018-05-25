@@ -45,7 +45,6 @@ public class CompanyController extends BaseController {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
-		searchParams.put("EQ_isDelete",0);
 		Page<Company> page = companyService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 
