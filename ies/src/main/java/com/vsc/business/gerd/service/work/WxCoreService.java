@@ -99,10 +99,6 @@ public class WxCoreService extends BaseService<WxCore> {
 	 * 查询使用状态
 	 */
 	public int getCoreStatus(WxCore wxCore) {
-		WxOrder wxOrder = this.wxOrderService.getByWeixinId(wxCore.getWeixinId());
-		if (wxOrder != null) {
-			return 1;
-		}
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_weixinId", wxCore.getWeixinId());
 		searchParams.put("EQ_status", 1);
@@ -115,6 +111,10 @@ public class WxCoreService extends BaseService<WxCore> {
 		wc = this.find(searchParams);
 		if (wc != null) {
 			return 3;
+		}
+		WxOrder wxOrder = this.wxOrderService.getByWeixinId(wxCore.getWeixinId());
+		if (wxOrder != null) {
+			return 1;
 		}
 		return 0;
 	}
@@ -177,11 +177,11 @@ public class WxCoreService extends BaseService<WxCore> {
 			e.printStackTrace();
 		}
 
-		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "01", wxCore.getWeixinId(),
-				ParkingLockOperationEvent.SOURCETYPE_PHONE);
-		if (message.length() > 0) {
-			throw new MessageException(message);
-		}
+//		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "01", wxCore.getWeixinId(),
+//				ParkingLockOperationEvent.SOURCETYPE_PHONE);
+//		if (message.length() > 0) {
+//			throw new MessageException(message);
+//		}
 		return 0;
 	}
 
@@ -190,15 +190,25 @@ public class WxCoreService extends BaseService<WxCore> {
 	 */
 	public int unlock(WxCore wxCore) throws MessageException {
 		ParkingLock parkingLock = this.parkingLockService.getByCode(wxCore.getParkingLockCode());
-		wxCore.setType(Integer.valueOf(1));
-		int reserveStatus = cancelReserve(wxCore);
 		wxCore.setType(Integer.valueOf(2));
 		// 查询使用记录
 		int status = getCoreStatus(wxCore);
-		if ((status == 1 && reserveStatus == 1) || (status != 0 && reserveStatus != 0)) {
+		if(status==2){
+			WxCore wc = this.findBy(wxCore);
+			if(!wc.getParkingLockCode().equals(wxCore.getParkingLockCode())){
+				return status;
+			}else if(wc.getParkingLockCode().equals(wxCore.getParkingLockCode())&&wc.getType().intValue()==2){
+				return status;
+			}
+		}else if (status != 0) {
 			return status;
 		}
-
+		wxCore.setType(Integer.valueOf(1));
+		int reserveStatus = cancelReserve(wxCore,true);
+		if (reserveStatus != 1) {
+			return status;
+		}
+		wxCore.setType(Integer.valueOf(2));
 		try {
 			super.save(wxCore);
 		} catch (Exception e) {
@@ -206,75 +216,95 @@ public class WxCoreService extends BaseService<WxCore> {
 			e.printStackTrace();
 		}
 
-		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "02", wxCore.getWeixinId(),
-				ParkingLockOperationEvent.SOURCETYPE_PHONE);
-		if (message.length() > 0) {
-			throw new MessageException(message);
-		}
+//		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "02", wxCore.getWeixinId(),
+//				ParkingLockOperationEvent.SOURCETYPE_PHONE);
+//		if (message.length() > 0) {
+//			throw new MessageException(message);
+//		}
 		return 0;
 	}
 
 	/**
 	 * 取消预约
 	 */
-	public int cancelReserve(WxCore wxCore) {
+	public int cancelReserve(WxCore wxCore,boolean flag) {
+		Integer status=0;
 		try {
 			QuartzManager.delJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
 					wxCore.getWeixinId());
 			// 查询记录
 			WxCore wc = findBy(wxCore);
-			if (wc == null) {
+			if (wc == null||Integer.valueOf(2).equals(wc.getType())) {
 				return 1;
 			}
-			wc.setStatus(0);
+			wc.setStatus(status);
 			wc.setIsCancel(wxCore.getIsCancel());
 			wc.setIsSystemCancel(wxCore.getIsSystemCancel());
 			wc.setEndTime(new Date());
 			// 查询参数
 			ParkingParam parkingParam = this.parkingParamService
 					.getByParkingLotCode(wc.getParkingLock().getParkingGarage().getParkingLotCode());
-			// 预约免费分钟
+			boolean isFree=false;
+			// 预约限免分钟
 			Integer freeReserveMin = 0;
 			if (parkingParam != null) {
 				freeReserveMin = parkingParam.getFreeReserveMin();
 			}
 			Date startDate = CoreUtils.addMin(wc.getStartTime(), freeReserveMin);
 			if (CoreUtils.compare_date(startDate, wc.getEndTime()) != -1) {
-				wc.setIsFree(true);
-				super.save(wc);
-				return 2;
+				isFree=true;
+				status=2;
 			}
-			// 收费计算
-			BigDecimal fee = this.parkingFeeService.calculateFee(wc);
-			if (parkingParam != null && fee != null && parkingParam.getMaxReserveFee() != null
-					&& fee.intValue() > parkingParam.getMaxReserveFee().intValue()) {
-				fee=new BigDecimal(parkingParam.getMaxReserveFee());
+			// 预约优惠分钟
+			Integer privilegeReserveMin = 0;
+			if (parkingParam != null) {
+				privilegeReserveMin = parkingParam.getPrivilegeReserveMin();
+			}
+			wc.setStartTime(CoreUtils.addMin(wc.getStartTime(), privilegeReserveMin));
+			if (CoreUtils.compare_date(wc.getStartTime(), wc.getEndTime()) != -1) {
+				isFree=true;
+				status=3;
+			}
+			BigDecimal fee = new BigDecimal(0.0);
+			if(!isFree){
+				// 收费计算
+				fee = this.parkingFeeService.calculateFee(wc);
+				if (parkingParam != null && fee != null && parkingParam.getMaxReserveFee() != null
+						&& fee.intValue() > parkingParam.getMaxReserveFee().intValue()) {
+					fee=new BigDecimal(parkingParam.getMaxReserveFee());
+				}
 			}
 			wc.setAmount(fee);
+			wc.setIsFree(isFree);
 			super.save(wc);
 			wxOrderService.save(wc);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return 0;
+		if(flag){
+			status=1;
+		}
+		return status;
 	}
 
 	/**
 	 * 上锁操作
 	 */
 	public int lock(WxCore wxCore) throws MessageException {
+		Integer status=0;
 		// 查询记录
 		WxCore wc = findBy(wxCore);
 		try {
 			if (wc == null) {
 				return 1;
 			}
-			wc.setStatus(0);
+			wc.setStatus(status);
 			wc.setEndTime(new Date());
 			// 查询参数
 			ParkingParam parkingParam = this.parkingParamService
 					.getByParkingLotCode(wc.getParkingLock().getParkingGarage().getParkingLotCode());
+			boolean isFree=false;
 			// 停车免费分钟
 			Integer freeParkingMin = 0;
 			if (parkingParam != null) {
@@ -282,33 +312,43 @@ public class WxCoreService extends BaseService<WxCore> {
 			}
 			Date startDate = CoreUtils.addMin(wc.getStartTime(), freeParkingMin);
 			if (CoreUtils.compare_date(startDate, wc.getEndTime()) != -1) {
-				wc.setIsFree(true);
-				super.save(wc);
-				String message = this.parkingLockService.reverse(new Long[] { wc.getParkingLock().getId() }, "01",
-						wxCore.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
-				if (message.length() > 0) {
-					throw new MessageException(message);
-				}
-				return 2;
+				isFree=true;
+				status=2;
 			}
+			// 停车优惠分钟
+			Integer privilegeParkingMin = 0;
+			if (parkingParam != null) {
+				privilegeParkingMin = parkingParam.getPrivilegeParkingMin();
+			}
+			wc.setStartTime(CoreUtils.addMin(wc.getStartTime(), privilegeParkingMin));
+			if (CoreUtils.compare_date(wc.getStartTime(), wc.getEndTime()) != -1) {
+				isFree=true;
+				status=3;
+			}
+			
+			
 			// 收费计算
-			BigDecimal fee = this.parkingFeeService.calculateFee(wc);
-			if (parkingParam != null && fee != null && parkingParam.getMaxParkingFee() != null
-					&& fee.intValue() > parkingParam.getMaxParkingFee().intValue()) {
-				fee=new BigDecimal(parkingParam.getMaxParkingFee());
+			BigDecimal fee = new BigDecimal(0.0);
+			if(!isFree){
+				fee = this.parkingFeeService.calculateFee(wc);
+				if (parkingParam != null && fee != null && parkingParam.getMaxParkingFee() != null
+						&& fee.intValue() > parkingParam.getMaxParkingFee().intValue()) {
+					fee=new BigDecimal(parkingParam.getMaxParkingFee());
+				}
 			}
 			wc.setAmount(fee);
+			wc.setIsFree(isFree);
 			super.save(wc);
 			wxOrderService.save(wc);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String message = this.parkingLockService.reverse(new Long[] { wc.getParkingLock().getId() }, "01",
-				wxCore.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
-		if (message.length() > 0) {
-			throw new MessageException(message);
-		}
+//		String message = this.parkingLockService.reverse(new Long[] { wc.getParkingLock().getId() }, "01",
+//				wxCore.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
+//		if (message.length() > 0) {
+//			throw new MessageException(message);
+//		}
 		return 0;
 	}
 }

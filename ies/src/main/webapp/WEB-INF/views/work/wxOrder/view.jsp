@@ -40,8 +40,10 @@
 						<td align="left"><fmt:formatDate value='${ wxCore.endTime}' pattern='yyyy-MM-dd HH:mm:ss' /></td>
 					</tr>
 					<tr>
+						<td align="right">是否免费:</td>
+						<td align="left"><s:message code="wxCore.isFree.${wxCore.isFree}"/></td>
 						<td align="right">费用:</td>
-						<td align="left" colspan="3">${wxCore.amount}</td>
+						<td align="left">${wxCore.amount}</td>
 					</tr>
 				</c:forEach>
 			</tbody>

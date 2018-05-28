@@ -19,7 +19,7 @@ import com.vsc.business.gerd.entity.work.WxOrder;
 import com.vsc.business.gerd.repository.work.WxOrderDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
-import com.vsc.util.CodeUtils;
+import com.vsc.util.RandomUtil;
 
 /**
  * 小程序订单 逻辑操作
@@ -53,6 +53,20 @@ public class WxOrderService extends BaseService<WxOrder> {
 		return super.findPage(filterParams, pageRequest);
 	}
 	
+	
+	public List<WxOrder> getListByWeixinId(String weixinId){
+		try {
+			Map<String, Object> searchParams = new HashMap<String, Object>();
+			searchParams.put("EQ_status",1);
+			searchParams.put("EQ_weixinId",weixinId);
+			return super.findList(searchParams);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * 根据weixinId查询状态0的订单
 	 */
@@ -60,7 +74,7 @@ public class WxOrderService extends BaseService<WxOrder> {
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_status",0);
 		searchParams.put("EQ_weixinId",weixinId);
-		return this.find(searchParams);
+		return super.find(searchParams);
 	}
 	
 	/**
@@ -71,17 +85,15 @@ public class WxOrderService extends BaseService<WxOrder> {
 		if(entity==null){
 			entity=new WxOrder();
 			entity.setCreateTime(new Date());
-			entity.setStatus(0);
+			entity.setStatus(wc.getStatus());
 			String code=null;
 			boolean flag=true;
-			int i=0;
 			while(flag){
-				code=CodeUtils.GenerateCode(this.getMaxCode()+i,5);
+				code=RandomUtil.getRandomFileName();
 				WxOrder p=getByCode(code);
 				if(p==null){
 					flag=false;
 				}
-				i++;
 			}
 			entity.setCode(code);
 		}
@@ -123,21 +135,5 @@ public class WxOrderService extends BaseService<WxOrder> {
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_code",code);
 		return this.find(searchParams);
-	}
-	
-	/**
-	 * 查询当前最大编码
-	 * @return
-	 */
-	public int getMaxCode(){
-		int i=0;
-		Map<String, Object> searchParams = new HashMap<String, Object>();
-		List<WxOrder> list=this.findAll(searchParams, "code","desc");
-		if(list!=null&&list.size()>0){
-			WxOrder c=list.get(0);
-			if(c.getCode()!=null)
-			i=Integer.valueOf(c.getCode());
-		}
-		return i;
 	}
 }

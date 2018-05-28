@@ -40,7 +40,7 @@ public class WxCoreController extends BaseController {
 	public String list(Model model, HttpServletRequest request,
 			WxCore entity) throws Exception {
 
-		PageRequest pageRequest = this.getPageRequest();
+		PageRequest pageRequest = this.getPageRequest("startTime","DESC");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<WxCore> page = wxCoreService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);

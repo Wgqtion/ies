@@ -262,7 +262,7 @@ public class WeixinController extends HttpServiceBaseController {
 		wxCore.setWeixinId(weixinId);
 		wxCore.setIsCancel(true);
 		wxCore.setType(Integer.valueOf(1));
-		int status=this.wxCoreService.cancelReserve(wxCore);
+		int status=this.wxCoreService.cancelReserve(wxCore,false);
 		return this.ajaxDone(status,Constants.CANCEL_RESERVE_MESSAGE_STATUS[status],null);
 	}
 	
@@ -341,15 +341,35 @@ public class WeixinController extends HttpServiceBaseController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/order")
-	public ModelAndView order(@RequestParam(required = true) String weixinId) throws Exception {
+	public ModelAndView order(@RequestParam(required = true) String weixinId,String code) throws Exception {
 
 		// 订单查询
 		WxOrder wxOrder=this.wxOrderService.getByWeixinId(weixinId);
+		if(code!=null){
+			wxOrder=this.wxOrderService.getByCode(code);
+		}
 		if(wxOrder==null){
-			return this.ajaxDone(1, null, null);
+			return this.ajaxDone(1, "无订单信息", null);
 		}
 		String[] isNotIgnoreFieldNames = { "code","totalFee","wxCores","type","typeStr","amount","startTime","endTime","parkingLock","parkingGarage","name"};
 		String jsonstr = JSONUtil.toJSONString(wxOrder, isNotIgnoreFieldNames, false, featureNames);
+		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
+	}
+	
+	/**
+	 * 历史订单查询
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/orderlist")
+	public ModelAndView orderlist(@RequestParam(required = true) String weixinId) throws Exception {
+
+		// 订单查询
+		List<WxOrder> wxOrders=this.wxOrderService.getListByWeixinId(weixinId);
+		if(wxOrders==null){
+			return this.ajaxDone(1, null, null);
+		}
+		String[] isNotIgnoreFieldNames = { "code","createTime","payTime","totalFee","wxCores","type","typeStr","amount","startTime","endTime","parkingLock","parkingGarage","name"};
+		String jsonstr = JSONUtil.toJSONString(wxOrders, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
 	}
 	

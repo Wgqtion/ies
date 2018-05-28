@@ -48,7 +48,7 @@ public class ParkingFeeController extends BaseController {
 	public String list(Model model, HttpServletRequest request,
 			ParkingFee entity) throws Exception {
 
-		PageRequest pageRequest = this.getPageRequest("type,parkingLotCode,week,startTime","ASC,DESC,ASC,ASC");
+		PageRequest pageRequest = this.getPageRequest("type,parkingLotCode,week,startTime","ASC,ASC,ASC,ASC");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<ParkingFee> page = parkingFeeService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);

@@ -37,7 +37,7 @@ public class ReserveCancelJob implements Job {
         		wxCore.setIsCancel(true);
         		wxCore.setType(Integer.valueOf(1));
         		wxCore.setIsSystemCancel(true);
-        		int status=wxCoreService.cancelReserve(wxCore);
+        		int status=wxCoreService.cancelReserve(wxCore,false);
         		Log4jUtils.reserveCancel.info("系统取消超时预约："+Constants.CANCEL_RESERVE_MESSAGE_STATUS[status]);
         	}
 		}

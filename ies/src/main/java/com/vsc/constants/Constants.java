@@ -77,12 +77,12 @@ public class Constants {
 	/**
 	 * 取消预约提示状态
 	 */
-	public static final String[] CANCEL_RESERVE_MESSAGE_STATUS = { "预约取消成功","当前无预约信息","取消成功，未超出免费预约分钟，本次免费"};
+	public static final String[] CANCEL_RESERVE_MESSAGE_STATUS = { "预约取消成功","当前无预约信息","取消成功，未超出限免时间，本次免费","取消成功，未超出开始计费时间，本次免费"};
 	
 	/**
 	 * 上锁提示状态
 	 */
-	public static final String[] LOCK_MESSAGE_STATUS = { "上锁成功","当前无使用锁信息","上锁成功，未超出免费使用分钟，本次免费"};
+	public static final String[] LOCK_MESSAGE_STATUS = { "上锁成功","当前无使用锁信息","上锁成功，未超出限免时间，本次免费","取消成功，未超出开始计费时间，本次免费"};
 	
 	/**
 	 * 支付提示状态

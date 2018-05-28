@@ -48,7 +48,7 @@ public class ReserveTimeController extends BaseController {
 	public String list(Model model, HttpServletRequest request,
 			ReserveTime entity) throws Exception {
 
-		PageRequest pageRequest = this.getPageRequest();
+		PageRequest pageRequest = this.getPageRequest("parkingLotCode,week,startTime","ASC,ASC,ASC");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<ReserveTime> page = reserveTimeService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
