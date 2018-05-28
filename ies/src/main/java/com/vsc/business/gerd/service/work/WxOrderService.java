@@ -59,7 +59,7 @@ public class WxOrderService extends BaseService<WxOrder> {
 			Map<String, Object> searchParams = new HashMap<String, Object>();
 			searchParams.put("EQ_status",1);
 			searchParams.put("EQ_weixinId",weixinId);
-			return super.findList(searchParams);
+			return super.findAll(searchParams, "createTime","DESC");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
