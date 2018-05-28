@@ -193,18 +193,18 @@ public class WxCoreService extends BaseService<WxCore> {
 		wxCore.setType(Integer.valueOf(2));
 		// 查询使用记录
 		int status = getCoreStatus(wxCore);
-		if(status==2){
+		if (status == 2) {
 			WxCore wc = this.findBy(wxCore);
-			if(!wc.getParkingLockCode().equals(wxCore.getParkingLockCode())){
+			if (!wc.getParkingLockCode().equals(wxCore.getParkingLockCode())) {
 				return status;
-			}else if(wc.getParkingLockCode().equals(wxCore.getParkingLockCode())&&wc.getType().intValue()==2){
+			} else if (wc.getParkingLockCode().equals(wxCore.getParkingLockCode()) && wc.getType().intValue() == 2) {
 				return status;
 			}
-		}else if (status != 0) {
+		} else if (status != 0) {
 			return status;
 		}
 		wxCore.setType(Integer.valueOf(1));
-		int reserveStatus = cancelReserve(wxCore,true);
+		int reserveStatus = cancelReserve(wxCore, true);
 		if (reserveStatus != 1) {
 			return status;
 		}
@@ -227,14 +227,14 @@ public class WxCoreService extends BaseService<WxCore> {
 	/**
 	 * 取消预约
 	 */
-	public int cancelReserve(WxCore wxCore,boolean flag) {
-		Integer status=0;
+	public int cancelReserve(WxCore wxCore, boolean flag) {
+		Integer status = 0;
 		try {
 			QuartzManager.delJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
 					wxCore.getWeixinId());
 			// 查询记录
 			WxCore wc = findBy(wxCore);
-			if (wc == null||Integer.valueOf(2).equals(wc.getType())) {
+			if (wc == null || Integer.valueOf(2).equals(wc.getType())) {
 				return 1;
 			}
 			wc.setStatus(status);
@@ -244,7 +244,7 @@ public class WxCoreService extends BaseService<WxCore> {
 			// 查询参数
 			ParkingParam parkingParam = this.parkingParamService
 					.getByParkingLotCode(wc.getParkingLock().getParkingGarage().getParkingLotCode());
-			boolean isFree=false;
+			boolean isFree = false;
 			// 预约限免分钟
 			Integer freeReserveMin = 0;
 			if (parkingParam != null) {
@@ -252,8 +252,8 @@ public class WxCoreService extends BaseService<WxCore> {
 			}
 			Date startDate = CoreUtils.addMin(wc.getStartTime(), freeReserveMin);
 			if (CoreUtils.compare_date(startDate, wc.getEndTime()) != -1) {
-				isFree=true;
-				status=2;
+				isFree = true;
+				status = 2;
 			}
 			// 预约优惠分钟
 			Integer privilegeReserveMin = 0;
@@ -262,16 +262,17 @@ public class WxCoreService extends BaseService<WxCore> {
 			}
 			wc.setStartTime(CoreUtils.addMin(wc.getStartTime(), privilegeReserveMin));
 			if (CoreUtils.compare_date(wc.getStartTime(), wc.getEndTime()) != -1) {
-				isFree=true;
-				status=3;
+				isFree = true;
+				status = 3;
 			}
 			BigDecimal fee = new BigDecimal(0.0);
-			if(!isFree){
+			if (!isFree) {
 				// 收费计算
 				fee = this.parkingFeeService.calculateFee(wc);
 				if (parkingParam != null && fee != null && parkingParam.getMaxReserveFee() != null
+						&& parkingParam.getMaxReserveFee().intValue() > 0
 						&& fee.intValue() > parkingParam.getMaxReserveFee().intValue()) {
-					fee=new BigDecimal(parkingParam.getMaxReserveFee());
+					fee = new BigDecimal(parkingParam.getMaxReserveFee());
 				}
 			}
 			wc.setAmount(fee);
@@ -282,8 +283,8 @@ public class WxCoreService extends BaseService<WxCore> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(flag){
-			status=1;
+		if (flag) {
+			status = 1;
 		}
 		return status;
 	}
@@ -292,7 +293,7 @@ public class WxCoreService extends BaseService<WxCore> {
 	 * 上锁操作
 	 */
 	public int lock(WxCore wxCore) throws MessageException {
-		Integer status=0;
+		Integer status = 0;
 		// 查询记录
 		WxCore wc = findBy(wxCore);
 		try {
@@ -304,7 +305,7 @@ public class WxCoreService extends BaseService<WxCore> {
 			// 查询参数
 			ParkingParam parkingParam = this.parkingParamService
 					.getByParkingLotCode(wc.getParkingLock().getParkingGarage().getParkingLotCode());
-			boolean isFree=false;
+			boolean isFree = false;
 			// 停车免费分钟
 			Integer freeParkingMin = 0;
 			if (parkingParam != null) {
@@ -312,8 +313,8 @@ public class WxCoreService extends BaseService<WxCore> {
 			}
 			Date startDate = CoreUtils.addMin(wc.getStartTime(), freeParkingMin);
 			if (CoreUtils.compare_date(startDate, wc.getEndTime()) != -1) {
-				isFree=true;
-				status=2;
+				isFree = true;
+				status = 2;
 			}
 			// 停车优惠分钟
 			Integer privilegeParkingMin = 0;
@@ -322,18 +323,18 @@ public class WxCoreService extends BaseService<WxCore> {
 			}
 			wc.setStartTime(CoreUtils.addMin(wc.getStartTime(), privilegeParkingMin));
 			if (CoreUtils.compare_date(wc.getStartTime(), wc.getEndTime()) != -1) {
-				isFree=true;
-				status=3;
+				isFree = true;
+				status = 3;
 			}
-			
-			
+
 			// 收费计算
 			BigDecimal fee = new BigDecimal(0.0);
-			if(!isFree){
+			if (!isFree) {
 				fee = this.parkingFeeService.calculateFee(wc);
 				if (parkingParam != null && fee != null && parkingParam.getMaxParkingFee() != null
+						&& parkingParam.getMaxParkingFee().intValue() > 0
 						&& fee.intValue() > parkingParam.getMaxParkingFee().intValue()) {
-					fee=new BigDecimal(parkingParam.getMaxParkingFee());
+					fee = new BigDecimal(parkingParam.getMaxParkingFee());
 				}
 			}
 			wc.setAmount(fee);

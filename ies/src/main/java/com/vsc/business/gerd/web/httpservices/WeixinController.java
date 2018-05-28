@@ -351,7 +351,7 @@ public class WeixinController extends HttpServiceBaseController {
 		if(wxOrder==null){
 			return this.ajaxDone(1, "无订单信息", null);
 		}
-		String[] isNotIgnoreFieldNames = { "code","totalFee","wxCores","type","typeStr","amount","startTime","endTime","parkingLock","parkingGarage","name"};
+		String[] isNotIgnoreFieldNames = { "code","totalFee","wxCores","typeStr","isFreeStr","amount","startTime","endTime","parkingLock","parkingGarage","name"};
 		String jsonstr = JSONUtil.toJSONString(wxOrder, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
 	}

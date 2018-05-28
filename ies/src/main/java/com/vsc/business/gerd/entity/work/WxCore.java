@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
+import com.vsc.util.MessageUtil;
 
 /**
  * 小程序核心 实体类
@@ -249,12 +250,20 @@ public class WxCore extends IdEntity{
 	 */
 	@Transient
 	public String getTypeStr(){
-		if(type==null){
-			return "";
-		}else if(type==1){
-			return "预约";
-		}else if(type==2){
-			return "停车";
+		String message=MessageUtil.getValueByKey("wxCore.type."+type);
+		if(message!=null){
+			return message;
+		}
+		return "";
+	}
+	/**
+	 * 返回是否免费Str
+	 */
+	@Transient
+	public String getIsFreeStr(){
+		String message=MessageUtil.getValueByKey("wxCore.isFree."+isFree);
+		if(message!=null){
+			return message;
 		}
 		return "";
 	}

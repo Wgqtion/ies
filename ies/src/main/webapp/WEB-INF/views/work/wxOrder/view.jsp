@@ -32,6 +32,10 @@
 				<c:forEach items="${vm.wxCores}" var="wxCore">
 					<tr>
 						<td colspan="4">${wxCore.typeStr}明细:</td>
+					</tr>
+					<tr>
+						<td align="right">使用车位:</td>
+						<td align="left" colspan="3">${wxCore.parkingLock.parkingGarage.name}</td>
 					</tr>	
 					<tr>
 						<td align="right">开始时间:</td>

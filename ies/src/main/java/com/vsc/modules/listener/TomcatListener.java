@@ -27,10 +27,10 @@ public class TomcatListener implements ServletContextListener{
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		// TODO Auto-generated method stub
+		TcpServer.stop();
 		if(tcpThread!=null){
 			tcpThread.interrupt();	
 		}
-		TcpServer.stop();
 	}
 
 }
