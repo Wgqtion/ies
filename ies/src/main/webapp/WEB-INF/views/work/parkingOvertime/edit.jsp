@@ -25,9 +25,9 @@
 					<td class="fieldInput" colspan="3">
 						<input id="parkingLotParkingOvertimeId" name="parkingLotCode" value="${parkingLot.code}" type="hidden" />
 						<label><input validate="{required:true}" id="parkingLotParkingOvertimeName" value="${parkingLot.name}" readonly="readonly"/></label>
-						<a class="btnLook" title="选择场区" href="#" onclick="showMenu(this,'ParkingOvertime');"></a>
+						<a class="btnLook" title="选择场区" href="#" onclick="showSelectZTreeMenu(this,'ParkingOvertime');"></a>
 						<span class="info">选择</span>
-						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearBtn("parkingLotParkingOvertime");' />
+						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearSelectZTreeBtn("parkingLotParkingOvertime");' />
 					</td>
 				</tr>
 				<tr>

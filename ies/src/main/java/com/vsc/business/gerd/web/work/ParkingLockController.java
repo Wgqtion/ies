@@ -22,6 +22,7 @@ import com.vsc.business.gerd.entity.work.ParkingGarage;
 import com.vsc.business.gerd.entity.work.ParkingLock;
 import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.service.work.ParkingLockService;
+import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
 
 /**
@@ -36,6 +37,9 @@ public class ParkingLockController extends BaseController {
 	@Autowired
 	private ParkingLockService parkingLockService;
 	
+	@Autowired
+	private ParkingLotService parkingLotService;
+	
 	public static final String PATH = "work/parkinglock";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";
@@ -48,10 +52,10 @@ public class ParkingLockController extends BaseController {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
-
+		model.addAttribute("searchCodeParkingLock", searchParams.get("IN_parkingGarage.parkingLotCode"));
 		Page<ParkingLock> page = parkingLockService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
-
+		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
 		return PATH_LIST;
 	}
 

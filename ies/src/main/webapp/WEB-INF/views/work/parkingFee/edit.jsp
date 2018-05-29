@@ -78,9 +78,9 @@
 					<td class="fieldInput" colspan="3">
 						<input id="parkingLotParkingFeeId" name="parkingLotCode" value="${parkingLot.code}" type="hidden" />
 						<label><input validate="{required:true}" id="parkingLotParkingFeeName" value="${parkingLot.name}" readonly="readonly"/></label>
-						<a class="btnLook" title="选择场区" href="#" onclick="showMenu(this,'ParkingFee');"></a>
+						<a class="btnLook" title="选择场区" href="#" onclick="showSelectZTreeMenu(this,'ParkingFee');"></a>
 						<span class="info">选择</span>
-						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearBtn("parkingLotParkingFee");' />
+						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearSelectZTreeBtn("parkingLotParkingFee");' />
 					</td>
 				</tr>
 				<tr>

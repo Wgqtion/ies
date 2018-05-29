@@ -26,9 +26,9 @@
 					<td class="fieldInput" colspan="3">
 						<input id="parkingLotParkingParamId" name="parkingLotCode" value="${parkingLot.code}" type="hidden" />
 						<label><input validate="{required:true}" id="parkingLotParkingParamName" value="${parkingLot.name}" readonly="readonly"/></label>
-						<a class="btnLook" title="选择场区" href="#" onclick="showMenu(this,'ParkingParam');"></a>
+						<a class="btnLook" title="选择场区" href="#" onclick="showSelectZTreeMenu(this,'ParkingParam');"></a>
 						<span class="info">选择</span>
-						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearBtn("parkingLotParkingParam");' />
+						<input id="claerBtn" type='button' style="margin-left: 5px;" value='清空' onclick='clearSelectZTreeBtn("parkingLotParkingParam");' />
 					</td>
 				</tr>
 				<tr>

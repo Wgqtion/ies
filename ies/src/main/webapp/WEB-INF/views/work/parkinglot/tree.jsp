@@ -35,8 +35,9 @@
 		<%--显示树形结构栏目--%>
 		<div layoutH="10" style="float: left; display: block; overflow: auto; width: 17%; border: solid 1px #CCC; line-height: 21px; background: #fff">
 			<a class="buttoA" href="${ctx}/work/parkinglot/list" target='ajax' rel='catalogBox'>查看全部</a>
-			<a class="buttoA" href="#" onclick="controlTree('parkingLotTree',true);">展开树</a>
-			<a class="buttoA" href="#" onclick="controlTree('parkingLotTree',false);">关闭树</a>
+			<a class="buttoA" href="${ctx}/work/parkinglot/list?search_ISNULL_parentCode=1" target='ajax' rel='catalogBox'>查看根节点</a>
+			<a class="buttoA" href="#" onclick="controlMenuTree('parkingLotTree',true);">展开</a>
+			<a class="buttoA" href="#" onclick="controlMenuTree('parkingLotTree',false);">关闭</a>
 			<a id="parkingLotboxId" style="display: none;" href="#" target='ajax' rel='catalogBox'></a>
 			<ul id="parkingLotTree" class="ztree" style="margin-top:0; width:200px;"></ul>
 		</div>

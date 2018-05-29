@@ -37,9 +37,9 @@
 <div>
 	<%--显示树形结构栏目--%>
 	<div layoutH="10" style="float: left; display: block; overflow: auto; width: 17%; border: solid 1px #CCC; line-height: 21px; background: #fff">
-		<a class="buttoA" href="${ctx}/work/parkinglot/list" target='ajax' rel='parkinggarageBox'>查看全部</a>
-		<a class="buttoA" href="#" onclick="controlTree('parkingGarageTree',true);">展开树</a>
-		<a class="buttoA" href="#" onclick="controlTree('parkingGarageTree',false);">关闭树</a>
+		<a class="buttoA" href="${ctx}/work/parkinggarage/list" target='ajax' rel='parkinggarageBox'>查看全部</a>
+		<a class="buttoA" href="#" onclick="controlMenuTree('parkingGarageTree',true);">展开</a>
+		<a class="buttoA" href="#" onclick="controlMenuTree('parkingGarageTree',false);">关闭</a>
 		<a id="parkingGarageBoxId" style="display: none;" href="#" target='ajax' rel='parkinggarageBox'></a>
 		<ul id="parkingGarageTree" class="ztree" style="margin-top:0; width:200px;"></ul>
 	</div>

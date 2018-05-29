@@ -50,9 +50,9 @@
 						<input type="hidden" name="parent.id" id="parentId" value="${parent.id}">
 						<input  id="parentName" value="${parent.name }" readonly="readonly"/>
 						<c:if test="${empty id}">
-						<a class="btnLook" title="选择上级场区" href="#" onclick="showMenu(this,'ParkingLot');"></a>
+						<a class="btnLook" title="选择上级场区" href="#" onclick="showSelectZTreeMenu(this,'ParkingLot');"></a>
 						<span class="info">选择</span>
-						<input id="clearBtnId" type='button' style="margin-left: 5px;" value='清空' onclick='clearBtn("parent");' />
+						<input id="clearBtnId" type='button' style="margin-left: 5px;" value='清空' onclick='clearSelectZTreeBtn("parent");' />
 						</c:if>
 					</td>
 				</tr> 
