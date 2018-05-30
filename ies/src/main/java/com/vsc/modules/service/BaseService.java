@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.vsc.modules.entity.IdEntity;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -212,7 +213,7 @@ public abstract class BaseService<T> {
 		return buildSpecificationByPropertySearchFilter(filters, clazz);
 	}
 
-	protected <S> List<S> findIds(Object[] idsObj, BaseDao<? extends S> dao) {
+	protected <S extends IdEntity> List<S> findIds(Object[] idsObj, BaseDao<S> dao) {
 		List<S> list = Lists.newArrayList();
 		Long[] ids = null;
 		if (ArrayUtils.isNotEmpty(idsObj)) {
