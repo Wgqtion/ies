@@ -45,14 +45,13 @@ public class ReserveTimeController extends BaseController {
 	public static final String PATH_SELECT = PATH + Constants.SPT + "select";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request,
-			ReserveTime entity) throws Exception {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest("parkingLotCode,week,startTime","ASC,ASC,ASC");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<ReserveTime> page = reserveTimeService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
-		model.addAttribute("entity",entity);
+		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
 		return PATH_LIST;
 	}
 	

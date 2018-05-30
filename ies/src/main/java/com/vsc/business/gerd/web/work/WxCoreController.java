@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.WxCore;
+import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.business.gerd.service.work.WxCoreService;
 import com.vsc.constants.Constants;
 
@@ -32,19 +33,22 @@ public class WxCoreController extends BaseController {
 	@Autowired
 	private WxCoreService wxCoreService;
 	
+	@Autowired
+	private ParkingLotService parkingLotService;
+	
 	public static final String PATH = "work/wxCore";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_VIEW = PATH + Constants.SPT + "view";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request,
-			WxCore entity) throws Exception {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest("startTime","DESC");
 		Map<String, Object> searchParams = this.getSearchRequest();
+		model.addAttribute("searchCodeWxCore", searchParams.get("IN_parkingLock.parkingGarage.parkingLotCode"));
 		Page<WxCore> page = wxCoreService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
-		model.addAttribute("entity",entity);
+		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
 		return PATH_LIST;
 	}
 	

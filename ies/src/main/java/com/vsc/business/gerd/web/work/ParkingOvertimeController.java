@@ -45,14 +45,12 @@ public class ParkingOvertimeController extends BaseController {
 	public static final String PATH_SELECT = PATH + Constants.SPT + "select";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request,
-			ParkingOvertime entity) throws Exception {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<ParkingOvertime> page = parkingOvertimeService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
-		model.addAttribute("entity",entity);
 		return PATH_LIST;
 	}
 	

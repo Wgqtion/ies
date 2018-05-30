@@ -6,7 +6,6 @@
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${ctx}/work/report/parkingGarageStatus" method="post">
 		<div class="searchBar">
 			<ul class="searchContent">	
-				<li><label>车位编号:</label> <input type="text" value="${reportView.entity.code}" name="code" /></li>
 				<li><label>车位名称:</label> <input type="text" value="${reportView.entity.name}" name="name" /></li>	
 				<li><label>车牌号:</label> <input type="text" value="${reportView.value}" name="value" /></li>
 			</ul>
@@ -29,7 +28,6 @@
 				<th width="40" align="center">序号</th>
 				<th <vsc:orderField name="plname"/>>场区名称</th>
 				<th <vsc:orderField name="pgname"/>>车位名称</th>	
-				<th <vsc:orderField name="pgcode"/>>车位编号</th>	
 				<th <vsc:orderField name="itudelong"/>>纬度坐标</th>
 				<th <vsc:orderField name="itudelat"/>>经度坐标</th>
 				<th <vsc:orderField name="iscarstatus"/>>是否有车</th> 
@@ -44,7 +42,6 @@
 					<td align="center">${varindex.count}</td>
 					<td>${varitem.plname}</td>
 					<td>${varitem.pgname}</td>
-					<td>${varitem.pgcode}</td>
 					<td>${varitem.itudelong}</td>
 					<td>${varitem.itudelat}</td>
 					<td><s:message code="parkinggarage.iscarstatus.${varitem.iscarstatus}"/></td>

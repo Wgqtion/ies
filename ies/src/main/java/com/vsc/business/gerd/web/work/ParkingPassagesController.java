@@ -55,7 +55,7 @@ public class ParkingPassagesController extends BaseController {
 
 		Page<ParkingPassages> page = parkingPassagesService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
-	
+		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
 		return PATH_LIST;
 	}
 	

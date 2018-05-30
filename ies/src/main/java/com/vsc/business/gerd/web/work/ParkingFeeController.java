@@ -46,14 +46,13 @@ public class ParkingFeeController extends BaseController {
 	public static final String PATH_SELECT = PATH + Constants.SPT + "select";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request,
-			ParkingFee entity) throws Exception {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest("type,parkingLotCode,week,startTime","ASC,ASC,ASC,ASC");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<ParkingFee> page = parkingFeeService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
-		model.addAttribute("entity",entity);
+		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
 		return PATH_LIST;
 	}
 	

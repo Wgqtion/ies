@@ -37,14 +37,12 @@ public class WxOrderController extends BaseController {
 	public static final String PATH_VIEW = PATH + Constants.SPT + "view";
 
 	@RequestMapping(value = "")
-	public String list(Model model, HttpServletRequest request,
-			WxOrder entity) throws Exception {
+	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest("createTime","DESC");
 		Map<String, Object> searchParams = this.getSearchRequest();
 		Page<WxOrder> page = wxOrderService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
-		model.addAttribute("entity",entity);
 		return PATH_LIST;
 	}
 	
