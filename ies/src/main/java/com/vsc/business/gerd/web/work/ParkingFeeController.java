@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
@@ -54,6 +55,11 @@ public class ParkingFeeController extends BaseController {
 		model.addAttribute("page", page);
 		model.addAttribute("entity",entity);
 		return PATH_LIST;
+	}
+	
+	@RequestMapping(value = "checkTime", method = RequestMethod.GET)
+	public @ResponseBody boolean checkTime(ParkingFee entity) throws Exception {
+		return this.parkingFeeService.isExistsTime(entity);
 	}
 	
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)

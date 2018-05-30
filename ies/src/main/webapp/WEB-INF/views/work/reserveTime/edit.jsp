@@ -11,8 +11,6 @@
    	$(document).ready(function(){
    		GenerateSelectZTree("ReserveTime",zNodesReserveTime,"parkingLotReserveTime","${parkingLot.code}");
    		
-   		$(".dateHH").attr("onclick","WdatePicker({readOnly:true,dateFmt:'HH:mm'});");
-   		  
    		
    		$("select[name='week']").change(function(){  
    			weekChange($(this).val(),true);
@@ -87,16 +85,16 @@
 					<td class="fieldName"><label><span class="required">*</span>开始时间:</label></td>
 					<td class="fieldInput">
 						<label>
-						<input type="text" class="dateIco dateHH" id="startTime" value="${vm.startTime}" name="startTime" readonly="true" validate="{required:true}" />
-						<input type="text" style="display: none;" class="dateIco" id="dateStartTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',onpicked:pickedFuncStartTime})" value="${vm.startTime}" readonly="true" />
+						<input type="text" class="dateIco dateHH" id="startTime" value="${vm.startTime}" name="startTime" readonly="true" validate="{required:true}" onclick="WdatePicker({readOnly:true,dateFmt:'HH:mm',maxDate:'#F{$dp.$D(\'endTime\')}'});" />
+						<input type="text" style="display: none;" class="dateIco" id="dateStartTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',onpicked:pickedFuncStartTime,maxDate:'#F{$dp.$D(\'dateEndTime\')}'})" value="${vm.startTime}" readonly="true" />
 						</label>
 						<span for="startTime" generated="true" style="display: none" class="error"></span>
 					</td>
 					<td class="fieldName"><label><span class="required">*</span>结束时间:</label></td>
 					<td class="fieldInput">
 						<label>
-						<input type="text" class="dateIco dateHH" id="endTime" value="${vm.endTime}" name="endTime" readonly="true" validate="{required:true}" />
-						<input type="text" style="display: none;" class="dateIco" id="dateEndTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',onpicked:pickedFuncEndTime})" value="${vm.endTime}" readonly="true" />
+						<input type="text" class="dateIco dateHH" id="endTime" value="${vm.endTime}" name="endTime" readonly="true" validate="{required:true}" onclick="WdatePicker({readOnly:true,dateFmt:'HH:mm',minDate:'#F{$dp.$D(\'startTime\')}'});" />
+						<input type="text" style="display: none;" class="dateIco" id="dateEndTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',onpicked:pickedFuncEndTime,minDate:'#F{$dp.$D(\'dateStartTime\')}'})" value="${vm.endTime}" readonly="true" />
 						</label>
 						<span for="endTime" generated="true" style="display: none" class="error"></span>
 					</td>

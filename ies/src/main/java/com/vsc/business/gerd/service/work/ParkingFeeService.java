@@ -49,6 +49,36 @@ public class ParkingFeeService extends BaseService<ParkingFee> {
 	public JpaSpecificationExecutor<ParkingFee> getJpaSpecificationExecutorDao() {
 		return this.parkingFeeDao;
 	}
+	/**
+	 * 根据type,week，查询开始时间结束时间段是否已存在
+	 */
+	public boolean isExistsTime(ParkingFee entity) throws Exception{
+		boolean flag=false;
+		Set<ParkingFee> list = new HashSet<ParkingFee>();
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_parkingLotCode", entity.getParkingLotCode());
+		searchParams.put("EQ_type", entity.getType());
+		searchParams.put("EQ_week",entity.getWeek());
+		searchParams.put("EQ_isDelete", 0);
+		searchParams.put("LTE_startTime", entity.getStartTime());
+		searchParams.put("GTE_endTime", entity.getStartTime());
+		if(entity.getId()!=null){
+			searchParams.put("NOTEQ_id", entity.getId());
+		}
+		list.addAll(super.findList(searchParams));
+		searchParams.put("LTE_startTime", entity.getEndTime());
+		searchParams.put("GTE_endTime", entity.getEndTime());
+		list.addAll(super.findList(searchParams));
+		searchParams.remove("GTE_endTime");
+		searchParams.remove("LTE_startTime");
+		searchParams.put("GTE_startTime",entity.getStartTime());
+		searchParams.put("LTE_endTime", entity.getEndTime());
+		list.addAll(super.findList(searchParams));
+		if(list!=null&&list.size()>0){
+			flag=true;
+		}
+		return flag;
+	}
 
 	/**
 	 * 根据时间场区获取收费计算列表
@@ -65,7 +95,6 @@ public class ParkingFeeService extends BaseService<ParkingFee> {
 			searchParams.put("EQ_parkingLotCode", wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
 			searchParams.put("EQ_isDelete", 0);
 			searchParams.put("EQ_type", wxCore.getType());
-			searchParams.put("EQ_week", 0);
 
 			/*
 			 *  2.查询所有week时间范围内的费用设置
@@ -76,7 +105,6 @@ public class ParkingFeeService extends BaseService<ParkingFee> {
 			 *  )
 			 */
 			searchParams.put("NOTEQ_week", 0);
-			searchParams.remove("EQ_week");
 			String startTime=CoreUtils.formath.format(startDate);
 			String endTime=CoreUtils.formath.format(endDate);
 			searchParams.put("LTE_startTime", startTime);
@@ -85,6 +113,8 @@ public class ParkingFeeService extends BaseService<ParkingFee> {
 			searchParams.put("LTE_startTime", endTime);
 			searchParams.put("GTE_endTime", endTime);
 			list.addAll(super.findList(searchParams));
+			searchParams.remove("GTE_endTime");
+			searchParams.remove("LTE_startTime");
 			searchParams.put("GTE_startTime",startTime);
 			searchParams.put("LTE_endTime", endTime);
 			list.addAll(super.findList(searchParams));

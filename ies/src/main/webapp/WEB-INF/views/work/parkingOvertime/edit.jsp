@@ -34,14 +34,14 @@
 					<td class="fieldName"><label><span class="required">*</span>超时分钟:</label></td>
 					<td class="fieldInput">
 						<label>
-						<input type="text" id="overtimeMin" value="${vm.overtimeMin}" name="overtimeMin" validate="{required:true,digits:true}" />
+						<input type="text" id="overtimeMin" value="${vm.overtimeMin}" name="overtimeMin" validate="{required:true,digits:true,min:0}" />
 						</label>
 						<span for="overtimeMin" generated="true" style="display: none" class="error"></span>
 					</td>
 					<td class="fieldName"><label><span class="required">*</span>追加费:</label></td>
 					<td class="fieldInput">
 						<label>
-							<input type="text" name="appendFee" id="appendFee" value="${vm.appendFee }" validate="{required:true,number:true}"/>
+							<input type="text" name="appendFee" id="appendFee" value="${vm.appendFee }" validate="{required:true,number:true,min:0}"/>
 						</label>
 						<span for="appendFee" generated="true" style="display: none" class="error"></span>
 					</td>
