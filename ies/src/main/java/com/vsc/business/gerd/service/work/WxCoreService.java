@@ -215,7 +215,6 @@ public class WxCoreService extends BaseService<WxCore> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		String message = this.parkingLockService.reverse(new Long[] { parkingLock.getId() }, "02", wxCore.getWeixinId(),
 				ParkingLockOperationEvent.SOURCETYPE_PHONE);
 		if (message.length() > 0) {

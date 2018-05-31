@@ -262,7 +262,6 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 			parkingLockOperationEventService.save(lockEvent);
 			return message;
 		}
-
 		// 发送指令
 		ChannelHandlerContext ctx=ClientMap.lockMap.get(ipAddress);
 		if(ctx==null){
@@ -318,7 +317,6 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		params.put("RLIKE_parkingGarage.parkingLot.code", parkingLot.getCode());
 		params.put("EQ_parkingGarage.isDelete", false);
 		params.put("EQ_isEnabled", true);
-		params.put("EQ_isOnline", true);
 		List<ParkingLock> parkingLocks = this.findAllList(params);
 		if (parkingLocks != null) {
 			parkingLot.setGarageNum(parkingLocks.size());
@@ -338,14 +336,16 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	 * 不符合余位判断的剔除
 	 */
 	private void RemoveNoSurplus(List<ParkingLock> parkingLocks, String weixinId) throws Exception {
-		for (int i = 0; i < parkingLocks.size(); i++) {
+		for (int i = 0; i < parkingLocks.size();) {
 			WxCore wxCore=new WxCore();
 			wxCore.setWeixinId(weixinId);
 			wxCore.setParkingLockCode(parkingLocks.get(i).getCode());
 			int status=wxCoreService.getCoreStatus(wxCore);
-			if(status!=0||!parkingLocks.get(i).getIsSurplus()){
+			if(status!=0||!parkingLocks.get(i).getIsSurplus()||!parkingLocks.get(i).getIsOnline()){
 				parkingLocks.remove(i);
+				i--;
 			}
+			i++;
 		}
 	}
 }
