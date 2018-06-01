@@ -136,6 +136,12 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		return super.findPage(filterParams, pageRequest);
 	}
 
+	public Page<ParkingLock> findPageTongji(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
+		filterParams.put("RLIKE_parkingGarage.parkingLot.companyCode", "0004");
+		filterParams.put("EQ_isDelete", 0);
+		return super.findPage(filterParams, pageRequest);
+	}
+
 	public void deleteUpdateById(Long id) throws Exception {
 		ParkingLock entity = getObjectById(id);
 		entity.setIsDelete(true);
