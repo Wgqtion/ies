@@ -63,7 +63,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	@Autowired
 	private WxCoreService wxCoreService;
 
-	 private EntityManagerFactory entityManagerFactory;  
+	private EntityManagerFactory entityManagerFactory;  
     @PersistenceUnit  
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {  
         this.entityManagerFactory = entityManagerFactory;  
@@ -277,7 +277,13 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		message = head+"地锁请求超时，请重试";
 		Map<String, Object> filterParams = new HashMap<String, Object>();
 		filterParams.put("id",id);
-		for (int j = 0; j < 25; j++) {
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for (int j = 0; j < 20; j++) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

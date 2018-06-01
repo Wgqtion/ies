@@ -5,7 +5,7 @@ import com.vsc.business.gerd.entity.work.ParkingLockEventLog;
 
 /**
  * 
- * @author jerry
+ * @author XiangXiaoLin
  *
  */
 public interface ParkingLockEventLogDao extends BaseDao<ParkingLockEventLog> {

@@ -1,7 +1,5 @@
 package com.vsc.modules.tcp.core;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vsc.business.gerd.service.work.ParkingLockEventLogService;
@@ -47,11 +45,9 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		try {
-			List<TcpMsg> tcpMsgs = (List<TcpMsg>) msg;
-			if(tcpMsgs!=null&&tcpMsgs.size()>0){
-				ClientMap.lockMap.put(tcpMsgs.get(0).getIpAddress(), ctx);
-			}
-			this.parkingLockEventLogService.tcpUpload(tcpMsgs);
+			TcpMsg tcpMsg = (TcpMsg) msg;
+			ClientMap.lockMap.put(tcpMsg.getIpAddress(), ctx);
+			TcpServerHandler.parkingLockEventLogService.tcpUpload(tcpMsg);
 		}catch(Exception e){
 			Log4jUtils.tcpError.info("exception:" + this.getClass() + ",Message:" + e.getMessage());
 		}finally {
@@ -60,7 +56,7 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 	}
 
 	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) { // (4)
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		// 当出现异常就关闭连接
 		Log4jUtils.tcpError.info("异常断开连接的用户:" + ctx.channel().remoteAddress() + ",Message:" + cause.getMessage());
 		ctx.close();
