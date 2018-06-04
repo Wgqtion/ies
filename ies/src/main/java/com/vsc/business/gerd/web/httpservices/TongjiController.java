@@ -3,6 +3,7 @@ package com.vsc.business.gerd.web.httpservices;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.vsc.business.gerd.entity.work.ParkingLock;
+import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
 import com.vsc.business.gerd.service.work.ParkingLockService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
@@ -15,8 +16,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -88,5 +91,20 @@ public class TongjiController extends HttpServiceBaseController {
         String json = JSONUtil.toJSONString(page,isNotIgnoreFieldNames, false, featureNames);
         System.out.println(json);
         return json;
+    }
+
+
+    @RequestMapping(value = "reverse", method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String reverseBatch(@RequestParam Long[] ids, @RequestParam(value = "state", required = true) String state) throws Exception {
+        if(ids!=null&&ids.length>0){
+            String message=this.parkingLockService.reverse(ids, state, "",
+                    ParkingLockOperationEvent.SOURCETYPE_TONGJI);
+            if(message.length()>0){
+                return JSONObject.toJSONString(this.ajaxDoneError(message));
+            }
+        }
+
+        return JSONObject.toJSONString(this.ajaxDoneSuccess("指令下发成功"));
     }
 }

@@ -29,6 +29,7 @@ public class ParkingLockOperationEvent extends IdEntity {
 	
 	public static int SOURCETYPE_PC=1;
 	public static int SOURCETYPE_PHONE=2;
+	public static int SOURCETYPE_TONGJI=3;
 
 	private String eventType;
 	private Integer sourceType;
