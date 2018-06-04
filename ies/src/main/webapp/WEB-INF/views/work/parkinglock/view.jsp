@@ -26,9 +26,9 @@
 				</tr>
 				<tr>
 					<td align="right">在线状态:</td>
-					<td align="left"><s:message code="parkinglock.isOpen.${vm.isOnline}" /></td>
-					<td align="right">是否有车:</td>
-					<td align="left"><s:message code="parkinglock.isOpen.${vm.isCarOn}" /></td>
+					<td align="left"><s:message code="parkinglock.isOnline.${vm.isOnline}" /></td>
+					<td align="right">超声波状态:</td>
+					<td align="left"><s:message code="parkinglock.isCarOn.${vm.isCarOn}" /></td>
 				</tr>				
 				<tr>
 					<td align="right">开关状态:</td>

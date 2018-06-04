@@ -30,7 +30,7 @@
 					</label> <span style="display: none" class="error" generated="true" for="isEnabled"></span></td>
 				</tr>
 				<tr>
-					<td class="fieldName"><label><span class="required">*</span>余位判断:</label></td>
+					<td class="fieldName"><label><span class="required">*</span>小程序余位判断:</label></td>
 					<td class="fieldInput">
 						<label><input name="surplusDetection" type="checkbox" value="1" 
 							<c:if test="${fn:contains(vm.surplusDetection,'1')}"> checked="checked" </c:if>

@@ -72,7 +72,7 @@
 					<th <vsc:orderField name="lockNum"/>>地锁编号</th>
 					<th <vsc:orderField name="isEnabled"/>>使用状态</th>
 					<th>关联车位</th>
-					<th <vsc:orderField name="isCarOn"/>>是否有车</th>
+					<th <vsc:orderField name="isCarOn"/>>超声波状态</th>
 					<th <vsc:orderField name="isOnline"/>>是否在线</th>
 					<th <vsc:orderField name="isOpen"/>>开关状态</th>
 					<th <vsc:orderField name="logUpdateTime"/>>最后上报时间</th>
