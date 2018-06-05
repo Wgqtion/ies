@@ -4,12 +4,11 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vsc.business.gerd.entity.work.WxCore;
-import com.vsc.business.gerd.service.work.WxCoreService;
 import com.vsc.constants.Constants;
 import com.vsc.util.Log4jUtils;
+import com.vsc.util.WxCoreServiceUtil;
 
 /**
  * 超时自动取消预约
@@ -17,13 +16,6 @@ import com.vsc.util.Log4jUtils;
  *
  */
 public class ReserveCancelJob implements Job {
-	
-	private static WxCoreService wxCoreService;
-
-	@Autowired
-	public static void setWxCoreService(WxCoreService wxCoreService) {
-		ReserveCancelJob.wxCoreService = wxCoreService;
-	} 
 	
 	@Override 
     public void execute(JobExecutionContext context) throws JobExecutionException { 
@@ -37,7 +29,7 @@ public class ReserveCancelJob implements Job {
         		wxCore.setIsCancel(true);
         		wxCore.setType(Integer.valueOf(1));
         		wxCore.setIsSystemCancel(true);
-        		int status=wxCoreService.cancelReserve(wxCore,false);
+        		int status=WxCoreServiceUtil.getWxCoreService().cancelReserve(wxCore,false);
         		Log4jUtils.reserveCancel.info("系统取消超时预约："+Constants.CANCEL_RESERVE_MESSAGE_STATUS[status]);
         	}
 		}

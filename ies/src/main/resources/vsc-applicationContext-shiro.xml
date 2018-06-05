@@ -37,10 +37,10 @@
 		<property name="arguments" ref="parkingLockEventLogService"/>
 	</bean>
 	
-	<!-- ReserveCancelJob依赖的dao都需要用depends-on声明 -->
+	<!-- WxCoreServiceUtil依赖的dao都需要用depends-on声明 -->
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" 
 			depends-on="parkingLockDao,parkingGarageDao,wxUserDao,wxCoreDao,parkingLockOperationEventDao,parkingParamDao,reserveTimeDao,parkingFeeDao,wxOrderDao">
-		<property name="staticMethod" value="com.vsc.modules.quartz.job.ReserveCancelJob.setWxCoreService"/>
+		<property name="staticMethod" value="com.vsc.util.WxCoreServiceUtil.setWxCoreService"/>
 		<property name="arguments" ref="wxCoreService"/>
 	</bean>
 	

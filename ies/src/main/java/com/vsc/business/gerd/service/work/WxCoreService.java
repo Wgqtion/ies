@@ -3,6 +3,7 @@ package com.vsc.business.gerd.service.work;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,15 @@ import com.vsc.business.gerd.entity.work.ReserveTime;
 import com.vsc.business.gerd.entity.work.WxCore;
 import com.vsc.business.gerd.entity.work.WxOrder;
 import com.vsc.business.gerd.repository.work.WxCoreDao;
+import com.vsc.constants.Constants;
 import com.vsc.modules.entity.MessageException;
 import com.vsc.modules.quartz.job.ReserveCancelJob;
 import com.vsc.modules.quartz.manager.QuartzManager;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.util.CoreUtils;
+import com.vsc.util.Log4jUtils;
+import com.vsc.util.WxCoreServiceUtil;
 
 /**
  * 小程序核心 逻辑操作
@@ -74,6 +78,42 @@ public class WxCoreService extends BaseService<WxCore> {
 		User user = ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_parkingLock.parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
 		return super.findPage(filterParams, pageRequest);
+	}
+	/**
+	 * 把未完成的预约单加入定时任务
+	 */
+	public void addCancelJobs(){
+		Log4jUtils.reserveCancel.info("查询需要系统取消的预约：");
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_status", 1);
+		searchParams.put("EQ_type", 1);
+		try {
+			List<WxCore> wxCores=super.findList(searchParams);
+			if(wxCores!=null){
+				for (WxCore wxCore : wxCores) {
+					if(CoreUtils.compare_date(new Date(),wxCore.getStartTime())==1){
+						int status=WxCoreServiceUtil.getWxCoreService().cancelReserve(wxCore,false);
+		        		Log4jUtils.reserveCancel.info("系统取消超时预约："+Constants.CANCEL_RESERVE_MESSAGE_STATUS[status]);
+						continue;
+					}
+					ParkingParam parkingParam = this.parkingParamService
+							.getByParkingLotCode(wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
+					if(parkingParam!=null){
+						// 预约保留时间
+						Integer reserveMin = parkingParam.getReserveMin();
+						if (reserveMin > 0) {
+							Log4jUtils.reserveCancel.info("添加自动取消任务："+wxCore.getId());
+							QuartzManager.addJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
+									wxCore.getWeixinId(), CoreUtils.getCron(CoreUtils.addMin(wxCore.getStartTime(), reserveMin)),
+									ReserveCancelJob.class, wxCore.getWeixinId());
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
