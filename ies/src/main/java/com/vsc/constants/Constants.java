@@ -67,22 +67,22 @@ public class Constants {
 	/**
 	 * 预约提示状态
 	 */
-	public static final String[] RESERVE_MESSAGE_STATUS = { "预约成功","有未支付订单","已有进行中的订单","手速慢了，车位已被其他人使用","不在可预约时间段","今天已达取消预约次数上限，不可预约"};
+	public static final String[] RESERVE_MESSAGE_STATUS = { "预约成功","有未支付订单","已有进行中的订单","车位已被其他人使用","不在可预约时间段","今天已达取消预约次数上限，不可预约"};
 	
 	/**
 	 * 解锁提示状态
 	 */
-	public static final String[] UNLOCK_MESSAGE_STATUS = { "解锁成功","有未支付订单","已有进行中的订单","手速慢了，车位已被其他人使用"};
+	public static final String[] UNLOCK_MESSAGE_STATUS = { "解锁成功","有未支付订单","已有进行中的订单","车位已被其他人使用"};
 	
 	/**
 	 * 取消预约提示状态
 	 */
-	public static final String[] CANCEL_RESERVE_MESSAGE_STATUS = { "预约取消成功","当前无预约信息","取消成功，未超出限免时间，本次免费","取消成功，未超出开始计费时间，本次免费"};
+	public static final String[] CANCEL_RESERVE_MESSAGE_STATUS = { "取消成功","当前无预约信息","取消成功","取消成功"};
 	
 	/**
 	 * 上锁提示状态
 	 */
-	public static final String[] LOCK_MESSAGE_STATUS = { "上锁成功","当前无使用锁信息","上锁成功，未超出限免时间，本次免费","取消成功，未超出开始计费时间，本次免费"};
+	public static final String[] LOCK_MESSAGE_STATUS = { "上锁成功","当前无使用锁信息","上锁成功","上锁成功"};
 	
 	/**
 	 * 支付提示状态

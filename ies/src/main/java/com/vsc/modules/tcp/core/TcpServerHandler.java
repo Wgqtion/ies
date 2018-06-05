@@ -40,6 +40,7 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 		super.channelInactive(ctx);
 		String ipAddress=ClientMap.lockIpMap.get(ctx.channel().remoteAddress());
 		ClientMap.lockMap.remove(ipAddress);
+		TcpServerHandler.parkingLockEventLogService.downlineAllBy(ipAddress);
 		Log4jUtils.tcpHandler.info("不活跃的用户:" + ctx.channel().remoteAddress());
 	}
 

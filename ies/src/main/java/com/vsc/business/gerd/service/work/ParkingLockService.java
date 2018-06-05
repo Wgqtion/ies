@@ -63,6 +63,9 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	@Autowired
 	private WxCoreService wxCoreService;
 
+	@Autowired
+	private ParkingLockEventLogService parkingLockEventLogService;
+	
 	private EntityManagerFactory entityManagerFactory;  
     @PersistenceUnit  
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {  
@@ -271,6 +274,7 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		// 发送指令
 		ChannelHandlerContext ctx=ClientMap.lockMap.get(ipAddress);
 		if(ctx==null){
+			this.parkingLockEventLogService.downlineAllBy(ipAddress);
 			message = head+"地锁已断开连接，请稍后再试";
 			return message;
 		}
@@ -284,27 +288,22 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		Map<String, Object> filterParams = new HashMap<String, Object>();
 		filterParams.put("id",id);
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(3000);
+			for (int j = 0; j < 20; j++) {
+				Thread.sleep(1000);
+				EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+	 			ParkingLock pl=entityManager.find(ParkingLock.class,lock.getId());
+	 			entityManager.close();
+	 			if ((pl.getIsOpen() && "02".equals(state))
+						||(!pl.getIsOpen() && "01".equals(state))) {
+					message = "";
+					lockEvent.setStatus(1);
+					break;
+				}
+			}
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-		for (int j = 0; j < 20; j++) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			EntityManager entityManager = this.entityManagerFactory.createEntityManager();
- 			ParkingLock pl=entityManager.find(ParkingLock.class,lock.getId());
- 			entityManager.close();
- 			if ((pl.getIsOpen() && "02".equals(state))
-					||(!pl.getIsOpen() && "01".equals(state))) {
-				message = "";
-				lockEvent.setStatus(1);
-				break;
-			}
 		}
 		parkingLockOperationEventService.save(lockEvent);
 		return message;
