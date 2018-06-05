@@ -53,11 +53,11 @@ public class ParkingLockEventLogService extends BaseService<ParkingLockEventLog>
 		Map<String, Object> searchParams = new HashMap<String,Object>();
 		searchParams.put("EQ_ipAddress",ipAddress);
 		try {
-			List<ParkingLock> list=this.parkingLockService.findList(searchParams);
+			List<ParkingLock> list=this.parkingLockService.findAllList(searchParams);
 			if(list!=null){
 				for (ParkingLock parkingLock : list) {
 					parkingLock.setIsOnline(false);
-					this.parkingLockService.save(parkingLock);
+					this.parkingLockService.update(parkingLock);
 				}
 			}
 		} catch (Exception e) {

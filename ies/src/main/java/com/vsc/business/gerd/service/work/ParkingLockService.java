@@ -62,9 +62,6 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	
 	@Autowired
 	private WxCoreService wxCoreService;
-
-	@Autowired
-	private ParkingLockEventLogService parkingLockEventLogService;
 	
 	private EntityManagerFactory entityManagerFactory;  
     @PersistenceUnit  
@@ -236,6 +233,17 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 	}
 
 	/**
+	 * 批量发送指令
+	 */
+	public String reverse(Long[] ids, String state, String weixinId, int sourceType) {
+		StringBuffer sb=new StringBuffer();
+		for (int i = 0; i < ids.length; i++) {
+			sb.append(reverse(ids[i], state, weixinId, sourceType));
+		}
+		return sb.toString();
+	}
+	
+	/**
 	 * 发送地锁控制指令
 	 */
 	public String reverse(Long id, String state, String weixinId, int sourceType){
@@ -274,7 +282,6 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		// 发送指令
 		ChannelHandlerContext ctx=ClientMap.lockMap.get(ipAddress);
 		if(ctx==null){
-			this.parkingLockEventLogService.downlineAllBy(ipAddress);
 			message = head+"地锁已断开连接，请稍后再试";
 			return message;
 		}
@@ -307,16 +314,6 @@ public class ParkingLockService extends BaseService<ParkingLock> {
 		}
 		parkingLockOperationEventService.save(lockEvent);
 		return message;
-	}
-	/**
-	 * 批量发送指令
-	 */
-	public String reverse(Long[] ids, String state, String weixinId, int sourceType) {
-		StringBuffer sb=new StringBuffer();
-		for (int i = 0; i < ids.length; i++) {
-			sb.append(reverse(ids[i], state, weixinId, sourceType));
-		}
-		return sb.toString();
 	}
 
 	/**
