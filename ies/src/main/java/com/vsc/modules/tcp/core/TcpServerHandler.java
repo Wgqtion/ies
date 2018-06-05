@@ -38,6 +38,8 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
 		super.channelInactive(ctx);
+		String ipAddress=ClientMap.lockIpMap.get(ctx.channel().remoteAddress());
+		ClientMap.lockMap.remove(ipAddress);
 		Log4jUtils.tcpHandler.info("不活跃的用户:" + ctx.channel().remoteAddress());
 	}
 
@@ -47,6 +49,7 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 		try {
 			TcpMsg tcpMsg = (TcpMsg) msg;
 			ClientMap.lockMap.put(tcpMsg.getIpAddress(), ctx);
+			ClientMap.lockIpMap.put(ctx.channel().remoteAddress(),tcpMsg.getIpAddress());
 			TcpServerHandler.parkingLockEventLogService.tcpUpload(tcpMsg);
 		}catch(Exception e){
 			Log4jUtils.tcpError.info("exception:" + this.getClass() + ",Message:" + e.getMessage());

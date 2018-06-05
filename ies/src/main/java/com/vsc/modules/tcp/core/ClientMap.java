@@ -1,5 +1,6 @@
 package com.vsc.modules.tcp.core;
 
+import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -11,7 +12,11 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public class ClientMap {
 	/**
-	 * 地锁网关连接
+	 * 地锁网关连接网关获取
 	 */
 	public static ConcurrentHashMap<String, ChannelHandlerContext> lockMap = new ConcurrentHashMap<String, ChannelHandlerContext>();
+	/**
+	 * 地锁网关连接Ip获取
+	 */
+	public static ConcurrentHashMap<SocketAddress, String> lockIpMap = new ConcurrentHashMap<SocketAddress, String>();
 }
