@@ -2,10 +2,8 @@ package com.vsc.business.gerd.service.work;
 
 import java.math.BigDecimal;
 import java.sql.Time;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -187,7 +185,10 @@ public class WxCoreService extends BaseService<WxCore> {
 
 		// 查询可预约时间
 		ReserveTime reserveTime = new ReserveTime();
-		reserveTime.setStartTime(CoreUtils.formatDate(wxCore.getStartTime(), 1));
+		SimpleDateFormat format=new SimpleDateFormat("HH:mm:ss");
+		String sss = format.format(wxCore.getStartTime());
+		System.out.println(sss);
+		reserveTime.setStartTime(Time.valueOf(sss));
 		reserveTime.setParkingLotCode(parkingLock.getParkingGarage().getParkingLotCode());
 		boolean isCanReserveTime = this.reserveTimeService.isCanReserveTime(reserveTime);
 		if (!isCanReserveTime) {

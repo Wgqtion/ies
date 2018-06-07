@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.BasicEntity;
 
+import java.sql.Time;
+
 /**
  * 预约时间实体类
  * @author XiangXiaoLin
@@ -40,11 +42,11 @@ public class ReserveTime extends BasicEntity{
 	/**
 	 * 开始时间
 	 */
-	private String startTime;
+	private Time startTime;
 	/**
 	 * 结束时间
 	 */
-	private String endTime;
+	private Time endTime;
 	
 	/**
      * @return
@@ -80,20 +82,20 @@ public class ReserveTime extends BasicEntity{
 	}
 
 	@Column(name = "START_TIME")
-	public String getStartTime() {
+	public Time getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(String startTime) {
+	public void setStartTime(Time startTime) {
 		this.startTime = startTime;
 	}
 
 	@Column(name = "END_TIME")
-	public String getEndTime() {
+	public Time getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(String endTime) {
+	public void setEndTime(Time endTime) {
 		this.endTime = endTime;
 	}
 	

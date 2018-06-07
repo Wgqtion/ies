@@ -1,6 +1,8 @@
 package com.vsc.business.gerd.service.work;
 
 import java.math.BigDecimal;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -105,8 +107,9 @@ public class ParkingFeeService extends BaseService<ParkingFee> {
 			 *  )
 			 */
 			searchParams.put("NOTEQ_week", 0);
-			String startTime=CoreUtils.formath.format(startDate);
-			String endTime=CoreUtils.formath.format(endDate);
+			SimpleDateFormat format=new SimpleDateFormat("HH:mm:ss");
+			Time startTime=Time.valueOf(format.format(startDate));
+			Time endTime= Time.valueOf(format.format(endDate));
 			searchParams.put("LTE_startTime", startTime);
 			searchParams.put("GTE_endTime", startTime);
 			list.addAll(super.findList(searchParams));

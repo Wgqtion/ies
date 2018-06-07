@@ -361,8 +361,6 @@ public class CoreUtils {
 
 	/**
      * <li>功能描述：时间相减得到天数
-     * @param beginDateStr
-     * @param endDateStr
      * @return
      * long 
      * @author Administrator
