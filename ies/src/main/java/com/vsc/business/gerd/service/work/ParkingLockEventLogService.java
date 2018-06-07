@@ -156,7 +156,7 @@ public class ParkingLockEventLogService extends BaseService<ParkingLockEventLog>
 		PageRequest pageRequest=CoreUtils.buildPageRequest(1,1, "createTime", "DESC");
 		Page<ParkingLockEventLog> page=null;
 		try {
-			page=findPage(searchParams, pageRequest);
+			page=super.findPage(searchParams, pageRequest);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

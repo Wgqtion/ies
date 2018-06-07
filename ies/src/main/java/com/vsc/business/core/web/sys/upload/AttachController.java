@@ -27,6 +27,7 @@ import com.vsc.business.core.entity.sys.upload.Attach;
 import com.vsc.business.core.service.sys.upload.AttachService;
 import com.vsc.business.core.web.BaseController;
 import com.vsc.constants.Constants;
+import com.vsc.util.CoreUtils;
 
 /**
  * 附件类
@@ -65,7 +66,7 @@ public class AttachController extends BaseController {
 			}
 
 			entity.setUploadSessionId(request.getSession().getId());
-			entity.setUrlPath(Constants.UPLOAD_ROOT_FOLDER + this.getStoragePath());
+			entity.setUrlPath(Constants.UPLOAD_ROOT_FOLDER + CoreUtils.getStoragePath());
 			entity.setUser(this.getCurrentUser());
 
 			logger.info("上传文件开始：" + file.getOriginalFilename());
@@ -83,7 +84,7 @@ public class AttachController extends BaseController {
 
 	//文件下载  
     @RequestMapping("/download/{id}")  
-    public void download(@PathVariable("id") Long id,HttpServletRequest request,HttpServletResponse response) throws IOException  
+    public void download(@PathVariable("id") Long id,HttpServletResponse response) throws IOException  
     {  
     	Attach attach=this.attachService.getObjectById(id);
     	String fileName=attach.getName();
@@ -119,18 +120,5 @@ public class AttachController extends BaseController {
 		return RandomStringUtils.randomAlphanumeric(8);
 	}
 
-	/**
-	 * 按当前日期生产路径：/2008_2/5_20/，/年_季/月_日/
-	 * 
-	 * @return 相对路径
-	 */
-	private String getStoragePath() {
-		StringBuilder sb = new StringBuilder();
-		Calendar cal = Calendar.getInstance();
-		sb.append(Constants.SPT).append(cal.get(Calendar.YEAR)).append('_').append(cal.get((Calendar.MONTH)) / 3 + 1)
-				.append(Constants.SPT).append(cal.get(Calendar.MONTH) + 1).append('_')
-				.append(cal.get(Calendar.DAY_OF_MONTH)).append(Constants.SPT);
-		return sb.toString();
-	}
 
 }

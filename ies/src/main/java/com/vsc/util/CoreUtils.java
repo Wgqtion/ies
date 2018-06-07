@@ -526,4 +526,17 @@ public class CoreUtils {
         }
         return w;
 	}
+	/**
+	 * 按当前日期生产路径：/2008_2/5_20/，/年_季/月_日/
+	 * 
+	 * @return 相对路径
+	 */
+	public static String getStoragePath() {
+		StringBuilder sb = new StringBuilder();
+		Calendar cal = Calendar.getInstance();
+		sb.append(Constants.SPT).append(cal.get(Calendar.YEAR)).append('_').append(cal.get((Calendar.MONTH)) / 3 + 1)
+				.append(Constants.SPT).append(cal.get(Calendar.MONTH) + 1).append('_')
+				.append(cal.get(Calendar.DAY_OF_MONTH)).append(Constants.SPT);
+		return sb.toString();
+	}
 }

@@ -50,6 +50,21 @@ public class WxOrder extends IdEntity{
 	
 	private List<WxCore> wxCores=new ArrayList<WxCore>();
 	
+	/**
+	 * 二维码路径
+	 */
+	private String qrcodePath;
+	
+	
+	@Column(name = "QRCODE_PATH")
+	public String getQrcodePath() {
+		return qrcodePath;
+	}
+
+	public void setQrcodePath(String qrcodePath) {
+		this.qrcodePath = qrcodePath;
+	}
+
 	@ManyToOne
     @JoinColumn(name = "WEIXIN_ID",referencedColumnName="WEIXIN_ID",insertable=false,updatable=false)
     public WxUser getWxUser() {

@@ -5,7 +5,10 @@
  */
 package com.vsc.business.gerd.web.httpservices;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -354,6 +360,44 @@ public class WeixinController extends HttpServiceBaseController {
 		String[] isNotIgnoreFieldNames = { "code","totalFee","wxCores","typeStr","isFreeStr","amount","startTime","endTime","parkingLock","parkingGarage","name"};
 		String jsonstr = JSONUtil.toJSONString(wxOrder, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
+	}
+	
+	/**
+	 * 二维码查询
+	 */
+	@RequestMapping(value = "/qrcode")
+	public void qrcode(@RequestParam(required = true) String weixinId,String code,HttpServletResponse response) throws Exception {
+
+		// 订单查询
+		WxOrder wxOrder=null;
+		if(!CoreUtils.isBlank(code)){
+			wxOrder=this.wxOrderService.getByCode(code);
+		}else{
+			wxOrder=this.wxOrderService.getLastByWeixinId(weixinId);
+		}
+		if(wxOrder==null){
+			return;
+		}
+		String fileName=wxOrder.getCode();
+    	String path=wxOrder.getQrcodePath();
+        File file=new File(path);  
+        if(file.exists()){  
+            //设置MIME类型  
+            response.setContentType("application/octet-stream");              
+            //或者为response.setContentType("application/x-msdownload");  
+              
+            //设置头信息,设置文件下载时的默认文件名，同时解决中文名乱码问题  
+            response.addHeader("Content-disposition", "attachment;filename="+new String(fileName.getBytes(), "ISO-8859-1"));  
+              
+            InputStream inputStream=new FileInputStream(file);  
+            ServletOutputStream outputStream=response.getOutputStream();  
+            byte[] bs=new byte[1024];  
+            while((inputStream.read(bs)>0)){  
+                outputStream.write(bs);  
+            }  
+            outputStream.close();  
+            inputStream.close();              
+        }  
 	}
 	
 	/**

@@ -19,6 +19,11 @@ public class Constants {
 	 * 附件上传存放的相对文件夹名称
 	 */
 	public static String UPLOAD_ROOT_FOLDER = "D://ies//upload";
+	
+	/**
+	 * 二维码图片路径
+	 */
+	public static String QRCODE_ROOT_FOLDER = "D://ies//qrcode";
 
 	/**
 	 * 字符串  转  数组分隔符
@@ -62,6 +67,7 @@ public class Constants {
 	static{
 		Constants.SYS_NAME=PropertiesUtil.getValueByKey("system.name");
 		Constants.UPLOAD_ROOT_FOLDER=PropertiesUtil.getValueByKey("attach.upload.path");
+		Constants.QRCODE_ROOT_FOLDER=PropertiesUtil.getValueByKey("qrCode.path");
 	}
 	
 	/**
