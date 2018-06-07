@@ -1,6 +1,8 @@
 package com.vsc.business.gerd.entity.work;
 
 import java.math.BigDecimal;
+import java.sql.Time;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,11 +44,11 @@ public class ParkingFee extends BasicEntity{
 	/**
 	 * 开始时间
 	 */
-	private String startTime;
+	private Time startTime;
 	/**
 	 * 结束时间
 	 */
-	private String endTime;
+	private Time endTime;
 	/**
 	 * 类型，1预约费，2停车费
 	 */
@@ -108,20 +110,20 @@ public class ParkingFee extends BasicEntity{
 	}
 
 	@Column(name = "START_TIME")
-	public String getStartTime() {
+	public Time getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(String startTime) {
+	public void setStartTime(Time startTime) {
 		this.startTime = startTime;
 	}
 
 	@Column(name = "END_TIME")
-	public String getEndTime() {
+	public Time getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(String endTime) {
+	public void setEndTime(Time endTime) {
 		this.endTime = endTime;
 	}
 	

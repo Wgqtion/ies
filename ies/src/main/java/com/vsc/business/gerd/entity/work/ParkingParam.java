@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.BasicEntity;
 
+import java.sql.Time;
+
 /**
  * 停车参数 实体类
  * @author XiangXiaoLin
@@ -29,17 +31,17 @@ public class ParkingParam extends BasicEntity{
 	/**
 	 * 预约保留分钟
 	 */
-	private Integer reserveMin;
+	private Time reserveMin;
 	
 	/**
 	 * 预约免费分钟
 	 */
-	private Integer freeReserveMin;
+	private Time freeReserveMin;
 	
 	/**
 	 * 停车免费分钟
 	 */
-	private Integer freeParkingMin;
+	private Time freeParkingMin;
 	
 	/**
 	 * 最高预约费
@@ -54,12 +56,12 @@ public class ParkingParam extends BasicEntity{
 	/**
 	 * 预约优惠分钟
 	 */
-	private Integer privilegeReserveMin;
+	private Time privilegeReserveMin;
 	
 	/**
 	 * 停车优惠分钟
 	 */
-	private Integer privilegeParkingMin;
+	private Time privilegeParkingMin;
 	
 	/**
 	 * 预约取消次数，上限后不可预约
@@ -68,29 +70,29 @@ public class ParkingParam extends BasicEntity{
 	
 	
 	@Column(name = "RESERVE_MIN")
-	public Integer getReserveMin() {
+	public Time getReserveMin() {
 		return reserveMin;
 	}
 
-	public void setReserveMin(Integer reserveMin) {
+	public void setReserveMin(Time reserveMin) {
 		this.reserveMin = reserveMin;
 	}
 
 	@Column(name = "FREE_RESERVE_MIN")
-	public Integer getFreeReserveMin() {
+	public Time getFreeReserveMin() {
 		return freeReserveMin;
 	}
 
-	public void setFreeReserveMin(Integer freeReserveMin) {
+	public void setFreeReserveMin(Time freeReserveMin) {
 		this.freeReserveMin = freeReserveMin;
 	}
 
 	@Column(name = "FREE_PARKING_MIN")
-	public Integer getFreeParkingMin() {
+	public Time getFreeParkingMin() {
 		return freeParkingMin;
 	}
 
-	public void setFreeParkingMin(Integer freeParkingMin) {
+	public void setFreeParkingMin(Time freeParkingMin) {
 		this.freeParkingMin = freeParkingMin;
 	}
 
@@ -104,20 +106,20 @@ public class ParkingParam extends BasicEntity{
 	}
 
 	@Column(name = "PRIVILEGE_RESERVE_MIN")
-	public Integer getPrivilegeReserveMin() {
+	public Time getPrivilegeReserveMin() {
 		return privilegeReserveMin;
 	}
 
-	public void setPrivilegeReserveMin(Integer privilegeReserveMin) {
+	public void setPrivilegeReserveMin(Time privilegeReserveMin) {
 		this.privilegeReserveMin = privilegeReserveMin;
 	}
 
 	@Column(name = "PRIVILEGE_PARKING_MIN")
-	public Integer getPrivilegeParkingMin() {
+	public Time getPrivilegeParkingMin() {
 		return privilegeParkingMin;
 	}
 
-	public void setPrivilegeParkingMin(Integer privilegeParkingMin) {
+	public void setPrivilegeParkingMin(Time privilegeParkingMin) {
 		this.privilegeParkingMin = privilegeParkingMin;
 	}
 

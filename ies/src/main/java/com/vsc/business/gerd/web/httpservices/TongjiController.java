@@ -93,7 +93,14 @@ public class TongjiController extends HttpServiceBaseController {
         return json;
     }
 
-
+    /**
+     * 批量开锁
+     *
+     * @param ids
+     * @param state
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "reverse", method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     @ResponseBody
     public String reverseBatch(@RequestParam Long[] ids, @RequestParam(value = "state", required = true) String state) throws Exception {

@@ -1,6 +1,7 @@
 package com.vsc.business.gerd.service.work;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,8 +101,8 @@ public class WxCoreService extends BaseService<WxCore> {
 							.getByParkingLotCode(wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
 					if(parkingParam!=null){
 						// 预约保留时间
-						Integer reserveMin = parkingParam.getReserveMin();
-						if (reserveMin > 0) {
+						Time reserveMin = parkingParam.getReserveMin();
+						if (reserveMin!=null) {
 							Log4jUtils.reserveCancel.info("添加自动取消任务："+wxCore.getId());
 							QuartzManager.addJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
 									wxCore.getWeixinId(), CoreUtils.getCron(CoreUtils.addMin(wxCore.getStartTime(), reserveMin)),
@@ -202,8 +203,8 @@ public class WxCoreService extends BaseService<WxCore> {
 				return 5;
 			}
 			// 预约保留时间
-			Integer reserveMin = parkingParam.getReserveMin();
-			if (reserveMin > 0) {
+			Time reserveMin = parkingParam.getReserveMin();
+			if (reserveMin != null) {
 				QuartzManager.addJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
 						wxCore.getWeixinId(), CoreUtils.getCron(CoreUtils.addMin(new Date(), reserveMin)),
 						ReserveCancelJob.class, wxCore.getWeixinId());
@@ -285,7 +286,7 @@ public class WxCoreService extends BaseService<WxCore> {
 					.getByParkingLotCode(wc.getParkingLock().getParkingGarage().getParkingLotCode());
 			boolean isFree = false;
 			// 预约限免分钟
-			Integer freeReserveMin = 0;
+			Time freeReserveMin = null;
 			if (parkingParam != null) {
 				freeReserveMin = parkingParam.getFreeReserveMin();
 			}
@@ -295,7 +296,7 @@ public class WxCoreService extends BaseService<WxCore> {
 				status = 2;
 			}
 			// 预约优惠分钟
-			Integer privilegeReserveMin = 0;
+			Time privilegeReserveMin = null;
 			if (parkingParam != null) {
 				privilegeReserveMin = parkingParam.getPrivilegeReserveMin();
 			}
@@ -346,7 +347,7 @@ public class WxCoreService extends BaseService<WxCore> {
 					.getByParkingLotCode(wc.getParkingLock().getParkingGarage().getParkingLotCode());
 			boolean isFree = false;
 			// 停车免费分钟
-			Integer freeParkingMin = 0;
+			Time freeParkingMin = null;
 			if (parkingParam != null) {
 				freeParkingMin = parkingParam.getFreeParkingMin();
 			}
@@ -356,7 +357,7 @@ public class WxCoreService extends BaseService<WxCore> {
 				status = 2;
 			}
 			// 停车优惠分钟
-			Integer privilegeParkingMin = 0;
+			Time privilegeParkingMin = null;
 			if (parkingParam != null) {
 				privilegeParkingMin = parkingParam.getPrivilegeParkingMin();
 			}

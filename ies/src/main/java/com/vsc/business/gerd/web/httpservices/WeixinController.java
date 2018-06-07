@@ -6,6 +6,7 @@
 package com.vsc.business.gerd.web.httpservices;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -310,14 +311,14 @@ public class WeixinController extends HttpServiceBaseController {
 		if(wxCore==null){
 			return this.ajaxDone(1, null, null);
 		}
-		Integer freeMin=0;
-		Integer privilegeMin=0;
-		ParkingParam parkingParam=parkingParamService.getByParkingLotCode(wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
+		Time freeMin = null;
+		Time privilegeMin=null;
+		ParkingParam parkingParam = parkingParamService.getByParkingLotCode(wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
 		if(parkingParam!=null){
 			if(wxCore.getType()==1){
 				freeMin=parkingParam.getFreeReserveMin();
 				privilegeMin=parkingParam.getPrivilegeReserveMin();
-				if(parkingParam.getReserveMin()!=null&&parkingParam.getReserveMin()>0){
+				if(parkingParam.getReserveMin()!=null){
 					wxCore.setCancelTime(CoreUtils.addMin(wxCore.getStartTime(), parkingParam.getReserveMin()));	
 				}
 			}else if(wxCore.getType()==2){
@@ -325,10 +326,10 @@ public class WeixinController extends HttpServiceBaseController {
 				privilegeMin=parkingParam.getPrivilegeParkingMin();
 			}
 		}
-		if(freeMin!=null&&freeMin>0){
+		if(freeMin!=null){
 			wxCore.setFreeTime(CoreUtils.addMin(wxCore.getStartTime(), freeMin));		
 		}
-		if(privilegeMin!=null&&privilegeMin>0){
+		if(privilegeMin!=null){
 			wxCore.setStartFeeTime(CoreUtils.addMin(wxCore.getStartTime(), privilegeMin));
 		}
 		String[] isNotIgnoreFieldNames = {"type","typeStr","startFeeTime","freeTime","cancelTime", "parkingLockCode","startTime","parkingLock","parkingGarage","name"};

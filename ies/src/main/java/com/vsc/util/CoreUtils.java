@@ -2,6 +2,7 @@ package com.vsc.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -397,11 +398,12 @@ public class CoreUtils {
      * @param num
      * @return
      */
-    public static Date addMin(Date date,int num){
-    	Calendar cal = Calendar.getInstance();  
-        cal.setTime(date);
-        cal.add(Calendar.MINUTE,num);
-        return cal.getTime();
+    public static Date addMin(Date date,Time num){
+//    	Calendar cal = Calendar.getInstance();
+//        cal.setTime(date);
+//        cal.add(Calendar.MINUTE,num.compareTo());
+		Long riqi  = date.getTime()+num.getTime();
+        return new Date(riqi);
     }
     /**
      * 获取日期的小时

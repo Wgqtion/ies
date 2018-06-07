@@ -131,7 +131,7 @@ public class ParkingFeeService extends BaseService<ParkingFee> {
 			}
 			
 			//2.2  计算周天的价格
-			
+
 			long days = CoreUtils.getDaySub(startDate, endDate);
 			for (int i = 0; i <= days; i++) {
 				//2.3 设置日期
@@ -151,17 +151,17 @@ public class ParkingFeeService extends BaseService<ParkingFee> {
 				List<ParkingFee> ls=map.get(week);
 				if(ls!=null){
 					for(ParkingFee fee:ls){
-						int startHour=Integer.valueOf(fee.getStartTime().substring(0, 2));
-						int endHour=Integer.valueOf(fee.getEndTime().substring(0, 2));
-						int minHour=CoreUtils.getHour(minDate);
-						int maxHour=CoreUtils.getHour(maxDate);
-						if(minHour>startHour){
-							startHour=minHour;
-						}
-						if(maxHour<endHour){
-							endHour=maxHour;
-						}
-						totalFee=totalFee.add(fee.getFee().multiply(new BigDecimal(endHour-startHour+1)));
+//						int startHour=Integer.valueOf(fee.getStartTime().substring(0, 2));
+//						int endHour=Integer.valueOf(fee.getEndTime().substring(0, 2));
+//						int minHour=CoreUtils.getHour(minDate);
+//						int maxHour=CoreUtils.getHour(maxDate);
+//						if(minHour>startHour){
+//							startHour=minHour;
+//						}
+//						if(maxHour<endHour){
+//							endHour=maxHour;
+//						}
+//						totalFee=totalFee.add(fee.getFee().multiply(new BigDecimal(endHour-startHour+1)));
 					}
 				}
 			}
