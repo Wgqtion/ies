@@ -88,13 +88,19 @@ public class WeixinController extends HttpServiceBaseController {
 	@Autowired
 	private ParkingParamService parkingParamService;
 
+	//解锁预约用
 	static Map<Object,Object> locks = new HashMap<Object,Object>();
 	static List<Object> lockKeys = new ArrayList<Object>();
+	//上锁用
+	static Map<Object,Object> upLocks = new HashMap<Object,Object>();
+	static List<Object> upLockKeys = new ArrayList<Object>();
 	static {
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < 100000; i++) {
 			Object lockKey = new Object();
 			lockKeys.add(lockKey);
 			locks.put(lockKey, new Object());
+			upLockKeys.add(lockKey);
+			upLocks.put(lockKey, new Object());
 		}
 	}
 
@@ -215,7 +221,7 @@ public class WeixinController extends HttpServiceBaseController {
 	 * 预约或解锁
 	 */
 	private ModelAndView ReserveOrUnlocked(String weixinId, String parkingLockCode,int flag) {
-		Object lockKey = lockKeys.get(parkingLockCode.hashCode() % lockKeys.size());
+		Object lockKey = lockKeys.get(Math.abs(parkingLockCode.hashCode()) % lockKeys.size());
 		Object lock = locks.get(lockKey);
 		synchronized (lock) {
 			WxCore wxCore=new WxCore();
@@ -282,13 +288,17 @@ public class WeixinController extends HttpServiceBaseController {
 		wxCore.setType(Integer.valueOf(2));
 		int status=-1;
 		String message="上锁失败";
-		try {
-			status = this.wxCoreService.lock(wxCore);
-			message=Constants.LOCK_MESSAGE_STATUS[status];
-		} catch (MessageException e) {
-			message=e.getMessage();
-		} catch (Exception e) {
-			e.printStackTrace();
+		Object lockKey = upLockKeys.get(Math.abs(weixinId.hashCode()) % upLockKeys.size());
+		Object lock = upLocks.get(lockKey);
+		synchronized (lock) {
+			try {
+				status = this.wxCoreService.lock(wxCore);
+				message=Constants.LOCK_MESSAGE_STATUS[status];
+			} catch (MessageException e) {
+				message=e.getMessage();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return this.ajaxDone(status,message,null);
 	}

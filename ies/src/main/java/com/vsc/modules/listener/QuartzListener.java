@@ -3,6 +3,8 @@ package com.vsc.modules.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import com.vsc.modules.quartz.manager.QuartzManager;
+import com.vsc.util.Log4jUtils;
 import com.vsc.util.WxCoreServiceUtil;
 
 /**
@@ -19,8 +21,8 @@ public class QuartzListener implements ServletContextListener{
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		// TODO Auto-generated method stub
-		
+		Log4jUtils.reserveCancel.info("开始关闭所有定时任务");
+		QuartzManager.shutdownJobs();
 	}
 
 }
