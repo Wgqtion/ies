@@ -189,8 +189,8 @@ public class WeixinController extends HttpServiceBaseController {
 	 */
 	@RequestMapping(value = "/parkinglot/findParkingLots")
 	public ModelAndView findParkingLots(@RequestParam(required = true) String weixinId,
-			Long parkingLotId){
-		Set<ParkingLot> parkingLots=this.parkingLotService.findParkingLots(weixinId, parkingLotId);
+			Long parkingLotId,String southwestLat,String southwestLong,String northeastLat,String northeastLong){
+		Set<ParkingLot> parkingLots=this.parkingLotService.findParkingLots(weixinId, parkingLotId,southwestLat,southwestLong,northeastLat,northeastLong);
 		String[] isNotIgnoreFieldNames = { "id", "name","isLast", "itudeLong", "itudeLat", "garageNum", "surplusNum",
 				"parkingLocks", "code", "name", "parkingGarage", "id", "name" };
 		String jsonstr = JSONUtil.toJSONString(parkingLots, isNotIgnoreFieldNames, false, featureNames);

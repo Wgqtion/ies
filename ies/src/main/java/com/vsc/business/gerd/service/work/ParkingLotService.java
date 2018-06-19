@@ -106,7 +106,8 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Set<ParkingLot> findParkingLots(String weixinId,Long parkingLotId){
+	public Set<ParkingLot> findParkingLots(String weixinId,Long parkingLotId,
+			String southwestLat,String southwestLong,String northeastLat,String northeastLong){
 		Set<ParkingLot> parkingLots = new LinkedHashSet<ParkingLot>();
 		try {
 			Map<String, Object> orgParams = new HashMap<String, Object>();
@@ -118,6 +119,16 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 
 			Map<String, Object> searchParams = new HashMap<String, Object>();
 			searchParams.put("EQ_isEnabled", true);
+			
+			
+			if(southwestLat!=null&&northeastLat!=null&&southwestLong!=null&&northeastLong!=null){
+				searchParams.put("GTE_itudeLat", southwestLat);
+				searchParams.put("LTE_itudeLat", northeastLat);
+				searchParams.put("GTE_itudeLong", southwestLong);
+				searchParams.put("LTE_itudeLong", northeastLong);
+			}
+			
+			
 			if(parkingLotId==null){
 				searchParams.put("ISNULL_parent", null);	
 			}else{
