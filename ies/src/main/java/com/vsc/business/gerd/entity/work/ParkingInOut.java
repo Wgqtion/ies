@@ -30,7 +30,7 @@ public class ParkingInOut extends IdEntity implements Serializable {
 	/**
 	 * 车牌号
 	 */
-	private java.lang.String carNo;
+	private java.lang.String plateNo;
 	/**
 	 * 进入相机ip
 	 */
@@ -139,16 +139,13 @@ public class ParkingInOut extends IdEntity implements Serializable {
 	 */
 	private java.util.Date updatePayTime;
 
-	/**
-	 * @return 车牌号
-	 */
-	@Column(name = "CAR_NO")
-	public java.lang.String getCarNo() {
-		return carNo;
+	@Column(name = "PLATE_NO")
+	public String getPlateNo() {
+		return plateNo;
 	}
 
-	public void setCarNo(java.lang.String carNo) {
-		this.carNo = carNo;
+	public void setPlateNo(String plateNo) {
+		this.plateNo = plateNo;
 	}
 	
 	@Column(name = "ORDER_STATUS")

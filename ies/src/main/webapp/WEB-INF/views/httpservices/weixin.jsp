@@ -500,7 +500,7 @@
 						<label>车位ID</label>
 						<input type="text" name="parkingId" placeholder="请输入车位ID" /><br /> 
 						<label>车牌号码</label> 
-						<input type="text" name="carNo" placeholder="请输入车牌号码" /><br />
+						<input type="text" name="plateNo" placeholder="请输入车牌号码" /><br />
 						<button type="submit" class="btn">预约车位</button>
 					</form>
 					<h4>
@@ -530,7 +530,7 @@
 									<td>车位ID</td>
 								</tr>
 								<tr>
-									<td>carNo</td>
+									<td>plateNo</td>
 									<td>否</td>
 									<td>车牌号码</td>
 								</tr>

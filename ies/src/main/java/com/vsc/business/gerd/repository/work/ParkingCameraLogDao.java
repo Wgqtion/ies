@@ -1,6 +1,6 @@
 package com.vsc.business.gerd.repository.work;
 
-import com.vsc.business.gerd.entity.work.ParkingVideo;
+import com.vsc.business.gerd.entity.work.ParkingCameraLog;
 import com.vsc.modules.repository.BaseDao;
 
 /**
@@ -8,6 +8,6 @@ import com.vsc.modules.repository.BaseDao;
  * @author XiangXiaoLin
  *
  */
-public interface ParkingVideoDao extends BaseDao<ParkingVideo> {
+public interface ParkingCameraLogDao extends BaseDao<ParkingCameraLog> {
 
 }

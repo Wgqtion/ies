@@ -19,11 +19,15 @@ import com.vsc.modules.entity.BasicEntity;
  *
  */
 @Entity
-@Table(name = Constants.TABLE_PREFIX + "car")
-public class Car extends BasicEntity {
+@Table(name = Constants.TABLE_PREFIX + "car_info")
+public class CarInfo extends BasicEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5848572371677133752L;
 	private java.lang.String owner;
-	private java.lang.String carNo;
+	private java.lang.String plateNo;
 	private Date expireDate;
 	private java.lang.String carType;
 	private java.lang.String telphone;
@@ -80,18 +84,14 @@ public class Car extends BasicEntity {
 		this.owner = value;
 	}
 
-	/**
-	 * @return
-	 */
-	@Column(name = "CAR_NO")
-	public java.lang.String getCarNo() {
-		return this.carNo;
+	@Column(name = "PLATE_NO")
+	public String getPlateNo() {
+		return plateNo;
 	}
 
-	public void setCarNo(java.lang.String value) {
-		this.carNo = value;
+	public void setPlateNo(String plateNo) {
+		this.plateNo = plateNo;
 	}
-
 	/**
 	 * @return
 	 */

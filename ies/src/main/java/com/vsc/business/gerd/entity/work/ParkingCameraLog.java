@@ -2,7 +2,10 @@ package com.vsc.business.gerd.entity.work;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -10,18 +13,24 @@ import com.vsc.constants.Constants;
 import com.vsc.modules.entity.IdEntity;
 
 /**
- * 全视频实体类
+ * 全视频相机日志实体类
  * @author XiangXiaoLin
  *
  */
 @Entity
-@Table(name = Constants.TABLE_PREFIX + "PARKING_VIDEO")
-public class ParkingVideo extends IdEntity {
+@Table(name = Constants.TABLE_PREFIX + "PARKING_CAMERA_LOG")
+public class ParkingCameraLog extends IdEntity {
 
 	/**
-	 * 车位编码
+	 * 
 	 */
-	private java.lang.String parkingCode;
+	private static final long serialVersionUID = 4169534004967141035L;
+	/**
+	 * 相机编码
+	 */
+	private java.lang.String parkingCameraCode;
+	private ParkingCamera parkingCamera;
+	
 	/**
 	 * 相机IP
 	 */
@@ -45,15 +54,42 @@ public class ParkingVideo extends IdEntity {
 	private java.util.Date createTime;
 
 	/**
-	 * @return
+	 * 场区编码
 	 */
-	@Column(name = "PARKING_CODE")
-	public java.lang.String getParkingCode() {
-		return parkingCode;
+	private String parkingLotCode;
+	
+	@Transient
+	public String getParkingLotCode() {
+		return parkingLotCode;
 	}
 
-	public void setParkingCode(java.lang.String parkingCode) {
-		this.parkingCode = parkingCode;
+	public void setParkingLotCode(String parkingLotCode) {
+		this.parkingLotCode = parkingLotCode;
+	}
+
+	/**
+	 * @return
+	 */
+	@Column(name = "PARKING_CAMERA_CODE")
+	public java.lang.String getParkingCameraCode() {
+		return parkingCameraCode;
+	}
+
+	public void setParkingCameraCode(java.lang.String parkingCameraCode) {
+		this.parkingCameraCode = parkingCameraCode;
+	}
+
+	/**
+	 * @return
+	 */
+	@ManyToOne
+	@JoinColumn(name = "PARKING_CAMERA_CODE",referencedColumnName="CODE",insertable=false,updatable=false)	
+	public ParkingCamera getParkingCamera() {
+		return parkingCamera;
+	}
+
+	public void setParkingCamera(ParkingCamera parkingCamera) {
+		this.parkingCamera = parkingCamera;
 	}
 
 	/**

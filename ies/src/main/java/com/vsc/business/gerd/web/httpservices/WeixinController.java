@@ -164,7 +164,7 @@ public class WeixinController extends HttpServiceBaseController {
 			wxUser = new WxUser();
 			wxUser.setWeixinId(weixinId);
 			wxUser.setName(name);
-			wxUser.setCarNo(carNumber);
+			wxUser.setPlateNo(carNumber);
 			wxUser.setTelphone(tel);
 			wxUser.setSex(sex);
 			wxUser.setCountry(country);

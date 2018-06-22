@@ -19,8 +19,8 @@
 				</tr>
 				<tr>
 					<td class="fieldName"><span class="required">*</span>车牌号：</td>
-					<td class="fieldInput"><label> <input type="text" name="carNo"  value="${vm.carNo}" validate="{required:true}" />
-					</label><span for="carNo" generated="true" style="display: none" class="error"></span></td>
+					<td class="fieldInput"><label> <input type="text" name="plateNo"  value="${vm.plateNo}" validate="{required:true}" />
+					</label><span for="plateNo" generated="true" style="display: none" class="error"></span></td>
 				</tr>
 			</table>
 		</div>

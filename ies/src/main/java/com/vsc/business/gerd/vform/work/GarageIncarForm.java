@@ -2,11 +2,11 @@ package com.vsc.business.gerd.vform.work;
 
 import java.util.Date;
 
-import com.vsc.business.gerd.entity.work.ParkingVideo;
+import com.vsc.business.gerd.entity.work.ParkingCameraLog;
 
 public class GarageIncarForm {
 	private Date intime;
-	private ParkingVideo[] parkingVideos;
+	private ParkingCameraLog[] parkingVideos;
 
 	public Date getIntime() {
 		return intime;
@@ -16,11 +16,11 @@ public class GarageIncarForm {
 		this.intime = intime;
 	}
 
-	public ParkingVideo[] getParkingVideos() {
+	public ParkingCameraLog[] getParkingVideos() {
 		return parkingVideos;
 	}
 
-	public void setParkingVideos(ParkingVideo[] parkingVideos) {
+	public void setParkingVideos(ParkingCameraLog[] parkingVideos) {
 		this.parkingVideos = parkingVideos;
 	}
 

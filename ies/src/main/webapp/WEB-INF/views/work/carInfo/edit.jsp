@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/inc/include.inc.jsp"%>
 
 <div class="pageContent">
-	<form method="post" action="${ctx}/work/car/${action}"
+	<form method="post" action="${ctx}/work/carInfo/${action}"
 		class="pageForm required-validate"
 		onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<input type="hidden" name="id" value="${id}"/>
@@ -20,8 +20,8 @@
 						style="display: none" class="error"></span></td>
 					<td class="fieldName"><span class="required">*</span>车牌:</td>
 					<td class="fieldInput"><label><input type="text"
-							id="carNo" name="carNo" value="${vm.carNo}"
-							validate="{required:true}" /></label><span for="carNo" generated="true"
+							id="plateNo" name="plateNo" value="${vm.plateNo}"
+							validate="{required:true}" /></label><span for="plateNo" generated="true"
 						style="display: none" class="error"></span></td>
 				</tr>
 				<tr>

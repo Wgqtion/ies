@@ -2,55 +2,7 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap> 
-<!-- 查询车位状态-->
-<select id="report.parkingGarageStatus.total" resultClass="mapBean" parameterClass="com.vsc.modules.entity.ReportView" >
-	SELECT
-		*
-	FROM
-	(
-		SELECT
-			PL.NAME AS PLNAME,
-			PG.NAME AS PGNAME,
-			PG.CODE AS PGCODE,
-			PG.ITUDE_LONG AS ITUDELONG,
-			PG.ITUDE_LAT AS ITUDELAT,
-			PV.PLATE_NO AS PLATENO,
-			PV.IN_TIME AS INTIME,
-			PV.STATUS AS iscarstatus
-		FROM
-			T_PARKING_GARAGE PG
-		INNER JOIN T_PARKING_LOT PL ON PG.PARKING_LOT_CODE = PL.CODE 
-		INNER JOIN (
-			SELECT 
-						PARKING_CODE,
-						SUBSTRING_INDEX(GROUP_CONCAT(STATUS ORDER BY CREATE_TIME DESC,ID DESC),',',1) AS STATUS,
-						SUBSTRING_INDEX(GROUP_CONCAT(CAMERA_IP ORDER BY CREATE_TIME DESC,ID DESC),',',1) AS CAMERA_IP,
-						SUBSTRING_INDEX(GROUP_CONCAT(CREATE_TIME ORDER BY CREATE_TIME DESC,ID DESC),',',1) AS CREATE_TIME,
-						SUBSTRING_INDEX(GROUP_CONCAT(PLATE_NO ORDER BY CREATE_TIME DESC,ID DESC),',',1) AS PLATE_NO,
-						SUBSTRING_INDEX(GROUP_CONCAT(IN_TIME ORDER BY CREATE_TIME DESC,ID DESC),',',1) AS IN_TIME
-					FROM T_PARKING_VIDEO 
-					GROUP BY PARKING_CODE
-		) PV ON PG.CODE = PV.PARKING_CODE
-		WHERE 
-			PG.IS_DELETE=0
-			AND PL.IS_DELETE=0
-			AND PL.COMPANY_CODE LIKE CONCAT(#companyCode#,'%')
-	) SurplusTotal
-	WHERE
-		1=1
-	<isNotEmpty    property="value">
-		AND PLATENO LIKE CONCAT('%',#value#,'%')
-	</isNotEmpty>
-	<isNotEmpty    property="entity.name">
-		AND PGNAME  LIKE CONCAT('%',#entity.name#,'%')
-	</isNotEmpty>
-	<isNotEmpty    property="entity.code">
-		AND PGCODE  LIKE CONCAT('%',#entity.code#,'%')
-	</isNotEmpty>
-	<isNotEmpty    property="entity.parkingLot.name">
-		AND PLNAME  LIKE CONCAT('%',#entity.parkingLot.name#,'%')
-	</isNotEmpty>
-</select> 
+
 	
 </sqlMap>
 

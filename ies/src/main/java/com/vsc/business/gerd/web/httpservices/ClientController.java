@@ -1,7 +1,5 @@
 package com.vsc.business.gerd.web.httpservices;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -16,10 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vsc.business.gerd.entity.validate.work.InParkingOrderValidate;
 import com.vsc.business.gerd.entity.validate.work.OutParkingOrderValidate;
 import com.vsc.business.gerd.entity.validate.work.PayParkingOrderValidate;
+import com.vsc.business.gerd.entity.work.ParkingCameraLog;
 import com.vsc.business.gerd.entity.work.ParkingInOut;
-import com.vsc.business.gerd.entity.work.ParkingVideo;
+import com.vsc.business.gerd.service.work.ParkingCameraLogService;
 import com.vsc.business.gerd.service.work.ParkingInOutService;
-import com.vsc.business.gerd.service.work.ParkingVideoService;
 import com.vsc.constants.Constants;
 
 /**
@@ -40,7 +38,7 @@ public class ClientController extends HttpServiceBaseController {
 	private ParkingInOutService parkingOrderService;
 	
 	@Autowired
-	private ParkingVideoService parkingVideoService;
+	private ParkingCameraLogService parkingCameraLogService;
 
 	@RequestMapping(value = "")
 	public String index(Model model) {
@@ -66,7 +64,7 @@ public class ClientController extends HttpServiceBaseController {
             }
             return this.ajaxDoneError(sb.toString());
         }
-		parkingOrder.setCarNo(validate.getInPlateNo());
+		parkingOrder.setPlateNo(validate.getInPlateNo());
 		this.parkingOrderService.inParkingOrder(parkingOrder);
 		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
@@ -92,7 +90,7 @@ public class ClientController extends HttpServiceBaseController {
         }
 		boolean flag=false;
 		try {
-			parkingOrder.setCarNo(validate.getOutPlateNo());
+			parkingOrder.setPlateNo(validate.getOutPlateNo());
 			this.parkingOrderService.outParkingOrder(parkingOrder);
 			flag=true;
 		} catch (Exception e) {
@@ -122,7 +120,7 @@ public class ClientController extends HttpServiceBaseController {
             }
             return this.ajaxDoneError(sb.toString());
         }
-		parkingOrder.setCarNo(validate.getPayPlateNo());
+		parkingOrder.setPlateNo(validate.getPayPlateNo());
 		this.parkingOrderService.payParkingOrder(parkingOrder);
 
 		String jsonstr = "\"" + parkingOrder.getPayNumber() + "\"";
@@ -135,13 +133,9 @@ public class ClientController extends HttpServiceBaseController {
 	 * @return
 	 * @throws Exception 
 	 */
-	@RequestMapping(value = "parking/parkingVideo")
-	public ModelAndView service2(@Valid ParkingVideo parkingVideo, HttpServletRequest request) throws Exception {
-		if (parkingVideo != null) {
-			parkingVideo.setCreateTime(new Date());
-			parkingVideoService.save(parkingVideo);
-		}
-
+	@RequestMapping(value = "parking/parkingCameraLog")
+	public ModelAndView service2(@Valid ParkingCameraLog parkingCameraLog, HttpServletRequest request) throws Exception {
+		parkingCameraLogService.save(parkingCameraLog);
 		String jsonstr = "\"true\"";
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}

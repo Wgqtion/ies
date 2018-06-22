@@ -15,33 +15,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
+import com.vsc.business.gerd.entity.work.ParkingCamera;
+import com.vsc.business.gerd.entity.work.ParkingCameraLog;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
-import com.vsc.business.gerd.repository.work.ParkingGarageDao;
+import com.vsc.business.gerd.repository.work.ParkingCameraDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
 import com.vsc.util.CodeUtils;
 import com.vsc.util.CoreUtils;
 
 /**
- * 车位数据操作
+ * 全视频相机数据操作
  * @author XiangXiaoLin
  *
  */
 @Service
 @Transactional
-public class ParkingGarageService extends BaseService<ParkingGarage> {
+public class ParkingCameraService extends BaseService<ParkingCamera> {
 
 	@Autowired
-	private ParkingGarageDao parkingGarageDao;
+	private ParkingCameraDao parkingGarageDao;
 	
+	@Autowired
+	private ParkingGarageService parkingGarageService;
 	
 	@Override
-	public PagingAndSortingRepository<ParkingGarage, Long> getPagingAndSortingRepositoryDao() {
+	public PagingAndSortingRepository<ParkingCamera, Long> getPagingAndSortingRepositoryDao() {
 		return this.parkingGarageDao;
 	}
 
 	@Override
-	public JpaSpecificationExecutor<ParkingGarage> getJpaSpecificationExecutorDao() {
+	public JpaSpecificationExecutor<ParkingCamera> getJpaSpecificationExecutorDao() {
 		return this.parkingGarageDao;
 	}
 	
@@ -49,7 +53,7 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	 * 根据条件查询，未删除的
 	 * @throws Exception 
 	 */
-	public List<ParkingGarage> findAllList(Map<String, Object> filterParams) throws Exception {
+	public List<ParkingCamera> findAllList(Map<String, Object> filterParams) throws Exception {
 		filterParams.put("EQ_isDelete", 0);
 		return super.findList(filterParams);
 	}
@@ -59,14 +63,21 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	 * @throws Exception 
 	 */
 	@Override
-	public Page<ParkingGarage> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
+	public Page<ParkingCamera> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
-		filterParams.put("RLIKE_parkingLot.companyCode", user.getCompany().getCode());
+		filterParams.put("RLIKE_parkingGarage.parkingLot.companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
 		return super.findPage(filterParams, pageRequest);
 	}
 
-	public ParkingGarage save(ParkingGarage entity) throws Exception {
+	public ParkingCamera save(ParkingCamera entity) throws Exception {
+		if (entity.getParkingGarage() != null && entity.getParkingGarage().getId() != null) {
+			ParkingGarage parkingGarage = parkingGarageService.getObjectById(entity.getParkingGarage().getId());
+			entity.setParkingGarage(parkingGarage);
+		} else {
+			entity.setParkingGarage(null);
+		}
+		
 		User user=null;
 		try {
 			user = ShiroUserUtils.GetCurrentUser();
@@ -82,7 +93,7 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 				int i=0;
 				while(flag){
 					code=CodeUtils.GenerateCode(this.getMaxCode()+i,5);
-					ParkingGarage p=getByCode(code);
+					ParkingCamera p=getByCode(code);
 					if(p==null){
 						flag=false;
 					}
@@ -101,7 +112,7 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	 * @param code
 	 * @return
 	 */
-	public ParkingGarage getByCode(String code){
+	public ParkingCamera getByCode(String code){
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_isDelete",0);
 		searchParams.put("EQ_code",code);
@@ -115,16 +126,16 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 	public int getMaxCode(){
 		int i=0;
 		Map<String, Object> searchParams = new HashMap<String, Object>();
-		List<ParkingGarage> list=this.findAll(searchParams, "code","desc");
+		List<ParkingCamera> list=this.findAll(searchParams, "code","desc");
 		if(list!=null&&list.size()>0){
-			ParkingGarage c=list.get(0);
+			ParkingCamera c=list.get(0);
 			if(c.getCode()!=null)
 			i=Integer.valueOf(c.getCode());
 		}
 		return i;
 	}
 	public void deleteUpdateById(Long id) throws Exception {
-		ParkingGarage entity=getObjectById(id);
+		ParkingCamera entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}
@@ -137,4 +148,16 @@ public class ParkingGarageService extends BaseService<ParkingGarage> {
 		}
 	}
 	
+	/**
+	 * 根据ParkingCameraLog查询，未删除的
+	 * @param ParkingCameraLog
+	 * @return
+	 */
+	public ParkingCamera getByParkingCameraLog(ParkingCameraLog entity){
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_isDelete",0);
+		searchParams.put("EQ_cameraIp",entity.getCameraIp());
+		searchParams.put("EQ_parkingGarage.parkingLotCode",entity.getParkingLotCode());
+		return this.find(searchParams);
+	}
 }
