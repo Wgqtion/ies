@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -47,18 +46,21 @@ public class ParkingCameraLog extends IdEntity {
 	/**
 	 * 进入时间
 	 */
-	private java.util.Date inTime;
+	private java.util.Date inDate;
 	/**
 	 * 创建时间
 	 */
-	private java.util.Date createTime;
+	private java.util.Date createDate;
 
 	/**
 	 * 场区编码
 	 */
 	private String parkingLotCode;
 	
-	@Transient
+	/**
+	 * @return
+	 */
+	@Column(name = "PARKING_LOT_CODE")
 	public String getParkingLotCode() {
 		return parkingLotCode;
 	}
@@ -128,28 +130,23 @@ public class ParkingCameraLog extends IdEntity {
 	public void setPlateNo(java.lang.String plateNo) {
 		this.plateNo = plateNo;
 	}
-	/**
-	 * @return
-	 */
-	@Column(name = "IN_TIME")
-	public java.util.Date getInTime() {
-		return inTime;
+	
+	@Column(name = "IN_DATE")
+	public java.util.Date getInDate() {
+		return inDate;
 	}
 
-	public void setInTime(java.util.Date inTime) {
-		this.inTime = inTime;
+	public void setInDate(java.util.Date inDate) {
+		this.inDate = inDate;
 	}
 
-	/**
-	 * @return
-	 */
-	@Column(name = "CREATE_TIME")
-	public java.util.Date getCreateTime() {
-		return this.createTime;
+	@Column(name = "CREATE_DATE")
+	public java.util.Date getCreateDate() {
+		return createDate;
 	}
 
-	public void setCreateTime(java.util.Date value) {
-		this.createTime = value;
+	public void setCreateDate(java.util.Date createDate) {
+		this.createDate = createDate;
 	}
 
 	@Override

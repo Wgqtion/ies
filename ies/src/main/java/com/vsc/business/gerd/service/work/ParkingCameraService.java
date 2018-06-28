@@ -108,6 +108,21 @@ public class ParkingCameraService extends BaseService<ParkingCamera> {
 		return super.save(entity);
 	}
 	/**
+	 * 保存，接口用
+	 * @param entity
+	 * @return
+	 */
+	public ParkingCamera update(ParkingCamera entity){
+		try {
+			return super.save(entity);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
 	 * 根据code查询，未删除的
 	 * @param code
 	 * @return
