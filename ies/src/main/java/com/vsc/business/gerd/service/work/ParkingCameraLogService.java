@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,10 +12,12 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vsc.business.gerd.entity.work.ParkingCamera;
 import com.vsc.business.gerd.entity.work.ParkingCameraLog;
 import com.vsc.business.gerd.repository.work.ParkingCameraLogDao;
+import com.vsc.constants.Constants;
 import com.vsc.modules.service.BaseService;
 import com.vsc.util.CoreUtils;
 import com.vsc.util.Log4jUtils;
@@ -44,8 +47,10 @@ public class ParkingCameraLogService extends BaseService<ParkingCameraLog> {
 		return this.parkingCameraLogDao;
 	}
 
-	@Override
-	public ParkingCameraLog save(ParkingCameraLog entity) throws Exception {
+	/**
+	 * 保存相关信息及文件
+	 */
+	public ParkingCameraLog save(ParkingCameraLog entity, MultipartFile picture) throws Exception {
 		entity.setCreateDate(new Date());
 		ParkingCamera parkingCamera = parkingCameraService.getByParkingCameraLog(entity);
 		boolean isSave = true;
@@ -57,7 +62,15 @@ public class ParkingCameraLogService extends BaseService<ParkingCameraLog> {
 				isSave = false;
 			}
 			parkingCamera.setStatus(entity.getStatus());
-			parkingCamera.setPlateNo(entity.getPlateNo());
+			if (entity.getStatus().intValue() == 0) {
+				parkingCamera.setPlateNo(null);
+			} else {
+				parkingCamera.setPlateNo(entity.getPlateNo());
+				entity.setPicturePath(Constants.UPLOAD_CAMERA_FOLDER + CoreUtils.getStoragePath() + Constants.SPT
+						+ CoreUtils.getFileKey()+"."+StringUtils.lowerCase(StringUtils.substringAfterLast(picture.getOriginalFilename(), ".")));
+				CoreUtils.saveFile(picture.getInputStream(),
+						entity.getPicturePath());
+			}
 			parkingCamera.setLogUpdateTime(entity.getCreateDate());
 			parkingCameraService.update(parkingCamera);
 		} else {

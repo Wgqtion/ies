@@ -1,8 +1,14 @@
 package com.vsc.business.gerd.web.work;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +25,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
 import com.vsc.business.gerd.entity.work.ParkingCamera;
+import com.vsc.business.gerd.entity.work.ParkingCameraLog;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
+import com.vsc.business.gerd.service.work.ParkingCameraLogService;
 import com.vsc.business.gerd.service.work.ParkingCameraService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
@@ -35,6 +43,9 @@ public class ParkingCameraController extends BaseController {
 
 	@Autowired
 	private ParkingCameraService parkingCameraService;
+	
+	@Autowired
+	private ParkingCameraLogService parkingCameraLogService;
 	
 	@Autowired
 	private ParkingLotService parkingLotService;
@@ -80,10 +91,36 @@ public class ParkingCameraController extends BaseController {
 		return PATH_EDIT;
 	}
 
-	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
-	public String view(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vm", parkingCameraService.getObjectById(id));
-		return PATH_VIEW;
+	@RequestMapping(value="picture/{id}", method = RequestMethod.GET)
+	public void picture(@PathVariable("id") Long id,HttpServletResponse response) throws IOException {
+		ParkingCamera parkingCamera=parkingCameraService.getObjectById(id);
+		ParkingCameraLog parkingCameraLog=this.parkingCameraLogService.getMaxBy(parkingCamera.getCode());
+		if(parkingCameraLog==null){
+			return;
+		}
+    	String path=parkingCameraLog.getPicturePath();
+    	if(path==null){
+			return;
+		}
+        File file=new File(path);   
+        if(file.exists()){  
+            String fileName = file.getName();
+            //设置MIME类型  
+            response.setContentType("application/octet-stream");              
+            //或者为response.setContentType("application/x-msdownload");  
+              
+            //设置头信息,设置文件下载时的默认文件名，同时解决中文名乱码问题  
+            response.addHeader("Content-disposition", "attachment;filename="+new String(fileName.getBytes(), "ISO-8859-1"));  
+              
+            InputStream inputStream=new FileInputStream(file);  
+            ServletOutputStream outputStream=response.getOutputStream();  
+            byte[] bs=new byte[1024];  
+            while((inputStream.read(bs)>0)){  
+                outputStream.write(bs);  
+            }  
+            outputStream.close();  
+            inputStream.close();              
+        }  
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)

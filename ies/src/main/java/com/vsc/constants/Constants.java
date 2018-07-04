@@ -21,6 +21,11 @@ public class Constants {
 	public static String UPLOAD_ROOT_FOLDER = "D://ies//upload";
 	
 	/**
+	 * 全视频照片上传存放的相对文件夹名称
+	 */
+	public static String UPLOAD_CAMERA_FOLDER = "D://ies//camera";
+	
+	/**
 	 * 二维码图片路径
 	 */
 	public static String QRCODE_ROOT_FOLDER = "D://ies//qrcode";
@@ -67,6 +72,7 @@ public class Constants {
 	static{
 		Constants.SYS_NAME=PropertiesUtil.getValueByKey("system.name");
 		Constants.UPLOAD_ROOT_FOLDER=PropertiesUtil.getValueByKey("attach.upload.path");
+		Constants.UPLOAD_CAMERA_FOLDER=PropertiesUtil.getValueByKey("camera.upload.path");
 		Constants.QRCODE_ROOT_FOLDER=PropertiesUtil.getValueByKey("qrCode.path");
 	}
 	
@@ -88,7 +94,7 @@ public class Constants {
 	/**
 	 * 上锁提示状态
 	 */
-	public static final String[] LOCK_MESSAGE_STATUS = { "上锁成功","当前无使用锁信息","上锁成功","上锁成功"};
+	public static final String[] LOCK_MESSAGE_STATUS = { "上锁成功","上锁成功","上锁成功","上锁成功"};
 	
 	/**
 	 * 支付提示状态

@@ -10,7 +10,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +51,7 @@ public class AttachController extends BaseController {
 		if (!file.isEmpty()) {
 			Attach entity = new Attach();
 			entity.setCreateTime(Calendar.getInstance().getTime());
-			entity.setFileKey(this.getFileKey());
+			entity.setFileKey(CoreUtils.getFileKey());
 			entity.setFileSize(file.getSize());
 			entity.setName(file.getOriginalFilename());
 			entity.setFileType(StringUtils.lowerCase(StringUtils.substringAfterLast(file.getOriginalFilename(), ".")));
@@ -108,17 +107,6 @@ public class AttachController extends BaseController {
             inputStream.close();              
         }  
     }
-
-	/**
-	 * 获得文件目录
-	 * 
-	 * 8位随机数
-	 * 
-	 * @return
-	 */
-	private String getFileKey() {
-		return RandomStringUtils.randomAlphanumeric(8);
-	}
 
 
 }

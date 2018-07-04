@@ -58,6 +58,23 @@ public class ParkingCameraLog extends IdEntity {
 	private String parkingLotCode;
 	
 	/**
+	 * 照片路径
+	 */
+	private String picturePath;
+	
+	/**
+	 * @return
+	 */
+	@Column(name = "PICTURE_PATH")
+	public String getPicturePath() {
+		return picturePath;
+	}
+
+	public void setPicturePath(String picturePath) {
+		this.picturePath = picturePath;
+	}
+
+	/**
 	 * @return
 	 */
 	@Column(name = "PARKING_LOT_CODE")

@@ -58,9 +58,11 @@
 					<th width="40" align="center">序号</th>
 					<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 					<th>场区名称</th>
+					<th>场区编码</th>
 					<th <vsc:orderField name="cameraIp"/>>相机IP</th>
-					<th <vsc:orderField name="status"/>>状态</th>
 					<th>关联车位</th>
+					<th <vsc:orderField name="status"/>>状态</th>
+					<th <vsc:orderField name="plateNo"/>>车牌号</th>
 					<th <vsc:orderField name="logUpdateTime"/>>最后上报时间</th>
 				</tr>
 			</thead>
@@ -70,9 +72,11 @@
 						<td align="center">${varindex.count+(page.number * page.size)}</td>
 						<td><input name="ids" value="${varitem.id }" type="checkbox"></td>
 						<td>${varitem.parkingGarage.parkingLot.name}</td>
-						<td><a href="${ctx}/work/parkingCamera/view/${varitem.id}" target="dialog" title="查看地锁信息" rel="parkingCamera__view">${varitem.cameraIp}</a></td>
-						<td><s:message code="parkingCamera.status.${varitem.status}" /></td>
+						<td>${varitem.parkingGarage.parkingLot.code}</td>
+						<td>${varitem.cameraIp}</td>
 						<td><a href="${ctx}/work/parkinggarage/view/${varitem.parkingGarage.id}" target="dialog" title="查看停车位" rel="parkinggarage_view">${varitem.parkingGarage.name} </a></td>
+						<td><s:message code="parkingCamera.status.${varitem.status}" /></td>
+						<td>${varitem.plateNo}<c:if test="${varitem.plateNo!=null}"><a title="查看照片" rel="device_parkingCamera_picture" target="_blank" href="${ctx}/work/parkingCamera/picture/${varitem.id}" class="btnView"></a></c:if></td>
 						<td><fmt:formatDate value='${ varitem.logUpdateTime}' pattern='yyyy-MM-dd HH:mm:ss' /></td>
 					</tr>
 				</c:forEach>
