@@ -57,7 +57,7 @@ public class ParkingCameraLogService extends BaseService<ParkingCameraLog> {
 		if (parkingCamera != null) {
 			entity.setParkingCameraCode(parkingCamera.getCode());
 			ParkingCameraLog log = getMaxBy(parkingCamera.getCode());
-			if (log != null && CoreUtils.compare_date(log.getInDate(), entity.getInDate()) == 0
+			if (log != null &&log.getInDate()!=null&&entity.getInDate()!=null&& CoreUtils.compare_date(log.getInDate(), entity.getInDate()) == 0
 					&& log.getStatus().equals(entity.getStatus())) {
 				isSave = false;
 			}
