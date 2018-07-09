@@ -3,10 +3,7 @@ package com.vsc.business.gerd.entity.work;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.BasicEntity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Objects;
@@ -20,11 +17,25 @@ import java.util.Objects;
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "time_section")
 public class TimeSection extends BasicEntity {
+    private ChargesSettings chargesSettings;
     private Integer week;
     private Time startTime;
     private Time endTime;
     private BigDecimal fee;
 
+    /**
+     * 收费规则
+     * @return
+     */
+    @ManyToOne
+    @JoinColumn(name = "CHARGES_SETTINGS_ID",referencedColumnName="ID")
+    public ChargesSettings getChargesSettings() {
+        return chargesSettings;
+    }
+
+    public void setChargesSettings(ChargesSettings chargesSettings) {
+        this.chargesSettings = chargesSettings;
+    }
 
     /**
      * 周
@@ -76,7 +87,7 @@ public class TimeSection extends BasicEntity {
     }
 
     /**
-     * 单价（默认以小时计）
+     * 单价
      * @return
      */
     @Basic

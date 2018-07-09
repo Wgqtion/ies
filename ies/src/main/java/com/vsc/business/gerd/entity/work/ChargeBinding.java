@@ -17,9 +17,9 @@ public class ChargeBinding extends BasicEntity {
     private ChargesSettings chargesSettings;
     private String description;
 
-
     /**
-     * 片区code
+     * 关联停车片区
+     *
      * @return
      */
     @ManyToOne
@@ -33,11 +33,25 @@ public class ChargeBinding extends BasicEntity {
     }
 
     /**
+     * 停车收费设置
+     * @return
+     */
+    @ManyToOne
+    @JoinColumn(name = "CHARGES_SETTINGS_ID",referencedColumnName="ID")
+    public ChargesSettings getChargesSettings() {
+        return chargesSettings;
+    }
+
+    public void setChargesSettings(ChargesSettings chargesSettings) {
+        this.chargesSettings = chargesSettings;
+    }
+
+    /**
      * 预约设置
      * @return
      */
     @ManyToOne
-    @JoinColumn(name = "APPOINTMENT_ID",referencedColumnName="ID")
+    @JoinColumn(name = "APPOINTMENT_SETTINGS_ID",referencedColumnName="ID")
     public AppointmentSettings getAppointmentSettings() {
         return appointmentSettings;
     }
@@ -45,22 +59,6 @@ public class ChargeBinding extends BasicEntity {
     public void setAppointmentSettings(AppointmentSettings appointmentSettings) {
         this.appointmentSettings = appointmentSettings;
     }
-
-    /**
-     * 停车收费设置
-     * @return
-     */
-    @ManyToOne
-    @JoinColumn(name = "CHARGES_ID",referencedColumnName="ID")
-    public ChargesSettings getChargesSettings() {
-        return chargesSettings;
-    }
-
-    public void setChargesSettings(ChargesSettings chargesId) {
-        this.chargesSettings = chargesSettings;
-    }
-
-
     /**
      * 描述
      * @return

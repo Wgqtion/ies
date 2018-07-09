@@ -334,59 +334,7 @@ public class WxCoreService extends BaseService<WxCore> {
 	 * 上锁操作
 	 */
 	public int lock(WxCore wxCore) throws MessageException {
-		Integer status = 0;
-		// 查询记录
-		WxCore wc = findBy(wxCore);
-		try {
-			if (wc == null) {
-				return 1;
-			}
-			wc.setStatus(status);
-			wc.setEndTime(new Date());
-			// 查询参数
-			ParkingParam parkingParam = this.parkingParamService
-					.getByParkingLotCode(wc.getParkingLock().getParkingGarage().getParkingLotCode());
-			boolean isFree = false;
-			// 停车免费分钟
-			Time freeParkingMin = null;
-			if (parkingParam != null) {
-				freeParkingMin = parkingParam.getFreeParkingMin();
-			}
-			Date startDate = CoreUtils.addMin(wc.getStartTime(), freeParkingMin);
-			if (CoreUtils.compare_date(startDate, wc.getEndTime()) != -1) {
-				isFree = true;
-				status = 2;
-			}
-			// 停车优惠分钟
-			Time privilegeParkingMin = null;
-			if (parkingParam != null) {
-				privilegeParkingMin = parkingParam.getPrivilegeParkingMin();
-			}
-			wc.setStartTime(CoreUtils.addMin(wc.getStartTime(), privilegeParkingMin));
-			if (CoreUtils.compare_date(wc.getStartTime(), wc.getEndTime()) != -1) {
-				isFree = true;
-				status = 3;
-			}
-
-			// 收费计算
-			BigDecimal fee = new BigDecimal(0.0);
-			if (!isFree) {
-				fee = this.parkingFeeService.calculateFee(wc);
-				if (parkingParam != null && fee != null && parkingParam.getMaxParkingFee() != null
-						&& parkingParam.getMaxParkingFee().intValue() > 0
-						&& fee.intValue() > parkingParam.getMaxParkingFee().intValue()) {
-					fee = new BigDecimal(parkingParam.getMaxParkingFee());
-				}
-			}
-			wc.setAmount(fee);
-			wc.setIsFree(isFree);
-			super.save(wc);
-			wxOrderService.save(wc);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String message = this.parkingLockService.reverse(new Long[] { wc.getParkingLock().getId() }, "01",
+		String message = this.parkingLockService.reverse(new Long[] { wxCore.getParkingLock().getId() }, "01",
 				wxCore.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
 		if (message.length() > 0) {
 			throw new MessageException(message);

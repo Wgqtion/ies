@@ -4,10 +4,9 @@ package com.vsc.business.gerd.entity.work;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.BasicEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Time;
+import java.util.List;
 
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "charges_settings")
@@ -18,10 +17,11 @@ public class ChargesSettings extends BasicEntity {
   private Time priceTime;
   private Double privilegeFee;
   private Double maxFee;
+  private List<TimeSection> timeSectionList;
 
 
   /**
-   * 收费标准：1按次收费；2按时收费跨段取左；3跨段收费取右；4跨段收费取两段；5跨段收费取最大
+   * 计费类型：1按次收费；2按时收费跨段取左；3跨段收费取右；4跨段收费取两段；5跨段收费取最大
    * @return
    */
   @Column(name = "CHARGE_STANDARD")
@@ -35,7 +35,7 @@ public class ChargesSettings extends BasicEntity {
 
 
   /**
-   * 单价
+   * 按次收费单价
    * @return
    */
   @Column(name = "UNIT_PRICE")
@@ -86,5 +86,13 @@ public class ChargesSettings extends BasicEntity {
   }
 
 
+  @OneToMany(mappedBy="chargesSettings")
+  @OrderBy("startTime asc")
+  public List<TimeSection> getTimeSectionList() {
+    return timeSectionList;
+  }
 
+  public void setTimeSectionList(List<TimeSection> timeSectionList) {
+    this.timeSectionList = timeSectionList;
+  }
 }

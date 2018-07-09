@@ -6,6 +6,7 @@
 package com.vsc.business.gerd.web.httpservices;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.vsc.business.gerd.entity.work.*;
+import com.vsc.business.gerd.service.work.*;
+import com.vsc.util.ChargeHandle;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -29,19 +33,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
-import com.vsc.business.gerd.entity.work.Org;
-import com.vsc.business.gerd.entity.work.ParkingLot;
-import com.vsc.business.gerd.entity.work.ParkingParam;
-import com.vsc.business.gerd.entity.work.WeixinAttest;
-import com.vsc.business.gerd.entity.work.WxCore;
-import com.vsc.business.gerd.entity.work.WxOrder;
-import com.vsc.business.gerd.entity.work.WxUser;
-import com.vsc.business.gerd.service.work.OrgService;
-import com.vsc.business.gerd.service.work.ParkingLotService;
-import com.vsc.business.gerd.service.work.ParkingParamService;
-import com.vsc.business.gerd.service.work.WxCoreService;
-import com.vsc.business.gerd.service.work.WxOrderService;
-import com.vsc.business.gerd.service.work.WxUserService;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.MessageException;
 import com.vsc.util.CoreUtils;
@@ -82,6 +73,9 @@ public class WeixinController extends HttpServiceBaseController {
 	
 	@Autowired
 	private ParkingParamService parkingParamService;
+
+    @Autowired
+    private ChargeBindingService chargeBindingService;
 
 	static Map<Object,Object> locks = new HashMap<Object,Object>();
 	static List<Object> lockKeys = new ArrayList<Object>();
@@ -275,9 +269,22 @@ public class WeixinController extends HttpServiceBaseController {
 		WxCore wxCore=new WxCore();
 		wxCore.setWeixinId(weixinId);
 		wxCore.setType(Integer.valueOf(2));
+        WxCore wc = wxCoreService.findBy(wxCore);
+        boolean isFree = false;
 		int status=-1;
 		String message="上锁失败";
 		try {
+
+            Map<String, Object> filterParms = new HashMap<>();
+            filterParms.put("EQ_parkingLot.code",wc.getParkingLock().getParkingGarage().getParkingLotCode());
+            List<ChargeBinding> chargeBindingServiceList = chargeBindingService.findList(filterParms);
+
+		    BigDecimal fee = BigDecimal.valueOf(ChargeHandle.charge(wc.getStartTime(),wc.getEndTime(),chargeBindingServiceList.get(0).getChargesSettings() ));
+            wc.setAmount(fee);
+            wc.setIsFree(isFree);
+            wxCoreService.save(wc);
+            wxOrderService.save(wc);
+
 			status = this.wxCoreService.lock(wxCore);
 			message=Constants.LOCK_MESSAGE_STATUS[status];
 		} catch (MessageException e) {
