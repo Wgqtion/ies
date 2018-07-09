@@ -76,7 +76,7 @@
 						<td>${varitem.cameraIp}</td>
 						<td><a href="${ctx}/work/parkinggarage/view/${varitem.parkingGarage.id}" target="dialog" title="查看停车位" rel="parkinggarage_view">${varitem.parkingGarage.name} </a></td>
 						<td><s:message code="parkingCamera.status.${varitem.status}" /></td>
-						<td>${varitem.plateNo}<c:if test="${varitem.plateNo!=null}"><a title="查看照片" rel="device_parkingCamera_picture" target="_blank" href="${ctx}/work/parkingCamera/picture/${varitem.id}" class="btnView"></a></c:if></td>
+						<td>${varitem.plateNo}<c:if test="${varitem.plateNo!=null}"><a title="查看照片" rel="device_parkingCamera_picture" target="_blank" href="${ctx}/work/parkingCamera/picture/${varitem.id}" class="btnAttach"></a><img height="50" width="150" src="${ctx}/work/parkingCamera/picture/${varitem.id}"></c:if></td>
 						<td><fmt:formatDate value='${ varitem.logUpdateTime}' pattern='yyyy-MM-dd HH:mm:ss' /></td>
 					</tr>
 				</c:forEach>
