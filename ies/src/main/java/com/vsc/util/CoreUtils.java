@@ -2,11 +2,8 @@ package com.vsc.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
-<<<<<<< HEAD
 import java.sql.Time;
-=======
 import java.io.InputStream;
->>>>>>> origin/master
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

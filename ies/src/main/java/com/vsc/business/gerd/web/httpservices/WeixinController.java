@@ -5,32 +5,15 @@
  */
 package com.vsc.business.gerd.web.httpservices;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-<<<<<<< HEAD
-import java.math.BigDecimal;
-import java.sql.Time;
-=======
-import java.io.InputStream;
->>>>>>> origin/master
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-<<<<<<< HEAD
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import com.vsc.business.gerd.entity.work.*;
 import com.vsc.business.gerd.service.work.*;
+import com.vsc.constants.Constants;
+import com.vsc.modules.entity.MessageException;
 import com.vsc.util.ChargeHandle;
-=======
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
->>>>>>> origin/master
+import com.vsc.util.CoreUtils;
+import com.vsc.util.JSONUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -43,12 +26,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
-import com.vsc.constants.Constants;
-import com.vsc.modules.entity.MessageException;
-import com.vsc.util.CoreUtils;
-import com.vsc.util.JSONUtil;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.sql.Time;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * 微信小程序接口控制类
@@ -86,13 +73,10 @@ public class WeixinController extends HttpServiceBaseController {
 	@Autowired
 	private ParkingParamService parkingParamService;
 
-<<<<<<< HEAD
     @Autowired
     private ChargeBindingService chargeBindingService;
 
-=======
 	//解锁预约用
->>>>>>> origin/master
 	static Map<Object,Object> locks = new HashMap<Object,Object>();
 	static List<Object> lockKeys = new ArrayList<Object>();
 	//上锁用
@@ -294,7 +278,6 @@ public class WeixinController extends HttpServiceBaseController {
         boolean isFree = false;
 		int status=-1;
 		String message="上锁失败";
-<<<<<<< HEAD
 		Date endtime = new Date();
 		try {
             Map<String, Object> filterParms = new HashMap<>();
@@ -318,7 +301,7 @@ public class WeixinController extends HttpServiceBaseController {
 			message=e.getMessage();
 		} catch (Exception e) {
 			e.printStackTrace();
-=======
+/*=======
 		Object lockKey = upLockKeys.get(Math.abs(weixinId.hashCode()) % upLockKeys.size());
 		Object lock = upLocks.get(lockKey);
 		synchronized (lock) {
@@ -330,7 +313,7 @@ public class WeixinController extends HttpServiceBaseController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
->>>>>>> origin/master
+>>>>>>> origin/master*/
 		}
 		return this.ajaxDone(status,message,null);
 	}
@@ -431,8 +414,8 @@ public class WeixinController extends HttpServiceBaseController {
             //设置头信息,设置文件下载时的默认文件名，同时解决中文名乱码问题  
             response.addHeader("Content-disposition", "attachment;filename="+new String(fileName.getBytes(), "ISO-8859-1"));  
               
-            InputStream inputStream=new FileInputStream(file);  
-            ServletOutputStream outputStream=response.getOutputStream();  
+            InputStream inputStream=new FileInputStream(file);
+            ServletOutputStream outputStream=response.getOutputStream();
             byte[] bs=new byte[1024];  
             while((inputStream.read(bs)>0)){  
                 outputStream.write(bs);  
