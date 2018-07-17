@@ -46,7 +46,7 @@ public class ParkingInOutService extends BaseService<ParkingInOut> {
 	 */
 	private ParkingInOut getParkingOrderByPlateAndStatus(ParkingInOut parkingInOut, Integer orderStatus) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("EQ_carNo", parkingInOut.getCarNo());
+		params.put("EQ_plateNo", parkingInOut.getPlateNo());
 		params.put("EQ_orderStatus", orderStatus);
 		return this.find(params);
 	}
@@ -59,7 +59,7 @@ public class ParkingInOutService extends BaseService<ParkingInOut> {
 	 */
 	public void inParkingOrder(ParkingInOut parkingInOut) throws Exception {
 
-		if (StringUtils.isBlank(parkingInOut.getCarNo())) {
+		if (StringUtils.isBlank(parkingInOut.getPlateNo())) {
 			// 如果车牌空
 			parkingInOut.setOrderStatus(Integer.valueOf(1));
 		} else {
@@ -86,7 +86,7 @@ public class ParkingInOutService extends BaseService<ParkingInOut> {
 	public void payParkingOrder(ParkingInOut parkingInOut) throws Exception {
 		// 直接保存标志
 		boolean flag = true;
-		if (!(StringUtils.isBlank(parkingInOut.getCarNo())||"无车牌".equals(parkingInOut.getCarNo()))) {
+		if (!(StringUtils.isBlank(parkingInOut.getPlateNo())||"无车牌".equals(parkingInOut.getPlateNo()))) {
 			// 车牌不为空 ，查找之前状态0的停车单
 			ParkingInOut upParkingOrder = getParkingOrderByPlateAndStatus(parkingInOut, Integer.valueOf(0));
 			if (upParkingOrder != null&&upParkingOrder.getUpdatePayTime()==null) {
@@ -124,7 +124,7 @@ public class ParkingInOutService extends BaseService<ParkingInOut> {
 	public void outParkingOrder(ParkingInOut parkingInOut) throws Exception {
 		// 直接保存标志
 		boolean flag = true;
-		if (!(StringUtils.isBlank(parkingInOut.getCarNo())||"无车牌".equals(parkingInOut.getCarNo()))) {
+		if (!(StringUtils.isBlank(parkingInOut.getPlateNo())||"无车牌".equals(parkingInOut.getPlateNo()))) {
 			// 车牌不为空 ，查找之前状态0的停车单
 			ParkingInOut upParkingOrder = getParkingOrderByPlateAndStatus(parkingInOut, Integer.valueOf(0));
 			if (upParkingOrder != null&&upParkingOrder.getUpdateOutTime()==null) {

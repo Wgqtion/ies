@@ -72,6 +72,16 @@ public class ParkingGarageController extends BaseController {
 		return PATH_LIST;
 	}
 
+	@RequestMapping(value = "select")
+	public String select(Model model, ServletRequest request) throws Exception {
+		PageRequest pageRequest = this.getPageRequest("name", "asc");
+		Map<String, Object> searchParams = this.getSearchRequest();
+		Page<ParkingGarage> page = parkingGarageService.findPage(searchParams, pageRequest);
+		model.addAttribute("page", page);
+		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
+		return PATH_SELECT;
+	}
+
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model,
 			Long parkingLotId) throws Exception {
@@ -120,15 +130,6 @@ public class ParkingGarageController extends BaseController {
 	public ModelAndView deleteBatch(@RequestParam Long[] ids) throws Exception {
 		parkingGarageService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
-	}
-
-	@RequestMapping(value = "select")
-	public String select(Model model, ServletRequest request) throws Exception {
-		PageRequest pageRequest = this.getPageRequest("name", "asc");
-		Map<String, Object> searchParams = this.getSearchRequest();
-		Page<ParkingGarage> page = parkingGarageService.findPage(searchParams, pageRequest);
-		model.addAttribute("page", page);
-		return PATH_SELECT;
 	}
 
 	 

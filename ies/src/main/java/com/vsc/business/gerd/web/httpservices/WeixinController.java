@@ -5,9 +5,15 @@
  */
 package com.vsc.business.gerd.web.httpservices;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+<<<<<<< HEAD
 import java.math.BigDecimal;
 import java.sql.Time;
+=======
+import java.io.InputStream;
+>>>>>>> origin/master
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,9 +22,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+<<<<<<< HEAD
 import com.vsc.business.gerd.entity.work.*;
 import com.vsc.business.gerd.service.work.*;
 import com.vsc.util.ChargeHandle;
+=======
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+>>>>>>> origin/master
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -74,16 +86,25 @@ public class WeixinController extends HttpServiceBaseController {
 	@Autowired
 	private ParkingParamService parkingParamService;
 
+<<<<<<< HEAD
     @Autowired
     private ChargeBindingService chargeBindingService;
 
+=======
+	//解锁预约用
+>>>>>>> origin/master
 	static Map<Object,Object> locks = new HashMap<Object,Object>();
 	static List<Object> lockKeys = new ArrayList<Object>();
+	//上锁用
+	static Map<Object,Object> upLocks = new HashMap<Object,Object>();
+	static List<Object> upLockKeys = new ArrayList<Object>();
 	static {
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < 100000; i++) {
 			Object lockKey = new Object();
 			lockKeys.add(lockKey);
 			locks.put(lockKey, new Object());
+			upLockKeys.add(lockKey);
+			upLocks.put(lockKey, new Object());
 		}
 	}
 
@@ -147,7 +168,7 @@ public class WeixinController extends HttpServiceBaseController {
 			wxUser = new WxUser();
 			wxUser.setWeixinId(weixinId);
 			wxUser.setName(name);
-			wxUser.setCarNo(carNumber);
+			wxUser.setPlateNo(carNumber);
 			wxUser.setTelphone(tel);
 			wxUser.setSex(sex);
 			wxUser.setCountry(country);
@@ -172,8 +193,8 @@ public class WeixinController extends HttpServiceBaseController {
 	 */
 	@RequestMapping(value = "/parkinglot/findParkingLots")
 	public ModelAndView findParkingLots(@RequestParam(required = true) String weixinId,
-			Long parkingLotId){
-		Set<ParkingLot> parkingLots=this.parkingLotService.findParkingLots(weixinId, parkingLotId);
+			Long parkingLotId,String southwestLat,String southwestLong,String northeastLat,String northeastLong){
+		Set<ParkingLot> parkingLots=this.parkingLotService.findParkingLots(weixinId, parkingLotId,southwestLat,southwestLong,northeastLat,northeastLong);
 		String[] isNotIgnoreFieldNames = { "id", "name","isLast", "itudeLong", "itudeLat", "garageNum", "surplusNum",
 				"parkingLocks", "code", "name", "parkingGarage", "id", "name" };
 		String jsonstr = JSONUtil.toJSONString(parkingLots, isNotIgnoreFieldNames, false, featureNames);
@@ -204,7 +225,7 @@ public class WeixinController extends HttpServiceBaseController {
 	 * 预约或解锁
 	 */
 	private ModelAndView ReserveOrUnlocked(String weixinId, String parkingLockCode,int flag) {
-		Object lockKey = lockKeys.get(parkingLockCode.hashCode() % lockKeys.size());
+		Object lockKey = lockKeys.get(Math.abs(parkingLockCode.hashCode()) % lockKeys.size());
 		Object lock = locks.get(lockKey);
 		synchronized (lock) {
 			WxCore wxCore=new WxCore();
@@ -273,6 +294,7 @@ public class WeixinController extends HttpServiceBaseController {
         boolean isFree = false;
 		int status=-1;
 		String message="上锁失败";
+<<<<<<< HEAD
 		Date endtime = new Date();
 		try {
             Map<String, Object> filterParms = new HashMap<>();
@@ -296,6 +318,19 @@ public class WeixinController extends HttpServiceBaseController {
 			message=e.getMessage();
 		} catch (Exception e) {
 			e.printStackTrace();
+=======
+		Object lockKey = upLockKeys.get(Math.abs(weixinId.hashCode()) % upLockKeys.size());
+		Object lock = upLocks.get(lockKey);
+		synchronized (lock) {
+			try {
+				status = this.wxCoreService.lock(wxCore);
+				message=Constants.LOCK_MESSAGE_STATUS[status];
+			} catch (MessageException e) {
+				message=e.getMessage();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+>>>>>>> origin/master
 		}
 		return this.ajaxDone(status,message,null);
 	}
@@ -364,9 +399,47 @@ public class WeixinController extends HttpServiceBaseController {
 		if(wxOrder==null){
 			return this.ajaxDone(1, "无订单信息", null);
 		}
-		String[] isNotIgnoreFieldNames = { "code","totalFee","wxCores","typeStr","isFreeStr","amount","startTime","endTime","parkingLock","parkingGarage","name"};
+		String[] isNotIgnoreFieldNames = { "code","totalFee","wxCores","typeStr","isFreeStr","amount","startTime","endTime","parkingLock","parkingGarage","parkingLot","name"};
 		String jsonstr = JSONUtil.toJSONString(wxOrder, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
+	}
+	
+	/**
+	 * 二维码查询
+	 */
+	@RequestMapping(value = "/qrcode")
+	public void qrcode(@RequestParam(required = true) String weixinId,String code,HttpServletResponse response) throws Exception {
+
+		// 订单查询
+		WxOrder wxOrder=null;
+		if(!CoreUtils.isBlank(code)){
+			wxOrder=this.wxOrderService.getByCode(code);
+		}else{
+			wxOrder=this.wxOrderService.getLastByWeixinId(weixinId);
+		}
+		if(wxOrder==null){
+			return;
+		}
+		String fileName=wxOrder.getCode();
+    	String path=wxOrder.getQrcodePath();
+        File file=new File(path);  
+        if(file.exists()){  
+            //设置MIME类型  
+            response.setContentType("application/octet-stream");              
+            //或者为response.setContentType("application/x-msdownload");  
+              
+            //设置头信息,设置文件下载时的默认文件名，同时解决中文名乱码问题  
+            response.addHeader("Content-disposition", "attachment;filename="+new String(fileName.getBytes(), "ISO-8859-1"));  
+              
+            InputStream inputStream=new FileInputStream(file);  
+            ServletOutputStream outputStream=response.getOutputStream();  
+            byte[] bs=new byte[1024];  
+            while((inputStream.read(bs)>0)){  
+                outputStream.write(bs);  
+            }  
+            outputStream.close();  
+            inputStream.close();              
+        }  
 	}
 	
 	/**
@@ -381,7 +454,7 @@ public class WeixinController extends HttpServiceBaseController {
 		if(wxOrders==null){
 			return this.ajaxDone(1, null, null);
 		}
-		String[] isNotIgnoreFieldNames = { "code","createTime","payTime","totalFee","wxCores","type","typeStr","amount","startTime","endTime","parkingLock","parkingGarage","name"};
+		String[] isNotIgnoreFieldNames = { "code","createTime","payTime","totalFee","wxCores","type","typeStr","amount","startTime","endTime","parkingLock","parkingGarage","parkingLot","name"};
 		String jsonstr = JSONUtil.toJSONString(wxOrders, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
 	}

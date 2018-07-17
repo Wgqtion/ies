@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
-import com.vsc.business.gerd.entity.work.Car;
-import com.vsc.business.gerd.service.work.CarService;
+import com.vsc.business.gerd.entity.work.CarInfo;
+import com.vsc.business.gerd.service.work.CarInfoService;
 import com.vsc.business.gerd.service.work.CompanyService;
 import com.vsc.constants.Constants;
 
@@ -29,16 +29,16 @@ import com.vsc.constants.Constants;
  *
  */
 @Controller
-@RequestMapping(value = Constants.SPT + CarController.PATH)
-public class CarController extends BaseController {
+@RequestMapping(value = Constants.SPT + CarInfoController.PATH)
+public class CarInfoController extends BaseController {
 
 	@Autowired
-	private CarService carService;
+	private CarInfoService carInfoService;
 
 	@Autowired
 	private CompanyService companyService;
 	
-	public static final String PATH = "work/car";
+	public static final String PATH = "work/carInfo";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";
 	public static final String PATH_VIEW = PATH + Constants.SPT + "view";
@@ -51,7 +51,7 @@ public class CarController extends BaseController {
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
 
-		Page<Car> page = carService.findPage(searchParams,
+		Page<CarInfo> page = carInfoService.findPage(searchParams,
 				pageRequest);
 		model.addAttribute("page", page);
 
@@ -60,7 +60,7 @@ public class CarController extends BaseController {
 
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) throws Exception {
-		model.addAttribute("vm", new Car());
+		model.addAttribute("vm", new CarInfo());
 		model.addAttribute("action", BaseController.CREATE);
 		model.addAttribute("companyList",companyService.getList());
 		return PATH_EDIT;
@@ -68,14 +68,14 @@ public class CarController extends BaseController {
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
 	public ModelAndView create(
-			@Valid Car car) throws Exception {
-		carService.save(car);
+			@Valid CarInfo carInfo) throws Exception {
+		carInfoService.save(carInfo);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
 	@RequestMapping(value = BaseController.UPDATE + "/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") Long id, Model model) throws Exception {
-		model.addAttribute("vm", carService.getObjectById(id));
+		model.addAttribute("vm", carInfoService.getObjectById(id));
 		model.addAttribute("action", BaseController.UPDATE);
 		model.addAttribute("companyList",companyService.getList());
 		return PATH_EDIT;
@@ -83,28 +83,28 @@ public class CarController extends BaseController {
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
 	public ModelAndView update(
-			@Valid @ModelAttribute("preloadModel") Car car) throws Exception {
-		carService.save(car);
+			@Valid @ModelAttribute("preloadModel") CarInfo carInfo) throws Exception {
+		carInfoService.save(carInfo);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) throws Exception {
-		carService.deleteUpdateById(id);
+		carInfoService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
 	public ModelAndView deleteBatch(@RequestParam Long[] ids) throws Exception {
-		carService.deleteUpdateByIds(ids);
+		carInfoService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 	
 	@ModelAttribute("preloadModel")
-	public Car getModel(
+	public CarInfo getModel(
 			@RequestParam(value = "id", required = false) Long id) {
 		if (id != null) {
-			return carService.getObjectById(id);
+			return carInfoService.getObjectById(id);
 		}
 		return null;
 	}

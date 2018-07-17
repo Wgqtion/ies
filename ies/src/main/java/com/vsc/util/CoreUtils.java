@@ -2,7 +2,11 @@ package com.vsc.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
+<<<<<<< HEAD
 import java.sql.Time;
+=======
+import java.io.InputStream;
+>>>>>>> origin/master
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +22,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -32,6 +38,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 import com.vsc.constants.Constants;
+import com.vsc.modules.service.ServiceException;
 
 public class CoreUtils {
 
@@ -525,5 +532,48 @@ public class CoreUtils {
         	w=7;
         }
         return w;
+	}
+	/**
+	 * 按当前日期生产路径：/2008_2/5_20/，/年_季/月_日/
+	 * 
+	 * @return 相对路径
+	 */
+	public static String getStoragePath() {
+		StringBuilder sb = new StringBuilder();
+		Calendar cal = Calendar.getInstance();
+		sb.append(Constants.SPT).append(cal.get(Calendar.YEAR)).append('_').append(cal.get((Calendar.MONTH)) / 3 + 1)
+				.append(Constants.SPT).append(cal.get(Calendar.MONTH) + 1).append('_')
+				.append(cal.get(Calendar.DAY_OF_MONTH)).append(Constants.SPT);
+		return sb.toString();
+	}
+	
+
+	
+	/**
+	  * 保存文件
+	  * @param srcfile
+	  * @param savePath
+	  * @return
+	  * @throws ServiceException
+	  */
+	public static void saveFile(InputStream srcfile, String savePath) throws ServiceException { 
+		try {
+			File toSave = new File(savePath);
+			FileUtils.copyInputStreamToFile(srcfile, toSave);
+		} catch (Exception e) {
+			throw new ServiceException("保存上传文件错误", e);
+		} 
+	}
+	
+
+	/**
+	 * 获得文件目录
+	 * 
+	 * 8位随机数
+	 * 
+	 * @return
+	 */
+	public static String getFileKey() {
+		return RandomStringUtils.randomAlphanumeric(8);
 	}
 }

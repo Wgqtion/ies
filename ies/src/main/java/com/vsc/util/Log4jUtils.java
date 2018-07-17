@@ -8,7 +8,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class Log4jUtils {
 	/**
-	 * 通用日志
+	 * tcp通用日志
 	 */
 	public static Logger tcpLog = Logger.getLogger("tcpLog");
 	/**
@@ -29,6 +29,11 @@ public class Log4jUtils {
 	 * 预约超时取消日志
 	 */
 	public static Logger reserveCancel = Logger.getLogger("reserveCancel");
+	
+	/**
+	 * 主信息日志
+	 */
+	public static Logger mainInfo = Logger.getLogger("mainInfo");
 	
 	static{
 		Properties props=new Properties();  

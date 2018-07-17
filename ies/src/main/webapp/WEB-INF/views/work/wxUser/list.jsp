@@ -33,7 +33,7 @@
 				<th width="40" align="center">序号</th>
 				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th <vsc:orderField name="name"/>>姓名</th>
-				<th>车牌号</th>
+				<th <vsc:orderField name="plateNo"/>>车牌号</th>
 				<th>手机</th>
 				<th width="140" align="center" <vsc:orderField name="createTime"/>>创建时间</th>
 			</tr>
@@ -44,7 +44,7 @@
 					<td align="center">${index.count + (page.number * page.size)}</td>
 					<td><input name="ids" value="${item.id}" type="checkbox"></td>
 					<td>${item.name}</td>
-					<td>${item.carNo}</td>
+					<td>${item.plateNo}</td>
 					<td>${item.telphone}</td>
 					<td><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm" /></td>
 				</tr>

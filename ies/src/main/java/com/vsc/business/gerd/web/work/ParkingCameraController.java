@@ -1,8 +1,14 @@
 package com.vsc.business.gerd.web.work;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,42 +24,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vsc.business.core.web.BaseController;
+import com.vsc.business.gerd.entity.work.ParkingCamera;
+import com.vsc.business.gerd.entity.work.ParkingCameraLog;
 import com.vsc.business.gerd.entity.work.ParkingGarage;
-import com.vsc.business.gerd.entity.work.ParkingLock;
-import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
-import com.vsc.business.gerd.service.work.ParkingLockService;
+import com.vsc.business.gerd.service.work.ParkingCameraLogService;
+import com.vsc.business.gerd.service.work.ParkingCameraService;
 import com.vsc.business.gerd.service.work.ParkingLotService;
 import com.vsc.constants.Constants;
 
 /**
- * 地锁视图
+ * 全视频相机视图
  * @author XiangXiaoLin
  *
  */
 @Controller
-@RequestMapping(value = Constants.SPT + ParkingLockController.PATH)
-public class ParkingLockController extends BaseController {
+@RequestMapping(value = Constants.SPT + ParkingCameraController.PATH)
+public class ParkingCameraController extends BaseController {
 
 	@Autowired
-	private ParkingLockService parkingLockService;
+	private ParkingCameraService parkingCameraService;
+	
+	@Autowired
+	private ParkingCameraLogService parkingCameraLogService;
 	
 	@Autowired
 	private ParkingLotService parkingLotService;
 	
-	public static final String PATH = "work/parkinglock";
+	public static final String PATH = "work/parkingCamera";
 	public static final String PATH_LIST = PATH + Constants.SPT + "list";
 	public static final String PATH_EDIT = PATH + Constants.SPT + "edit";
 	public static final String PATH_VIEW = PATH + Constants.SPT + "view";
-	public static final String PATH_SEARCH = PATH + Constants.SPT + "search";
-	public static final String PATH_OPEN = PATH + Constants.SPT + "open";
 
 	@RequestMapping(value = "")
 	public String list(Model model, HttpServletRequest request) throws Exception {
 
 		PageRequest pageRequest = this.getPageRequest();
 		Map<String, Object> searchParams = this.getSearchRequest();
-		model.addAttribute("searchCodeParkingLock", searchParams.get("IN_parkingGarage.parkingLotCode"));
-		Page<ParkingLock> page = parkingLockService.findPage(searchParams, pageRequest);
+		model.addAttribute("searchCodeParkingCamera", searchParams.get("IN_parkingGarage.parkingLotCode"));
+		Page<ParkingCamera> page = parkingCameraService.findPage(searchParams, pageRequest);
 		model.addAttribute("page", page);
 		model.addAttribute("parkingLotTree",this.parkingLotService.findTree());
 		return PATH_LIST;
@@ -61,73 +69,86 @@ public class ParkingLockController extends BaseController {
 
 	@RequestMapping(value = BaseController.NEW, method = RequestMethod.GET)
 	public String createForm(Model model) {
-		model.addAttribute("vm", new ParkingLock());
+		model.addAttribute("vm", new ParkingCamera());
 		model.addAttribute("action", BaseController.CREATE);
 		return PATH_EDIT;
 	}
 
 	@RequestMapping(value = BaseController.CREATE, method = RequestMethod.POST)
-	public ModelAndView create(@Valid ParkingLock entity,
+	public ModelAndView create(@Valid ParkingCamera entity,
 			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId) throws Exception {
 		ParkingGarage pg=new ParkingGarage();
 		pg.setId(parkingGarageId);
 		entity.setParkingGarage(pg);
-		parkingLockService.save(entity);
+		parkingCameraService.save(entity);
 		return this.ajaxDoneSuccess("创建成功");
 	}
 
 	@RequestMapping(value = BaseController.UPDATE + "/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vm", parkingLockService.getObjectById(id));
+		model.addAttribute("vm", parkingCameraService.getObjectById(id));
 		model.addAttribute("action", BaseController.UPDATE);
 		return PATH_EDIT;
 	}
 
-	@RequestMapping(value = BaseController.VIEW + "/{id}", method = RequestMethod.GET)
-	public String view(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vm", parkingLockService.getObjectById(id));
-		return PATH_VIEW;
+	@RequestMapping(value="picture/{id}", method = RequestMethod.GET)
+	public void picture(@PathVariable("id") Long id,HttpServletResponse response) throws IOException {
+		ParkingCamera parkingCamera=parkingCameraService.getObjectById(id);
+		ParkingCameraLog parkingCameraLog=this.parkingCameraLogService.getMaxBy(parkingCamera.getCode());
+		if(parkingCameraLog==null){
+			return;
+		}
+    	String path=parkingCameraLog.getPicturePath();
+    	if(path==null){
+			return;
+		}
+        File file=new File(path);   
+        if(file.exists()){  
+            String fileName = file.getName();
+            //设置MIME类型  
+            response.setContentType("application/octet-stream");              
+            //或者为response.setContentType("application/x-msdownload");  
+              
+            //设置头信息,设置文件下载时的默认文件名，同时解决中文名乱码问题  
+            response.addHeader("Content-disposition", "attachment;filename="+new String(fileName.getBytes(), "ISO-8859-1"));  
+              
+            InputStream inputStream=new FileInputStream(file);  
+            ServletOutputStream outputStream=response.getOutputStream();  
+            byte[] bs=new byte[1024];  
+            while((inputStream.read(bs)>0)){  
+                outputStream.write(bs);  
+            }  
+            outputStream.close();  
+            inputStream.close();              
+        }  
 	}
 
 	@RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingLock entity,
+	public ModelAndView update(@Valid @ModelAttribute("preloadModel") ParkingCamera entity,
 			@RequestParam(value = "parkingGarageGroup.id", required = false) Long parkingGarageId) throws Exception {
 		ParkingGarage pg=new ParkingGarage();
 		pg.setId(parkingGarageId);
 		entity.setParkingGarage(pg);
-		parkingLockService.save(entity);
+		parkingCameraService.save(entity);
 		return this.ajaxDoneSuccess("修改成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE + "/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) throws Exception {
-		parkingLockService.deleteUpdateById(id);
+		parkingCameraService.deleteUpdateById(id);
 		return this.ajaxDoneSuccess("删除成功");
-	}
-
-	@RequestMapping(value = "reverse", method = RequestMethod.POST)
-	public ModelAndView reverseBatch(@RequestParam Long[] ids,@RequestParam(value = "state", required = true) String state) throws Exception {
-		if(ids!=null&&ids.length>0){		
-			String message=this.parkingLockService.reverse(ids, state, this.getCurrentShiroUser().id+"",
-					ParkingLockOperationEvent.SOURCETYPE_PC);
-			if(message.length()>0){
-				return this.ajaxDoneError(message);
-			}
-		}
-		
-		return this.ajaxDoneSuccess("指令下发成功");
 	}
 
 	@RequestMapping(value = BaseController.DELETE, method = RequestMethod.POST)
 	public ModelAndView deleteBatch(@RequestParam Long[] ids) throws Exception {
-		parkingLockService.deleteUpdateByIds(ids);
+		parkingCameraService.deleteUpdateByIds(ids);
 		return this.ajaxDoneSuccess("删除成功");
 	}
 
 	@ModelAttribute("preloadModel")
-	public ParkingLock getModel(@RequestParam(value = "id", required = false) Long id) {
+	public ParkingCamera getModel(@RequestParam(value = "id", required = false) Long id) {
 		if (id != null) {
-			return parkingLockService.getObjectById(id);
+			return parkingCameraService.getObjectById(id);
 		}
 		return null;
 	}

@@ -1,12 +1,8 @@
 package com.vsc.business.core.service.sys.upload;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -16,12 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vsc.business.core.entity.sys.upload.Attach;
 import com.vsc.business.core.repository.sys.upload.AttachDao;
 import com.vsc.modules.service.BaseService;
-import com.vsc.modules.service.ServiceException;
+import com.vsc.util.CoreUtils;
 
 @Service
 @Transactional
 public class AttachService extends BaseService<Attach> {
-	private static Logger logger = LoggerFactory.getLogger(AttachService.class);
 	@Autowired
 	private AttachDao attachDao;
 	
@@ -47,25 +42,8 @@ public class AttachService extends BaseService<Attach> {
 	 * @throws Exception 
 	 */
 	public  Attach saveAttach(Attach entity,InputStream srcfile, String savePath) throws Exception{
-		this.saveFile(srcfile,savePath);
+		CoreUtils.saveFile(srcfile,savePath);
 		return this.save(entity);
 	}
-	
-	/**
-	  * 保存文件
-	  * @param srcfile
-	  * @param savePath
-	  * @return
-	  * @throws ServiceException
-	  */
-		private void saveFile(InputStream srcfile, String savePath) throws ServiceException { 
-			try {
-			 
-				File toSave = new File(savePath);
-				FileUtils.copyInputStreamToFile(srcfile, toSave);
-			} catch (Exception e) {
-				throw new ServiceException("保存上传文件错误", e);
-			} 
-		}
 
 }

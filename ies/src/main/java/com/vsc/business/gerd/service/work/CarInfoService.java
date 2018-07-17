@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
-import com.vsc.business.gerd.entity.work.Car;
-import com.vsc.business.gerd.repository.work.CarDao;
+import com.vsc.business.gerd.entity.work.CarInfo;
+import com.vsc.business.gerd.repository.work.CarInfoDao;
 import com.vsc.modules.service.BaseService;
 import com.vsc.modules.shiro.ShiroUserUtils;
 
@@ -25,19 +25,19 @@ import com.vsc.modules.shiro.ShiroUserUtils;
  */
 @Service
 @Transactional
-public class CarService extends BaseService<Car> {
+public class CarInfoService extends BaseService<CarInfo> {
 
 	@Autowired
-	private CarDao carDao;
+	private CarInfoDao carInfoDao;
 
 	@Override
-	public PagingAndSortingRepository<Car, Long> getPagingAndSortingRepositoryDao() {
-		return this.carDao;
+	public PagingAndSortingRepository<CarInfo, Long> getPagingAndSortingRepositoryDao() {
+		return this.carInfoDao;
 	}
 
 	@Override
-	public JpaSpecificationExecutor<Car> getJpaSpecificationExecutorDao() {
-		return this.carDao;
+	public JpaSpecificationExecutor<CarInfo> getJpaSpecificationExecutorDao() {
+		return this.carInfoDao;
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class CarService extends BaseService<Car> {
 	 * @throws Exception 
 	 */
 	@Override
-	public List<Car> findList(Map<String, Object> filterParams) throws Exception {
+	public List<CarInfo> findList(Map<String, Object> filterParams) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0);
@@ -57,7 +57,7 @@ public class CarService extends BaseService<Car> {
 	 * @throws Exception 
 	 */
 	@Override
-	public Page<Car> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
+	public Page<CarInfo> findPage(Map<String, Object> filterParams, PageRequest pageRequest) throws Exception {
 		User user=ShiroUserUtils.GetCurrentUser();
 		filterParams.put("RLIKE_companyCode", user.getCompany().getCode());
 		filterParams.put("EQ_isDelete", 0); 
@@ -65,7 +65,7 @@ public class CarService extends BaseService<Car> {
 	}
 
 	public void deleteUpdateById(Long id) throws Exception {
-		Car entity=getObjectById(id);
+		CarInfo entity=getObjectById(id);
 		entity.setIsDelete(true);
 		save(entity);
 	}

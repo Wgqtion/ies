@@ -56,7 +56,7 @@ public class WxUser extends IdEntity implements Serializable{
     /**
      * 车牌号
      */
-    private String carNo;
+    private String plateNo;
     private Date createDate;
     private Date updateDate;
     private User updateUser;
@@ -115,15 +115,15 @@ public class WxUser extends IdEntity implements Serializable{
 		this.telphone = telphone;
 	}
 
-	@Column(name = "CAR_NO")
-	public String getCarNo() {
-		return carNo;
+	@Column(name = "PLATE_NO")
+	public String getPlateNo() {
+		return plateNo;
 	}
 
-	public void setCarNo(String carNo) {
-		this.carNo = carNo;
+	public void setPlateNo(String plateNo) {
+		this.plateNo = plateNo;
 	}
-	
+
 	@ManyToOne
     @JoinColumn(name = "UPDATE_USER")
 	public User getUpdateUser() {

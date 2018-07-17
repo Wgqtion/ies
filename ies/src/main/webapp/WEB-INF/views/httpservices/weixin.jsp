@@ -496,7 +496,13 @@
 						<label>微信ID</label>
 						<input type="text" name="weixinId" placeholder="输入微信ID"/><br />
 						<label>车位ID</label>
+<<<<<<< HEAD
 						<input type="text" name="parkingLockCode" placeholder="请输入车位ID" /><br />
+=======
+						<input type="text" name="parkingId" placeholder="请输入车位ID" /><br /> 
+						<label>车牌号码</label> 
+						<input type="text" name="plateNo" placeholder="请输入车牌号码" /><br />
+>>>>>>> origin/master
 						<button type="submit" class="btn">预约车位</button>
 					</form>
 					<h4>
@@ -526,7 +532,7 @@
 									<td>车位ID</td>
 								</tr>
 								<tr>
-									<td>carNo</td>
+									<td>plateNo</td>
 									<td>否</td>
 									<td>车牌号码</td>
 								</tr>
