@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class ChargeBinding extends BasicEntity {
 
     private ParkingLot parkingLot;
-    private AppointmentSettings appointmentSettings;
+    private ReserveSettings reserveSettings;
     private ChargesSettings chargesSettings;
     private String description;
 
@@ -51,13 +51,13 @@ public class ChargeBinding extends BasicEntity {
      * @return
      */
     @ManyToOne
-    @JoinColumn(name = "APPOINTMENT_SETTINGS_ID",referencedColumnName="ID")
-    public AppointmentSettings getAppointmentSettings() {
-        return appointmentSettings;
+    @JoinColumn(name = "RESERVE_SETTINGS_ID",referencedColumnName="ID")
+    public ReserveSettings getReserveSettings() {
+        return reserveSettings;
     }
 
-    public void setAppointmentSettings(AppointmentSettings appointmentSettings) {
-        this.appointmentSettings = appointmentSettings;
+    public void setReserveSettings(ReserveSettings reserveSettings) {
+        this.reserveSettings = reserveSettings;
     }
     /**
      * 描述

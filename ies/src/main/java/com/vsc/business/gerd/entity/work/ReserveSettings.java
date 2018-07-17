@@ -9,15 +9,19 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Time;
 
+/**
+ * @Athor: 吴广庆
+ * @Date: 2018-05-25
+ */
 @Entity
-@Table(name = Constants.TABLE_PREFIX + "appointment_settings")
-public class AppointmentSettings extends BasicEntity {
+@Table(name = Constants.TABLE_PREFIX + "reserve_settings")
+public class ReserveSettings extends BasicEntity {
 
   private Integer chargeStandard;
   private Double unitPrice;
-  private Time priceTime;
-  private Time freeTime;
-  private Time reserveTime;
+  private Long priceTime;
+  private Long freeTime;
+  private Long reserveTime;
   private Double privilegeFee;
   private Double maxFee;
   private long cancelNum;
@@ -55,11 +59,11 @@ public class AppointmentSettings extends BasicEntity {
    * @return
    */
   @Column(name = "PRICE_TIME")
-  public Time getPriceTime() {
+  public Long getPriceTime() {
     return priceTime;
   }
 
-  public void setPriceTime(Time priceTime) {
+  public void setPriceTime(Long priceTime) {
     this.priceTime = priceTime;
   }
 
@@ -69,11 +73,11 @@ public class AppointmentSettings extends BasicEntity {
    * @return
    */
   @Column(name = "FREE_TIME")
-  public Time getFreeTime() {
+  public Long getFreeTime() {
     return freeTime;
   }
 
-  public void setFreeTime(Time freeTime) {
+  public void setFreeTime(Long freeTime) {
     this.freeTime = freeTime;
   }
 
@@ -83,11 +87,11 @@ public class AppointmentSettings extends BasicEntity {
    * @return
    */
   @Column(name = "RESERVE_TIME")
-  public Time getReserveTime() {
+  public Long getReserveTime() {
     return reserveTime;
   }
 
-  public void setReserveTime(Time reserveTime) {
+  public void setReserveTime(Long reserveTime) {
     this.reserveTime = reserveTime;
   }
 
