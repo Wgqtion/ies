@@ -21,7 +21,7 @@ public class BasicEntity extends IdEntity{
 	private Boolean isDelete=false;
 	
 	@ManyToOne
-    @JoinColumn(name = "CREATE_USER")
+    @JoinColumn(name = "CREATE_USER",updatable=false)
 	public User getCreateUser() {
 		return createUser;
 	}
@@ -29,7 +29,7 @@ public class BasicEntity extends IdEntity{
 		this.createUser = createUser;
 	}
 	
-	@Column(name = "CREATE_DATE")
+	@Column(name = "CREATE_DATE",updatable=false)
 	public Date getCreateDate() {
 		return createDate;
 	}

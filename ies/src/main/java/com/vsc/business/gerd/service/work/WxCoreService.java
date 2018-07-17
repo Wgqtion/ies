@@ -246,6 +246,7 @@ public class WxCoreService extends BaseService<WxCore> {
 			return status;
 		}
 		wxCore.setType(Integer.valueOf(1));
+		// 取消预约
 		int reserveStatus = cancelReserve(wxCore, true);
 		if (reserveStatus != 1) {
 			return status;
@@ -336,9 +337,9 @@ public class WxCoreService extends BaseService<WxCore> {
 	public int lock(WxCore wxCore) throws MessageException {
 		String message = this.parkingLockService.reverse(new Long[] { wxCore.getParkingLock().getId() }, "01",
 				wxCore.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
-		if (message.length() > 0) {
-			throw new MessageException(message);
-		}
+//		if (message.length() > 0) {
+//			throw new MessageException(message);
+//		}
 		return 0;
 	}
 }

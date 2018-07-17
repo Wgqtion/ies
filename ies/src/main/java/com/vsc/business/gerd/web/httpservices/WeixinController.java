@@ -273,19 +273,24 @@ public class WeixinController extends HttpServiceBaseController {
         boolean isFree = false;
 		int status=-1;
 		String message="上锁失败";
+		Date endtime = new Date();
 		try {
-
             Map<String, Object> filterParms = new HashMap<>();
             filterParms.put("EQ_parkingLot.code",wc.getParkingLock().getParkingGarage().getParkingLotCode());
             List<ChargeBinding> chargeBindingServiceList = chargeBindingService.findList(filterParms);
 
-		    BigDecimal fee = BigDecimal.valueOf(ChargeHandle.charge(wc.getStartTime(),wc.getEndTime(),chargeBindingServiceList.get(0).getChargesSettings() ));
-            wc.setAmount(fee);
-            wc.setIsFree(isFree);
-            wxCoreService.save(wc);
-            wxOrderService.save(wc);
+			BigDecimal fee = BigDecimal.ZERO;
+            // TODO 缺少收费规则有效性判断
+			if(chargeBindingServiceList!=null){
+				fee = BigDecimal.valueOf(ChargeHandle.charge(wc.getStartTime(),endtime,chargeBindingServiceList.get(0).getChargesSettings() ));
+			}
+			wc.setAmount(fee);
+			wc.setIsFree(isFree);
+			wc.setEndTime(endtime);
+			wxCoreService.save(wc);
+			wxOrderService.save(wc);
 
-			status = this.wxCoreService.lock(wxCore);
+			status = this.wxCoreService.lock(wc);
 			message=Constants.LOCK_MESSAGE_STATUS[status];
 		} catch (MessageException e) {
 			message=e.getMessage();

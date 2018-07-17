@@ -28,6 +28,7 @@ public class ChargeHandle {
 
     public static final Long HOUR_8 = 28800000L;
     public static final Long MIN_1 = 60000L;
+    public static final Long HOUR_1= 3600000L;
     private static final Long DAY_1 = 86400000L;
     @Autowired
     private ChargeBindingService chargeBindingService;
@@ -60,7 +61,7 @@ public class ChargeHandle {
      * @return
      */
     public static Double charge(@NotNull Date startTime, @NotNull Date endTime, ChargesSettings chargesSettings) {
-        Long priceTimeLong = timeToLong(chargesSettings.getPriceTime());
+
         Double price = 0.00;
         List<TimeSection> timeSectionList = chargesSettings.getTimeSectionList();
         // null判断
@@ -70,12 +71,12 @@ public class ChargeHandle {
         // 跨天计费
         for (int i = 0; !DateUtils.isSameDay(startTime, endTime); i++) {
             Date endDate = DateUtils.addDays(getaDayLong(startTime), 1);
-            price = getDayFee(startTime, endDate, price, timeSectionList,priceTimeLong);
+            price = getDayFee(startTime, endDate, price, timeSectionList,chargesSettings.getPriceTime());
             startTime = endDate;
         }
         // 当天计费
         if (DateUtils.isSameDay(startTime, endTime)) {
-            price = getDayFee(startTime, endTime, price, timeSectionList,priceTimeLong);
+            price = getDayFee(startTime, endTime, price, timeSectionList,chargesSettings.getPriceTime());
         }
 
         return price;
@@ -109,14 +110,12 @@ public class ChargeHandle {
         for (TimeSection timeSection : timeSectionList) {
             // 判断开始时间是否在当前时段星期内
             if (timeSection.getWeek().equals(cStart.get(Calendar.DAY_OF_WEEK))) {
-                System.out.println();
-                System.out.println();
-                System.out.println("-------------------");
+                System.out.println("\n\n-------------------");
                 // 计算当前周的时段开始日期
-                startTimeLong = getDateTime(startTime, timeSection.getStartTime().getTime());
+                startTimeLong = getDateTime(startTime, timeSection.getStartTime());
                 System.out.println("开始：" + new Date(startTimeLong));
                 // 计算当前周的时段结束日期
-                endTimeLong = getDateTime(startTime, timeSection.getEndTime().getTime());
+                endTimeLong = getDateTime(startTime, timeSection.getEndTime());
                 if (startTime.before(new Date(startTimeLong)) || startTime.after(new Date(endTimeLong))) {
                     System.out.println("开始时间：" + startTime + "区段开始时间之前或结束时间之后：" + new Date(startTimeLong));
                     continue;
@@ -156,12 +155,13 @@ public class ChargeHandle {
      * @return
      */
     private static Long getDateTime(Date dateTime, Long chargesSection) {
-        return getaDayLong(dateTime).getTime() + chargesSection + HOUR_8;
+        return getaDayLong(dateTime).getTime() + chargesSection;
     }
 
 
     /**
      * Time转Long 因为long 0是1970.1.1 8:0:0计算时间是要多算8小时
+     *
      * @param time
      * @return
      */
@@ -177,7 +177,6 @@ public class ChargeHandle {
      */
     private static Date getaDayLong(Date startTime) {
         return DateUtils.truncate(startTime, Calendar.DATE);
-//        return startTimeLong - ((startTimeLong + HOUR_8) % DAY_1);
     }
 
 
@@ -223,7 +222,7 @@ public class ChargeHandle {
 
 
     /**
-     * 支付订单
+     * 支付金额查询
      */
     @RequestMapping(value = "/text")
     @ResponseBody
