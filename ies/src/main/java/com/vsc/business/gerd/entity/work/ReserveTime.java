@@ -42,11 +42,11 @@ public class ReserveTime extends BasicEntity{
 	/**
 	 * 开始时间
 	 */
-	private Time startTime;
+	private String startTime;
 	/**
 	 * 结束时间
 	 */
-	private Time endTime;
+	private String endTime;
 	
 	/**
      * @return
@@ -82,20 +82,20 @@ public class ReserveTime extends BasicEntity{
 	}
 
 	@Column(name = "START_TIME")
-	public Time getStartTime() {
+	public String getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Time startTime) {
+	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
 
 	@Column(name = "END_TIME")
-	public Time getEndTime() {
+	public String getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Time endTime) {
+	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
 	
