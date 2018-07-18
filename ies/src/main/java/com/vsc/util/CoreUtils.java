@@ -2,7 +2,6 @@ package com.vsc.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.sql.Time;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -365,6 +364,8 @@ public class CoreUtils {
 
 	/**
      * <li>功能描述：时间相减得到天数
+     * @param beginDateStr
+     * @param endDateStr
      * @return
      * long 
      * @author Administrator
@@ -400,12 +401,11 @@ public class CoreUtils {
      * @param num
      * @return
      */
-    public static Date addMin(Date date,Time num){
-//    	Calendar cal = Calendar.getInstance();
-//        cal.setTime(date);
-//        cal.add(Calendar.MINUTE,num.compareTo());
-		Long riqi  = date.getTime()+num.getTime();
-        return new Date(riqi);
+    public static Date addMin(Date date,int num){
+    	Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE,num);
+        return cal.getTime();
     }
     /**
      * 获取日期的小时

@@ -58,10 +58,9 @@ public class ReserveTimeService extends BaseService<ReserveTime> {
 			if(list!=null&&list.size()>0){
 				return true;
 			}
-			// TODO 测试改错
-			searchParams.put("EQ_week",CoreUtils.getWeek(new Date()));
-			searchParams.put("LTE_startTime",reserveTime.getStartTime());
-			searchParams.put("GTE_endTime",reserveTime.getStartTime());
+			searchParams.put("EQ_week",CoreUtils.getWeek(CoreUtils.formatw.parse(reserveTime.getStartTime())));
+			searchParams.put("LTE_startTime",reserveTime.getStartTime().substring(11, 16));
+			searchParams.put("GTE_endTime",reserveTime.getStartTime().substring(11, 16));
 			list=super.findList(searchParams);
 			if(list!=null&&list.size()>0){
 				return true;

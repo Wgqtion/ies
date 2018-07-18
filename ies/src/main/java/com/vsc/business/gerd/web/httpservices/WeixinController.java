@@ -341,9 +341,9 @@ public class WeixinController extends HttpServiceBaseController {
 		if(wxCore==null){
 			return this.ajaxDone(1, null, null);
 		}
-		Time freeMin = null;
-		Time privilegeMin=null;
-		ParkingParam parkingParam = parkingParamService.getByParkingLotCode(wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
+		Integer freeMin=0;
+		Integer privilegeMin=0;
+		ParkingParam parkingParam=parkingParamService.getByParkingLotCode(wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
 		if(parkingParam!=null){
 			if(wxCore.getType()==1){
 				freeMin=parkingParam.getFreeReserveMin();

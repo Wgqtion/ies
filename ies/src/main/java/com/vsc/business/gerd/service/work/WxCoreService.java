@@ -1,9 +1,10 @@
 package com.vsc.business.gerd.service.work;
 
 import java.math.BigDecimal;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -99,8 +100,8 @@ public class WxCoreService extends BaseService<WxCore> {
 							.getByParkingLotCode(wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
 					if(parkingParam!=null){
 						// 预约保留时间
-						Time reserveMin = parkingParam.getReserveMin();
-						if (reserveMin!=null) {
+						Integer reserveMin = parkingParam.getReserveMin();
+						if (reserveMin > 0) {
 							Log4jUtils.reserveCancel.info("添加自动取消任务："+wxCore.getId());
 							QuartzManager.addJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
 									wxCore.getWeixinId(), CoreUtils.getCron(CoreUtils.addMin(wxCore.getStartTime(), reserveMin)),
@@ -185,10 +186,7 @@ public class WxCoreService extends BaseService<WxCore> {
 
 		// 查询可预约时间
 		ReserveTime reserveTime = new ReserveTime();
-		SimpleDateFormat format=new SimpleDateFormat("HH:mm:ss");
-		String sss = format.format(wxCore.getStartTime());
-		System.out.println(sss);
-		reserveTime.setStartTime(Time.valueOf(sss));
+		reserveTime.setStartTime(CoreUtils.formatDate(wxCore.getStartTime(), 1));
 		reserveTime.setParkingLotCode(parkingLock.getParkingGarage().getParkingLotCode());
 		boolean isCanReserveTime = this.reserveTimeService.isCanReserveTime(reserveTime);
 		if (!isCanReserveTime) {
@@ -204,8 +202,8 @@ public class WxCoreService extends BaseService<WxCore> {
 				return 5;
 			}
 			// 预约保留时间
-			Time reserveMin = parkingParam.getReserveMin();
-			if (reserveMin != null) {
+			Integer reserveMin = parkingParam.getReserveMin();
+			if (reserveMin > 0) {
 				QuartzManager.addJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
 						wxCore.getWeixinId(), CoreUtils.getCron(CoreUtils.addMin(new Date(), reserveMin)),
 						ReserveCancelJob.class, wxCore.getWeixinId());
@@ -288,7 +286,7 @@ public class WxCoreService extends BaseService<WxCore> {
 					.getByParkingLotCode(wc.getParkingLock().getParkingGarage().getParkingLotCode());
 			boolean isFree = false;
 			// 预约限免分钟
-			Time freeReserveMin = null;
+			Integer freeReserveMin = 0;
 			if (parkingParam != null) {
 				freeReserveMin = parkingParam.getFreeReserveMin();
 			}
@@ -298,7 +296,7 @@ public class WxCoreService extends BaseService<WxCore> {
 				status = 2;
 			}
 			// 预约优惠分钟
-			Time privilegeReserveMin = null;
+			Integer privilegeReserveMin = 0;
 			if (parkingParam != null) {
 				privilegeReserveMin = parkingParam.getPrivilegeReserveMin();
 			}
