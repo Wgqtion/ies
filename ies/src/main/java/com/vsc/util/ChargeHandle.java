@@ -16,8 +16,6 @@ import java.util.List;
  */
 public class ChargeHandle {
 
-
-    public static final Long HOUR_8 = 28800000L;
     public static final Long MIN_1 = 60000L;
     public static final Long HOUR_1 = 3600000L;
 
