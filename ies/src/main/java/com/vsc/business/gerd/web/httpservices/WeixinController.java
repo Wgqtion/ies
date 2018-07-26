@@ -63,13 +63,13 @@ public class WeixinController extends HttpServiceBaseController {
 	// 停车场区
 	@Autowired
 	private ParkingLotService parkingLotService;
-	
+
 	@Autowired
 	private WxCoreService wxCoreService;
-	
+
 	@Autowired
 	private WxOrderService wxOrderService;
-	
+
 	@Autowired
 	private ParkingParamService parkingParamService;
 
@@ -138,7 +138,7 @@ public class WeixinController extends HttpServiceBaseController {
 
 	/**
 	 * 注册
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@RequestMapping(value = "/register")
 	public ModelAndView register(@RequestParam(required = true) String weixinId,
@@ -173,7 +173,7 @@ public class WeixinController extends HttpServiceBaseController {
 
 	/**
 	 * 场区 根节点查询
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@RequestMapping(value = "/parkinglot/findParkingLots")
 	public ModelAndView findParkingLots(@RequestParam(required = true) String weixinId,
@@ -185,17 +185,17 @@ public class WeixinController extends HttpServiceBaseController {
 		return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr);
 	}
 
-	
+
 	/**
 	 * 预约 请求
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@RequestMapping(value = "/reserve")
 	public ModelAndView reserve(@RequestParam(required = true) String weixinId,
 			@RequestParam(required = true) String parkingLockCode){
 		return ReserveOrUnlocked(weixinId,parkingLockCode,1);
 	}
-	
+
 	/**
 	 * 解锁 请求
 	 */
@@ -204,7 +204,7 @@ public class WeixinController extends HttpServiceBaseController {
 			@RequestParam(required = true) String parkingLockCode){
 		return ReserveOrUnlocked(weixinId,parkingLockCode,2);
 	}
-	
+
 	/**
 	 * 预约或解锁
 	 */
@@ -252,7 +252,7 @@ public class WeixinController extends HttpServiceBaseController {
 			}
 		}
 	}
-	
+
 	/**
 	 * 取消预约
 	 */
@@ -265,7 +265,7 @@ public class WeixinController extends HttpServiceBaseController {
 		int status=this.wxCoreService.cancelReserve(wxCore,false);
 		return this.ajaxDone(status,Constants.CANCEL_RESERVE_MESSAGE_STATUS[status],null);
 	}
-	
+
 	/**
 	 * 上锁请求
 	 */
@@ -279,45 +279,36 @@ public class WeixinController extends HttpServiceBaseController {
 		int status=-1;
 		String message="上锁失败";
 		Date endtime = new Date();
-		try {
-            Map<String, Object> filterParms = new HashMap<>();
-            filterParms.put("EQ_parkingLot.code",wc.getParkingLock().getParkingGarage().getParkingLotCode());
-            List<ChargeBinding> chargeBindingServiceList = chargeBindingService.findList(filterParms);
-
-			BigDecimal fee = BigDecimal.ZERO;
-            // TODO 缺少收费规则有效性判断
-			if(chargeBindingServiceList!=null){
-				fee = BigDecimal.valueOf(ChargeHandle.charge(wc.getStartTime(),endtime,chargeBindingServiceList.get(0).getChargesSettings() ));
-			}
-			wc.setAmount(fee);
-			wc.setIsFree(isFree);
-			wc.setEndTime(endtime);
-			wxCoreService.save(wc);
-			wxOrderService.save(wc);
-
-			status = this.wxCoreService.lock(wc);
-			message=Constants.LOCK_MESSAGE_STATUS[status];
-		} catch (MessageException e) {
-			message=e.getMessage();
-		} catch (Exception e) {
-			e.printStackTrace();
-/*=======
 		Object lockKey = upLockKeys.get(Math.abs(weixinId.hashCode()) % upLockKeys.size());
 		Object lock = upLocks.get(lockKey);
 		synchronized (lock) {
 			try {
-				status = this.wxCoreService.lock(wxCore);
-				message=Constants.LOCK_MESSAGE_STATUS[status];
+				Map<String, Object> filterParms = new HashMap<>();
+				filterParms.put("EQ_parkingLot.code", wc.getParkingLock().getParkingGarage().getParkingLotCode());
+				List<ChargeBinding> chargeBindingServiceList = chargeBindingService.findList(filterParms);
+
+				BigDecimal fee = BigDecimal.ZERO;
+				// TODO 缺少收费规则有效性判断
+				if (chargeBindingServiceList != null) {
+					fee = BigDecimal.valueOf(ChargeHandle.charge(wc.getStartTime(), endtime, chargeBindingServiceList.get(0).getChargesSettings()));
+				}
+				wc.setAmount(fee);
+				wc.setIsFree(isFree);
+				wc.setEndTime(endtime);
+				wxCoreService.save(wc);
+				wxOrderService.save(wc);
+				status = this.wxCoreService.lock(wc);
+				message = Constants.LOCK_MESSAGE_STATUS[status];
 			} catch (MessageException e) {
-				message=e.getMessage();
+				message = e.getMessage();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
->>>>>>> origin/master*/
 		}
+
 		return this.ajaxDone(status,message,null);
 	}
-	
+
 	/**
 	 * 支付订单
 	 */
@@ -328,7 +319,7 @@ public class WeixinController extends HttpServiceBaseController {
 		int status=this.wxOrderService.payOrder(wxOrder);
 		return this.ajaxDone(status,Constants.PAY_MESSAGE_STATUS[status],null);
 	}
-	
+
 	/**
 	 * core查询，预约与停车使用中的core
 	 */
@@ -349,7 +340,7 @@ public class WeixinController extends HttpServiceBaseController {
 				freeMin=parkingParam.getFreeReserveMin();
 				privilegeMin=parkingParam.getPrivilegeReserveMin();
 				if(parkingParam.getReserveMin()!=null){
-					wxCore.setCancelTime(CoreUtils.addMin(wxCore.getStartTime(), parkingParam.getReserveMin()));	
+					wxCore.setCancelTime(CoreUtils.addMin(wxCore.getStartTime(), parkingParam.getReserveMin()));
 				}
 			}else if(wxCore.getType()==2){
 				freeMin=parkingParam.getFreeParkingMin();
@@ -357,7 +348,7 @@ public class WeixinController extends HttpServiceBaseController {
 			}
 		}
 		if(freeMin!=null){
-			wxCore.setFreeTime(CoreUtils.addMin(wxCore.getStartTime(), freeMin));		
+			wxCore.setFreeTime(CoreUtils.addMin(wxCore.getStartTime(), freeMin));
 		}
 		if(privilegeMin!=null){
 			wxCore.setStartFeeTime(CoreUtils.addMin(wxCore.getStartTime(), privilegeMin));
@@ -366,10 +357,10 @@ public class WeixinController extends HttpServiceBaseController {
 		String jsonstr = JSONUtil.toJSONString(wxCore, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
 	}
-	
+
 	/**
 	 * 订单查询
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@RequestMapping(value = "/order")
 	public ModelAndView order(@RequestParam(required = true) String weixinId,String code) throws Exception {
@@ -386,7 +377,7 @@ public class WeixinController extends HttpServiceBaseController {
 		String jsonstr = JSONUtil.toJSONString(wxOrder, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
 	}
-	
+
 	/**
 	 * 二维码查询
 	 */
@@ -405,29 +396,29 @@ public class WeixinController extends HttpServiceBaseController {
 		}
 		String fileName=wxOrder.getCode();
     	String path=wxOrder.getQrcodePath();
-        File file=new File(path);  
-        if(file.exists()){  
+        File file=new File(path);
+        if(file.exists()){
             //设置MIME类型  
-            response.setContentType("application/octet-stream");              
+            response.setContentType("application/octet-stream");
             //或者为response.setContentType("application/x-msdownload");  
-              
+
             //设置头信息,设置文件下载时的默认文件名，同时解决中文名乱码问题  
-            response.addHeader("Content-disposition", "attachment;filename="+new String(fileName.getBytes(), "ISO-8859-1"));  
-              
+            response.addHeader("Content-disposition", "attachment;filename="+new String(fileName.getBytes(), "ISO-8859-1"));
+
             InputStream inputStream=new FileInputStream(file);
             ServletOutputStream outputStream=response.getOutputStream();
-            byte[] bs=new byte[1024];  
-            while((inputStream.read(bs)>0)){  
-                outputStream.write(bs);  
-            }  
-            outputStream.close();  
-            inputStream.close();              
-        }  
+            byte[] bs=new byte[1024];
+            while((inputStream.read(bs)>0)){
+                outputStream.write(bs);
+            }
+            outputStream.close();
+            inputStream.close();
+        }
 	}
-	
+
 	/**
 	 * 历史订单查询
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@RequestMapping(value = "/orderlist")
 	public ModelAndView orderlist(@RequestParam(required = true) String weixinId) throws Exception {
@@ -441,8 +432,8 @@ public class WeixinController extends HttpServiceBaseController {
 		String jsonstr = JSONUtil.toJSONString(wxOrders, isNotIgnoreFieldNames, false, featureNames);
 		return this.ajaxDone(0,this.getMessage("httpservices.service_success"), jsonstr);
 	}
-	
-	
+
+
 	/**
 	 * 权限码查询
 	 */
@@ -458,7 +449,7 @@ public class WeixinController extends HttpServiceBaseController {
 
 	/**
 	 * 添加权限码
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -482,7 +473,7 @@ public class WeixinController extends HttpServiceBaseController {
 
 	/**
 	 * 删除权限码
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */

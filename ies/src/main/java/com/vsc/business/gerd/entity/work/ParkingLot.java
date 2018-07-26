@@ -2,13 +2,7 @@ package com.vsc.business.gerd.entity.work;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -63,6 +57,11 @@ public class ParkingLot extends BasicEntity {
     private String companyCode;
     
     private List<ParkingLot> children=Lists.newArrayList();
+
+	/**
+	 * g关联收费规则
+	 */
+	private ChargeBinding chargeBinding;
     
     
     /*
@@ -264,7 +263,17 @@ public class ParkingLot extends BasicEntity {
         this.address = address;
     }
 
-    @Override
+    @OneToOne
+    @JoinColumn(name = "CODE",referencedColumnName = "PARKING_LOT_CODE",insertable=false,updatable=false)
+	public ChargeBinding getChargeBinding() {
+		return chargeBinding;
+	}
+
+	public void setChargeBinding(ChargeBinding chargeBinding) {
+		this.chargeBinding = chargeBinding;
+	}
+
+	@Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
