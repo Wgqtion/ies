@@ -72,7 +72,7 @@
 						<td align="center">${varindex.count+(page.number * page.size)}</td>
 						<td><input name="ids" value="${varitem.id }" type="checkbox"></td>
 						<td>${varitem.parkingGarage.parkingLot.name}</td>
-						<td>${varitem.parkingGarage.parkingLot.code}</td>
+						<td>${fn:substring(varitem.parkingGarage.parkingLot.code, 0, 4)}</td>
 						<td>${varitem.cameraIp}</td>
 						<td><a href="${ctx}/work/parkinggarage/view/${varitem.parkingGarage.id}" target="dialog" title="查看停车位" rel="parkinggarage_view">${varitem.parkingGarage.name} </a></td>
 						<td><s:message code="parkingCamera.status.${varitem.status}" /></td>
