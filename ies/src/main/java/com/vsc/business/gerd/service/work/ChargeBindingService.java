@@ -1,13 +1,21 @@
 package com.vsc.business.gerd.service.work;
 
 import com.vsc.business.gerd.entity.work.ChargeBinding;
+import com.vsc.business.gerd.entity.work.WxCore;
 import com.vsc.business.gerd.repository.work.ChargeBindingDao;
 import com.vsc.modules.service.BaseService;
+import com.vsc.util.ChargeHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Athor: 吴广庆
@@ -27,5 +35,30 @@ public class ChargeBindingService extends BaseService<ChargeBinding> {
     @Override
     public JpaSpecificationExecutor<ChargeBinding> getJpaSpecificationExecutorDao() {
         return this.chargeBindingDao;
+    }
+
+    /**
+     * 收费计算
+     *
+     * @param startTime
+     * @param endTime
+     * @param parkingCode
+     * @return
+     */
+    public BigDecimal feeCharge(Date startTime,Date endTime,String parkingCode){
+        boolean isFree = false;
+        BigDecimal fee = BigDecimal.ZERO;
+        try {
+            Map<String, Object> filterParms = new HashMap<>();
+            filterParms.put("EQ_parkingLot.code", parkingCode);
+            List<ChargeBinding> chargeBindingServiceList = this.findList(filterParms);
+            // TODO 缺少收费规则有效性判断
+            if (chargeBindingServiceList != null) {
+                fee = BigDecimal.valueOf(ChargeHandle.charge(startTime, endTime, chargeBindingServiceList.get(0).getChargesSettings()));
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fee;
     }
 }
