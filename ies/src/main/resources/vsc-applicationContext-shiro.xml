@@ -32,14 +32,14 @@
 	
 	<!-- TcpServerHandler依赖的dao都需要用depends-on声明 -->
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" 
-			depends-on="parkingLockEventLogDao,parkingLockDao,parkingGarageDao,wxUserDao,wxCoreDao,parkingLockOperationEventDao,parkingParamDao,reserveTimeDao,parkingFeeDao,wxOrderDao">
+			depends-on="parkingLockEventLogDao,parkingLockDao,parkingGarageDao,wxUserDao,chargeBindingDao,wxCoreDao,parkingLockOperationEventDao,parkingParamDao,reserveTimeDao,parkingFeeDao,wxOrderDao">
 		<property name="staticMethod" value="com.vsc.modules.tcp.core.TcpServerHandler.setParkingLockEventLogService"/>
 		<property name="arguments" ref="parkingLockEventLogService"/>
 	</bean>
 	
 	<!-- WxCoreServiceUtil依赖的dao都需要用depends-on声明 -->
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" 
-			depends-on="parkingLockDao,parkingGarageDao,wxUserDao,wxCoreDao,parkingLockOperationEventDao,parkingParamDao,reserveTimeDao,parkingFeeDao,wxOrderDao">
+			depends-on="parkingLockDao,parkingGarageDao,wxUserDao,wxCoreDao,chargeBindingDao,parkingLockOperationEventDao,parkingParamDao,reserveTimeDao,parkingFeeDao,wxOrderDao">
 		<property name="staticMethod" value="com.vsc.util.WxCoreServiceUtil.setWxCoreService"/>
 		<property name="arguments" ref="wxCoreService"/>
 	</bean>
