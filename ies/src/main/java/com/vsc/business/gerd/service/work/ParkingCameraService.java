@@ -172,7 +172,7 @@ public class ParkingCameraService extends BaseService<ParkingCamera> {
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_isDelete",0);
 		searchParams.put("EQ_cameraIp",entity.getCameraIp());
-		searchParams.put("EQ_parkingGarage.parkingLotCode",entity.getParkingLotCode());
+		searchParams.put("RLIKE_parkingGarage.parkingLotCode",entity.getParkingLotCode());
 		return this.find(searchParams);
 	}
 }
