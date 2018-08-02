@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.vsc.business.gerd.entity.work.*;
+import com.vsc.business.gerd.repository.work.ChargeBindingDao;
+import com.vsc.util.ChargeHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,12 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vsc.business.core.entity.security.User;
-import com.vsc.business.gerd.entity.work.ParkingLock;
-import com.vsc.business.gerd.entity.work.ParkingLockOperationEvent;
-import com.vsc.business.gerd.entity.work.ParkingParam;
-import com.vsc.business.gerd.entity.work.ReserveTime;
-import com.vsc.business.gerd.entity.work.WxCore;
-import com.vsc.business.gerd.entity.work.WxOrder;
 import com.vsc.business.gerd.repository.work.WxCoreDao;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.MessageException;
@@ -34,7 +31,7 @@ import com.vsc.util.WxCoreServiceUtil;
 
 /**
  * 小程序核心 逻辑操作
- * 
+ *
  * @author XiangXiaoLin
  *
  */
@@ -44,6 +41,9 @@ public class WxCoreService extends BaseService<WxCore> {
 
 	@Autowired
 	private WxCoreDao wxCoreDao;
+
+	@Autowired
+	private ChargeBindingService chargeBindingService;
 
 	@Autowired
 	private ParkingParamService parkingParamService;
@@ -161,7 +161,7 @@ public class WxCoreService extends BaseService<WxCore> {
 
 	/**
 	 * 查询使用中的记录，status=1，weixinId
-	 * 
+	 *
 	 * @param wxCore
 	 * @return
 	 */
@@ -333,11 +333,53 @@ public class WxCoreService extends BaseService<WxCore> {
 	 * 上锁操作
 	 */
 	public int lock(WxCore wxCore) throws MessageException {
-		String message = this.parkingLockService.reverse(new Long[] { wxCore.getParkingLock().getId() }, "01",
-				wxCore.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
+		WxCore wc = this.findBy(wxCore);
+		if (wc == null) {
+			return 1;
+		}
+		//上锁前计算费用
+		int status = feeCharge(wc);
+		if(status != 0){
+			return status;
+		}
+		// 上锁操作
+		String message = this.parkingLockService.reverse(new Long[] { wc.getParkingLock().getId() }, "01",
+                wc.getWeixinId(), ParkingLockOperationEvent.SOURCETYPE_PHONE);
 		if (message.length() > 0) {
 			throw new MessageException(message);
 		}
+		return status;
+	}
+
+	/**
+	 * 收费计算
+	 *
+	 * @param wxCore
+	 * @return
+	 */
+	private Integer feeCharge(WxCore wxCore){
+		boolean isFree = false;
+		Date endtime = new Date();
+		try {
+			Map<String, Object> filterParms = new HashMap<>();
+			filterParms.put("EQ_parkingLot.code", wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
+			List<ChargeBinding> chargeBindingServiceList = chargeBindingService.findList(filterParms);
+
+			BigDecimal fee = BigDecimal.ZERO;
+			// TODO 缺少收费规则有效性判断
+			if (chargeBindingServiceList != null) {
+				fee = BigDecimal.valueOf(ChargeHandle.charge(wxCore.getStartTime(), endtime, chargeBindingServiceList.get(0).getChargesSettings()));
+			}
+			wxCore.setAmount(fee);
+			wxCore.setIsFree(isFree);
+			wxCore.setEndTime(endtime);
+			this.save(wxCore);
+			wxOrderService.save(wxCore);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return -1; // 计算出错
+		}
 		return 0;
 	}
+
 }
