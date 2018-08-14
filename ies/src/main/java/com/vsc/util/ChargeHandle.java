@@ -56,7 +56,7 @@ public class ChargeHandle {
         // 跨天计费
         for (int i = 0; !DateUtils.isSameDay(startTime, endTime); i++) {
             // 天数加一（一天的结束时间是下一天的开始时间）
-            Date endDate = DateUtils.addDays(getaDayLong(startTime), 1);
+            Date endDate = DateUtils.addDays(getDate(startTime), 1);
             price = getDayFee(startTime, endDate, price, timeSectionList, chargesSettings.getPriceTime());
             startTime = endDate;
         }
@@ -133,7 +133,7 @@ public class ChargeHandle {
      * @return
      */
     private static Long getDateTime(Date dateTime, Long chargesSection) {
-        return getaDayLong(dateTime).getTime() + chargesSection;
+        return getDate(dateTime).getTime() + chargesSection;
     }
 
     /**
@@ -142,7 +142,7 @@ public class ChargeHandle {
      * @param startTime
      * @return
      */
-    private static Date getaDayLong(Date startTime) {
+    private static Date getDate(Date startTime) {
         return DateUtils.truncate(startTime, Calendar.DATE);
     }
 

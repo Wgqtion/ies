@@ -142,7 +142,7 @@ public class ChargesSettings extends BasicEntity {
     }
 
     @OneToMany(mappedBy = "chargesSettings")
-    @OrderBy("week ASC")
+    @OrderBy("week ASC,startTime ASC")
     public List<TimeSection> getTimeSectionList() {
         return timeSectionList;
     }

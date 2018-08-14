@@ -1,6 +1,7 @@
 package com.vsc.business.gerd.service.work;
 
 import com.vsc.business.gerd.entity.work.ChargeBinding;
+import com.vsc.business.gerd.entity.work.ChargesSettings;
 import com.vsc.business.gerd.entity.work.WxCore;
 import com.vsc.business.gerd.repository.work.ChargeBindingDao;
 import com.vsc.modules.service.BaseService;
@@ -49,16 +50,29 @@ public class ChargeBindingService extends BaseService<ChargeBinding> {
         boolean isFree = false;
         BigDecimal fee = BigDecimal.ZERO;
         try {
-            Map<String, Object> filterParms = new HashMap<>();
-            filterParms.put("EQ_parkingLot.code", parkingCode);
-            List<ChargeBinding> chargeBindingServiceList = this.findList(filterParms);
-            // TODO 缺少收费规则有效性判断
-            if (chargeBindingServiceList != null) {
-                fee = BigDecimal.valueOf(ChargeHandle.charge(startTime, endTime, chargeBindingServiceList.get(0).getChargesSettings()));
+            ChargesSettings chargesSettings = selectCountSetting(parkingCode);
+            if (chargesSettings != null) {
+                fee = BigDecimal.valueOf(ChargeHandle.charge(startTime, endTime, chargesSettings));
             }
         }catch (Exception e) {
             e.printStackTrace();
         }
         return fee;
+    }
+
+    public ChargesSettings selectCountSetting(String parkingCode){
+        try {
+        Map<String, Object> filterParms = new HashMap<>();
+        filterParms.put("EQ_parkingLot.code", parkingCode);
+        List<ChargeBinding> chargeBindingServiceList = this.findList(filterParms);
+            // TODO 缺少收费规则有效性判断
+            if (chargeBindingServiceList != null) {
+                return chargeBindingServiceList.get(0).getChargesSettings();
+            }
+        } catch (Exception e) {
+            // 缺少异常处理
+            e.printStackTrace();
+        }
+        return null;
     }
 }

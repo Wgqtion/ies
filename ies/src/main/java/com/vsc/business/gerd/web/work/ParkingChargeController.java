@@ -122,6 +122,10 @@ public class ParkingChargeController extends BaseController {
     public String updateForm(@PathVariable("id") Long id, Model model) throws Exception {
         ParkingLot parkingLot = parkingLotService.getObjectById(id);
         ChargeBinding chargeBinding = chargeBindingService.findUniqueBy("parkingLot.code",parkingLot.getCode());
+        if(chargeBinding==null){
+            chargeBinding = new ChargeBinding();
+            chargeBinding.setParkingLot(parkingLot);
+        }
         List<ChargesSettings> chargesSettingsList = chargesSettingsService.getAllList();
         model.addAttribute("vm", chargeBinding);
         model.addAttribute("chargesSettingsList",chargesSettingsList);
