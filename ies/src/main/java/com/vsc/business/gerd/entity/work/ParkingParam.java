@@ -11,62 +11,61 @@ import com.vsc.modules.entity.BasicEntity;
 
 /**
  * 停车参数 实体类
+ * 
  * @author XiangXiaoLin
  *
  */
 @Entity
 @Table(name = Constants.TABLE_PREFIX + "parking_param")
-public class ParkingParam extends BasicEntity{
-	
-	
+public class ParkingParam extends BasicEntity {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3716340901319279210L;
 	private ParkingLot parkingLot;
 	private String parkingLotCode;
-	
+
 	/**
 	 * 预约保留分钟
 	 */
-	private Integer reserveMin;
-	
+	private Integer reserveMin = Integer.valueOf(0);
+
 	/**
-	 * 预约免费分钟
+	 * 预约限免时间分钟
 	 */
-	private Integer freeReserveMin;
-	
+	private Integer freeReserveMin = Integer.valueOf(0);
+
 	/**
-	 * 停车免费分钟
+	 * 停车限免时间分钟
 	 */
-	private Integer freeParkingMin;
-	
+	private Integer freeParkingMin = Integer.valueOf(0);
+
 	/**
-	 * 最高预约费
+	 * 最高预约费（总）
 	 */
-	private Integer maxReserveFee;
-	
+	private Integer maxReserveFee = Integer.valueOf(0);
+
 	/**
-	 * 最高停车费
+	 * 最高停车费（总）
 	 */
-	private Integer maxParkingFee;
-	
+	private Integer maxParkingFee = Integer.valueOf(0);
+
 	/**
 	 * 预约优惠分钟
 	 */
-	private Integer privilegeReserveMin;
-	
+	private Integer privilegeReserveMin = Integer.valueOf(0);
+
 	/**
 	 * 停车优惠分钟
 	 */
-	private Integer privilegeParkingMin;
-	
+	private Integer privilegeParkingMin = Integer.valueOf(0);
+
 	/**
 	 * 预约取消次数，上限后不可预约
 	 */
-	private Integer cancelNum;
-	
-	
+	private Integer cancelNum = Integer.valueOf(0);
+
 	@Column(name = "RESERVE_MIN")
 	public Integer getReserveMin() {
 		return reserveMin;
@@ -140,9 +139,9 @@ public class ParkingParam extends BasicEntity{
 	}
 
 	/**
-     * @return
-     */
-    @Column(name = "PARKING_LOT_CODE")
+	 * @return
+	 */
+	@Column(name = "PARKING_LOT_CODE")
 	public String getParkingLotCode() {
 		return parkingLotCode;
 	}
@@ -150,12 +149,12 @@ public class ParkingParam extends BasicEntity{
 	public void setParkingLotCode(String parkingLotCode) {
 		this.parkingLotCode = parkingLotCode;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	@ManyToOne
-	@JoinColumn(name = "PARKING_LOT_CODE",referencedColumnName="CODE",insertable=false,updatable=false)
+	@JoinColumn(name = "PARKING_LOT_CODE", referencedColumnName = "CODE", insertable = false, updatable = false)
 	public ParkingLot getParkingLot() {
 		return this.parkingLot;
 	}
