@@ -121,14 +121,14 @@ public class ParkingChargeController extends BaseController {
     @RequestMapping(value = BaseController.UPDATE + "/{id}", method = RequestMethod.GET)
     public String updateForm(@PathVariable("id") Long id, Model model) throws Exception {
         ParkingLot parkingLot = parkingLotService.getObjectById(id);
-        ChargeBinding chargeBinding = chargeBindingService.findUniqueBy("parkingLot.code",parkingLot.getCode());
-        if(chargeBinding==null){
+        ChargeBinding chargeBinding = chargeBindingService.findUniqueBy("parkingLot.code", parkingLot.getCode());
+        if (chargeBinding == null) {
             chargeBinding = new ChargeBinding();
             chargeBinding.setParkingLot(parkingLot);
         }
         List<ChargesSettings> chargesSettingsList = chargesSettingsService.getAllList();
         model.addAttribute("vm", chargeBinding);
-        model.addAttribute("chargesSettingsList",chargesSettingsList);
+        model.addAttribute("chargesSettingsList", chargesSettingsList);
         model.addAttribute("action", BaseController.UPDATE);
         return PATH_EDIT;
     }
@@ -137,24 +137,22 @@ public class ParkingChargeController extends BaseController {
     /**
      * 确定修改操作
      *
-     * @param chargeBinding
      * @return
      * @throws Exception
      */
     @RequestMapping(value = BaseController.UPDATE, method = RequestMethod.POST)
-    public ModelAndView update(@Valid ChargeBinding chargeBinding,
-                               @RequestParam(value = "parkingLotId", required = false) Long parkingLotId,
+    public ModelAndView update(
+                               @RequestParam(value = "parkingLotId") Long parkingLotId,
                                @RequestParam(value = "chargesSettingsId", required = false) Long chargesSettingsId) throws Exception {
-        if (parkingLotId == null) {
-            chargeBinding.setParkingLot(null);
-        } else {
-            ParkingLot parkingLot = parkingLotService.getObjectById(parkingLotId);
-            Map<String, Object> filterParams = new HashMap<>();
-            filterParams.put("EQ_parkingLot.code", parkingLot.getCode());
-            chargeBinding.setId(chargeBindingService.find(filterParams).getId());
-            chargeBinding.setParkingLot(parkingLot);
+        ParkingLot parkingLot = parkingLotService.getObjectById(parkingLotId);
+        Map<String, Object> filterParams = new HashMap<>();
+        filterParams.put("EQ_parkingLot.code", parkingLot.getCode());
+        ChargeBinding chargeBinding = chargeBindingService.find(filterParams);
+        if (chargeBinding == null) {
+            chargeBinding = new ChargeBinding();
         }
-        if (chargesSettingsId != null){
+        chargeBinding.setParkingLot(parkingLot);
+        if (chargesSettingsId != null) {
             ChargesSettings chargesSettings = chargesSettingsService.getObjectById(chargesSettingsId);
             chargeBinding.setChargesSettings(chargesSettings);
         }

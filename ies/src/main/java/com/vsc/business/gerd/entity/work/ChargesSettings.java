@@ -20,7 +20,7 @@ public class ChargesSettings extends BasicEntity {
     private Long priceTime;
     private String priceTimeString;
     private Double privilegeFee;
-    private Double maxFee;
+    private Double maxFee = 0.0;
     private String description;
     private List<TimeSection> timeSectionList;
 

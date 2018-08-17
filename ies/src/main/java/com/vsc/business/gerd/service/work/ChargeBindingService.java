@@ -1,6 +1,7 @@
 package com.vsc.business.gerd.service.work;
 
 import com.vsc.business.gerd.entity.work.ChargeBinding;
+import com.vsc.business.gerd.entity.work.ChargeRecord;
 import com.vsc.business.gerd.entity.work.ChargesSettings;
 import com.vsc.business.gerd.entity.work.WxCore;
 import com.vsc.business.gerd.repository.work.ChargeBindingDao;
@@ -74,5 +75,27 @@ public class ChargeBindingService extends BaseService<ChargeBinding> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 收费计算
+     *
+     * @param startTime
+     * @param endTime
+     * @param parkingCode
+     * @return
+     */
+    public ChargeRecord feeChargeRecord(Date startTime, Date endTime, String parkingCode){
+        boolean isFree = false;
+        ChargeRecord fee = new ChargeRecord();
+        try {
+            ChargesSettings chargesSettings = selectCountSetting(parkingCode);
+            if (chargesSettings != null) {
+                fee = ChargeHandle.chargeRecord(startTime, endTime, chargesSettings);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fee;
     }
 }
