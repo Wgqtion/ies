@@ -99,7 +99,7 @@ public class ParkingCameraLogService extends BaseService<ParkingCameraLog> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (page.getContent().size() > 0) {
+		if (page!=null&&page.getContent().size() > 0) {
 			return page.getContent().get(0);
 		}
 		return null;
