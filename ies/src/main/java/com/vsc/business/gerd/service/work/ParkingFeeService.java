@@ -85,72 +85,73 @@ public class ParkingFeeService extends BaseService<ParkingFee> {
 	 */
 	public BigDecimal calculateFee(WxCore wxCore) {
 		BigDecimal totalFee=new BigDecimal(0);
-		Set<ParkingFee> list = new HashSet<ParkingFee>();
-		try {
-			Date startDate = wxCore.getStartTime();
-			Date endDate = wxCore.getEndTime();
-
-			Map<String, Object> searchParams = new HashMap<String, Object>();
-			
-			searchParams.put("EQ_parkingLotCode", wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
-			searchParams.put("EQ_isDelete", 0);
-			searchParams.put("EQ_type", wxCore.getType());
-
-			/*
-			 *  2.查询所有week时间范围内的费用设置
-			 *  AND( 
-			 *  	(START_TIME<='00:12' AND END_TIME>='00:12')
-			 *  	 OR (START_TIME<='22:30' AND END_TIME>='22:30')
-			 *  	 OR (START_TIME>='00:12' AND END_TIME<='22:30')
-			 *  )
-			 */
-			searchParams.put("NOTEQ_week", 0);
-			String startTime=CoreUtils.formath.format(startDate);
-			String endTime=CoreUtils.formath.format(endDate);
-			searchParams.put("LTE_startTime", startTime);
-			searchParams.put("GTE_endTime", startTime);
-			list.addAll(super.findList(searchParams));
-			searchParams.put("LTE_startTime", endTime);
-			searchParams.put("GTE_endTime", endTime);
-			list.addAll(super.findList(searchParams));
-			searchParams.remove("GTE_endTime");
-			searchParams.remove("LTE_startTime");
-			searchParams.put("GTE_startTime",startTime);
-			searchParams.put("LTE_endTime", endTime);
-			list.addAll(super.findList(searchParams));
-			
-			//2.1  list转map
-			Map<Integer,List<ParkingFee>> map=new HashMap<Integer,List<ParkingFee>>();
-			for(ParkingFee fee:list){
-				List<ParkingFee> ls=map.get(fee.getWeek());
-				if(ls==null){
-					ls=new ArrayList<ParkingFee>();
-				}
-				ls.add(fee);
-				map.put(fee.getWeek(),ls);
-			}
-			
-			//2.2  计算周天的价格
-
-			long days = CoreUtils.getDaySub(startDate, endDate);
-			for (int i = 0; i <= days; i++) {
-				//2.3 设置日期
-				Date minDate = CoreUtils.addDay(startDate, i);
-				if (CoreUtils.compare_date(minDate, endDate) == 1) {
-					minDate = endDate;
-				}
-				if(i>0){
-					minDate=CoreUtils.minHourDate(minDate);
-				}
-				int week=CoreUtils.getWeek(minDate);
-				Date maxDate=CoreUtils.biggestHourDate(minDate);
-				if (CoreUtils.compare_date(maxDate, endDate) == 1) {
-					maxDate = endDate;
-				}
-				//2.4 计算费用
-				List<ParkingFee> ls=map.get(week);
-				if(ls!=null){
-					for(ParkingFee fee:ls){
+		return totalFee;
+//		Set<ParkingFee> list = new HashSet<ParkingFee>();
+//		try {
+//			Date startDate = wxCore.getStartTime();
+//			Date endDate = wxCore.getEndTime();
+//
+//			Map<String, Object> searchParams = new HashMap<String, Object>();
+//			
+//			searchParams.put("EQ_parkingLotCode", wxCore.getParkingLock().getParkingGarage().getParkingLotCode());
+//			searchParams.put("EQ_isDelete", 0);
+//			searchParams.put("EQ_type", wxCore.getType());
+//
+//			/*
+//			 *  2.查询所有week时间范围内的费用设置
+//			 *  AND( 
+//			 *  	(START_TIME<='00:12' AND END_TIME>='00:12')
+//			 *  	 OR (START_TIME<='22:30' AND END_TIME>='22:30')
+//			 *  	 OR (START_TIME>='00:12' AND END_TIME<='22:30')
+//			 *  )
+//			 */
+//			searchParams.put("NOTEQ_week", 0);
+//			String startTime=CoreUtils.formath.format(startDate);
+//			String endTime=CoreUtils.formath.format(endDate);
+//			searchParams.put("LTE_startTime", startTime);
+//			searchParams.put("GTE_endTime", startTime);
+//			list.addAll(super.findList(searchParams));
+//			searchParams.put("LTE_startTime", endTime);
+//			searchParams.put("GTE_endTime", endTime);
+//			list.addAll(super.findList(searchParams));
+//			searchParams.remove("GTE_endTime");
+//			searchParams.remove("LTE_startTime");
+//			searchParams.put("GTE_startTime",startTime);
+//			searchParams.put("LTE_endTime", endTime);
+//			list.addAll(super.findList(searchParams));
+//			
+//			//2.1  list转map
+//			Map<Integer,List<ParkingFee>> map=new HashMap<Integer,List<ParkingFee>>();
+//			for(ParkingFee fee:list){
+//				List<ParkingFee> ls=map.get(fee.getWeek());
+//				if(ls==null){
+//					ls=new ArrayList<ParkingFee>();
+//				}
+//				ls.add(fee);
+//				map.put(fee.getWeek(),ls);
+//			}
+//			
+//			//2.2  计算周天的价格
+//
+//			long days = CoreUtils.getDaySub(startDate, endDate);
+//			for (int i = 0; i <= days; i++) {
+//				//2.3 设置日期
+//				Date minDate = CoreUtils.addDay(startDate, i);
+//				if (CoreUtils.compare_date(minDate, endDate) == 1) {
+//					minDate = endDate;
+//				}
+//				if(i>0){
+//					minDate=CoreUtils.minHourDate(minDate);
+//				}
+//				int week=CoreUtils.getWeek(minDate);
+//				Date maxDate=CoreUtils.biggestHourDate(minDate);
+//				if (CoreUtils.compare_date(maxDate, endDate) == 1) {
+//					maxDate = endDate;
+//				}
+//				//2.4 计算费用
+//				List<ParkingFee> ls=map.get(week);
+//				if(ls!=null){
+//					for(ParkingFee fee:ls){
 //						int startHour=Integer.valueOf(fee.getStartTime().substring(0, 2));
 //						int endHour=Integer.valueOf(fee.getEndTime().substring(0, 2));
 //						int minHour=CoreUtils.getHour(minDate);
@@ -162,14 +163,14 @@ public class ParkingFeeService extends BaseService<ParkingFee> {
 //							endHour=maxHour;
 //						}
 //						totalFee=totalFee.add(fee.getFee().multiply(new BigDecimal(endHour-startHour+1)));
-					}
-				}
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return totalFee;
+//					}
+//				}
+//			}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return totalFee;
 	}
 	
 	/**
