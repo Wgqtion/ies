@@ -37,6 +37,13 @@ public class ChargeHandle {
         return price;
     }
 
+    /**
+     * 收费记录计算过程
+     * @param startTime
+     * @param endTime
+     * @param chargesSettings
+     * @return
+     */
     public static ChargeRecord chargeRecord(@NotNull Date startTime, @NotNull Date endTime, ChargesSettings chargesSettings){
         ChargeRecord chargeRecord = new ChargeRecord();
         List<ChargeRecord> chargeRecordList = new ArrayList<>();
@@ -80,7 +87,7 @@ public class ChargeHandle {
     }
 
     /**
-     * 分段计费。
+     * 分段计费，只返回结果。
      *
      * @param startTime       开始时间
      * @param endTime         结束时间
@@ -100,7 +107,7 @@ public class ChargeHandle {
             // 天数加一（一天的结束时间是下一天的开始时间）
             Date endDate = DateUtils.addDays(getDate(startTime), 1);
             Double dayFee = getDayFee(startTime, endDate, timeSectionList, chargesSettings.getPriceTime());
-            if (dayFee > chargesSettings.getMaxFee() && chargesSettings.getMaxFee().equals(0)) {
+            if (dayFee > chargesSettings.getMaxFee() && chargesSettings.getMaxFee().compareTo(Double.valueOf(0))!=0) {
                 price += chargesSettings.getMaxFee();
             } else {
                 price += dayFee;
@@ -110,7 +117,7 @@ public class ChargeHandle {
         // 当天计费
         if (DateUtils.isSameDay(startTime, endTime)) {
             Double dayFee = getDayFee(startTime, endTime, timeSectionList, chargesSettings.getPriceTime());
-            if (dayFee > chargesSettings.getMaxFee() && chargesSettings.getMaxFee().equals(0)) {
+            if (dayFee > chargesSettings.getMaxFee() && chargesSettings.getMaxFee().compareTo(Double.valueOf(0))!=0) {
                 price += chargesSettings.getMaxFee();
             } else {
                 price += dayFee;
