@@ -7,7 +7,6 @@ package com.vsc.business.gerd.web.httpservices;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -20,11 +19,6 @@ import java.util.Set;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,6 +44,7 @@ import com.vsc.business.gerd.service.work.WxUserService;
 import com.vsc.constants.Constants;
 import com.vsc.modules.entity.MessageException;
 import com.vsc.util.CoreUtils;
+import com.vsc.util.HttpRequestUtil;
 import com.vsc.util.JSONUtil;
 
 /**
@@ -119,18 +114,10 @@ public class WeixinController extends HttpServiceBaseController {
      * 登陆
      */
     @RequestMapping(value = "/login")
-    public ModelAndView weixinLogin(@RequestParam(required = true) String js_code) throws ParseException, IOException {
-        String result = null;
-        HttpGet httpGet = new HttpGet(
-                "https://api.weixin.qq.com/sns/jscode2session?appid=wx7da35897ec0b8ac0&secret=80017a058ba9741f6c331ce3f2cd21b5&js_code="
-                        + js_code + "&grant_type=authorization_code");
-        HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
-        if (httpResponse.getStatusLine().getStatusCode() == 200) {
-            HttpEntity httpEntity = httpResponse.getEntity();
-            result = EntityUtils.toString(httpEntity);// 取出应答字符串
-            // 一般来说都要删除多余的字符
-            result.replaceAll("\r", "");// 去掉返回结果中的"\r"字符，否则会在结果字符串后面显示一个小方格
-        }
+    public ModelAndView weixinLogin(@RequestParam(required = true) String js_code) throws Exception {
+        String url="https://api.weixin.qq.com/sns/jscode2session?appid=wx7da35897ec0b8ac0&secret=ad07c9d890ddd4f292055b107d875e60&js_code="
+                + js_code + "&grant_type=authorization_code";
+        String result=HttpRequestUtil.sendHttpGet(url);
         System.out.println(result);
         // 登录信息转对象
         WeixinAttest weixinAttest = JSONObject.parseObject(result, WeixinAttest.class);
@@ -208,8 +195,9 @@ public class WeixinController extends HttpServiceBaseController {
      */
     @RequestMapping(value = "/reserve")
     public ModelAndView reserve(@RequestParam(required = true) String weixinId,
-                                @RequestParam(required = true) String parkingLockCode) {
-        return ReserveOrUnlocked(weixinId, parkingLockCode, 1);
+                                @RequestParam(required = true) String parkingLockCode,
+                                String formId) {
+        return ReserveOrUnlocked(weixinId, parkingLockCode,formId, 1);
     }
 
     /**
@@ -217,14 +205,15 @@ public class WeixinController extends HttpServiceBaseController {
      */
     @RequestMapping(value = "/unlock")
     public ModelAndView unlock(@RequestParam(required = true) String weixinId,
-                               @RequestParam(required = true) String parkingLockCode) {
-        return ReserveOrUnlocked(weixinId, parkingLockCode, 2);
+                               @RequestParam(required = true) String parkingLockCode,
+                               String formId) {
+        return ReserveOrUnlocked(weixinId, parkingLockCode,formId, 2);
     }
 
     /**
      * 预约或解锁
      */
-    private ModelAndView ReserveOrUnlocked(String weixinId, String parkingLockCode, int flag) {
+    private ModelAndView ReserveOrUnlocked(String weixinId, String parkingLockCode,String formId, int flag) {
         Object lockKey = lockKeys.get(Math.abs(parkingLockCode.hashCode()) % lockKeys.size());
         Object lock = locks.get(lockKey);
         synchronized (lock) {
@@ -233,6 +222,7 @@ public class WeixinController extends HttpServiceBaseController {
             wxCore.setParkingLockCode(parkingLockCode);
             wxCore.setStatus(1);
             wxCore.setStartTime(new Date());
+            wxCore.setFormId(formId);
             if (flag == 1) {
                 /*
                  * 预约逻辑
@@ -278,7 +268,7 @@ public class WeixinController extends HttpServiceBaseController {
         wxCore.setWeixinId(weixinId);
         wxCore.setIsCancel(true);
         wxCore.setType(Integer.valueOf(1));
-        int status = this.wxCoreService.cancelReserve(wxCore, false);
+        int status = this.wxCoreService.cancelReserve(wxCore, false).getResultStatus();
         return this.ajaxDone(status, Constants.CANCEL_RESERVE_MESSAGE_STATUS[status], null);
     }
 

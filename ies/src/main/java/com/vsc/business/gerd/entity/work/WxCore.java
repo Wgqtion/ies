@@ -92,6 +92,30 @@ public class WxCore extends IdEntity{
 	private Date cancelTime;
 	
 	
+	private String formId;
+	
+	
+	private Integer resultStatus;
+	
+	
+	@Transient
+	public Integer getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(Integer resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+	@Transient
+	public String getFormId() {
+		return formId;
+	}
+
+	public void setFormId(String formId) {
+		this.formId = formId;
+	}
+
 	@Transient
 	public Date getStartFeeTime() {
 		if(startFeeTime==null){

@@ -95,7 +95,7 @@ public class WxCoreService extends BaseService<WxCore> {
             if(wxCores!=null){
                 for (WxCore wxCore : wxCores) {
                     if(CoreUtils.compare_date(new Date(),wxCore.getStartTime())==1){
-                        int status=WxCoreServiceUtil.getWxCoreService().cancelReserve(wxCore,false);
+                        int status=WxCoreServiceUtil.getWxCoreService().cancelReserve(wxCore,false).getResultStatus();
                         Log4jUtils.reserveCancel.info("系统取消超时预约："+Constants.CANCEL_RESERVE_MESSAGE_STATUS[status]);
                         continue;
                     }
@@ -209,7 +209,7 @@ public class WxCoreService extends BaseService<WxCore> {
             if (reserveMin > 0) {
                 QuartzManager.addJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
                         wxCore.getWeixinId(), CoreUtils.getCron(CoreUtils.addMin(new Date(), reserveMin)),
-                        ReserveCancelJob.class, wxCore.getWeixinId());
+                        ReserveCancelJob.class, wxCore.getWeixinId(),wxCore.getFormId());
             }
         }
  
@@ -247,7 +247,7 @@ public class WxCoreService extends BaseService<WxCore> {
             return status;
         }
         wxCore.setType(Integer.valueOf(1));
-        int reserveStatus = cancelReserve(wxCore, true);
+        int reserveStatus = cancelReserve(wxCore, true).getResultStatus();
         if (reserveStatus != 1) {
             return status;
         }
@@ -269,15 +269,17 @@ public class WxCoreService extends BaseService<WxCore> {
     /**
      * 取消预约
      */
-    public int cancelReserve(WxCore wxCore, boolean flag) {
+    public WxCore cancelReserve(WxCore wxCore, boolean flag) {
         Integer status = 0;
+        WxCore wc =null;
         try {
             QuartzManager.delJob(wxCore.getWeixinId(), wxCore.getWeixinId(), wxCore.getWeixinId(),
                     wxCore.getWeixinId());
             // 查询记录
-            WxCore wc = findBy(wxCore);
+            wc = findBy(wxCore);
             if (wc == null || Integer.valueOf(2).equals(wc.getType())) {
-                return 1;
+            	wxCore.setResultStatus(1);
+                return wxCore;
             }
             wc.setStatus(status);
             wc.setIsCancel(wxCore.getIsCancel());
@@ -328,7 +330,8 @@ public class WxCoreService extends BaseService<WxCore> {
         if (flag) {
             status = 1;
         }
-        return status;
+        wc.setResultStatus(status);
+        return wc;
     }
  
     /**
