@@ -47,7 +47,7 @@ public class ReserveCancelJob implements Job {
 								+ "\",\"template_id\":\"2XQD4Wrx_0RP5jLRfFdh_gqbDcEbIKWFvWuHTPFF4V8\",\"page\":\"pages/index/index\",\"form_id\":\""
 								+ formId + "\",\"data\":{\"keyword1\":{\"value\":\""
 								+ CoreUtils.formatDate(wxCore.getStartTime(), 1)
-								+ "\"},\"keyword2\":{\"value\":\"预约超时，系统自动取消，本次预约费用：" + wxCore.getAmount().doubleValue()
+								+ "\"},\"keyword2\":{\"value\":\"您预约的车位已超时自动取消，本次预约费用：" + wxCore.getAmount().doubleValue()
 								+ "\"}}}";
 						result = HttpRequestUtil.sendHttpPost(
 								"https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + token1,
