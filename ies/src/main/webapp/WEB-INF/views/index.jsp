@@ -76,7 +76,7 @@
 			<div class="headerNav">
 				<a class="logo" href="#">标志</a>
 				<ul class="nav">
-					<li>v.2.0.4.1</li>
+					<li>v.2.0.4.2</li>
 					<li>您好,<shiro:principal property="name"/></li>
 					<li><a title="重置密码" href="${ctx}/sys/user/reset/<shiro:principal property="id" />" target="dialog" rel="sys_user_reset">重置密码</a></li>
 					<li><a href="${ctx}/logout">安全退出</a></li>

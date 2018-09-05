@@ -65,7 +65,7 @@
 						<td align="center">${varindex.count+(page.number * page.size)}</td>
 						<td><input name="ids" value="${varitem.id }" type="checkbox"></td>    
 						<td>${varitem.parkingLot.name}</td>
-						<td><s:message code="week.${varitem.week}"/></td>   
+						<td><s:message code="reserve.week.${varitem.week}"/></td>   
 						<td>${varitem.startTime}</td>  
 						<td>${varitem.endTime}</td>
 					</tr>

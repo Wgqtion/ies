@@ -50,11 +50,16 @@ public class ReserveTimeService extends BaseService<ReserveTime> {
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		searchParams.put("EQ_parkingLotCode",reserveTime.getParkingLotCode()); 
 		searchParams.put("EQ_isDelete", 0); 
-		searchParams.put("EQ_week",0);
-		searchParams.put("LTE_startTime",reserveTime.getStartTime());
-		searchParams.put("GTE_endTime",reserveTime.getStartTime());
 		try {
+			searchParams.put("EQ_week",CoreUtils.getWeek(CoreUtils.formatw.parse(reserveTime.getStartTime())));
 			List<ReserveTime> list=super.findList(searchParams);
+			if(list==null||list.size()==0){
+				return true;
+			}
+			searchParams.put("EQ_week",0);
+			searchParams.put("LTE_startTime",reserveTime.getStartTime());
+			searchParams.put("GTE_endTime",reserveTime.getStartTime());
+			list=super.findList(searchParams);
 			if(list!=null&&list.size()>0){
 				return true;
 			}

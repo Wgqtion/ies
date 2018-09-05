@@ -74,7 +74,7 @@
 					<td class="fieldName"><label><span class="required">*</span>周:</label></td>
 					<td class="fieldInput" colspan="3">
 						<label>
-							<select class="combox" id="week" name="week" validate="{required:true}" selectedValue="${vm.week}"  dataUrl="${ctx}/static/js/data/week.json">
+							<select class="combox" id="week" name="week" validate="{required:true}" selectedValue="${vm.week}"  dataUrl="${ctx}/static/js/data/reserve_week.json">
 							<vsc:headoption text="请选择"></vsc:headoption>
 							</select>
 						</label>
