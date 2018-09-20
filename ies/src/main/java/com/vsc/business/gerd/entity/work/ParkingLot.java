@@ -58,10 +58,10 @@ public class ParkingLot extends BasicEntity {
     
     private List<ParkingLot> children=Lists.newArrayList();
 
-	/**
-	 * g关联收费规则
-	 */
-	private ChargeBinding chargeBinding;
+//	/**
+//	 * g关联收费规则
+//	 */
+//	private ChargeBinding chargeBinding;
     
     
     /*
@@ -263,15 +263,15 @@ public class ParkingLot extends BasicEntity {
         this.address = address;
     }
 
-    @OneToOne
-    @JoinColumn(name = "CODE",referencedColumnName = "PARKING_LOT_CODE",insertable=false,updatable=false)
-	public ChargeBinding getChargeBinding() {
-		return chargeBinding;
-	}
-
-	public void setChargeBinding(ChargeBinding chargeBinding) {
-		this.chargeBinding = chargeBinding;
-	}
+//    @OneToOne
+//    @JoinColumn(name = "CODE",referencedColumnName = "PARKING_LOT_CODE",insertable=false,updatable=false)
+//	public ChargeBinding getChargeBinding() {
+//		return chargeBinding;
+//	}
+//
+//	public void setChargeBinding(ChargeBinding chargeBinding) {
+//		this.chargeBinding = chargeBinding;
+//	}
 
 	@Override
     public String toString() {
