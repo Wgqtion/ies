@@ -172,6 +172,21 @@ public class WeixinController extends HttpServiceBaseController {
         return this.ajaxDoneSuccess("注册成功");
     }
 
+    
+    /**
+     * 屏接口
+     * 查询所有场区ID及余位
+     *
+     * @throws Exception
+     */
+    @RequestMapping(value = "/parkinglotarea/find")
+    public ModelAndView findParkingLotsNum(Long parkingLotId) {
+    	Set<ParkingLot> parkingLots = this.parkingLotService.findParkingLot(parkingLotId);
+        String[] isNotIgnoreFieldNames = {"id", "name", "isEnabled", "garageNum", "surplusNum"};
+        String jsonstr = JSONUtil.toJSONString(parkingLots, isNotIgnoreFieldNames, false, featureNames);
+        return this.ajaxDoneSuccess(this.getMessage("httpservices.service_success"), jsonstr.replaceAll("surplusNum", "freeCarNum").replaceAll("garageNum", "carNumber"));
+    }
+    
     /**
      * 场区 根节点查询
      *

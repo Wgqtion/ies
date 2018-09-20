@@ -99,6 +99,30 @@ public class ParkingLotService extends BaseService<ParkingLot> {
 		filterParams.put("EQ_isDelete", 0); 
 		return super.findPage(filterParams, pageRequest);
 	}
+	
+	/**
+	 * 查询场区及地锁车位
+	 * @param parkingLotId
+	 */
+	public Set<ParkingLot> findParkingLot(Long parkingLotId){
+		Set<ParkingLot> parkingLots = new LinkedHashSet<ParkingLot>();
+		try {
+			Map<String, Object> searchParams = new HashMap<String, Object>();
+			searchParams.put("EQ_isEnabled", true);
+			searchParams.put("EQ_id", parkingLotId);
+			parkingLots.addAll(this.findAllList(searchParams));
+			int i=0;
+			for (ParkingLot p : parkingLots) {
+				this.parkingLockService.findParkingLocks(p,null,i,null);
+				i++;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return parkingLots;
+	}
+	
 	/**
 	 * 小程序查询场区及地锁车位
 	 * @param userId
