@@ -68,7 +68,7 @@ public class TcpMsg {
 	 * @return
 	 */
 	public String getStateString(){	
-		String dlState=Integer.toBinaryString(Integer.valueOf(HexUtils.HexToDec(getState(),1,2)));		
+		String dlState=Integer.toBinaryString(Integer.valueOf(HexUtils.HexToDec(getState(),0,2)));		
 		
 		return StringUtils.leftPad(dlState, 8, "0");
 	}
